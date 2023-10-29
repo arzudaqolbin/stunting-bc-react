@@ -1,23 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import{Route, Routes, BrowserRouter as Router} from "react-router-dom";
+import RoutesPosyandu from './routes/PosyanduRoutes';
+import RoutesKelurahan from './routes/KelurahanRoutes';
+import RoutesPuskesmas from './routes/PuskesmasRoutes';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Routes>
+          <Route path="/*" element={<RoutesPosyandu />} />
+          <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
+          <Route path="/posyandu/*" element={<RoutesPosyandu />} />
+          <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
