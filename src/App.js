@@ -1,13 +1,16 @@
-import './App.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import{Route, Routes, BrowserRouter as Router} from "react-router-dom";
 import RoutesPosyandu from './routes/PosyanduRoutes';
 import RoutesKelurahan from './routes/KelurahanRoutes';
 import RoutesPuskesmas from './routes/PuskesmasRoutes';
+import RoutesPublik from './routes/PublikRoutes';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min';
+import SidebarKelurahan from "./view-kelurahan/component/sidebar-kelurahan";
+import Beranda from "./view-publik/pages/Beranda";
 
 function App() {
   return (
-    <div className="App">
       <Router>
         <Routes>
           <Route path="/*" element={<RoutesPosyandu />} />
@@ -16,7 +19,8 @@ function App() {
           <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
         </Routes>
       </Router>
-    </div>
+      // <SidebarKelurahan content={<div></div>} />
+      // <Beranda />
   );
 }
 

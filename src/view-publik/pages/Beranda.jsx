@@ -1,16 +1,25 @@
 import React from "react";
+import "../css/beranda.css"; 
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
-import "../css/beranda.css"; 
+import Banner from "../component/Banner";
+import Kalkulator from "../component/Kalkulator";
+import FAQ from "../component/FAQ";
+import JudulTop from "../component/JudulTop";
+import Statistik from "../component/Statistik";
 
 
 const Beranda = () =>{
     return(
-        <body className="d-flex flex-column min-vh-100" style={{backgroundColor: "#E4F3EF"}}>
-            <Navbar/>
+        <div className="d-flex flex-column min-vh-100" style={{backgroundColor: "#E4F3EF"}}>
+            <JudulTop />
+            <Navbar />
+            <Banner />
+            <Statistik />
+            <Kalkulator />
+            <FAQ />
             <Footer />
-            
-        </body>
+        </div>
     )
 }
 

@@ -4,14 +4,10 @@ import logoJaktim from '../../aset/logo-jaktim.png';
 
 const Navbar = () => {
   return (
-    <>
-      <div className="container">
-        <h6 className="my-2" style={{ textAlign: "left" }}>Dashboard Stunting Kelurahan Bidara Cina</h6>
-      </div>
-      <nav className="navbar navbar-expand-lg" style={{ backgroundColor: "#026670" }}>
-        <div className="container">
-          <a className="navbar-brand" href="#">
-            <div className="sidebar-logo">
+      <nav className="navbar navbar-expand-lg p-0" style={{ backgroundColor: "#026670" }}>
+        <div className="container p-0">
+          <a className="navbar-brand p-0" href="#">
+            <div className="sidebar-logo p-3">
               <img src={logoDki} className="img-fluid" style={{ width: "40px" }} alt="" />
               <img src={logoJaktim} className="img-fluid" style={{ width: "45px" }} alt="" />
             </div>
@@ -68,7 +64,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-    </>
   );
 }
 

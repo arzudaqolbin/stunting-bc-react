@@ -1,12 +1,12 @@
 import React from "react";
-import "../css/sidebar-posyandu.css";
+import "../css/sidebar-kelurahan.css";
 import { useState } from "react";
 import logoDki from '../../aset/logo-dki.png';
 import logoJaktim from '../../aset/logo-jaktim.png';
-import logoPosyandu from '../../aset/logo-posyandu.png';
+import logoKantor from '../../aset/logo-kantor.png';
 
 
-const SidebarPosyandu = ({content}) =>  {
+const SidebarKelurahan = ({content}) =>  {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     // fungsi toggle
@@ -66,7 +66,7 @@ const SidebarPosyandu = ({content}) =>  {
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a href="#" data-bs-toggle="dropdown" className="nav-icon">
-                  <img src={logoPosyandu} className="avatar img-fluid" alt="" style={{height: "40px"}} />
+                  <img src={logoKantor} className="avatar img-fluid" alt="" style={{height: "40px"}} />
                 </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <a href="#" className="dropdown-item">Profile</a>
@@ -90,4 +90,4 @@ const SidebarPosyandu = ({content}) =>  {
   );
 }
 
-export default SidebarPosyandu;
+export default SidebarKelurahan;

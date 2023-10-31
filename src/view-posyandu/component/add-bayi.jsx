@@ -31,6 +31,7 @@ export default function AddBayi() {
         navigate("/");
     };
 
+    console.log(balita);
 
     return (
         <div className='container'>
