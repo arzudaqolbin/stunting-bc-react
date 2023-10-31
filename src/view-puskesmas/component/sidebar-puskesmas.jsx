@@ -6,7 +6,7 @@ import logoJaktim from '../../aset/logo-jaktim.png';
 import logoPuskesmas from '../../aset/logo-puskesmas.png';
 
 
-const SidebarKelurahan = ({content}) =>  {
+const SidebarPuskesmas = ({content}) =>  {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     // fungsi toggle
@@ -77,12 +77,8 @@ const SidebarKelurahan = ({content}) =>  {
           </div>
         </nav>
 
-        {/* Main Content Section */}
-        <main className="container">
-          <div className="container-fluid">
-            {content}
-          </div>
-        </main>
+        
+        {content}
 
 
       </div>
@@ -90,4 +86,4 @@ const SidebarKelurahan = ({content}) =>  {
   );
 }
 
-export default SidebarKelurahan;
+export default SidebarPuskesmas;
