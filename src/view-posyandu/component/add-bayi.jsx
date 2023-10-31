@@ -10,26 +10,131 @@ export default function AddBayi() {
     const [balita, setBalita] = useState({
         nik:"",
         nama:"",
-        jenisKelamin:"",
-        namaOrtu:"",
-        jalan:"",
+        jenis_kelamin:"",
+        nama_ortu:"",
+        pekerjaan_ortu:"Programmer",
+        alamat:"",
         rw:"",
-        rt:"",
-        tanggalLahir:"",
-        posyandu:""
+        tgl_lahir:"",
+        anak_ke:"1",
+        umur:"10",
+        posyandu_id:1,
+        status_tbu:"Normal",
+        status_bbu:"Normal",
+        status_bbtb:"Normal"
     });
+    console.log(balita);
+    // const [balitaRequst, setBalitaRequst] = useState({
+    //     posyandu_id:"",
+    //     nama:"",
+    //     nik:"",
+    //     jenis_kelamin:"",
+    //     tgl_lahir:"",
+    //     nama_ortu:"",
+    //     pekerjaan_ortu:"",
+    //     alamat:"",
+    //     rw:"",
+    // });
 
-    const {nik, nama, jenisKelamin, namaOrtu, jalan, rw, rt, tanggalLahir, posyandu } = balita;
+    const { nik, nama, jenis_kelamin, nama_ortu, rw, alamat, tgl_lahir, posyandu } = balita;
+    const [jalan, setJalan] = useState("");
+    const [rt, setRt] = useState("");
+
+    // const onInputChange = (e) => {
+
+    //     const { name, value } = e.target;
+
+    //     if (name === 'jalan' || name === 'rw' || name === 'rt') {
+    //         // Jika yang diubah adalah jalan atau rw, simpan dalam objek temporary
+    //         setBalita((prevBalita) => ({
+    //             ...prevBalita,
+    //             [name]: value,
+    //             alamat: `${prevBalita.jalan}, ${prevBalita.rt}, ${prevBalita.rw}`,
+    //         }));
+    //     } else {
+    //         // Jika yang diubah bukan jalan atau rw, simpan seperti biasa
+    //         setBalita({ ...balita, [name]: value });
+    //     }
+
+    // };
+
+    // const onInputChange = (e) => {
+    //     const { name, value } = e.target;
+    
+    //     if (name === 'jalan' || name === 'rw' || name === 'rt') {
+    //         // Jika yang diubah adalah jalan, rw, atau rt, simpan dalam objek temporary
+    //         setBalita((prevBalita) => ({
+    //             ...prevBalita,
+    //             [name]: value,
+    //             alamat: `${prevBalita.jalan ? prevBalita.jalan : ''}${
+    //                 prevBalita.jalan && (prevBalita.rw || prevBalita.rt) ? ', ' : ''
+    //             }${prevBalita.rt ? `RT ${prevBalita.rt}` : ''}${
+    //                 prevBalita.rw && prevBalita.rt ? ', ' : ''
+    //             }${prevBalita.rw ? `RW ${prevBalita.rw}` : ''}`,
+    //         }));
+    //     } else {
+    //         // Jika yang diubah bukan jalan, rw, atau rt, simpan seperti biasa
+    //         setBalita({ ...balita, [name]: value });
+    //     }
+    // };
 
     const onInputChange = (e) => {
-        setBalita({...balita,[e.target.name]:e.target.value})
+        const { name, value } = e.target;
+    
+        if (name === 'jalan' || name === 'rw' || name === 'rt') {
+            // Jika yang diubah adalah jalan, rw, atau rt, simpan dalam variabel terpisah
+            if (name === 'jalan') {
+                setJalan(value);
+            } else if (name === 'rt') {
+                setRt(value);
+            } else {
+                setBalita((prevBalita) => ({
+                    ...prevBalita,
+                    [name]: value,
+                    alamat: `${jalan ? jalan : ''}${jalan && (rt || rw) ? ', ' : ''}${rt ? `RT ${rt}` : ''}${rw && rt ? ', ' : ''}${rw ? `RW ${rw}` : ''}`,
+                }));
+            }
+        } else {
+            // Jika yang diubah bukan jalan, rw, atau rt, simpan seperti biasa
+            setBalita({ ...balita, [name]: value });
+        }
     };
     
-    const onSubmit=async(e)=>{
+    
+    
+    // const transformData = (e) => {
+    //     e.nama = data.nama.toUpperCase();
+    //     e.umur = parseInt(data.umur);
+    //     return data;
+    //   };
+
+    const onSubmit = async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:8000/endpointt", balita);
-        navigate("/");
+    
+        try {
+            // Lakukan permintaan POST ke server
+            await axios.post("http://127.0.0.1:8000/api/balitas", balita);
+            
+            // Jika permintaan berhasil, navigasikan ke halaman lain
+            navigate("/");
+        } catch (error) {
+            // Tangani kesalahan
+            if (error.response) {
+                // Respon dari server dengan kode status tertentu
+                console.error("Kesalahan dalam permintaan ke server:", error.response.status, error.response.data);
+                // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+            } else if (error.request) {
+                // Tidak ada respon dari server
+                console.error("Tidak ada respon dari server:", error.request);
+                // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+            } else {
+                // Kesalahan lainnya
+                console.error("Terjadi kesalahan:", error.message);
+                // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+            }
+        }
     };
+    
 
     console.log(balita);
 
@@ -71,8 +176,8 @@ export default function AddBayi() {
                         </label>
                         <select
                             className='form-select'
-                            name='jenisKelamin'
-                            value={jenisKelamin}
+                            name='jenis_kelamin'
+                            value={jenis_kelamin}
                             onChange={(e) => onInputChange(e)}
                         >
                             <option value='laki-laki'>Laki-laki</option>
@@ -87,9 +192,23 @@ export default function AddBayi() {
                         type={"text"}
                         className='form-control'
                         placeholder=''
-                        name='namaOrtu'
-                        value={namaOrtu}
+                        name='nama_ortu'
+                        value={nama_ortu}
                         onChange={(e)=>onInputChange(e)}
+                        />
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor='Alamat' className='form-label'>
+                            Alamat
+                        </label>
+                        <input
+                        type={"text"}
+                        className='form-control'
+                        placeholder='alamat'
+                        name='alamat'
+                        value={alamat}
+                        onChange={(e)=>onInputChange(e)}
+                        readOnly
                         />
                     </div>
                     <div className='mb-3'>
@@ -106,6 +225,28 @@ export default function AddBayi() {
                         />
                     </div>
                     <div className='mb-3'>
+                        <label htmlFor='RT' className='form-label'>
+                            RT
+                        </label>
+                        {/* <input
+                        type={"text"}
+                        className='form-control'
+                        placeholder=''
+                        name='rt'
+                        value={rt}
+                        onChange={(e)=>onInputChange(e)}
+                        /> */}
+                        <select
+                            className='form-select'
+                            name='rt'
+                            value={rt}
+                            onChange={(e) => onInputChange(e)}
+                        >
+                            <option value='01'>01</option>
+                            <option value='02'>02</option>
+                        </select>
+                    </div>
+                    <div className='mb-3'>
                         <label htmlFor='RW' className='form-label'>
                             RW
                         </label>
@@ -119,19 +260,6 @@ export default function AddBayi() {
                         />
                     </div>
                     <div className='mb-3'>
-                        <label htmlFor='RT' className='form-label'>
-                            RT
-                        </label>
-                        <input
-                        type={"text"}
-                        className='form-control'
-                        placeholder=''
-                        name='rt'
-                        value={rt}
-                        onChange={(e)=>onInputChange(e)}
-                        />
-                    </div>
-                    <div className='mb-3'>
                         <label htmlFor='Tanggal Lahir' className='form-label'>
                             Tanggal Lahir Balita
                         </label>
@@ -139,8 +267,8 @@ export default function AddBayi() {
                         type='date'
                         className='form-control'
                         placeholder='Masukkan Tanggal Lahir'
-                        name='tanggalLahir'
-                        value={tanggalLahir}
+                        name='tgl_lahir'
+                        value={tgl_lahir}
                         onChange={(e)=>onInputChange(e)}
                         />
                     </div>
