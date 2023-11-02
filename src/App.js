@@ -6,6 +6,7 @@ import RoutesPublik from './routes/PublikRoutes';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min';
+<<<<<<< HEAD
 import PageTambahPosyandu from "./view-kelurahan/pages/PageTambahPosyandu";
 import PageAddBalitaPosyandu from "./view-posyandu/pages/PageAddBalitaPosyandu";
 import PageAddPengukuranPosyandu from "./view-posyandu/pages/PageAddPengukuranPosyandu";
@@ -14,6 +15,19 @@ import PageEditPengukuranPosyandu from "./view-posyandu/pages/PageEditPengukuran
 import PageEditPwPosyandu from "./view-posyandu/pages/PageEditPwPosyandu";
 import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
 import PageProfilePosyandu from "./view-posyandu/pages/PageProfilePosyandu";
+=======
+import PageEditDataTambahanPuskesmas from "./view-puskesmas/page/PageEditDataTambahanPuskesmas";
+import Beranda from "./view-publik/pages/Beranda";
+import Berita from "./view-publik/pages/Berita";
+import DetailBerita from "./view-publik/component/detail-berita";
+import Jadwal from "./view-publik/pages/Jadwal";
+import Login from "./view-publik/pages/Login";
+import DaftarBalitaPuskesmas from "./view-puskesmas/page/DaftarBalitaPuskesmas";
+import PageAddPengukuranSelectedPuskesmas from "./view-puskesmas/page/PageAddPengukuranSelectedPuskesmas";
+import PageEditBalitaPuskesmas from "./view-puskesmas/page/PageEditBalitaPuskesmas";
+import PageEditPwPuskesmas from "./view-puskesmas/page/PageEditPwPuskesmas";
+import PageProfilePuskesmas from "./view-puskesmas/page/PageProfilePuskesmas";
+>>>>>>> d908e0a5d5a14a983d2b80787de17da2f4ba0afe
 
 function App() {
   return (
@@ -26,7 +40,11 @@ function App() {
       //   </Routes>
       // </Router>
       // <Login />
+<<<<<<< HEAD
       <PageProfilePosyandu />
+=======
+      <PageProfilePuskesmas />
+>>>>>>> d908e0a5d5a14a983d2b80787de17da2f4ba0afe
   );
 }
 
