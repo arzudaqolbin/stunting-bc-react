@@ -1,5 +1,7 @@
 import React from 'react';
 import DoughnutChart from './Doughnut';
+import StackedBarGender from './StackedBar';
+import BayiStat from './bayi-stat';
 
 const StatGrafik = () => {
   return (
@@ -8,9 +10,9 @@ const StatGrafik = () => {
       <DoughnutChart />
       {/* Stat by umur */}
       {/* Pake progress bootstrap */}
-      <div className="p-2 flex-fill">Bar Percent</div>
+      <StackedBarGender />
       {/* Stat by gambar */}
-      <div className="p-2 flex-fill">Stat gambar balita</div>
+      <BayiStat />
     </div>
   );
 }

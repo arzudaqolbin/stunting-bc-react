@@ -10,6 +10,12 @@ import SidebarKelurahan from "./view-kelurahan/component/sidebar-kelurahan";
 import Beranda from "./view-publik/pages/Beranda";
 import DaftarBalitaPuskesmas from "./view-puskesmas/page/DaftarBalitaPuskesmas";
 import DaftarBalitaKelurahan from "./view-kelurahan/pages/DaftarBalitaKelurahan";
+import Login from "./view-publik/pages/Login";
+import SidebarPuskesmas from "./view-puskesmas/component/sidebar-puskesmas";
+import EditAkunPosyandu from "./view-kelurahan/component/edit-akun-posyandu";
+import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
+import StackedBarGender from "./view-publik/component/StackedBar";
+import LineChart_Umur_0_24 from "./view-publik/component/linechart_0-24";
 
 function App() {
   return (
@@ -21,8 +27,9 @@ function App() {
       //     <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
       //   </Routes>
       // </Router>
-      // <DaftarBalitaPuskesmas />
-    <DaftarBalitaKelurahan />
+      // <Login />
+      <Beranda />
+      // <LineChart_Umur_0_24 />
   );
 }
 
