@@ -1,0 +1,64 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.custom-judul {
+    text-align: center;
+    padding: 25px;
+    font-weight: bold;
+}
+
+.container-fluid {
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #026670;
+    background-color:#9fedd7;
+    margin-top: 10px;
+    display: flex; /* Menggunakan display flex */
+    flex-direction: column;
+}
+
+.container-fluid label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-left: 30px;
+}
+
+.container-fluid label > span {
+    flex: 1;
+    text-align: left;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.container-fluid input, .container-fluid select {
+    flex: 2;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-right: 30px;
+    background-color:#E4F3EF;
+    border: none;
+}
+
+.submit-button {
+    text-align: right; /* Memindahkan tombol ke sebelah kanan */
+    background-color: #026670;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: fit-content;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    float: right;
+}
+
+.logo-back {
+    margin-top: 20px;
+    width: 50px;
+    height: auto; 
+}

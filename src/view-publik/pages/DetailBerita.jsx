@@ -3,19 +3,19 @@ import "../css/beranda.css";
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";
 import JudulTop from "../component/JudulTop";
-import ListJadwal from "../component/list-jadwal";
+import DetailBerita from "../component/detail-berita";
 
 
 
-const Jadwal = () =>{
+const DetailBeritaUmum = () =>{
     return(
         <div className="d-flex flex-column min-vh-100" style={{backgroundColor: "#E4F3EF"}}>
             <JudulTop />
             <Navbar />
-            <ListJadwal />
+            <DetailBerita />
             <Footer />
         </div>
     )
 }
 
-export default Jadwal;
+export default DetailBeritaUmum;
