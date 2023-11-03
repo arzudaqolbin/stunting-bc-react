@@ -17,6 +17,8 @@ import PageAddPengukuranSelectedPuskesmas from "./view-puskesmas/page/PageAddPen
 import PageEditBalitaPuskesmas from "./view-puskesmas/page/PageEditBalitaPuskesmas";
 import PageEditPwPuskesmas from "./view-puskesmas/page/PageEditPwPuskesmas";
 import PageProfilePuskesmas from "./view-puskesmas/page/PageProfilePuskesmas";
+import DaftarBalitaKelurahan from "./view-kelurahan/pages/DaftarBalitaKelurahan";
+import PageDetailBalitaKelurahan from "./view-kelurahan/pages/PageDetailBalitaKelurahan";
 
 function App() {
   return (
@@ -29,7 +31,7 @@ function App() {
       //   </Routes>
       // </Router>
       // <Login />
-      <PageProfilePuskesmas />
+      <PageDetailBalitaKelurahan />
   );
 }
 

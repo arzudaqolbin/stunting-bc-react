@@ -105,7 +105,7 @@ const DetailBalitaKelurahan = () => {
                   <table className="table table-hover">
                     <tbody>
                       <tr>
-                        <th scope="row">Asi Eksklusif</th>
+                        <th scope="row" style={{ width: "40%"}}>Asi Eksklusif</th>
                         <td> : &nbsp;Tidak</td>
                       </tr>
                       <tr>
