@@ -1,4 +1,4 @@
-import{Route, Routes, BrowserRouter as Router} from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import RoutesPosyandu from './routes/PosyanduRoutes';
 import RoutesKelurahan from './routes/KelurahanRoutes';
 import RoutesPuskesmas from './routes/PuskesmasRoutes';
@@ -18,17 +18,17 @@ import CalculateStunting from "./CalculateStunting";
 
 function App() {
   return (
-      // <Router>
-      //   <Routes>
-      //     <Route path="/*" element={<RoutesPosyandu />} />
-      //     <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
-      //     <Route path="/posyandu/*" element={<RoutesPosyandu />} />
-      //     <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
-      //   </Routes>
-      // </Router>
-      // <Login />
-      // <PageProfilePosyandu />
-      <CalculateStunting />
+    <Router>
+      <Routes>
+        <Route path="/*" element={<RoutesPublik />} />
+        <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
+        <Route path="/posyandu/*" element={<RoutesPosyandu />} />
+        <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
+      </Routes>
+    </Router>
+    // <Login />
+    // <PageProfilePosyandu />
+    // <CalculateStunting />
 
   );
 }
