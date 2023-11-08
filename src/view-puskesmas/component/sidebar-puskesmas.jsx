@@ -60,7 +60,7 @@ const SidebarPuskesmas = ({content}) =>  {
             <i className="fas fa-bars"></i>
           </button>
           <div className="d-flex align-items-center navbar-title">
-            <p className="mb-0 font-weight-bold text-light" style={{ fontSize: "1.2rem" }}>Posyandu Melati</p>
+            <p className="mb-0 font-weight-bold text-light" style={{ fontSize: "1.2rem" }}>Puskesmas Kencana Ungu</p>
           </div>
           <div className="navbar-collapse navbar">
             <ul className="navbar-nav">
