@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
@@ -24,81 +24,57 @@ export default function AddBayi() {
         status_bbtb:"Normal"
     });
     console.log(balita);
-    // const [balitaRequst, setBalitaRequst] = useState({
-    //     posyandu_id:"",
-    //     nama:"",
-    //     nik:"",
-    //     jenis_kelamin:"",
-    //     tgl_lahir:"",
-    //     nama_ortu:"",
-    //     pekerjaan_ortu:"",
-    //     alamat:"",
-    //     rw:"",
-    // });
 
     const { nik, nama, jenis_kelamin, nama_ortu, rw, alamat, tgl_lahir, posyandu } = balita;
     const [jalan, setJalan] = useState("");
     const [rt, setRt] = useState("");
 
-    // const onInputChange = (e) => {
-
-    //     const { name, value } = e.target;
-
-    //     if (name === 'jalan' || name === 'rw' || name === 'rt') {
-    //         // Jika yang diubah adalah jalan atau rw, simpan dalam objek temporary
-    //         setBalita((prevBalita) => ({
-    //             ...prevBalita,
-    //             [name]: value,
-    //             alamat: `${prevBalita.jalan}, ${prevBalita.rt}, ${prevBalita.rw}`,
-    //         }));
-    //     } else {
-    //         // Jika yang diubah bukan jalan atau rw, simpan seperti biasa
-    //         setBalita({ ...balita, [name]: value });
-    //     }
-
-    // };
 
     // const onInputChange = (e) => {
     //     const { name, value } = e.target;
     
     //     if (name === 'jalan' || name === 'rw' || name === 'rt') {
-    //         // Jika yang diubah adalah jalan, rw, atau rt, simpan dalam objek temporary
-    //         setBalita((prevBalita) => ({
-    //             ...prevBalita,
-    //             [name]: value,
-    //             alamat: `${prevBalita.jalan ? prevBalita.jalan : ''}${
-    //                 prevBalita.jalan && (prevBalita.rw || prevBalita.rt) ? ', ' : ''
-    //             }${prevBalita.rt ? `RT ${prevBalita.rt}` : ''}${
-    //                 prevBalita.rw && prevBalita.rt ? ', ' : ''
-    //             }${prevBalita.rw ? `RW ${prevBalita.rw}` : ''}`,
-    //         }));
+    //         // Jika yang diubah adalah jalan, rw, atau rt, simpan dalam variabel terpisah
+    //         if (name === 'jalan') {
+    //             setJalan(value);
+    //         } else if (name === 'rt') {
+    //             setRt(value);
+    //         } else {
+    //             setBalita((prevBalita) => ({
+    //                 ...prevBalita,
+    //                 [name]: value,
+    //                 alamat: `${jalan ? jalan : ''}${jalan && (rt || rw) ? ', ' : ''}${rt ? `RT ${rt}` : ''}${rw && rt ? ', ' : ''}${rw ? `RW ${rw}` : ''}`,
+    //             }));
+    //         }
     //     } else {
     //         // Jika yang diubah bukan jalan, rw, atau rt, simpan seperti biasa
     //         setBalita({ ...balita, [name]: value });
     //     }
     // };
 
+    useEffect(() => {
+        // Gunakan useEffect untuk memperbarui alamat saat jalan, rw, atau rt berubah
+        setBalita((prevBalita) => ({
+            ...prevBalita,
+            alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+                rt ? `RT ${rt}` : ""
+            }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+        }));
+    }, [jalan, rw, rt]);
+    
+
+    
     const onInputChange = (e) => {
         const { name, value } = e.target;
-    
-        if (name === 'jalan' || name === 'rw' || name === 'rt') {
-            // Jika yang diubah adalah jalan, rw, atau rt, simpan dalam variabel terpisah
-            if (name === 'jalan') {
-                setJalan(value);
-            } else if (name === 'rt') {
-                setRt(value);
-            } else {
-                setBalita((prevBalita) => ({
-                    ...prevBalita,
-                    [name]: value,
-                    alamat: `${jalan ? jalan : ''}${jalan && (rt || rw) ? ', ' : ''}${rt ? `RT ${rt}` : ''}${rw && rt ? ', ' : ''}${rw ? `RW ${rw}` : ''}`,
-                }));
-            }
+
+        if (name === "jalan") {
+            setJalan(value);
+        } else if (name === "rt") {
+            setRt(value);
         } else {
-            // Jika yang diubah bukan jalan, rw, atau rt, simpan seperti biasa
             setBalita({ ...balita, [name]: value });
-        }
-    };
+        }
+    };
     
     
     
@@ -228,14 +204,6 @@ export default function AddBayi() {
                         <label htmlFor='RT' className='form-label'>
                             RT
                         </label>
-                        {/* <input
-                        type={"text"}
-                        className='form-control'
-                        placeholder=''
-                        name='rt'
-                        value={rt}
-                        onChange={(e)=>onInputChange(e)}
-                        /> */}
                         <select
                             className='form-select'
                             name='rt'

@@ -7,6 +7,7 @@ import Kalkulator from "../component/Kalkulator";
 import FAQ from "../component/FAQ";
 import JudulTop from "../component/JudulTop";
 import Statistik from "../component/Statistik";
+import SliderBerita from "../component/slider-berita";
 
 
 const Beranda = () =>{
@@ -17,6 +18,7 @@ const Beranda = () =>{
             <Banner />
             <Statistik />
             <Kalkulator />
+            <SliderBerita />
             <FAQ />
             <Footer />
         </div>

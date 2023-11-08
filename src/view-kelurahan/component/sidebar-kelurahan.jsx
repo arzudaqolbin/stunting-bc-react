@@ -78,11 +78,7 @@ const SidebarKelurahan = ({content}) =>  {
         </nav>
 
         {/* Main Content Section */}
-        <main className="container">
-          <div className="container-fluid">
-            {content}
-          </div>
-        </main>
+        {content}
 
 
       </div>
