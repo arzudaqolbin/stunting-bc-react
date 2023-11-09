@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Bar} from "react-chartjs-2";
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
 // import 'chartjs-plugin-datalabels';
 
 import{
@@ -21,18 +23,34 @@ ChartJS.register(
 
 
 const StackedBarGender = () => {
+
+    const [dataReal, setDataReal] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/balitas/stat/stack-bar`);
+                console.log(result.data);
+                setDataReal(result.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
     
     const dataBar = {
         labels: ["Laki-laki", "Perempuan"],
         datasets: [
             {
                 label: "Umur 0-24 Bulan",
-                data: [5, 4],
+                data: [dataReal.totalBalitaLakiStuntingCat1, dataReal.totalBalitaPerempuanStuntingCat1],
                 backgroundColor: "orange",
             },
             {
                 label: "Umur 24-60 Bulan",
-                data: [3, 3],
+                data: [dataReal.totalBalitaLakiStuntingCat2, dataReal.totalBalitaPerempuanStuntingCat2],
                 backgroundColor: "yellow",
             }
         ]
