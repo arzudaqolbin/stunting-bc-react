@@ -15,20 +15,32 @@ import PageEditPwPosyandu from "./view-posyandu/pages/PageEditPwPosyandu";
 import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
 import PageProfilePosyandu from "./view-posyandu/pages/PageProfilePosyandu";
 import CalculateStunting from "./CalculateStunting";
+import PageAddPengukuranSelectedPuskesmas from "./view-puskesmas/page/PageAddPengukuranSelectedPuskesmas";
+import LihatPage from "./view-posyandu/pages/lihatpage";
+import PageEditBalitaPuskesmas from "./view-puskesmas/page/PageEditBalitaPuskesmas"
 
 function App() {
   return (
-      // <Router>
-      //   <Routes>
-      //     <Route path="/*" element={<RoutesPosyandu />} />
-      //     <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
-      //     <Route path="/posyandu/*" element={<RoutesPosyandu />} />
-      //     <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
-      //   </Routes>
-      // </Router>
+      <Router>
+        <Routes>
+          {/* <Route path="/*" element={<RoutesPosyandu />} />
+          <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
+          <Route path="/posyandu/*" element={<RoutesPosyandu />} />
+          <Route path="/puskesmas/*" element={<RoutesPuskesmas />} /> */}
+          <Route path="/add-balita" element={<PageAddBalitaPosyandu />} />
+          <Route path="/lihat-balita" element={<LihatPage />} />
+          <Route path="/add-pengukuran" element={<PageAddPengukuranPosyandu/>} />
+          <Route path="/edit-balita/:id" element={<PageEditBalitaPuskesmas/>} />
+          <Route path="/add-data-tambahan-balita/:id" element={<PageDataTambahanPosyandu/>} />
+          <Route path="/profil-posyandu/:id" element={<PageProfilePosyandu/>} />
+          <Route path="/edit-pw-posyandu/:id" element={<PageEditPwPosyandu/>} />
+        </Routes>
+      </Router>
       // <Login />
+      // <PageAddBalitaPosyandu/>
+      // <LihatBayi/>
       // <PageProfilePosyandu />
-      <CalculateStunting />
+      // <CalculateStunting />
 
   );
 }
