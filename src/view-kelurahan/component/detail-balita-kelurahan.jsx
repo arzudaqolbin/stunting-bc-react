@@ -9,25 +9,25 @@ import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting
 const DetailBalitaKelurahan = () => {
 
   // nunggu setting router link
-  let {idBalita} = useParams();
-  const[biodata, setBiodata] = useState([]);
-  const[riwayat, setRiwayat] = useState([]);
-  const[namaPosyandu, setNamaPosyandu] = useState([]);
+  let { idBalita } = useParams();
+  const [biodata, setBiodata] = useState([]);
+  const [riwayat, setRiwayat] = useState([]);
+  const [namaPosyandu, setNamaPosyandu] = useState([]);
 
-  const getDataBalita = async(idBalita) => {
+  const getDataBalita = async (idBalita) => {
     const dataBalita = await axios.get(`${BASE_URL}/balitas/1`)
     const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/1`)
     setBiodata(dataBalita.data)
     setRiwayat(dataTambahanBalita.data)
   };
-  
-  const getNamaPosyandu = async() => {
+
+  const getNamaPosyandu = async () => {
     // nunggu endpoint getnamaposyandu
     const namaPos = await axios.get(`http://127.0.0.1:8000/api/posyandu/1`)
     setNamaPosyandu(namaPos.data)
   };
-  
-  useEffect( () => {
+
+  useEffect(() => {
     getDataBalita();
     getNamaPosyandu();
   }, []);
@@ -36,7 +36,7 @@ const DetailBalitaKelurahan = () => {
   const convertStr = (value) => {
     return value === 1 ? 'Ya' : 'Tidak';
   };
-  
+
   // console.log(riwayat);
 
   return (
@@ -145,13 +145,10 @@ const DetailBalitaKelurahan = () => {
                   <table className="table table-hover">
                     <tbody>
                       <tr>
-<<<<<<< HEAD
-                        <th scope="row" style={{ width: "40%"}}>Asi Eksklusif</th>
+                        <th scope="row" style={{ width: "40%" }}>Asi Eksklusif</th>
                         <td> : &nbsp;Tidak</td>
-=======
                         <th scope="row">Asi Eksklusif</th>
                         <td> : &nbsp;{convertStr(riwayat.asi_eksklusif)}</td>
->>>>>>> c37f1057c2c2647092e1b2ae2c5b52533fa7ab41
                       </tr>
                       <tr>
                         <th scope="row">IMD</th>
@@ -207,33 +204,33 @@ const DetailBalitaKelurahan = () => {
               </div>
             </div>
             <div className="accordion-item">
-                <h2 className="accordion-header">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                    Data Pengukuran
-                    </button>
-                </h2>
-                <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div className="accordion-body">
-                    {/* Isi komponen accordion disini */}
-                    <TabelPengukuranBalitaStunting />
-                    </div>
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                  Data Pengukuran
+                </button>
+              </h2>
+              <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  {/* Isi komponen accordion disini */}
+                  <TabelPengukuranBalitaStunting />
                 </div>
+              </div>
             </div>
             <div className="accordion-item">
-                <h2 className="accordion-header">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                    Grafik Stunting
-                    </button>
-                </h2>
-                <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div className="accordion-body">
-                    {/* Isi komponen accordion disini */}
-                    <LineChart_Umur_0_24 />
-                    <LineChart_Umur_24_60 />
-                    </div>
+              <h2 className="accordion-header">
+                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                  Grafik Stunting
+                </button>
+              </h2>
+              <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div className="accordion-body">
+                  {/* Isi komponen accordion disini */}
+                  <LineChart_Umur_0_24 />
+                  <LineChart_Umur_24_60 />
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </main>
