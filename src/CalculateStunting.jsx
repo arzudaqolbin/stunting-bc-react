@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import BASE_URL from './base/apiConfig';
+import axios from 'axios';
 
 const dataLK = [
   { umur: 0, sd_3: 44.2, sd_2: 46.1, med: 49.9, sd2: 53.7, sd3: 55.6 },
@@ -42,15 +44,31 @@ function CalculateStunting() {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cobaApi = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/1`);
+        console.log("api-pengukuran-byIdBalita");
+        console.log(cobaApi.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
     calculateStatusStunting();
 
     // Di sini, Anda dapat mengirim data umur, tinggiBadan, dan statusStunting ke database atau tempat penyimpanan data lainnya
-    console.log('Umur:', umur);
-    console.log('Tinggi Badan:', tinggiBadan);
-    console.log('Status Stunting:', statusStunting);
+    // console.log('Umur:', umur);
+    // console.log('Tinggi Badan:', tinggiBadan);
+    // console.log('Status Stunting:', statusStunting);
+
+    
   };
 
   return (

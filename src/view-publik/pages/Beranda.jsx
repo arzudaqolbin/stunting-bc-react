@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/beranda.css"; 
 import Navbar from "../component/Navbar";
 import Footer from "../component/Footer";

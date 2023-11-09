@@ -1,7 +1,8 @@
 import React from 'react';
 import "../css/edit-pw-posyandu.css";
 
-function EditPwPosyandu() {
+function EditPwPosyandu({id}) {
+  
   return (
     <main className="container">
       <a href=""><img src="back.png" alt="Back" className="logo-back" /></a>
