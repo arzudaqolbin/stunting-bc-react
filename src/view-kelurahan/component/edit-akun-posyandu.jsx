@@ -10,6 +10,7 @@ function EditAkunPosyandu({ idPosyandu }) {
     nomor_telepon: "",
     username: "",
     password: "",
+    user_id: "",
   });
 
   const [puskesmasList, setPuskesmasList] = useState([]);
@@ -36,6 +37,7 @@ function EditAkunPosyandu({ idPosyandu }) {
           nama_puskesmas: data.puskesmas_id,
           alamat: data.alamat,
           nomor_telepon: data.nomor_telepon,
+          user_id: data.user_id
         });
         console.log(data);
 
@@ -68,7 +70,7 @@ function EditAkunPosyandu({ idPosyandu }) {
     e.preventDefault();
     console.log(formData);
     axios.put(`http://127.0.0.1:8000/api/posyandu/${idPosyandu}`, {
-      nama_posyandu: formData.nama_posyandu,
+      nama: formData.nama_posyandu,
       puskesmas_id: formData.nama_puskesmas,
       alamat: formData.alamat,
       nomor_telepon: formData.nomor_telepon,
