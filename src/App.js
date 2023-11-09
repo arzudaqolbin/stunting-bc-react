@@ -26,7 +26,7 @@ function App() {
   return (
       <Router>
         <Routes>
-          <Route path="/coba-api" element={<CalculateStunting />} />
+          {/* <Route path="/coba-api" element={<CalculateStunting />} /> */}
           <Route path= "/*" element={<RoutesPublik />} />
           <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
           <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
