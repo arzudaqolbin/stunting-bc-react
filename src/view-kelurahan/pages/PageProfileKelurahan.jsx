@@ -3,8 +3,8 @@ import SidebarKelurahan from '../component/sidebar-kelurahan';
 import ProfileKelurahan from '../component/profile-kelurahan';
 
 const PageProfileKelurahan = () => {
-    return(
-        <SidebarKelurahan content={<ProfileKelurahan />} />
+    return (
+        <SidebarKelurahan content={<ProfileKelurahan kelurahanId={1} />} />
     )
 }
 

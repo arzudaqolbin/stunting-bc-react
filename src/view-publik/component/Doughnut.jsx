@@ -1,4 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import axios from 'axios';
 
 import{
     Chart as ChartJS,
@@ -7,7 +9,7 @@ import{
     Legend,
     CategoryScale
 } from "chart.js";
-import { Doughnut } from 'react-chartjs-2';
+import BASE_URL from '../../base/apiConfig';
 
 ChartJS.register(
     ArcElement,
@@ -19,12 +21,27 @@ ChartJS.register(
 
 const DoughnutChart = () => {
     let reff = useRef(null);
+    const [dataReal, setDataReal] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/balitas/stat/doughnut`);
+                setDataReal(result.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
 
     const dataChart = {
         labels: ["Pendek", "Normal"],
         datasets:[{
             label: "Total Balita",
-            data: [11, 97],
+            data: [dataReal.totalStunting, dataReal.total_balita - dataReal.totalStunting],
             backgroundColor: ['black', 'yellow'],
             maintainAspectRatio: true
         }]

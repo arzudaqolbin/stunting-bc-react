@@ -1,28 +1,116 @@
-import React from 'react';
+import React from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../css/add-pengukuran-selected.css";
 
 function AddPengukuranSelected() {
+  let navigate = useNavigate();
+
+  const [pengukuran, setPengukuran] = useState({
+    balita_id: "",
+    tgl_input: "",
+    tinggi_badan: "",
+    berat_badan: "",
+    bbu: "",
+    tbu: "",
+    bbtb: "",
+    rambu_gizi: "",
+    kms: "",
+    status_tbu: "",
+    status_bbu: "",
+    status_bbtb: "",
+    posisi_balita: "",
+    validasi: false,
+  });
+
+  const {
+    balita_id,
+    tgl_input,
+    tinggi_badan,
+    berat_badan,
+    bbu,
+    tbu,
+    bbtb,
+    rambu_gizi,
+    kms,
+    status_tbu,
+    status_bbu,
+    status_bbtb,
+    posisi_balita,
+  } = pengukuran;
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+
+    setPengukuran({ ...pengukuran, [name]: value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://127.0.0.1:8000/api/pengukurans", pengukuran);
+      navigate("/lihat-bayi");
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        console.error("Terjadi kesalahan:", error.message);
+      }
+    }
+  };
+
   return (
     <main className="container">
-      <a href=""><img src="back.png" alt="Back" className="logo-back" /></a>
+      <a href="">
+        <img src="back.png" alt="Back" className="logo-back" />
+      </a>
       <h2 className="custom-judul">Tambah Pengukuran Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-        <form action="" method="post">
+        <form
+          onSubmit={(e) => {
+            onSubmit(e);
+          }}
+        >
           <label htmlFor="nama_balita">
             <span>Nama Balita*</span>
-            <input type="text" id="nama_balita" name="nama_balita" required placeholder="auto system" />
+            <input
+              type="text"
+              id="nama_balita"
+              name="nama_balita"
+              required
+              placeholder="auto system"
+            />
           </label>
 
           <label htmlFor="umur">
             <span>Umur*</span>
-            <input type="text" id="umur" name="umur" required placeholder="auto system dari tanggal pengukuran" />
+            <input
+              type="text"
+              id="umur"
+              name="umur"
+              required
+              placeholder="auto system dari tanggal pengukuran"
+            />
           </label>
 
           <label htmlFor="tanggal_pengukuran">
             <span>Tanggal Pengukuran*</span>
-            <input type="date" id="tanggal_pengukuran" name="tanggal_pengukuran" required />
+            <input
+              type="date"
+              id="tanggal_pengukuran"
+              name="tanggal_pengukuran"
+              required
+            />
           </label>
 
           <label htmlFor="berat_badan">
@@ -36,7 +124,9 @@ function AddPengukuranSelected() {
           </label>
         </form>
       </div>
-      <button type="submit" className="submit-button">Simpan</button>
+      <button type="submit" className="submit-button">
+        Simpan
+      </button>
     </main>
   );
 }

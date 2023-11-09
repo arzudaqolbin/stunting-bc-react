@@ -1,12 +1,14 @@
-import React from 'react';
-import SidebarPosyandu from '../component/sidebar-posyandu';
-import ProfilePosyandu from '../component/profile-posyandu';
+import React from "react";
+import SidebarPosyandu from "../component/sidebar-posyandu";
+import ProfilePosyandu from "../component/profile-posyandu";
+import { useParams } from "react-router-dom";
 
 const PageProfilePosyandu = () => {
-    return(
-        // <SidebarPosyandu content={<AddBayi/>} />
-        <SidebarPosyandu content={<ProfilePosyandu/>} />
-    )
-}
+  const { id } = useParams();
+  return (
+    // <SidebarPosyandu content={<AddBayi/>} />
+    <SidebarPosyandu content={<ProfilePosyandu id={id} />} />
+  );
+};
 
 export default PageProfilePosyandu;
