@@ -31,7 +31,7 @@ function App() {
       //   </Routes>
       // </Router>
       // <Login />
-      <PageDetailBalitaKelurahan />
+      <PageAddPengukuranSelectedPuskesmas />
   );
 }
 
