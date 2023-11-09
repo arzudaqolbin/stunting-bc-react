@@ -15,11 +15,16 @@ import Jadwal from "./view-publik/pages/Jadwal";
 import Login from "./view-publik/pages/Login";
 import DaftarBalitaPuskesmas from "./view-puskesmas/page/DaftarBalitaPuskesmas";
 import PageAddPengukuranSelectedPuskesmas from "./view-puskesmas/page/PageAddPengukuranSelectedPuskesmas";
+<<<<<<< HEAD
 import PageEditBalitaPuskesmas from "./view-puskesmas/page/PageEditBalitaPuskesmas";
 import PageEditPwPuskesmas from "./view-puskesmas/page/PageEditPwPuskesmas";
 import PageProfilePuskesmas from "./view-puskesmas/page/PageProfilePuskesmas";
 import DaftarBalitaKelurahan from "./view-kelurahan/pages/DaftarBalitaKelurahan";
 import PageDetailBalitaKelurahan from "./view-kelurahan/pages/PageDetailBalitaKelurahan";
+=======
+import LihatPage from "./view-posyandu/pages/lihatpage";
+import PageEditBalitaPuskesmas from "./view-puskesmas/page/PageEditBalitaPuskesmas"
+>>>>>>> satrio
 
 function App() {
   return (
@@ -62,6 +67,7 @@ function App() {
           <Route path="/puskesmas/:idPuskesmas/*" element={<RoutesPuskesmas />} />
         </Routes>
       </Router>
+<<<<<<< HEAD
       // <DaftarBalitaPosyandu />
       // <DaftarPengukuranBalitaPosyandu />
       // <DaftarBalitaPuskesmas />
@@ -90,6 +96,14 @@ function App() {
 
 >>>>>>> origin/marsay
 >>>>>>> c37f1057c2c2647092e1b2ae2c5b52533fa7ab41
+=======
+      // <Login />
+      // <PageAddBalitaPosyandu/>
+      // <LihatBayi/>
+      // <PageProfilePosyandu />
+      // <CalculateStunting />
+
+>>>>>>> satrio
   );
 }
 
