@@ -1,5 +1,6 @@
 import React from 'react';
 import "../css/profile-kelurahan.css";
+import logoJaktim from "../../aset/logo-jaktim.png";
 
 function ProfileKelurahan() {
   return (
@@ -7,7 +8,7 @@ function ProfileKelurahan() {
       <div className="container-fluid">
         <div className="content-box">
           <div className="content-header">
-            <img src="logokelurahan.png" alt="Logo Posyandu" />
+            <img src={logoJaktim} alt="Logo Posyandu" />
           </div>
           <div className="content-body">
             <h1>ALAMAT</h1>

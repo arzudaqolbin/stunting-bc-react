@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import "../css/edit-balita.css";
 
 function EditBalita() {
+
   return (
     <main className="container">
       <a href=""><img src="back.png" alt="Back" className="logo-back" /></a>

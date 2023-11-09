@@ -1,5 +1,6 @@
 import React from 'react';
 import "../css/profile-posyandu.css";
+import logoPosyandu from "../../aset/logo-posyandu.png";
 
 function ProfilePosyandu() {
   return (
@@ -7,7 +8,7 @@ function ProfilePosyandu() {
       <div className="container-fluid">
         <div className="content-box">
           <div className="content-header">
-            <img src="logoposyandu.png" alt="Logo Posyandu" />
+            <img src={logoPosyandu} alt="Logo Posyandu" />
           </div>
           <div className="content-body">
             <h1>ALAMAT</h1>

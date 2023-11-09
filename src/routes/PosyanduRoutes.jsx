@@ -2,24 +2,28 @@ import {Routes, Route}  from "react-router-dom";
 import Coba from "../view-posyandu/pages/coba";
 import AddPage from "../view-posyandu/pages/addpage";
 import LihatPage from "../view-posyandu/pages/lihatpage";
+import PageProfilePosyandu from "../view-posyandu/pages/PageProfilePosyandu";
+import PageAddBalitaPosyandu from "../view-posyandu/pages/PageAddBalitaPosyandu";
+import PageAddPengukuranPosyandu from "../view-posyandu/pages/PageAddPengukuranPosyandu";
+import PageAddPengukuranSelectedPosyandu from "../view-posyandu/pages/PageAddPengukuranSelectedPosyandu";
+import PageEditPengukuranPosyandu from "../view-posyandu/pages/PageEditPengukuranPosyandu";
 
 const RoutesPosyandu = () => {
     return(
         <Routes>
-            <Route path="/:idPosyandu" element={<Coba />} />
-            <Route path="/:idPosyandu/profile" element={<AddPage />} />
+            <Route path="/" element={<PageProfilePosyandu />} />
+            <Route path="/profile" element={<PageProfilePosyandu />} />
             {/* tambah balita */}
-            <Route path="/:idPosyandu/tambah-balita" element={<LihatPage />} />
-            <Route path="/:idPosyandu/tambah-balita" element={<LihatPage />} />
+            <Route path="/tambah-balita" element={<PageAddBalitaPosyandu />} />
             {/* tambah pengukuran */}
-            <Route path="/:idPosyandu/tambah-pengukuran" element={<LihatPage />} />
-            <Route path="/:idPosyandu/tambah-pengukuran/:idBalita" element={<LihatPage />} />
+            <Route path="/tambah-pengukuran" element={<PageAddPengukuranPosyandu />} />
+            <Route path="/tambah-pengukuran/:idBalita" element={<PageAddPengukuranSelectedPosyandu />} />
             {/* daftar tabel balita */}
-            <Route path="/:idPosyandu/daftar-balita" element={<LihatPage />} />
+            <Route path="/daftar-balita" element={<LihatPage />} />
             {/* detail balita */}
-            <Route path="/:idPosyandu/detail-balita/:idBalita" element={<LihatPage />} />
+            <Route path="/detail-balita/:idBalita" element={<LihatPage />} />
             {/* edit pengukuran balita */}
-            <Route path="/:idPosyandu/edit-pengukuran/:idBalita" element={<LihatPage />} />
+            <Route path="/edit-pengukuran/:idBalita" element={<PageEditPengukuranPosyandu />} />
         </Routes>
     )
 }

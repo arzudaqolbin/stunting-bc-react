@@ -1,5 +1,6 @@
 import React from 'react';
 import "../css/profile-puskesmas.css";
+import logoPuskesmas from "../../aset/logo-puskesmas.png";
 
 function ProfilePuskesmas() {
   return (
@@ -7,7 +8,7 @@ function ProfilePuskesmas() {
       <div className="container-fluid">
         <div className="content-box">
           <div className="content-header">
-            <img src="logopuskesmas.png" alt="Logo Posyandu" />
+            <img src={logoPuskesmas} alt="Logo Posyandu" />
           </div>
           <div className="content-body">
             <h1>ALAMAT</h1>
