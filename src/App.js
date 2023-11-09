@@ -1,4 +1,4 @@
-import{Route, Routes, BrowserRouter as Router} from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import RoutesPosyandu from './routes/PosyanduRoutes';
 import RoutesKelurahan from './routes/KelurahanRoutes';
 import RoutesPuskesmas from './routes/PuskesmasRoutes';
@@ -24,6 +24,7 @@ import DetailPuskesmasKelurahan from "./view-kelurahan/pages/DetailPuskesmasKelu
 
 function App() {
   return (
+<<<<<<< HEAD
       <Router>
         <Routes>
           {/* <Route path="/coba-api" element={<CalculateStunting />} /> */}
@@ -46,6 +47,20 @@ function App() {
       // <DetailPosyanduKelurahan />
       // <DaftarPuskesmasKelurahan />
       // <DetailPuskesmasKelurahan />
+=======
+    <Router>
+      <Routes>
+        <Route path="/*" element={<RoutesPublik />} />
+        <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
+        <Route path="/posyandu/*" element={<RoutesPosyandu />} />
+        <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
+      </Routes>
+    </Router>
+    // <Login />
+    // <PageProfilePosyandu />
+    // <CalculateStunting />
+
+>>>>>>> origin/marsay
   );
 }
 
