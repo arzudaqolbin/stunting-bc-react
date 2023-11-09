@@ -1,7 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import "../css/form-kelurahan.css";
+import axios from 'axios';
+function EditAkunPosyandu({ idPosyandu }) {
 
-function EditAkunPosyandu() {
+  const [formData, setFormData] = useState({
+    nama_posyandu: "",
+    nama_puskesmas: "",
+    alamat: "",
+    nomor_telepon: "",
+    username: "",
+    password: "",
+  });
+
+  const [puskesmasList, setPuskesmasList] = useState([]);
+
+  // Menggunakan useEffect untuk mengambil data dari API
+  useEffect(() => {
+
+    axios.get('http://127.0.0.1:8000/api/puskesmas')
+      .then((response) => {
+        // console.log(response.data);
+        setPuskesmasList(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    // Panggil API untuk mengambil data posyandu
+    axios.get(`http://127.0.0.1:8000/api/posyandu/${idPosyandu}`)
+      .then((response) => {
+        const data = response.data;
+        // Mengisi state formData dengan data dari API
+        setFormData({
+          nama_posyandu: data.nama,
+          nama_puskesmas: data.puskesmas_id,
+          alamat: data.alamat,
+          nomor_telepon: data.nomor_telepon,
+        });
+        console.log(data);
+
+        axios.get(`http://127.0.0.1:8000/api/user/${data.user_id}`)
+          .then((userResponse) => {
+            const userData = userResponse.data;
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              username: userData.username,
+              password: userData.password,
+            }));
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+  }, [idPosyandu]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    axios.put(`http://127.0.0.1:8000/api/posyandu/${idPosyandu}`, {
+      nama_posyandu: formData.nama_posyandu,
+      puskesmas_id: formData.nama_puskesmas,
+      alamat: formData.alamat,
+      nomor_telepon: formData.nomor_telepon,
+    })
+      .then((response) => {
+        console.log("Posyandu updated:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    axios.put(`http://127.0.0.1:8000/api/user/${formData.user_id}`, {
+      username: formData.username,
+      password: formData.password,
+    })
+      .then((response) => {
+        console.log("User updated:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log(formData);
+  };
+
+
   return (
     <main className="container">
       {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}
@@ -11,42 +103,83 @@ function EditAkunPosyandu() {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT AKUN POSYANDU</h2>
 
-        <form action="" method="post">
+        <form onSubmit={handleSubmit}>
           <label htmlFor="nama_posyandu">
             <span>NAMA POSYANDU</span>
-            <input type="text" id="nama_posyandu" name="nama_posyandu" required />
+            <input
+              type="text"
+              id="nama_posyandu"
+              name="nama_posyandu"
+              required
+              value={formData.nama_posyandu}
+              onChange={handleChange}
+            />
           </label>
 
           <label htmlFor="nama_puskesmas">
-            <span>NAMA PUSKESMAS</span>
-            <input type="text" id="nama_puskesmas" name="nama_puskesmas" required />
+            <span>Nama Puskesmas*</span>
+            <select
+              id="nama_puskesmas"
+              name="nama_puskesmas"
+              required
+              value={formData.nama_puskesmas}
+              onChange={handleChange}
+            >
+              <option value="">Pilih Puskesmas</option>
+              {puskesmasList.map((puskesmas) => (
+                <option key={puskesmas.id} value={puskesmas.id}>
+                  {puskesmas.nama}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label htmlFor="alamat">
             <span>ALAMAT</span>
-            <input type="text" id="alamat" name= "alamat" required />
+            <input
+              type="text"
+              id="alamat"
+              name="alamat"
+              required
+              value={formData.alamat}
+              onChange={handleChange}
+            />
           </label>
 
           <label htmlFor="nomor_telepon">
             <span>NOMOR TELEPON</span>
-            <input type="text" id="nomor_telepon" name="nomor_telepon" required />
+            <input
+              type="text"
+              id="nomor_telepon"
+              name="nomor_telepon"
+              required
+              value={formData.nomor_telepon}
+              onChange={handleChange}
+            />
           </label>
 
           <label htmlFor="username">
             <span>USERNAME</span>
-            <input type="text" id="username" name="username" required />
+            <input
+              type="text"
+              id="username"
+              name="username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+            />
           </label>
 
           <label htmlFor="password">
             <span>PASSWORD</span>
-            <input type="password" id="password" name="password" required />
+            <input
+              type="text"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
           </label>
-
-          <label htmlFor="confirm_password">
-            <span>CONFIRM PASSWORD</span>
-            <input type="password" id="confirm_password" name="confirm_password" required />
-          </label>
-
           <button type="submit" className="submit-button">Simpan</button>
         </form>
       </div>

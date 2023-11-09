@@ -31,7 +31,7 @@ function TambahAkunPuskesmas() {
 
     axios.post("http://127.0.0.1:8000/api/puskesmas", puskesmasData)
       .then(response => {
-        console.log(response.data);
+        console.log(response.headers);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -121,10 +121,10 @@ function TambahAkunPuskesmas() {
             />
           </label>
 
-          {/* <label htmlFor="confirm_password">
+          <label htmlFor="confirm_password">
             <span>Confirm Password*</span>
             <input type="password" id="confirm_password" name="confirm_password" required />
-          </label> */}
+          </label>
           <button type="submit" className="submit-button">Simpan</button>
         </form>
       </div>
