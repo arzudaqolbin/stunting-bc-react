@@ -29,20 +29,22 @@ function AddPengukuran() {
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
     tgl_input: null,
-    umur: "",
+    umur: 0,
     tinggi_badan: "",
     berat_badan: "",
-    rambu_gizi: "",
+    rambu_gizi: "N",
     kms: "",
-    bbu: 1,
-    tbu : 1,
-    bbtb: 1,
+    // bbu: 1,
+    // tbu : 1,
+    // bbtb: 1,
     status_tbu: "",
     status_bbu: "",
     status_bbtb: "",
     posisi_balita: "",
     validasi: false
   });
+  console.log("chi");
+  console.log(pengukuran);
 
   const [balita, setBalita] = useState({
     nik:"",
@@ -80,11 +82,11 @@ function AddPengukuran() {
     umur: "",
     tinggi_badan: "",
     berat_badan: "",
-    rambu_gizi: "",
+    rambu_gizi: "N",
     kms: "",
-    bbu: 1,
-    tbu: 1,
-    bbtb: 1,
+    // bbu: 1,
+    // tbu: 1,
+    // bbtb: 1,
     status_tbu: "",
     status_bbu: "",
     status_bbtb: "",
@@ -375,64 +377,89 @@ function AddPengukuran() {
 
   }
 
-  const generateRambuGizi = (jk, umur, bb, idBalita) => {
-    let status = "";
-    let kbm = null;
-    let prevUmur = umur-1;
-    let differ = null;
-    let prevPengukuran = null;
+  // const generateRambuGizi = (jk, umur, bb, idBalita) => {
+  //   let status = "";
+  //   let kbm = null;
+  //   let prevUmur = umur-1;
+  //   let differ = null;
+  //   let prevPengukuran = null;
 
-    let patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
-    kbm = patokanData.find((data) => data.umur === umur).kbm;
+  //   let patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
+  //   kbm = patokanData.find((data) => data.umur === umur).kbm;
 
-    // try{
-    //   // const prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
-    //   prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1`);
-    //   // differ = bb - prevPengukuran.bb;
-    // } catch{
-    //   console.log("endpointmu salah broo");
-    // }
+  //   // try{
+  //   //   // const prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
+  //   //   prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1`);
+  //   //   // differ = bb - prevPengukuran.bb;
+  //   // } catch{
+  //   //   console.log("endpointmu salah broo");
+  //   // }
 
-    prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1`)
-    .then((response) => {
-      if (response.data !== null) {
-        differ = bb - prevPengukuran.bb;
-        if(differ < kbm){
-          status = 'T';
-        }else{
-          status = 'N';
-        }
+  //   prevPengukuran = axios.get(`${BASE_URL}/pengukurans/1`)
+  //   .then((response) => {
+  //     if (response.data !== null) {
+  //       differ = bb - prevPengukuran.bb;
+  //       if(differ < kbm){
+  //         status = 'T';
+  //       }else{
+  //         status = 'N';
+  //       }
+  //     } else {
+  //       if(umur === 0){
+  //         status = 'B';
+  //       }else{
+  //         status = 'O';
+  //       }
+  //     }
+
+      
+      
+  //   })
+  //   .catch((error) => {
+  //     // Tangani kesalahan jika ada
+  //     console.log(error);
+  //   });
+    
+  //   // pengukuran.rambu_gizi = status;
+  //   // if(prevPengukuran){
+  //   //   differ = bb - prevPengukuran.bb;
+  //   //   if(differ < kbm){
+  //   //     status = "T";
+  //   //   }else{
+  //     //     status = "N";
+  //     //   }
+  //     // }
+      
+  //     setPengukuran((prevResult) => ({
+  //       ...prevResult,
+  //       rambu_gizi: status
+  //     }));
+  // }
+
+  const generateRambuGizi = async (jk, umur, bb, idBalita) => {
+    try {
+      const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
+      const kbm = patokanData.find((data) => data.umur === umur).kbm;
+  
+      const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`);
+      const differ = bb - prevPengukuran.data.bb;
+  
+      let status = "";
+      if (differ < kbm) {
+        status = 'T';
       } else {
-        if(umur === 0){
-          status = 'B';
-        }else{
-          status = 'O';
-        }
+        status = 'N';
       }
-
-      // setPengukuran((prevResult) => ({
-      //   ...prevResult,
-      //   rambu_gizi: status
-      // }));
-
-      pengukuran.rambu_gizi = status;
-
-    })
-    .catch((error) => {
-      // Tangani kesalahan jika ada
-      console.log(error);
-    });
-
-    // if(prevPengukuran){
-    //   differ = bb - prevPengukuran.bb;
-    //   if(differ < kbm){
-    //     status = "T";
-    //   }else{
-    //     status = "N";
-    //   }
-    // }
-
-  }
+  
+      setPengukuran((prevResult) => ({
+        ...prevResult,
+        rambu_gizi: status
+      }));
+    } catch (error) {
+      console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
+    }
+  };
+  
 
   // nanti atur statusnya disini broo
   const onSubmit = async(e, balita, pengukuran) => {
@@ -450,13 +477,13 @@ function AddPengukuran() {
     const bb = parseFloat(pengukuran.berat_badan);
     const tb = parseFloat(pengukuran.tinggi_badan);
     console.log("jk = ", jk, "umur = ", umur);
+    generateStatus_bbtb(jk, umur, bb, tb);
+    generateStatus_tbu(jk, umur, tb);
+    generateStatus_bbu(jk, umur, bb);
+    generateKms(jk, umur, bb);
+    generateRambuGizi(jk, umur, bb, idBalita);
     
     try {
-      generateStatus_bbtb(jk, umur, bb, tb);
-      generateStatus_tbu(jk, umur, tb);
-      generateStatus_bbu(jk, umur, bb);
-      generateKms(jk, umur, bb);
-      generateRambuGizi(jk, umur, bb, idBalita);
       
       console.log("pengukuran terbaru");
       console.log(pengukuran);
