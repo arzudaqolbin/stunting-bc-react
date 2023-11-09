@@ -6,6 +6,11 @@ import DaftarBalitaPuskesmas from "../view-puskesmas/page/DaftarBalitaPuskesmas"
 import PageAddPengukuranSelectedPuskesmas from "../view-puskesmas/page/PageAddPengukuranSelectedPuskesmas";
 import PageEditDataTambahanPuskesmas from "../view-puskesmas/page/PageEditDataTambahanPuskesmas";
 import PageEditBalitaPuskesmas from "../view-puskesmas/page/PageEditBalitaPuskesmas";
+import PageDetailBalitaPuskesmas from "../view-puskesmas/page/PageDetailBalitaPuskesmas";
+import PageDaftarBalitaSemuaPuskesmas from "../view-puskesmas/page/PageDaftarBalitaSemuaPuskesmas";
+import PageDaftarBalitaPuskesmas from "../view-puskesmas/page/PageDaftarBalitaPuskesmas";
+import PageDaftarPosyanduPuskesmas from "../view-puskesmas/page/PageDaftarPosyanduPuskesmas";
+import PageDetailPosyanduPuskesmas from "../view-puskesmas/page/PageDetailPosyanduPuskesmas";
 
 const RoutesPuskesmas = () => {
     return(
@@ -14,17 +19,17 @@ const RoutesPuskesmas = () => {
             <Route path="/profile" element={<PageProfilePuskesmas />} />
             <Route path="/edit-pw" element={<PageEditPwPuskesmas />} />
             {/* daftar */}
-            <Route path="/daftar-balita-puskesmas" element={<DaftarBalitaPuskesmas />} />
-            <Route path="/daftar-balita-semua" element={<Coba />} />
-            <Route path="/daftar-posyandu" element={<Coba />} />
+            <Route path="/daftar-balita-puskesmas" element={<PageDaftarBalitaPuskesmas />} />
+            <Route path="/daftar-balita-semua" element={<PageDaftarBalitaSemuaPuskesmas />} />
+            <Route path="/daftar-posyandu" element={<PageDaftarPosyanduPuskesmas />} />
             {/* detail balita */}
-            <Route path="/detail-balita/:idBalita" element={<Coba />} />
+            <Route path="/detail-balita/:idBalita" element={<PageDetailBalitaPuskesmas />} />
             <Route path="/edit-data-balita/:idBalita" element={<PageEditBalitaPuskesmas />} />
             <Route path="/edit-data-tambahan-balita/:idBalita" element={<PageEditDataTambahanPuskesmas />} />
             <Route path="/tambah-pengukuran/:idBalita" element={<PageAddPengukuranSelectedPuskesmas />} />
             <Route path="/edit-pengukuran/:idPengukuran" element={<Coba />} />
             {/* detail posyandu */}
-            <Route path="/detail-posyandu/:idPosyandu" element={<Coba />} />
+            <Route path="/detail-posyandu/:idPosyandu" element={<PageDetailPosyanduPuskesmas />} />
         </Routes>
     )
 }

@@ -7,6 +7,8 @@ import PageAddBalitaPosyandu from "../view-posyandu/pages/PageAddBalitaPosyandu"
 import PageAddPengukuranPosyandu from "../view-posyandu/pages/PageAddPengukuranPosyandu";
 import PageAddPengukuranSelectedPosyandu from "../view-posyandu/pages/PageAddPengukuranSelectedPosyandu";
 import PageEditPengukuranPosyandu from "../view-posyandu/pages/PageEditPengukuranPosyandu";
+import PageDetailBalitaPosyandu from "../view-posyandu/pages/PageDetailBalitaPosyandu";
+import PageTabelBalitaPosyandu from "../view-posyandu/pages/PageTabelBalitaPosyandu";
 
 const RoutesPosyandu = () => {
     return(
@@ -19,9 +21,9 @@ const RoutesPosyandu = () => {
             <Route path="/tambah-pengukuran" element={<PageAddPengukuranPosyandu />} />
             <Route path="/tambah-pengukuran/:idBalita" element={<PageAddPengukuranSelectedPosyandu />} />
             {/* daftar tabel balita */}
-            <Route path="/daftar-balita" element={<LihatPage />} />
+            <Route path="/daftar-balita" element={<PageTabelBalitaPosyandu />} />
             {/* detail balita */}
-            <Route path="/detail-balita/:idBalita" element={<LihatPage />} />
+            <Route path="/detail-balita/:idBalita" element={<PageDetailBalitaPosyandu />} />
             {/* edit pengukuran balita */}
             <Route path="/edit-pengukuran/:idBalita" element={<PageEditPengukuranPosyandu />} />
         </Routes>

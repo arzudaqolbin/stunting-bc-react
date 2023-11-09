@@ -13,6 +13,10 @@ import PageEditBerita from "../view-kelurahan/pages/PageEditBerita";
 import PageEditJadwal from "../view-kelurahan/pages/PageEditJadwal";
 import PageTambahBerita from "../view-kelurahan/pages/PageTambahBerita";
 import PageTambahJadwal from "../view-kelurahan/pages/PageTambahJadwal";
+import PageDaftarPuskesmasKelurahan from "../view-kelurahan/pages/PageDaftarPuskesmas";
+import PageDaftarPosyanduKelurahan from "../view-kelurahan/pages/PageDaftarPosyanduKelurahan";
+import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPuskesmasKelurahan";
+import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
 
 
 const RoutesKelurahan = () => {
@@ -23,20 +27,20 @@ const RoutesKelurahan = () => {
             <Route path="/profile" element={<PageProfileKelurahan />} />
             <Route path="/edit-pw" element={<PageEditPwKelurahan />} />
             <Route path="/daftar-balita" element={<PageDaftarBalitaKelurahan />} />
-            <Route path="/daftar-puskesmas" element={<Coba/>} />
-            <Route path="/daftar-posyandu" element={<Coba />} />
+            <Route path="/daftar-puskesmas" element={<PageDaftarPuskesmasKelurahan />} />
+            <Route path="/daftar-posyandu" element={<PageDaftarPosyanduKelurahan />} />
             <Route path="/jadwal" element={<Coba />} />
             <Route path="/berita" element={<Coba />} />
             {/* balita */}
             <Route path="/detail-balita/:idBalita" element={<PageDetailBalitaKelurahan />} />
             {/* puskesmas */}
             <Route path="/tambah-puskesmas" element={<PageTambahAkunPuskesmas />} />
-            <Route path="/detail-puskesmas/:idPuskesmas" element={<Coba />} />
+            <Route path="/detail-puskesmas/:idPuskesmas" element={<PageDetailPuskesmasKelurahan />} />
             <Route path="/edit-puskesmas/:idPuskesmas" element={<PageEditAkunPuskesmas />} />
             <Route path="/tambah-posyandu/:idPuskesmas" element={<PageTambahAkunPuskesmas />} />
             {/* posyandu */}
             <Route path="/tambah-posyandu" element={<PageTambahAkunPosyandu />} />
-            <Route path="/detail-posyandu/:idPosyandu" element={<Coba />} />
+            <Route path="/detail-posyandu/:idPosyandu" element={<PageDetailPosyanduKelurahan />} />
             <Route path="/edit-posyandu/:idPosyandu" element={<PageEditAkunPosyandu />} />
             <Route path="/edit-kader/:idKader" element={<PageEditKader />} />
             {/* jadwal */}

@@ -4,9 +4,9 @@ import LineChart_Umur_0_24 from '../../view-publik/component/linechart_0-24';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
+import TabelPengukuranBalitaPuskesmas from './TabelPengukuranBalitaPuskesmas';
 
-const DetailBalitaKelurahan = () => {
+const DetailBalitaPuskesmas = () => {
 
   // nunggu setting router link
   let {idBalita} = useParams();
@@ -210,7 +210,7 @@ const DetailBalitaKelurahan = () => {
                 <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                     {/* Isi komponen accordion disini */}
-                    <TabelPengukuranBalitaStunting />
+                    <TabelPengukuranBalitaPuskesmas />
                     </div>
                 </div>
             </div>
@@ -235,4 +235,4 @@ const DetailBalitaKelurahan = () => {
   );
 }
 
-export default DetailBalitaKelurahan;
+export default DetailBalitaPuskesmas;
