@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import "../css/tabel-daftar-balita-puskesmas.css";
+import "../css/tabel-daftar-balita-semua-puskesmas.css";
 
-function TabelBalitaPuskesmas() {
+function TabelBalitaSemuaPuskesmas() {
     useEffect(() => {
         // Fungsi applyStatusStyle untuk mengatur status gaya CSS
         function applyStatusStyle(element) {
@@ -83,9 +83,9 @@ function TabelBalitaPuskesmas() {
     return (
         <main className="container">
         <div className="container-fluid">
-
+        
         {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Daftar Balita Puskemas</h2>
+        <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
 
         <form className="d-flex align-items-center">
         <input className="form-control me-2" type="text" placeholder="Cari nama balita..." aria-label="Search" />
@@ -104,7 +104,6 @@ function TabelBalitaPuskesmas() {
                     <th scope="col">Status TB/U</th>
                     <th scope="col">Status BB/TB</th>
                     <th scope="col">Status BB/U</th>
-                    <th scope="col">Lihat Detail</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -123,9 +122,6 @@ function TabelBalitaPuskesmas() {
                     <td data-status_bbu="BB Sangat Kurang">
                     <div className="status rounded">BB Sangat Kurang</div>
                     </td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
                 </tr>
                 <tr>
                     <th scope="row">2</th>
@@ -141,9 +137,6 @@ function TabelBalitaPuskesmas() {
                     </td>
                     <td data-status_bbu="BB Kurang">
                     <div className="status rounded">BB Kurang</div>
-                    </td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
                     </td>
                 </tr>
                 <tr>
@@ -161,9 +154,6 @@ function TabelBalitaPuskesmas() {
                     <td data-status_bbu="Normal">
                     <div className="status rounded">Normal</div>
                     </td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
                 </tr>
                 <tr>
                     <th scope="row">4</th>
@@ -180,9 +170,6 @@ function TabelBalitaPuskesmas() {
                     <td data-status_bbu="Risiko BB Lebih">
                     <div className="status rounded">Risiko BB Lebih</div>
                     </td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
                 </tr>
                 <tr>
                     <th scope="row">5</th>
@@ -195,9 +182,6 @@ function TabelBalitaPuskesmas() {
                     <div className="status rounded">Gizi Lebih</div>
                     </td>
                     <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
                 </tr>
                 <tr>
                     <th scope="row">6</th>
@@ -210,9 +194,6 @@ function TabelBalitaPuskesmas() {
                     <div className="status rounded">Obesitas</div>
                     </td>
                     <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -222,4 +203,4 @@ function TabelBalitaPuskesmas() {
     );
 }
 
-export default TabelBalitaPuskesmas;
+export default TabelBalitaSemuaPuskesmas;

@@ -1,0 +1,86 @@
+    /* judul */
+    .custom-judul {
+        text-align: center;
+        padding: 50px;
+    }
+
+    /* searching */
+    button.btn-success{
+        background-color: #026670;
+        color: #fff;
+        border: none;
+        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        cursor: pointer;
+    }
+
+    button.btn-success:hover {
+        background-color: #9fedd7;
+        color: #000;
+    }
+
+
+    /* custom table */
+    .custom-border{
+        margin-top: 50px;
+        border: 1px solid #026670;
+    }
+
+    .custom-table thead th {
+        border-bottom: 1px solid #026670;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .custom-table thead th:first-child {
+        width: 50px;
+    }
+
+    .custom-table tbody th[scope="row"] {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .custom-table tbody tr td {
+        text-align: center; /* Mengatur kolom lainnya menjadi rata kiri */
+        vertical-align: middle;
+    }
+
+    .custom-table tbody tr td:nth-child(5) {
+        text-align: center; /* Mengatur kolom "Lihat Detail" menjadi di tengah */
+    }
+
+    .custom-table tbody tr td button {
+        background-color: #026670;
+        color: #fff;
+        border: none;
+        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .custom-table tbody tr td button.info {
+        margin-right: 5px; /* Jarak antara tombol "Info" dan "Edit" */
+    }
+
+    .custom-table tbody tr td button:hover {
+        background-color: #9fedd7;
+    }
+
+    .custom-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.85rem;
+        justify-content: center;
+    }
+
+    .custom-table tbody tr td .validasi {
+        border: none;
+        padding: 5px;
+        height: 2rem;
+        width: 8.5rem;
+        text-align: center;
+        align-items: center;
+        vertical-align: middle;
+        justify-content: center;
+        display: inline-flex;
+    }

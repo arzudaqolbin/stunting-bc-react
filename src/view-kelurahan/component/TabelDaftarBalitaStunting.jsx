@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import "../css/tabel-daftar-balita-puskesmas.css";
+import "../css/tabel-daftar-balita-stunting.css";
 
-function TabelBalitaPuskesmas() {
+function TabelDaftarBalitaStunting() {
     useEffect(() => {
         // Fungsi applyStatusStyle untuk mengatur status gaya CSS
         function applyStatusStyle(element) {
@@ -85,7 +85,7 @@ function TabelBalitaPuskesmas() {
         <div className="container-fluid">
 
         {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Daftar Balita Puskemas</h2>
+        <h2 className="custom-judul">Daftar Balita Stunting</h2>
 
         <form className="d-flex align-items-center">
         <input className="form-control me-2" type="text" placeholder="Cari nama balita..." aria-label="Search" />
@@ -99,7 +99,7 @@ function TabelBalitaPuskesmas() {
                     <th scope="col">No</th>
                     <th scope="col">Nama Balita</th>
                     <th scope="col">Jenis Kelamin</th>
-                    <th scope="col">Nama Posyandu</th>
+                    <th scope="col">RW</th>
                     <th scope="col">Umur (Bulan)</th>
                     <th scope="col">Status TB/U</th>
                     <th scope="col">Status BB/TB</th>
@@ -112,7 +112,7 @@ function TabelBalitaPuskesmas() {
                     <th scope="row">1</th>
                     <td>Sayyid Nur</td>
                     <td>L</td>
-                    <td>Melati</td>
+                    <td>01</td>
                     <td>40</td>
                     <td data-status_tbu="Sangat Pendek">
                     <div className="status rounded">Sangat Pendek</div>
@@ -222,4 +222,4 @@ function TabelBalitaPuskesmas() {
     );
 }
 
-export default TabelBalitaPuskesmas;
+export default TabelDaftarBalitaStunting;
