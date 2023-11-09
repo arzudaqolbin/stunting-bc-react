@@ -73,8 +73,8 @@ export default function AddBayi() {
             setRt(value);
         } else {
             setBalita({ ...balita, [name]: value });
-        }
-    };
+        }
+    };
     
     
     

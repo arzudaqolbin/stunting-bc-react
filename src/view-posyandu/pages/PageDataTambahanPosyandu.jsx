@@ -1,12 +1,11 @@
-import React from 'react';
-import SidebarPosyandu from '../component/sidebar-posyandu';
-import FormDataTambahan from '../component/form-data-tambahan';
+import React from "react";
+import SidebarPosyandu from "../component/sidebar-posyandu";
+import FormDataTambahan from "../component/form-data-tambahan";
+import { useParams } from "react-router-dom";
 
-const PageProfilePosyandu = () => {
-    return(
-        // <SidebarPosyandu content={<AddBayi/>} />
-        <SidebarPosyandu content={<FormDataTambahan />} />
-    )
-}
+const PageDataTambahanPosyandu = () => {
+  const { id } = useParams();
+  return <SidebarPosyandu content={<FormDataTambahan id={id} />} />;
+};
 
-export default PageProfilePosyandu;
+export default PageDataTambahanPosyandu;
