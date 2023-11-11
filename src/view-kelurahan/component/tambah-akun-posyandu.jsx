@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../css/form-kelurahan.css";
+import { useParams } from 'react-router-dom';
 
 function TambahAkunPosyandu() {
+  const { idPuskesmas } = useParams();
 
   const [puskesmasList, setPuskesmasList] = useState([]);
   // const [selectedPuskesmas, setSelectedPuskesmas] = useState('');
 
   const [posyanduData, setPosyanduData] = useState({
     nama_posyandu: "",
-    nama_puskesmas: "", // Ini akan diisi dengan ID Puskesmas yang dipilih
+    nama_puskesmas: idPuskesmas || "", // Ini akan diisi dengan ID Puskesmas yang dipilih
     alamat: "",
     nomor_telepon: "",
     username: "",

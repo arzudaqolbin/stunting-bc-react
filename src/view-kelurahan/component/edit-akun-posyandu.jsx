@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../css/form-kelurahan.css";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 function EditAkunPosyandu({ idPosyandu }) {
 
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ function EditAkunPosyandu({ idPosyandu }) {
     password: "",
     user_id: "",
   });
-
+  const navigate = useNavigate();
   const [puskesmasList, setPuskesmasList] = useState([]);
 
   // Menggunakan useEffect untuk mengambil data dari API
@@ -88,6 +89,7 @@ function EditAkunPosyandu({ idPosyandu }) {
     })
       .then((response) => {
         console.log("User updated:", response.data);
+        navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
       })
       .catch((error) => {
         console.error("Error:", error);
