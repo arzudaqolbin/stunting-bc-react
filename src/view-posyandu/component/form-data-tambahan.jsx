@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/form-posyandu.css";
+import BASE_URL from "../../base/apiConfig";
 
-function FormDataTambahan({ id }) {
+function FormDataTambahan({ idBalita, idPosyandu }) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
 
   const [dataTambahan, setDataTambahan] = useState({
-    balita_id: id,
+    balita_id: idBalita,
     asi_eksklusif: "",
     imd: "",
     penyakit_penyerta: "",
@@ -22,8 +23,6 @@ function FormDataTambahan({ id }) {
     akses_makanan_sehat: "",
     konfirmasi_dsa: "",
   });
-
-  console.log(dataTambahan);
 
   const {
     asi_eksklusif,
@@ -41,7 +40,7 @@ function FormDataTambahan({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/dataTambahanBalitas/byBalitaId/${id}`)
+      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`)
       .then((response) => {
         const existingDataTambahan = response.data;
 
@@ -69,16 +68,13 @@ function FormDataTambahan({ id }) {
     try {
       if (idData) {
         await axios.put(
-          `http://127.0.0.1:8000/api/dataTambahanBalitas/${idData}`,
+          `${BASE_URL}/dataTambahanBalitas/${idData}`,
           dataTambahan
         );
       } else {
-        await axios.post(
-          "http://127.0.0.1:8000/api/dataTambahanBalitas",
-          dataTambahan
-        );
+        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan);
       }
-      navigate("/lihat-balita");
+      navigate(`/posyandu/${idPosyandu}/daftar-balita`);
     } catch (error) {
       if (error.response) {
         console.error(

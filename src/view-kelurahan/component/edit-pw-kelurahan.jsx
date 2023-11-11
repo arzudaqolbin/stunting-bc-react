@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import BASE_URL from "../../base/apiConfig";
 
 function EditPwKelurahan() {
-
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password_baru: "",
@@ -12,7 +14,8 @@ function EditPwKelurahan() {
 
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
-    axios.get('http://127.0.0.1:8000/api/user/1') // Ganti dengan endpoint yang sesuai
+    axios
+      .get(`${BASE_URL}/user/1`) // Ganti dengan endpoint yang sesuai
       .then((response) => {
         const userData = response.data;
         // Mengisi state formData dengan data user yang sedang login
@@ -42,13 +45,14 @@ function EditPwKelurahan() {
 
     console.log(formData);
     // ... (tambahkan logika sesuai kebutuhan)
-    axios.put('http://127.0.0.1:8000/api/user/${dsfds}', {
-      username: formData.username,
-      password: formData.password_baru,
-    })
+    axios
+      .put(`${BASE_URL}/user/1`, {
+        username: formData.username,
+        password: formData.password_baru,
+      })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        // Tambahkan logika atau feedback sesuai kebutuhan
+        navigate("/kelurahan/profile");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -102,7 +106,9 @@ function EditPwKelurahan() {
             />
           </label>
 
-          <button type="submit" className="submit-button">Simpan</button>
+          <button type="submit" className="submit-button">
+            Simpan
+          </button>
         </form>
       </div>
     </main>
