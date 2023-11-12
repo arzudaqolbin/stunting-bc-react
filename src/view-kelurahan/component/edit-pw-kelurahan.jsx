@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "../css/form-kelurahan.css";
+import BASE_URL from '../../base/apiConfig';
 import axios from 'axios';
 
 function EditPwKelurahan() {
@@ -13,7 +14,7 @@ function EditPwKelurahan() {
 
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
-    axios.get('http://127.0.0.1:8000/api/user/username/admin') // Ganti dengan endpoint yang sesuai
+    axios.get(`${BASE_URL}/user/username/admin`) // Ganti dengan endpoint yang sesuai
       .then((response) => {
         const userData = response.data;
         // Mengisi state formData dengan data user yang sedang login
@@ -44,7 +45,7 @@ function EditPwKelurahan() {
 
     console.log(formData);
     // ... (tambahkan logika sesuai kebutuhan)
-    axios.put(`http://127.0.0.1:8000/api/user/${formData.id}`, {
+    axios.put(`${BASE_URL}/user/${formData.id}`, {
       username: formData.username,
       password: formData.password_baru,
     })

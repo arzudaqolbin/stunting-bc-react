@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-kelurahan.css";
 
 function TabelDaftarPosyanduKelurahan() {
@@ -11,7 +12,7 @@ function TabelDaftarPosyanduKelurahan() {
 
     useEffect(() => {
         // Panggil API untuk mendapatkan daftar posyandu
-        axios.get('http://127.0.0.1:8000/api/posyandu')
+        axios.get(`${BASE_URL}/posyandu`)
             .then(response => {
                 setPosyanduList(response.data.data);
                 // console.log(response.data);
@@ -21,7 +22,7 @@ function TabelDaftarPosyanduKelurahan() {
             });
 
         // Panggil API untuk mendapatkan daftar puskesmas
-        axios.get('http://127.0.0.1:8000/api/puskesmas')
+        axios.get(`${BASE_URL}/puskesmas`)
             .then(response => {
                 setPuskesmasList(response.data.data);
             })

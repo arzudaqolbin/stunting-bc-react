@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../css/form-kelurahan.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from '../../base/apiConfig';
 function EditAkunPosyandu({ idPosyandu }) {
 
   const [formData, setFormData] = useState({
@@ -19,7 +20,7 @@ function EditAkunPosyandu({ idPosyandu }) {
   // Menggunakan useEffect untuk mengambil data dari API
   useEffect(() => {
 
-    axios.get('http://127.0.0.1:8000/api/puskesmas')
+    axios.get(`${BASE_URL}/puskesmas`)
       .then((response) => {
         // console.log(response.data);
         setPuskesmasList(response.data.data);
@@ -29,7 +30,7 @@ function EditAkunPosyandu({ idPosyandu }) {
       });
 
     // Panggil API untuk mengambil data posyandu
-    axios.get(`http://127.0.0.1:8000/api/posyandu/${idPosyandu}`)
+    axios.get(`${BASE_URL}/posyandu/${idPosyandu}`)
       .then((response) => {
         const data = response.data;
         // Mengisi state formData dengan data dari API
@@ -42,7 +43,7 @@ function EditAkunPosyandu({ idPosyandu }) {
         });
         console.log(data);
 
-        axios.get(`http://127.0.0.1:8000/api/user/${data.user_id}`)
+        axios.get(`${BASE_URL}/user/${data.user_id}`)
           .then((userResponse) => {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
@@ -70,7 +71,7 @@ function EditAkunPosyandu({ idPosyandu }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    axios.put(`http://127.0.0.1:8000/api/posyandu/${idPosyandu}`, {
+    axios.put(`${BASE_URL}/posyandu/${idPosyandu}`, {
       nama: formData.nama_posyandu,
       puskesmas_id: formData.nama_puskesmas,
       alamat: formData.alamat,
@@ -83,7 +84,7 @@ function EditAkunPosyandu({ idPosyandu }) {
         console.error("Error:", error);
       });
 
-    axios.put(`http://127.0.0.1:8000/api/user/${formData.user_id}`, {
+    axios.put(`${BASE_URL}/user/${formData.user_id}`, {
       username: formData.username,
       password: formData.password,
     })

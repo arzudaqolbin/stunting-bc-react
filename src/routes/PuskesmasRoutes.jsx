@@ -1,4 +1,4 @@
-import {Routes, Route}  from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Coba from "../view-posyandu/pages/coba";
 import PageProfilePuskesmas from "../view-puskesmas/page/PageProfilePuskesmas";
 import PageEditPwPuskesmas from "../view-puskesmas/page/PageEditPwPuskesmas";
@@ -13,7 +13,7 @@ import PageDaftarPosyanduPuskesmas from "../view-puskesmas/page/PageDaftarPosyan
 import PageDetailPosyanduPuskesmas from "../view-puskesmas/page/PageDetailPosyanduPuskesmas";
 
 const RoutesPuskesmas = () => {
-    return(
+    return (
         <Routes>
             <Route path="/" element={<PageProfilePuskesmas />} />
             <Route path="/profile" element={<PageProfilePuskesmas />} />

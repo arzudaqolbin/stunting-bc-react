@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-puskesmas-kelurahan.css";
 
 function TabelDaftarPuskesmasKelurahan() {
@@ -9,7 +10,7 @@ function TabelDaftarPuskesmasKelurahan() {
 
     useEffect(() => {
         // Panggil API untuk mendapatkan daftar puskesmas
-        axios.get('http://127.0.0.1:8000/api/puskesmas')
+        axios.get(`${BASE_URL}/puskesmas`)
             .then(response => {
                 setPuskesmasList(response.data.data);
             })

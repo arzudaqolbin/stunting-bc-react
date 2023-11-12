@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../css/form-kelurahan.css";
+import BASE_URL from '../../base/apiConfig';
 import { useParams } from 'react-router-dom';
 
 function TambahAkunPosyandu() {
@@ -35,7 +36,7 @@ function TambahAkunPosyandu() {
       password: posyanduData.password,
     };
 
-    axios.post("http://127.0.0.1:8000/api/posyandu", posyanduDataToSubmit)
+    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
       .then(response => {
         console.log(response.data);
         // Reset form atau navigasi ke halaman lain jika diperlukan
@@ -51,7 +52,7 @@ function TambahAkunPosyandu() {
 
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/puskesmas")
+    axios.get(`${BASE_URL}/puskesmas`)
       .then(response => {
         setPuskesmasList(response.data.data);
       })

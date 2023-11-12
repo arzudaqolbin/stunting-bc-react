@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../css/form-kelurahan.css";
 import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
 
 function EditAkunPuskesmas({ idPuskesmas }) {
 
@@ -18,7 +19,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
   // Menggunakan useEffect untuk mengambil data dari API
   useEffect(() => {
     // Panggil API untuk mengambil data puskesmas
-    axios.get(`http://127.0.0.1:8000/api/puskesmas/${idPuskesmas}`)
+    axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`)
       .then((response) => {
         const data = response.data;
         // Mengisi state formData dengan data dari API
@@ -31,7 +32,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
         });
         console.log(data)
 
-        axios.get(`http://127.0.0.1:8000/api/user/${data.user_id}`)
+        axios.get(`${BASE_URL}/user/${data.user_id}`)
           .then((userResponse) => {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
@@ -54,7 +55,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    axios.put(`http://127.0.0.1:8000/api/puskesmas/${idPuskesmas}`, {
+    axios.put(`${BASE_URL}/puskesmas/${idPuskesmas}`, {
       nama: formData.nama,
       alamat: formData.alamat,
       nomor_telepon: formData.nomor_telepon,
@@ -67,7 +68,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
         console.error("Error:", error);
       });
 
-    axios.put(`http://127.0.0.1:8000/api/user/${formData.user_id}`, {
+    axios.put(`${BASE_URL}/user/${formData.user_id}`, {
       username: formData.username,
       password: formData.password,
     })
