@@ -1,6 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 // import { Line } from 'react-chartjs-2';
-import { CartesianGrid, LineChart, XAxis, YAxis, Line } from 'recharts';
+import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import { saveAs } from 'file-saver';
+import * as htmlToImage from 'html-to-image';
+import {toPng} from 'html-to-image';
+import { useCurrentPng } from 'recharts-to-png';
+import FileSaver from 'file-saver';
+
 
 const dataLK = [
     { umur: 24, sd_3: 78.0, sd_2: 81.0,med: 87.1,sd2: 93.2, sd3: 96.3 },
@@ -83,44 +92,104 @@ const dataPR = [
     { umur: 60, sd_3: 95.2, sd_2: 99.9, med: 109.4, sd2: 118.9, sd3: 123.7 },
 ];
 
-  
-  
-
-
 const LineChart_Umur_24_60 = () => {
-    // const [dataPatokan, setDataPatokan] = useEffect([]);
-    // const [dataTarget, setDataTarget] = useEffect([]);
-    // const [dataCombine, setDataCombine] = useEffect([]);
+    const [dataPatokan, setDataPatokan] = useState([]);
+    const [dataTarget, setDataTarget] = useState([]);
+    const [dataCombine, setDataCombine] = useState([]);
+    const { idBalita } = useParams();
+    // const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    console.log(chartRef); // Check if chartRef is defined here
 
-    // useEffect(() =>{
-    //     // fungsi load data balita
+    // const chartRef = useRef(null);
+    let namaBalita = "";
+
+    useEffect(() => {
+        const fetchDataBalita = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
+                // setBalita(result.data);
+
+                const jk = result.data.jenis_kelamin;
+                namaBalita = result.data.nama;
+                if (jk === 'Laki-laki') {
+                    setDataPatokan(dataLK);
+                } else {
+                    setDataPatokan(dataPR);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        const fetchDataTarget = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`);
+                setDataTarget(result.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataBalita();
+        fetchDataTarget();
+    }, [idBalita]);
+
+    useEffect(() => {
+
+        const dataGabungan = dataPatokan.map(patokanItem => {
+            const targetItem = dataTarget.find(target => target.umur === patokanItem.umur);
+            return { ...patokanItem, TB: targetItem ? targetItem.tinggi_badan : null };
+          });
         
-    //     // nentuin data patokan dengan cek gender nya
-        
-    //     // buat dataset target balita
+        setDataCombine(dataGabungan)
 
-    //     // gabungin data
-    //     // setCombineData(
-    //     //     dataPatokan.map((item, index) => ({
-    //     //         ...item,
-    //     //         value: dataTarget[index]?.hasil || null
-    //     //     })});
-    //     // );
-        
+    }, [dataPatokan, dataTarget]);
 
-    // }, []);
 
+    // const downloadChart = useCallback(async() => {
+    //     try {
+    //         const chartNode = chartRef.current;
+    //         const dataUrl = await htmlToImage.toPng(chartNode);
+    //         saveAs(dataUrl, `${namaBalita}_statusTBU_0_24.png`);
+    //     } catch (error) {
+    //         console.error('Error downloading chart:', error);
+    //     }
+    // }, [namaBalita]);
+
+
+  // Can also pass in options for html2canvas
+  // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
+
+  const handleDownload = useCallback(async () => {
+    const png = await getPng();
+
+    // Verify that png is not undefined
+    if (png) {
+      // Download with FileSaver
+      FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
+    }
+  }, [getPng, namaBalita]);
+    
     return(
-        <LineChart width={800} height={500} data={dataLK}>
+        <>
+        <button onClick={handleDownload}>
+            {isLoading ? 'Downloading...' : 'Download Chart'}
+        </button>
+        <LineChart ref={chartRef} width={800} height={500} data={dataCombine}>
+            <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
             <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
             <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="med" stroke="green" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="sd2" stroke="red" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="sd3" stroke="black" strokeWidth={1} dot={false}  />
             <CartesianGrid stroke='#ccc' strokeDasharray="5 5"/>
-            <XAxis dataKey="name" />
-            <YAxis domain={[44,]} />
+            <XAxis dataKey="umur" label="Umur (bulan)" height={100} tickCount={10} />
+            <YAxis type="number" domain={['dataMin', 'dataMax']} label={{value: "Tinggi Badan (cm)", angle: -90}} width={120} />
+
+            <Tooltip />
         </LineChart>
+        </>
     )
 }
 

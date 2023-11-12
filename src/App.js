@@ -21,14 +21,16 @@ import DaftarPosyanduKelurahan from "./view-kelurahan/pages/DaftarPosyanduKelura
 import DetailPosyanduKelurahan from "./view-kelurahan/pages/DetailPosyanduKelurahan";
 import DaftarPuskesmasKelurahan from "./view-kelurahan/pages/DaftarPuskesmasKelurahan";
 import DetailPuskesmasKelurahan from "./view-kelurahan/pages/DetailPuskesmasKelurahan";
+import LihatPage from "./view-posyandu/pages/lihatpage";
+import CalculateStunting from "./CalculateStunting";
 
 function App() {
   return (
-<<<<<<< HEAD
       <Router>
         <Routes>
-          {/* <Route path="/coba-api" element={<CalculateStunting />} /> */}
+          <Route path="/coba-api" element={<CalculateStunting />} />
           <Route path= "/*" element={<RoutesPublik />} />
+          <Route path= "/lihat-page*" element={<LihatPage />} />
           <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
           <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
           <Route path="/puskesmas/:idPuskesmas/*" element={<RoutesPuskesmas />} />
@@ -47,20 +49,6 @@ function App() {
       // <DetailPosyanduKelurahan />
       // <DaftarPuskesmasKelurahan />
       // <DetailPuskesmasKelurahan />
-=======
-    <Router>
-      <Routes>
-        <Route path="/*" element={<RoutesPublik />} />
-        <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
-        <Route path="/posyandu/*" element={<RoutesPosyandu />} />
-        <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
-      </Routes>
-    </Router>
-    // <Login />
-    // <PageProfilePosyandu />
-    // <CalculateStunting />
-
->>>>>>> origin/marsay
   );
 }
 
