@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import BASE_URL from './base/apiConfig';
 import axios from 'axios';
+import { da } from 'date-fns/locale';
 
 const dataLK = [
   { umur: 0, sd_3: 44.2, sd_2: 46.1, med: 49.9, sd2: 53.7, sd3: 55.6 },
@@ -20,6 +21,8 @@ function CalculateStunting() {
   const [umur, setUmur] = useState('');
   const [tinggiBadan, setTinggiBadan] = useState('');
   const [statusStunting, setStatusStunting] = useState('');
+
+  const [data, setData] = useState([]);
 
   const handleUmurChange = (event) => {
     setUmur(event.target.value);
@@ -47,9 +50,9 @@ function CalculateStunting() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cobaApi = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/1`);
+        setData(await axios.get(`${BASE_URL}/pengukurans/1`));
         console.log("api-pengukuran-byIdBalita");
-        console.log(cobaApi.data);
+        // console.log(cobaApi.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

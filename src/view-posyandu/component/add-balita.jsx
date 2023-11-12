@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/add-balita.css";
+import BASE_URL from "../../base/apiConfig";
 
 function AddBalita() {
   let navigate = useNavigate();
@@ -43,7 +44,7 @@ function AddBalita() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/posyandu")
+      .get(`${BASE_URL}/posyandu`)
       .then((response) => {
         setPosyanduOptions(response.data.data);
       })
@@ -79,7 +80,7 @@ function AddBalita() {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/balitas", balita);
+      await axios.post(`${BASE_URL}/balitas`, balita);
       navigate("/lihat-balita");
     } catch (error) {
       if (error.response) {

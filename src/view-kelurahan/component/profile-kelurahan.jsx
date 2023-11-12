@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "../css/profile-kelurahan.css";
 import logoJaktim from "../../aset/logo-jaktim.png";
+import BASE_URL from '../../base/apiConfig';
 
 
 function ProfileKelurahan({ kelurahanId }) {
@@ -23,11 +24,11 @@ function ProfileKelurahan({ kelurahanId }) {
 
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/kelurahan/1")
+    axios.get(`${BASE_URL}/kelurahan/1`)
       .then(response => {
         setKelurahan(response.data);
         // Setelah mendapatkan data kelurahan, lakukan permintaan untuk mendapatkan data koordinat
-        axios.get(`http://127.0.0.1:8000/api/koordinat/${response.data.koordinat_id}`)
+        axios.get(`${BASE_URL}/koordinat/${response.data.koordinat_id}`)
           .then(koordinatResponse => {
             setKoordinat(koordinatResponse.data);
           })

@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { Line } from 'react-chartjs-2';
-import { CartesianGrid, LineChart, XAxis, YAxis, Line } from 'recharts';
+import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import { useParams } from 'react-router-dom';
 
 const dataLK = [
     { umur: 0, sd_3: 44.2, sd_2: 46.1, med: 49.9, sd2: 53.7, sd3: 55.6 },
@@ -65,38 +68,65 @@ const dataLK = [
 
 
 const LineChart_Umur_0_24 = () => {
-    // const [dataPatokan, setDataPatokan] = useEffect([]);
-    // const [dataTarget, setDataTarget] = useEffect([]);
-    // const [dataCombine, setDataCombine] = useEffect([]);
+  const [dataPatokan, setDataPatokan] = useState([]);
+    const [dataTarget, setDataTarget] = useState([]);
+    const [dataCombine, setDataCombine] = useState([]);
+    const { idBalita } = useParams();
 
-    // useEffect(() =>{
-    //     // fungsi load data balita
-        
-    //     // nentuin data patokan dengan cek gender nya
-        
-    //     // buat dataset target balita
+    useEffect(() => {
+        const fetchDataBalita = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
+                // setBalita(result.data);
 
-    //     // gabungin data
-    //     // setCombineData(
-    //     //     dataPatokan.map((item, index) => ({
-    //     //         ...item,
-    //     //         value: dataTarget[index]?.hasil || null
-    //     //     })});
-    //     // );
-        
+                const jk = result.data.jenis_kelamin;
+                if (jk === 'Laki-laki') {
+                    setDataPatokan(dataLK);
+                } else {
+                    setDataPatokan(dataPR);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    // }, []);
+        const fetchDataTarget = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-1/${idBalita}`);
+                setDataTarget(result.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataBalita();
+        fetchDataTarget();
+    }, [idBalita]);
+
+    useEffect(() => {
+
+        const dataGabungan = dataPatokan.map(patokanItem => {
+            const targetItem = dataTarget.find(target => target.umur === patokanItem.umur);
+            return { ...patokanItem, PB: targetItem ? targetItem.tinggi_badan : null };
+          });
+        
+        setDataCombine(dataGabungan)
+
+    }, [dataPatokan, dataTarget]);
 
     return(
-        <LineChart width={800} height={500} data={dataLK}>
+        <LineChart width={1000} height={500} data={dataCombine}>
+            <Line type="monotone" dataKey="PB" stroke="blue" strokeWidth={2} dot={true} fill='blue' />
             <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
             <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="med" stroke="green" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="sd2" stroke="red" strokeWidth={1} dot={false}  />
             <Line type="monotone" dataKey="sd3" stroke="black" strokeWidth={1} dot={false}  />
             <CartesianGrid stroke='#ccc' strokeDasharray="5 5"/>
-            <XAxis dataKey="name" />
-            <YAxis domain={[44,]} />
+            <XAxis dataKey="umur" label="Umur (bulan)" height={100} />
+            <YAxis type="number" domain={['dataMin', 'dataMax']} label={{value: "Panjang Badan (cm)", angle: -90}} width={120} />
+
+            <Tooltip />
         </LineChart>
     )
 }

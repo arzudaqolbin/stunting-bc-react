@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/form-posyandu.css";
+import BASE_URL from "../../base/apiConfig";
 
 function FormDataTambahan({ id }) {
   let navigate = useNavigate();
@@ -41,7 +42,7 @@ function FormDataTambahan({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/dataTambahanBalitas/byBalitaId/${id}`)
+      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${id}`)
       .then((response) => {
         const existingDataTambahan = response.data;
 
@@ -69,12 +70,12 @@ function FormDataTambahan({ id }) {
     try {
       if (idData) {
         await axios.put(
-          `http://127.0.0.1:8000/api/dataTambahanBalitas/${idData}`,
+          `${BASE_URL}/dataTambahanBalitas/${idData}`,
           dataTambahan
         );
       } else {
         await axios.post(
-          "http://127.0.0.1:8000/api/dataTambahanBalitas",
+          "${BASE_URL}/dataTambahanBalitas",
           dataTambahan
         );
       }

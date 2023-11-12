@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
+import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas() {
 

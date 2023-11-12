@@ -25,7 +25,7 @@ const RoutesPosyandu = () => {
             {/* detail balita */}
             <Route path="/detail-balita/:idBalita" element={<PageDetailBalitaPosyandu />} />
             {/* edit pengukuran balita */}
-            <Route path="/edit-pengukuran/:idBalita" element={<PageEditPengukuranPosyandu />} />
+            <Route path="/edit-pengukuran/:idPengukuran" element={<PageEditPengukuranPosyandu />} />
         </Routes>
     )
 }
