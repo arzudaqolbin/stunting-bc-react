@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
 import BASE_URL from "../../base/apiConfig";
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 
 import data_tbu_lk from '../../data-patokan-pengukuran/data-tbu-lk';
@@ -21,15 +21,15 @@ import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 function EditPengukuran() {
   let navigate = useNavigate();
-  const {idPosyandu, idPengukuran} = useParams();
+  const { idPosyandu, idPengukuran } = useParams();
   // console.log("id posyandu = ", idPosyandu);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   // const [balita, setBalita] = useState([]);
   const [dataPatokan, setDataPatokan] = useState({
-    namaBalita : "siapaa ya",
-    tanggalLahir : null,
-    jk : "",
-    idBalita : ""
+    namaBalita: "siapaa ya",
+    tanggalLahir: null,
+    jk: "",
+    idBalita: ""
   });
   // const [selectedPengukuran, serSelectedPengukuran] : useState([]);
   const [pengukuran, setPengukuran] = useState({
@@ -49,24 +49,24 @@ function EditPengukuran() {
   console.log("isi pengukuran");
   console.log(pengukuran);
 
-  
 
-//   const [balita, setBalita] = useState({
-//     nik:"",
-//     nama:"",
-//     jenis_kelamin:"",
-//     nama_ortu:"",
-//     pekerjaan_ortu:"Programmer",
-//     alamat:"",
-//     rw:"",
-//     tgl_lahir:"",
-//     anak_ke:"1",
-//     umur:"10",
-//     posyandu_id:1,
-//     status_tbu:"Normal",
-//     status_bbu:"Normal",
-//     status_bbtb:"Normal"
-// });
+
+  //   const [balita, setBalita] = useState({
+  //     nik:"",
+  //     nama:"",
+  //     jenis_kelamin:"",
+  //     nama_ortu:"",
+  //     pekerjaan_ortu:"Programmer",
+  //     alamat:"",
+  //     rw:"",
+  //     tgl_lahir:"",
+  //     anak_ke:"1",
+  //     umur:"10",
+  //     posyandu_id:1,
+  //     status_tbu:"Normal",
+  //     status_bbu:"Normal",
+  //     status_bbtb:"Normal"
+  // });
 
 
   const {
@@ -131,13 +131,13 @@ function EditPengukuran() {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     if (!hasRunEffect) {
       fetchData();
       setHasRunEffect(true);
     }
   }, [hasRunEffect]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -155,7 +155,7 @@ function EditPengukuran() {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     if (!hasRunEffect) {
       fetchData();
       setHasRunEffect(true);
@@ -201,7 +201,7 @@ function EditPengukuran() {
   //    }
   //  }
   // })
-  
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "balita_id") {
@@ -229,7 +229,7 @@ function EditPengukuran() {
       //     status_bbtb: selectedBalita.status_bbtb,
       //   };
       // });
-      
+
 
       // console.log("ini pilihan balitanya");
       // console.log(balita);
@@ -242,9 +242,9 @@ function EditPengukuran() {
       console.log(typeof value, value);
       // pengukuran.tgl_input: value;
       calculateUmur(value, dataPatokan.tanggalLahir);
-    } else if (name === "posisi_balita"){
+    } else if (name === "posisi_balita") {
       setPengukuran({ ...pengukuran, [name]: value });
-    } else{
+    } else {
       setPengukuran({ ...pengukuran, [name]: parseFloat(value) });
 
     }
@@ -265,7 +265,7 @@ function EditPengukuran() {
     const integerPart = Math.floor(tinggi);
     const decimalPart = tinggi - integerPart;
     let tinggiAdj;
-    
+
     if (decimalPart >= 0 && decimalPart <= 0.3) {
       tinggiAdj = integerPart;
     } else if (decimalPart >= 0.4 && decimalPart <= 0.6) {
@@ -279,10 +279,10 @@ function EditPengukuran() {
         tinggiAdj = integerPart + 1;
       }
     }
-    
+
     return tinggiAdj;
   }
-  
+
   const generateStatus_tbu = (jk, umur, tb) => {
     let status = "";
 
@@ -353,12 +353,12 @@ function EditPengukuran() {
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
-    
+
     let patokanData = [];
-    if(jk == "Laki-Laki"){
+    if (jk == "Laki-Laki") {
       patokanData = umur <= 24 ? data_bbpb_lk : data_bbtb_lk;
     }
-    else{
+    else {
       patokanData = umur <= 24 ? data_bbpb_pr : data_bbtb_pr;
     }
 
@@ -421,7 +421,7 @@ function EditPengukuran() {
         case bb < dataReff.sd_2 && bb > dataReff.sd_3:
           status = "Kuning";
           break;
-        case bb > dataReff.sd2 :
+        case bb > dataReff.sd2:
           status = "Kuning";
           break;
         default:
@@ -438,22 +438,22 @@ function EditPengukuran() {
     const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
     const kbm = patokanData.find((data) => data.umur === umur).kbm;
 
-    if(umur === 0 ){
+    if (umur === 0) {
       pengukuran.rambu_gizi = "B";
-    } else{
+    } else {
       try {
         // const prevUmur = umur - 1;
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`);
         const differ = bb - prevPengukuran.data.bb;
-    
+
         let status = "";
         if (differ < kbm) {
           status = 'T';
         } else {
           status = 'N';
         }
-    
+
         setPengukuran((prevResult) => ({
           ...prevResult,
           rambu_gizi: status
@@ -471,15 +471,15 @@ function EditPengukuran() {
       }
     }
   };
-  
+
 
   // nanti atur statusnya disini broo
-  const onSubmit = async(e, pengukuran) => {
+  const onSubmit = async (e, pengukuran) => {
     e.preventDefault();
 
     // console.log("balita")
     // console.log(balita)
-    
+
     // console.log("pengukuran")
     // console.log(pengukuran)
 
@@ -494,15 +494,15 @@ function EditPengukuran() {
     generateStatus_bbu(jk, umur, bb);
     generateKms(jk, umur, bb);
     generateRambuGizi(jk, umur, bb, dataPatokan.idBalita);
-    
+
     try {
-      
+
       console.log("pengukuran terbaru");
       console.log(pengukuran);
-      
+
       await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran);
       navigate(`/posyandu/${idPosyandu}`);
-      
+
 
     } catch (error) {
       if (error.response) {
@@ -540,7 +540,7 @@ function EditPengukuran() {
               name="nama_bali"
               value={dataPatokan.namaBalita}
               readOnly
-              // onChange={(e) => onInputChange(e)}
+            // onChange={(e) => onInputChange(e)}
             />
           </label>
           <label>

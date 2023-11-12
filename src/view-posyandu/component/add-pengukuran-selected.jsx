@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
 import BASE_URL from "../../base/apiConfig";
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 
 import data_tbu_lk from '../../data-patokan-pengukuran/data-tbu-lk';
@@ -21,7 +21,7 @@ import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 function AddPengukuranSelected() {
   let navigate = useNavigate();
-  const {idPosyandu, idBalita} = useParams();
+  const { idPosyandu, idBalita } = useParams();
   console.log("id posyandu = ", idPosyandu);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balita, setBalita] = useState([]);
@@ -42,22 +42,22 @@ function AddPengukuranSelected() {
   console.log("chi");
   console.log(pengukuran);
 
-//   const [balita, setBalita] = useState({
-//     nik:"",
-//     nama:"",
-//     jenis_kelamin:"",
-//     nama_ortu:"",
-//     pekerjaan_ortu:"Programmer",
-//     alamat:"",
-//     rw:"",
-//     tgl_lahir:"",
-//     anak_ke:"1",
-//     umur:"10",
-//     posyandu_id:1,
-//     status_tbu:"Normal",
-//     status_bbu:"Normal",
-//     status_bbtb:"Normal"
-// });
+  //   const [balita, setBalita] = useState({
+  //     nik:"",
+  //     nama:"",
+  //     jenis_kelamin:"",
+  //     nama_ortu:"",
+  //     pekerjaan_ortu:"Programmer",
+  //     alamat:"",
+  //     rw:"",
+  //     tgl_lahir:"",
+  //     anak_ke:"1",
+  //     umur:"10",
+  //     posyandu_id:1,
+  //     status_tbu:"Normal",
+  //     status_bbu:"Normal",
+  //     status_bbtb:"Normal"
+  // });
 
 
   const {
@@ -87,40 +87,40 @@ function AddPengukuranSelected() {
   // untuk mendapatkan list balita diposyandu tersebut
   useEffect(() => {
     if (!hasRunEffect) {
-    try {
-      axios
-      // ini nanti ganti endpointnya by posyandu id
-        .get(`${BASE_URL}/balitas/${idBalita}`)
-        .then((response) => {
-          pengukuran.balita_id = response.data.id;
-          setBalita(response.data);
-        })
-        .catch((error) => {
-          console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
-        });
-    } catch (error) {
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+      try {
+        axios
+          // ini nanti ganti endpointnya by posyandu id
+          .get(`${BASE_URL}/balitas/${idBalita}`)
+          .then((response) => {
+            pengukuran.balita_id = response.data.id;
+            setBalita(response.data);
+          })
+          .catch((error) => {
+            console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
+          });
+      } catch (error) {
+        if (error.response) {
+          // Respon dari server dengan kode status tertentu
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+        } else if (error.request) {
+          // Tidak ada respon dari server
+          console.error("Tidak ada respon dari server:", error.request);
+          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+        } else {
+          // Kesalahan lainnya
+          console.error("Terjadi kesalahan:", error.message);
+          // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+        }
       }
+      setHasRunEffect(true);
     }
-    setHasRunEffect(true);
-  }
   }, [hasRunEffect]);
-  
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "balita_id") {
@@ -148,7 +148,7 @@ function AddPengukuranSelected() {
       //     status_bbtb: selectedBalita.status_bbtb,
       //   };
       // });
-      
+
 
       // console.log("ini pilihan balitanya");
       // console.log(balita);
@@ -161,9 +161,9 @@ function AddPengukuranSelected() {
       console.log(typeof value, value);
       // pengukuran.tgl_input: value;
       calculateUmur(value, balita.tgl_lahir);
-    } else if (name === "posisi_balita"){
+    } else if (name === "posisi_balita") {
       setPengukuran({ ...pengukuran, [name]: value });
-    } else{
+    } else {
       setPengukuran({ ...pengukuran, [name]: parseFloat(value) });
 
     }
@@ -184,7 +184,7 @@ function AddPengukuranSelected() {
     const integerPart = Math.floor(tinggi);
     const decimalPart = tinggi - integerPart;
     let tinggiAdj;
-    
+
     if (decimalPart >= 0 && decimalPart <= 0.3) {
       tinggiAdj = integerPart;
     } else if (decimalPart >= 0.4 && decimalPart <= 0.6) {
@@ -198,10 +198,10 @@ function AddPengukuranSelected() {
         tinggiAdj = integerPart + 1;
       }
     }
-    
+
     return tinggiAdj;
   }
-  
+
   const generateStatus_tbu = (jk, umur, tb) => {
     let status = "";
 
@@ -272,12 +272,12 @@ function AddPengukuranSelected() {
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
-    
+
     let patokanData = [];
-    if(jk == "Laki-Laki"){
+    if (jk == "Laki-Laki") {
       patokanData = umur <= 24 ? data_bbpb_lk : data_bbtb_lk;
     }
-    else{
+    else {
       patokanData = umur <= 24 ? data_bbpb_pr : data_bbtb_pr;
     }
 
@@ -340,7 +340,7 @@ function AddPengukuranSelected() {
         case bb < dataReff.sd_2 && bb > dataReff.sd_3:
           status = "Kuning";
           break;
-        case bb > dataReff.sd2 :
+        case bb > dataReff.sd2:
           status = "Kuning";
           break;
         default:
@@ -357,22 +357,22 @@ function AddPengukuranSelected() {
     const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
     const kbm = patokanData.find((data) => data.umur === umur).kbm;
 
-    if(umur === 0 ){
+    if (umur === 0) {
       pengukuran.rambu_gizi = "B";
-    } else{
+    } else {
       try {
         // const prevUmur = umur - 1;
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`);
         const differ = bb - prevPengukuran.data.bb;
-    
+
         let status = "";
         if (differ < kbm) {
           status = 'T';
         } else {
           status = 'N';
         }
-    
+
         setPengukuran((prevResult) => ({
           ...prevResult,
           rambu_gizi: status
@@ -390,15 +390,15 @@ function AddPengukuranSelected() {
       }
     }
   };
-  
+
 
   // nanti atur statusnya disini broo
-  const onSubmit = async(e, balita, pengukuran) => {
+  const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
 
     console.log("balita")
     console.log(balita)
-    
+
     // console.log("pengukuran")
     // console.log(pengukuran)
 
@@ -413,15 +413,15 @@ function AddPengukuranSelected() {
     generateStatus_bbu(jk, umur, bb);
     generateKms(jk, umur, bb);
     generateRambuGizi(jk, umur, bb, idBalita);
-    
+
     try {
-      
+
       console.log("pengukuran terbaru");
       console.log(pengukuran);
-      
+
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
       navigate(`/posyandu/${idPosyandu}`);
-      
+
 
     } catch (error) {
       if (error.response) {
@@ -457,7 +457,7 @@ function AddPengukuranSelected() {
               name="nama_bali"
               value={balita.nama}
               readOnly
-              // onChange={(e) => onInputChange(e)}
+            // onChange={(e) => onInputChange(e)}
             />
           </label>
           <label>

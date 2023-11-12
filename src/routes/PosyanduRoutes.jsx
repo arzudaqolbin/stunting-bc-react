@@ -13,26 +13,6 @@ import PageEditPwPosyandu from "../view-posyandu/pages/PageEditPwPosyandu";
 import PageDataTambahanPosyandu from "../view-posyandu/pages/PageDataTambahanPosyandu";
 
 const RoutesPosyandu = () => {
-<<<<<<< HEAD
-    return(
-        <Routes>
-            <Route path="/" element={<PageProfilePosyandu />} />
-            <Route path="/profile" element={<PageProfilePosyandu />} />
-            {/* tambah balita */}
-            <Route path="/tambah-balita" element={<PageAddBalitaPosyandu />} />
-            {/* tambah pengukuran */}
-            <Route path="/tambah-pengukuran" element={<PageAddPengukuranPosyandu />} />
-            <Route path="/tambah-pengukuran/:idBalita" element={<PageAddPengukuranSelectedPosyandu />} />
-            {/* daftar tabel balita */}
-            <Route path="/daftar-balita" element={<PageTabelBalitaPosyandu />} />
-            {/* detail balita */}
-            <Route path="/detail-balita/:idBalita" element={<PageDetailBalitaPosyandu />} />
-            {/* edit pengukuran balita */}
-            <Route path="/edit-pengukuran/:idPengukuran" element={<PageEditPengukuranPosyandu />} />
-        </Routes>
-    )
-}
-=======
   return (
     <Routes>
       <Route path="/" element={<PageProfilePosyandu />} />
@@ -57,7 +37,7 @@ const RoutesPosyandu = () => {
       />
       {/* edit pengukuran balita */}
       <Route
-        path="/edit-pengukuran/:idBalita"
+        path="/edit-pengukuran/:idPenugkuran"
         element={<PageEditPengukuranPosyandu />}
       />
       {/* edit password posyandu */}
@@ -70,6 +50,5 @@ const RoutesPosyandu = () => {
     </Routes>
   );
 };
->>>>>>> origin/yulius
 
 export default RoutesPosyandu;
