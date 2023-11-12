@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
+import BASE_URL from "../../base/apiConfig";
 
 function ProfilePosyandu({ id }) {
   const [Posyandu, setPosyandu] = useState({});
@@ -16,12 +17,12 @@ function ProfilePosyandu({ id }) {
   const loadDataPosyandu = async () => {
     try {
       const result = await axios.get(
-        `http://127.0.0.1:8000/api/posyandu/${id}`
+        `${BASE_URL}/posyandu/${id}`
       );
       setPosyandu(result.data.data);
 
       axios
-        .get(`http://127.0.0.1:8000/api/posyandu/${id}/kader`)
+        .get(`${BASE_URL}/posyandu/${id}/kader`)
         .then((response) => {
           setKader(response.data.data);
         })

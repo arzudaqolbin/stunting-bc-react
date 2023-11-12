@@ -23,7 +23,7 @@ const DetailBalitaKelurahan = () => {
   
   const getNamaPosyandu = async() => {
     // nunggu endpoint getnamaposyandu
-    const namaPos = await axios.get(`http://127.0.0.1:8000/api/posyandu/1`)
+    const namaPos = await axios.get(`${BASE_URL}/posyandu/1`)
     setNamaPosyandu(namaPos.data)
   };
   

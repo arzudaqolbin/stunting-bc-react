@@ -43,7 +43,7 @@ function EditBalita({ id }) {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/balitas/${id}`)
+      .get(`${BASE_URL}/balitas/${id}`)
       .then((response) => {
         const dataBalita = response.data;
         // Memisahkan alamat menjadi jalan, RT, dan RW
@@ -64,7 +64,7 @@ function EditBalita({ id }) {
       });
 
     axios
-      .get("http://127.0.0.1:8000/api/posyandu")
+      .get(`${BASE_URL}/posyandu`)
       .then((response) => {
         setPosyanduOptions(response.data.data);
       })
@@ -75,7 +75,7 @@ function EditBalita({ id }) {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/posyandu")
+      .get(`${BASE_URL}/posyandu`)
       .then((response) => {
         setPosyanduOptions(response.data.data);
       })
@@ -121,7 +121,7 @@ function EditBalita({ id }) {
     e.preventDefault();
 
     try {
-      await axios.put(`http://127.0.0.1:8000/api/balitas/${id}`, balita);
+      await axios.put(`${BASE_URL}/balitas/${id}`, balita);
       navigate("/lihat-balita");
     } catch (error) {
       if (error.response) {
