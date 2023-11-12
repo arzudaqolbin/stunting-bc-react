@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-balita.css";
+import BASE_URL from "../../base/apiConfig";
 
-function EditBalita({ id }) {
+function EditBalita({ idBalita, idPuskesmas }) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({
@@ -43,9 +44,22 @@ function EditBalita({ id }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/balitas/${id}`)
+      .get(`${BASE_URL}/posyandu`)
+      .then((response) => {
+        setPosyanduOptions(response.data);
+      })
+      .catch((error) => {
+        console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${BASE_URL}/balitas/${idBalita}`)
       .then((response) => {
         const dataBalita = response.data;
+        console.log(response.data);
+        console.log(dataBalita);
         // Memisahkan alamat menjadi jalan, RT, dan RW
         const parts = dataBalita.alamat.split(", ");
         const jalan = parts[0];
@@ -62,26 +76,6 @@ function EditBalita({ id }) {
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil data balita:", error);
       });
-
-    axios
-      .get(`${BASE_URL}/posyandu`)
-      .then((response) => {
-        setPosyanduOptions(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/posyandu`)
-      .then((response) => {
-        setPosyanduOptions(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
-      });
   }, []);
 
   useEffect(() => {
@@ -97,9 +91,8 @@ function EditBalita({ id }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -121,8 +114,8 @@ function EditBalita({ id }) {
     e.preventDefault();
 
     try {
-      await axios.put(`${BASE_URL}/balitas/${id}`, balita);
-      navigate("/lihat-balita");
+      await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita);
+      navigate(`/puskesmas/${idPuskesmas}/daftar-balita-puskesmas`);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -332,11 +325,12 @@ function EditBalita({ id }) {
               onChange={(e) => onInputChange(e)}
             >
               <option value="">--Pilih--</option>
-              {posyanduOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.nama}
-                </option>
-              ))}
+              {posyanduOptions[0] &&
+                posyanduOptions[0].map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.nama}
+                  </option>
+                ))}
             </select>
           </label>
           <button type="submit" className="submit-button">

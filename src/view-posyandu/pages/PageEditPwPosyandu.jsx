@@ -5,10 +5,10 @@ import EditPwPosyandu from "../component/edit-pw-posyandu";
 import { useParams } from "react-router-dom";
 
 const PageEditPwPosyandu = () => {
-  const { id } = useParams();
+  const { idPosyandu } = useParams();
   return (
     // <SidebarPosyandu content={<AddBayi/>} />
-    <SidebarPosyandu content={<EditPwPosyandu id={id} />} />
+    <SidebarPosyandu content={<EditPwPosyandu idPosyandu={idPosyandu} />} />
   );
 };
 

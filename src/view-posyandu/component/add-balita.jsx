@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita() {
+function AddBalita({ idPosyandu }) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({
@@ -24,6 +24,8 @@ function AddBalita() {
     status_bbu: "Normal",
     status_bbtb: "Normal",
   });
+
+  console.log(balita);
 
   const {
     nik,
@@ -46,7 +48,7 @@ function AddBalita() {
     axios
       .get(`${BASE_URL}/posyandu`)
       .then((response) => {
-        setPosyanduOptions(response.data.data);
+        setPosyanduOptions(response.data);
       })
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
@@ -56,9 +58,8 @@ function AddBalita() {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -81,7 +82,7 @@ function AddBalita() {
 
     try {
       await axios.post(`${BASE_URL}/balitas`, balita);
-      navigate("/lihat-balita");
+      navigate(`/posyandu/${idPosyandu}/daftar-balita`);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -288,11 +289,12 @@ function AddBalita() {
               onChange={(e) => onInputChange(e)}
             >
               <option value="">--Pilih--</option>
-              {posyanduOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.nama}
-                </option>
-              ))}
+              {posyanduOptions[0] &&
+                posyanduOptions[0].map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.nama}
+                  </option>
+                ))}
             </select>
           </label>
           <button type="submit" className="submit-button">

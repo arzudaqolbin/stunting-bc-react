@@ -1,12 +1,15 @@
-import React from 'react';
-import SidebarPosyandu from '../component/sidebar-posyandu';
-import TabelBalitaPosyandu from '../component/TabelBalitaPosyandu';
+import React from "react";
+import SidebarPosyandu from "../component/sidebar-posyandu";
+import TabelBalitaPosyandu from "../component/TabelBalitaPosyandu";
+import { useParams } from "react-router";
 
 const PageTabelBalitaPosyandu = () => {
-    return(
-        // <SidebarPosyandu content={<TabelBayi/>} />
-        <SidebarPosyandu content={<TabelBalitaPosyandu />} />
-    )
-}
+  const { idPosyandu } = useParams();
+  return (
+    <SidebarPosyandu
+      content={<TabelBalitaPosyandu idPosyandu={idPosyandu} />}
+    />
+  );
+};
 
 export default PageTabelBalitaPosyandu;

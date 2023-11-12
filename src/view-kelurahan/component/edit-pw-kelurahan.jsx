@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
-import BASE_URL from '../../base/apiConfig';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import BASE_URL from "../../base/apiConfig";
 
 function EditPwKelurahan() {
-
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: "",
     username: "",
@@ -51,7 +52,7 @@ function EditPwKelurahan() {
     })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        // Tambahkan logika atau feedback sesuai kebutuhan
+        navigate("/kelurahan/profile");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -105,7 +106,9 @@ function EditPwKelurahan() {
             />
           </label>
 
-          <button type="submit" className="submit-button">Simpan</button>
+          <button type="submit" className="submit-button">
+            Simpan
+          </button>
         </form>
       </div>
     </main>

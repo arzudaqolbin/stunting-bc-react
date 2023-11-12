@@ -17,13 +17,14 @@ import PageDaftarPuskesmasKelurahan from "../view-kelurahan/pages/PageDaftarPusk
 import PageDaftarPosyanduKelurahan from "../view-kelurahan/pages/PageDaftarPosyanduKelurahan";
 import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPuskesmasKelurahan";
 import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
+import Login from "../view-publik/pages/Login";
 
 
 const RoutesKelurahan = () => {
     return (
         <Routes>
             {/* first path */}
-            <Route path="/" element={<PageProfileKelurahan />} />
+            <Route path="/" element={<Login />} />
             <Route path="/profile" element={<PageProfileKelurahan />} />
             <Route path="/edit-pw" element={<PageEditPwKelurahan />} />
             <Route path="/daftar-balita" element={<PageDaftarBalitaKelurahan />} />
