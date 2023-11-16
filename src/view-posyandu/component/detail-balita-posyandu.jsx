@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import TabelPengukuranBalitaPosyandu from './TabelPengukuranBalitaPosyandu';
+import { Link } from 'react-router-dom';
 
 const DetailBalitaPosyandu = () => {
 

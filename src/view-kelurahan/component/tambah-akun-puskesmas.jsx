@@ -11,6 +11,7 @@ function TambahAkunPuskesmas() {
     alamat: "",
     nomor_telepon: "",
     ketua: "",
+    koordinat:1,
     username: "",
     password: "",
   });
@@ -26,6 +27,7 @@ function TambahAkunPuskesmas() {
       nama: puskesmasReq.nama,
       alamat: puskesmasReq.alamat,
       nomor_telepon: puskesmasReq.nomor_telepon,
+      koordinat: puskesmasReq.koordinat,
       ketua: puskesmasReq.ketua,
       username: puskesmasReq.username,
       password: puskesmasReq.password,

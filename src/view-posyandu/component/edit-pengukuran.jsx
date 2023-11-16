@@ -501,7 +501,7 @@ function EditPengukuran() {
       console.log(pengukuran);
 
       await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran);
-      navigate(`/posyandu/${idPosyandu}`);
+      navigate(`/posyandu/${idPosyandu}/detail-balita/${pengukuran.balita_id}`);
 
 
     } catch (error) {

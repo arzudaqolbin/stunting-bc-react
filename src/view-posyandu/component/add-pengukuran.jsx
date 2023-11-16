@@ -424,7 +424,7 @@ function AddPengukuran() {
       console.log(pengukuran);
 
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
-      navigate(`/posyandu/${idPosyandu}`);
+      navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
 
 
     } catch (error) {
