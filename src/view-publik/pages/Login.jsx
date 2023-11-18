@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import jwt from "jsonwebtoken";
+import { useNavigate } from "react-router-dom";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
 
 const Login = () => {
+  let navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,12 +21,38 @@ const Login = () => {
         password: password,
       });
 
-      // Handle respons di sini
-      console.log(response.data);
+      const { data } = response;
+      const { access_token } = data;
+
+      if (access_token) {
+        try {
+          // Mendekode token
+          const decodedToken = jwt.decode(access_token);
+
+          // Dapatkan informasi dari token
+          const { role, nama, id } = decodedToken;
+
+          console.log("Role:", role);
+          console.log("Nama:", nama);
+          console.log("ID:", id);
+        } catch (error) {
+          console.error("Error decoding token:", error.message);
+        }
+      }
     } catch (error) {
-      console.error("Login failed!", error.message);
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data.massage
+        );
+      } else if (error.request) {
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        console.error("Terjadi kesalahan:", error.message);
+      }
     }
-  };
+  }; 
 
   return (
     <div
