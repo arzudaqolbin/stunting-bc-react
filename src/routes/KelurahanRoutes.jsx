@@ -24,7 +24,7 @@ const RoutesKelurahan = () => {
     return (
         <Routes>
             {/* first path */}
-            <Route path="/" element={<PageProfileKelurahan />} />
+            <Route path="/" element={<Login />} />
             <Route path="/profile" element={<PageProfileKelurahan />} />
             <Route path="/edit-pw" element={<PageEditPwKelurahan />} />
             <Route path="/daftar-balita" element={<PageDaftarBalitaKelurahan />} />
@@ -38,7 +38,7 @@ const RoutesKelurahan = () => {
             <Route path="/tambah-puskesmas" element={<PageTambahAkunPuskesmas />} />
             <Route path="/detail-puskesmas/:idPuskesmas" element={<PageDetailPuskesmasKelurahan />} />
             <Route path="/edit-puskesmas/:idPuskesmas" element={<PageEditAkunPuskesmas />} />
-            <Route path="/tambah-posyandu/:idPuskesmas" element={<PageTambahAkunPuskesmas />} />
+            <Route path="/tambah-posyandu/:idPuskesmas" element={<PageTambahAkunPosyandu />} />
             {/* posyandu */}
             <Route path="/tambah-posyandu" element={<PageTambahAkunPosyandu />} />
             <Route path="/detail-posyandu/:idPosyandu" element={<PageDetailPosyanduKelurahan />} />

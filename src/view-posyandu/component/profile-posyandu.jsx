@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
+import BASE_URL from "../../base/apiConfig";
 
 function ProfilePosyandu({ id }) {
   const [Posyandu, setPosyandu] = useState({});
-  console.log(Posyandu);
 
   const [Kader, setKader] = useState([]);
 
@@ -15,13 +15,11 @@ function ProfilePosyandu({ id }) {
 
   const loadDataPosyandu = async () => {
     try {
-      const result = await axios.get(
-        `http://127.0.0.1:8000/api/posyandu/${id}`
-      );
-      setPosyandu(result.data.data);
+      const result = await axios.get(`${BASE_URL}/posyandu/${id}`);
+      setPosyandu(result.data);
 
       axios
-        .get(`http://127.0.0.1:8000/api/posyandu/${id}/kader`)
+        .get(`${BASE_URL}/posyandu/${id}/kader`)
         .then((response) => {
           setKader(response.data.data);
         })
@@ -61,9 +59,9 @@ function ProfilePosyandu({ id }) {
           </div>
           <div className="content-body">
             <h1>ALAMAT</h1>
-            <p>{Posyandu?.alamat || "Alamat belum tersedia"}</p>
+            <p>{Posyandu?.alamat || "Loading..."}</p>
             <h1>NO. TELP</h1>
-            <p>{Posyandu?.nomor_telepon || "Nomor Telepon belum tersedia"}</p>
+            <p>{Posyandu?.nomor_telepon || "Loading..."}</p>
             <img src="posyandu.png" alt="Peta Lokasi" />
             <h3>Pengurus Kader</h3>
             <table className="table">

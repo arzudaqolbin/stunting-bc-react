@@ -14,16 +14,17 @@ const DetailBalitaPosyandu = () => {
   const[riwayat, setRiwayat] = useState([]);
   const[namaPosyandu, setNamaPosyandu] = useState([]);
 
-  const getDataBalita = async(idBalita) => {
-    const dataBalita = await axios.get(`${BASE_URL}/balitas/1`)
-    const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/1`)
+  const getDataBalita = async() => {
+    const dataBalita = await axios.get(`${BASE_URL}/balitas/${idBalita}`)
+    const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`)
+    // tanggalLahir = dataBalita.data.tgl_lahir;
     setBiodata(dataBalita.data)
     setRiwayat(dataTambahanBalita.data)
   };
   
   const getNamaPosyandu = async() => {
     // nunggu endpoint getnamaposyandu
-    const namaPos = await axios.get(`http://127.0.0.1:8000/api/posyandu/1`)
+    const namaPos = await axios.get(`${BASE_URL}/posyandu/${idBalita}`)
     setNamaPosyandu(namaPos.data)
   };
   
@@ -210,8 +211,8 @@ const DetailBalitaPosyandu = () => {
                 <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                     {/* Isi komponen accordion disini */}
-                    <TabelPengukuranBalitaPosyandu />
                     </div>
+                    <TabelPengukuranBalitaPosyandu idBalita={idBalita}/>
                 </div>
             </div>
             <div className="accordion-item">

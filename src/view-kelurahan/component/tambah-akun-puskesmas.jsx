@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
+// import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas() {
 
@@ -29,7 +31,7 @@ function TambahAkunPuskesmas() {
       password: puskesmasReq.password,
     };
 
-    axios.post("http://127.0.0.1:8000/api/puskesmas", puskesmasData)
+    axios.post(`${BASE_URL}/puskesmas`, puskesmasData)
       .then(response => {
         console.log(response.headers);
       })

@@ -4,8 +4,12 @@ import FormDataTambahan from "../component/form-data-tambahan";
 import { useParams } from "react-router-dom";
 
 const PageDataTambahanPosyandu = () => {
-  const { id } = useParams();
-  return <SidebarPosyandu content={<FormDataTambahan id={id} />} />;
+  const { idBalita, idPosyandu } = useParams();
+  return (
+    <SidebarPosyandu
+      content={<FormDataTambahan idBalita={idBalita} idPosyandu={idPosyandu} />}
+    />
+  );
 };
 
 export default PageDataTambahanPosyandu;

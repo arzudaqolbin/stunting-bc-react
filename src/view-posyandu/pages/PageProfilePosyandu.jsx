@@ -4,10 +4,10 @@ import ProfilePosyandu from "../component/profile-posyandu";
 import { useParams } from "react-router-dom";
 
 const PageProfilePosyandu = () => {
-  const { id } = useParams();
+  const { idPosyandu } = useParams();
   return (
     // <SidebarPosyandu content={<AddBayi/>} />
-    <SidebarPosyandu content={<ProfilePosyandu id={id} />} />
+    <SidebarPosyandu content={<ProfilePosyandu id={idPosyandu} />} />
   );
 };
 
