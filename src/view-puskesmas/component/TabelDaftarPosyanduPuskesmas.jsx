@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useParams } from 'react';
 import axios from 'axios';
-import "../css/tabel-daftar-posyandu-puskesmas.css";
 import BASE_URL from '../../base/apiConfig';
+import "../css/tabel-daftar-posyandu-puskesmas.css";
 
-function TabelDaftarPosyanduPuskesmas() {
-
-    const { idPuskesmas } = useParams();
+function TabelDaftarPosyanduPuskesmas({ idPuskesmas }) {
+    // const { idPuskesmas } = useParams();
     const [posyanduList, setPosyanduList] = useState([]);
 
     useEffect(() => {

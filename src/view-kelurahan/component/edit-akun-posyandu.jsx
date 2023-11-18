@@ -9,17 +9,18 @@ function EditAkunPosyandu({ idPosyandu }) {
     nama_posyandu: "",
     nama_puskesmas: "",
     alamat: "",
+    rw: "",
+    kepala: "",
     nomor_telepon: "",
     username: "",
     password: "",
+    confirm_password: "",
     user_id: "",
   });
   const navigate = useNavigate();
   const [puskesmasList, setPuskesmasList] = useState([]);
 
-  // Menggunakan useEffect untuk mengambil data dari API
   useEffect(() => {
-
     axios.get(`${BASE_URL}/puskesmas`)
       .then((response) => {
         // console.log(response.data);
@@ -29,15 +30,16 @@ function EditAkunPosyandu({ idPosyandu }) {
         console.error("Error:", error);
       });
 
-    // Panggil API untuk mengambil data posyandu
+
     axios.get(`${BASE_URL}/posyandu/${idPosyandu}`)
       .then((response) => {
-        const data = response.data;
-        // Mengisi state formData dengan data dari API
+        const data = response.data.data;
         setFormData({
           nama_posyandu: data.nama,
           nama_puskesmas: data.puskesmas_id,
+          kepala: data.kepala,
           alamat: data.alamat,
+          rw: data.rw,
           nomor_telepon: data.nomor_telepon,
           user_id: data.user_id
         });
@@ -48,8 +50,7 @@ function EditAkunPosyandu({ idPosyandu }) {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              username: userData.username,
-              password: userData.password,
+              username: userData.username
             }));
           })
           .catch((error) => {
@@ -75,7 +76,9 @@ function EditAkunPosyandu({ idPosyandu }) {
       nama: formData.nama_posyandu,
       puskesmas_id: formData.nama_puskesmas,
       alamat: formData.alamat,
-      nomor_telepon: formData.nomor_telepon,
+      rw: formData.rw,
+      kepala: formData.kepala,
+      nomor_telepon: formData.nomor_telepon
     })
       .then((response) => {
         console.log("Posyandu updated:", response.data);
@@ -87,6 +90,7 @@ function EditAkunPosyandu({ idPosyandu }) {
     axios.put(`${BASE_URL}/user/${formData.user_id}`, {
       username: formData.username,
       password: formData.password,
+      confirm_password: formData.confirm_password
     })
       .then((response) => {
         console.log("User updated:", response.data);
@@ -110,7 +114,7 @@ function EditAkunPosyandu({ idPosyandu }) {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="nama_posyandu">
-            <span>NAMA POSYANDU</span>
+            <span>Nama Puskesmas</span>
             <input
               type="text"
               id="nama_posyandu"
@@ -140,7 +144,7 @@ function EditAkunPosyandu({ idPosyandu }) {
           </label>
 
           <label htmlFor="alamat">
-            <span>ALAMAT</span>
+            <span>Alamat</span>
             <input
               type="text"
               id="alamat"
@@ -151,8 +155,20 @@ function EditAkunPosyandu({ idPosyandu }) {
             />
           </label>
 
+          <label htmlFor="kepala">
+            <span>Kepala Posyandu*</span>
+            <input
+              type="text"
+              id="kepala"
+              name="kepala"
+              required
+              value={formData.kepala}
+              onChange={handleChange}
+            />
+          </label>
+
           <label htmlFor="nomor_telepon">
-            <span>NOMOR TELEPON</span>
+            <span>Nomor Kepala</span>
             <input
               type="text"
               id="nomor_telepon"
@@ -178,10 +194,20 @@ function EditAkunPosyandu({ idPosyandu }) {
           <label htmlFor="password">
             <span>PASSWORD</span>
             <input
-              type="text"
+              type="password"
               id="password"
               name="password"
               value={formData.password}
+              onChange={handleChange}
+            />
+          </label>
+          <label htmlFor="confirm_password">
+            <span>Confirm Password*</span>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              value={formData.confirm_password}
               onChange={handleChange}
             />
           </label>

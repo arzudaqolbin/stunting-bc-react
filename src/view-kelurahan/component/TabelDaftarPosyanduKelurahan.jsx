@@ -14,7 +14,7 @@ function TabelDaftarPosyanduKelurahan() {
         // Panggil API untuk mendapatkan daftar posyandu
         axios.get(`${BASE_URL}/posyandu`)
             .then(response => {
-                setPosyanduList(response.data);
+                setPosyanduList(response.data.data);
                 // console.log(response.data);
             })
             .catch(error => {
