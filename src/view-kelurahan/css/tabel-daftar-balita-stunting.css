@@ -84,3 +84,25 @@
         justify-content: center;
         display: inline-flex;
     }
+    .status.rounded.limegreen {
+        background-color: limegreen;
+    }
+    .status.rounded.darkred {
+        background-color: darkred;
+    }
+    
+    .status.rounded.red {
+        background-color: red;
+    }
+    .status.rounded.darkblue {
+        background-color: darkblue;
+    }
+    .status.rounded.black {
+        background-color: black;
+    }
+    .status.rounded.dodgerblue {
+        background-color: dodgerblue;
+    }
+    .status.rounded.mediumblue {
+        background-color: mediumblue;
+    }
