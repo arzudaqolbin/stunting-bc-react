@@ -37,7 +37,7 @@ const RoutesPosyandu = () => {
       />
       {/* edit pengukuran balita */}
       <Route
-        path="/edit-pengukuran/:idPenugkuran"
+        path="/edit-pengukuran/:idPengukuran"
         element={<PageEditPengukuranPosyandu />}
       />
       {/* edit password posyandu */}

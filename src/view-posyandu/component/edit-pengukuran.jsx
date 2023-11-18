@@ -4,6 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
 import BASE_URL from "../../base/apiConfig";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -390,10 +393,10 @@ function EditPengukuran() {
       }
     }
 
-    setPengukuran((prevResult) => ({
-      ...prevResult,
-      status_bbtb: status
-    }));
+    // setPengukuran((prevResult) => ({
+    //   ...prevResult,
+    //   status_bbtb: status
+    // }));
 
     pengukuran.status_bbtb = status;
   }
@@ -501,23 +504,58 @@ function EditPengukuran() {
       console.log(pengukuran);
 
       await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran);
-      navigate(`/posyandu/${idPosyandu}`);
+      showSuccessPostToast(idPosyandu, pengukuran.balita_id)
+      // navigate(`/posyandu/${idPosyandu}/detail-balita/${pengukuran.balita_id}`);
 
 
     } catch (error) {
+      showFailedPostToast()
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
           error.response.status,
           error.response.data
-        );
-      } else if (error.request) {
+          );
+        } else if (error.request) {
+        showFailedPostToast()
         console.error("Tidak ada respon dari server:", error.request);
       } else {
+        showFailedPostToast()
         console.error("Terjadi kesalahan:", error.message);
       }
     }
   };
+
+  const showSuccessPostToast = async (idPosyandu, idBalita) => {
+    return new Promise((resolve) => {
+        toast.success("Data berhasil disimpan", {
+            data: {
+                title: "Success",
+                text: "Data berhasil disimpan",
+            },
+            onClose: async () => {
+                // Menunggu 3 detik sebelum melakukan navigasi
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // Mengakhiri janji saat Toast ditutup
+                navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+                resolve();
+            },
+        });
+    });
+};
+  
+  
+  
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   console.log("patokaann : ", dataPatokan)
 
@@ -622,6 +660,8 @@ function EditPengukuran() {
           </button>
         </form>
       </div>
+      
+      <ToastContainer />
     </main>
   );
 }

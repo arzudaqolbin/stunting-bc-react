@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-import { saveAs } from 'file-saver';
-import * as htmlToImage from 'html-to-image';
-import { toPng } from 'html-to-image';
-import { useCurrentPng } from 'recharts-to-png';
-import FileSaver from 'file-saver';
+// import { saveAs } from 'file-saver';
+// import * as htmlToImage from 'html-to-image';
+// import { toPng } from 'html-to-image';
+// import { useCurrentPng } from 'recharts-to-png';
+// import FileSaver from 'file-saver';
 
 
 const dataLK = [
@@ -96,10 +96,11 @@ const LineChart_Umur_24_60 = () => {
     const [dataPatokan, setDataPatokan] = useState([]);
     const [dataTarget, setDataTarget] = useState([]);
     const [dataCombine, setDataCombine] = useState([]);
+    const [parentWidth, setParentWidth] = useState([])
     const { idBalita } = useParams();
     // const [getPng, { chartRef, isLoading }] = useCurrentPng();
-    const [getPng, { chartRef, isLoading }] = useCurrentPng();
-    console.log(chartRef); // Check if chartRef is defined here
+    // const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    // console.log(chartRef); // Check if chartRef is defined here
 
     // const chartRef = useRef(null);
     let namaBalita = "";
@@ -144,6 +145,11 @@ const LineChart_Umur_24_60 = () => {
 
         setDataCombine(dataGabungan)
 
+        // const parentElement = document.getElementById('collapseFour'); // Ganti dengan ID atau class yang sesuai
+        // if (parentElement) {
+        //   setParentWidth(parentElement.clientWidth);
+        // }
+
     }, [dataPatokan, dataTarget]);
 
 
@@ -161,22 +167,22 @@ const LineChart_Umur_24_60 = () => {
     // Can also pass in options for html2canvas
     // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
 
-    const handleDownload = useCallback(async () => {
-        const png = await getPng();
+    // const handleDownload = useCallback(async () => {
+    //     const png = await getPng();
 
-        // Verify that png is not undefined
-        if (png) {
-            // Download with FileSaver
-            FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
-        }
-    }, [getPng, namaBalita]);
+    //     // Verify that png is not undefined
+    //     if (png) {
+    //         // Download with FileSaver
+    //         FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
+    //     }
+    // }, [getPng, namaBalita]);
 
     return (
         <>
-            <button onClick={handleDownload}>
+            {/* <button onClick={handleDownload}>
                 {isLoading ? 'Downloading...' : 'Download Chart'}
-            </button>
-            <LineChart ref={chartRef} width={800} height={500} data={dataCombine}>
+            </button> */}
+            <LineChart width={1000} height={500} data={dataCombine}>
                 <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
                 <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
                 <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false} />
