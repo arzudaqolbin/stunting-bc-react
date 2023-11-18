@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Coba from "../view-posyandu/pages/coba";
+import Login from "../view-publik/pages/Login";
 import PageProfileKelurahan from "../view-kelurahan/pages/PageProfileKelurahan";
 import PageEditPwKelurahan from "../view-kelurahan/pages/PageEditPwKelurahan";
 import PageDaftarBalitaKelurahan from "../view-kelurahan/pages/PageDaftarBalitaKelurahan";
