@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
+import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 
 import logoDki from "../../aset/logo-dki.png";
@@ -16,25 +17,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+      const response = await axios.post("https://api-stunting.up.railway.app/api/login", {
         username: username,
         password: password,
       });
 
       const { data } = response;
       const { access_token } = data;
+      // const { decodedToken, isExpired } = useJwt(access_token);
 
       if (access_token) {
         try {
-          // Mendekode token
-          const decodedToken = jwt.decode(access_token);
-
-          // Dapatkan informasi dari token
-          const { role, nama, id } = decodedToken;
-
-          console.log("Role:", role);
-          console.log("Nama:", nama);
-          console.log("ID:", id);
+          console.log(access_token);
+          console.log(decodeToken(access_token));
         } catch (error) {
           console.error("Error decoding token:", error.message);
         }
@@ -52,7 +47,7 @@ const Login = () => {
         console.error("Terjadi kesalahan:", error.message);
       }
     }
-  }; 
+  };
 
   return (
     <div
