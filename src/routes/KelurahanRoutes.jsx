@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Coba from "../view-posyandu/pages/coba";
+import Login from "../view-publik/pages/Login";
 import PageProfileKelurahan from "../view-kelurahan/pages/PageProfileKelurahan";
 import PageEditPwKelurahan from "../view-kelurahan/pages/PageEditPwKelurahan";
 import PageDaftarBalitaKelurahan from "../view-kelurahan/pages/PageDaftarBalitaKelurahan";
@@ -17,7 +18,6 @@ import PageDaftarPuskesmasKelurahan from "../view-kelurahan/pages/PageDaftarPusk
 import PageDaftarPosyanduKelurahan from "../view-kelurahan/pages/PageDaftarPosyanduKelurahan";
 import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPuskesmasKelurahan";
 import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
-import Login from "../view-publik/pages/Login";
 
 
 const RoutesKelurahan = () => {

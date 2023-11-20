@@ -9,11 +9,12 @@ function TambahAkunPuskesmas() {
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",
     alamat: "",
+    rw: "",
+    kepala: "",
     nomor_telepon: "",
-    ketua: "",
-    koordinat:1,
     username: "",
     password: "",
+    confirm_password: ""
   });
 
   const handleChange = (e) => {
@@ -26,16 +27,18 @@ function TambahAkunPuskesmas() {
     const puskesmasData = {
       nama: puskesmasReq.nama,
       alamat: puskesmasReq.alamat,
+      rw: 9,
       nomor_telepon: puskesmasReq.nomor_telepon,
-      koordinat: puskesmasReq.koordinat,
-      ketua: puskesmasReq.ketua,
+      kepala: puskesmasReq.kepala,
       username: puskesmasReq.username,
       password: puskesmasReq.password,
+      confirm_password: puskesmasReq.confirm_password,
+      koordinat_id: 1
     };
 
     axios.post(`${BASE_URL}/puskesmas`, puskesmasData)
       .then(response => {
-        console.log(response.headers);
+        console.log(response.data);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -89,14 +92,14 @@ function TambahAkunPuskesmas() {
             />
           </label>
 
-          <label htmlFor="ketua_puskesmas">
+          <label htmlFor="kepala_puskesmas">
             <span>Ketua Puskesmas*</span>
             <input
               type="text"
-              id="ketua_puskesmas"
-              name="ketua"
+              id="kepala_puskesmas"
+              name="kepala"
               required
-              value={puskesmasReq.ketua}
+              value={puskesmasReq.kepala}
               onChange={handleChange}
             />
           </label>
@@ -127,7 +130,14 @@ function TambahAkunPuskesmas() {
 
           <label htmlFor="confirm_password">
             <span>Confirm Password*</span>
-            <input type="password" id="confirm_password" name="confirm_password" required />
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              required
+              value={puskesmasReq.confirm_password}
+              onChange={handleChange}
+            />
           </label>
           <button type="submit" className="submit-button">Simpan</button>
         </form>

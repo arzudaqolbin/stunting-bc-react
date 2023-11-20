@@ -3,6 +3,7 @@ import RoutesPosyandu from './routes/PosyanduRoutes';
 import RoutesKelurahan from './routes/KelurahanRoutes';
 import RoutesPuskesmas from './routes/PuskesmasRoutes';
 import RoutesPublik from './routes/PublikRoutes';
+import PrivateRoute from "./routes/PrivateRoute";
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min';
@@ -23,6 +24,7 @@ import DaftarPuskesmasKelurahan from "./view-kelurahan/pages/DaftarPuskesmasKelu
 import DetailPuskesmasKelurahan from "./view-kelurahan/pages/DetailPuskesmasKelurahan";
 import LihatPage from "./view-posyandu/pages/lihatpage";
 import CalculateStunting from "./CalculateStunting";
+import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
 
 function App() {
   return (
@@ -33,23 +35,11 @@ function App() {
         <Route path="/lihat-page*" element={<LihatPage />} />
         <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
         <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
-        <Route path="/puskesmas/:idPuskesmas/*" element={<RoutesPuskesmas />} />
+        <Route path="/puskesmas/:idPuskesmas/*" element={<PageEditAkunPosyandu />} />
       </Routes>
     </Router>
-    // <DaftarBalitaPosyandu />
-    // <DaftarPengukuranBalitaPosyandu />
-    // <DaftarBalitaPuskesmas />
-    // <DaftarBalitaSemuaPuskesmas />
-    // <DaftarPengukuranBalitaPuskesmas />
-    // <DaftarPosyanduPuskesmas />
-    // <DetailPosyanduPuskesmas />
-    // <DaftarBalitaStunting />
-    // <DaftarPengukuranBalitaStunting />
-    // <DaftarPosyanduKelurahan />
-    // <DetailPosyanduKelurahan />
-    // <DaftarPuskesmasKelurahan />
-    // <DetailPuskesmasKelurahan />
   );
 }
+
 
 export default App;

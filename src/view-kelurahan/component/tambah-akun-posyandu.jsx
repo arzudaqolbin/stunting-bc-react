@@ -14,10 +14,13 @@ function TambahAkunPosyandu() {
     nama_posyandu: "",
     nama_puskesmas: idPuskesmas || "", // Ini akan diisi dengan ID Puskesmas yang dipilih
     alamat: "",
+    rw: "",
+    kepala: "",
     nomor_telepon: "",
     username: "",
     password: "",
     confirm_password: "",
+    koordinat_id: "1"
   });
 
   const handleInputChange = (e) => {
@@ -30,10 +33,14 @@ function TambahAkunPosyandu() {
     const posyanduDataToSubmit = {
       nama: posyanduData.nama_posyandu,
       alamat: posyanduData.alamat,
+      rw: 3,
       nomor_telepon: posyanduData.nomor_telepon,
+      kepala: posyanduData.kepala,
       puskesmas_id: posyanduData.nama_puskesmas, // ID Puskesmas yang dipilih
       username: posyanduData.username,
       password: posyanduData.password,
+      confirm_password: posyanduData.confirm_password,
+      koordinat_id: posyanduData.koordinat_id
     };
 
     axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
@@ -47,9 +54,6 @@ function TambahAkunPosyandu() {
 
     console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
   };
-
-
-
 
   useEffect(() => {
     axios.get(`${BASE_URL}/puskesmas`)
@@ -113,8 +117,20 @@ function TambahAkunPosyandu() {
             />
           </label>
 
+          <label htmlFor="kepala">
+            <span>Kepala Posyandu*</span>
+            <input
+              type="text"
+              id="kepala"
+              name="kepala"
+              required
+              value={posyanduData.kepala}
+              onChange={handleInputChange}
+            />
+          </label>
+
           <label htmlFor="nomor_telepon">
-            <span>Nomor Telepon*</span>
+            <span>Nomor Telepon Kepala*</span>
             <input
               type="text"
               id="nomor_telepon"

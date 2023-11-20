@@ -8,12 +8,14 @@ function EditAkunPuskesmas({ idPuskesmas }) {
   const [formData, setFormData] = useState({
     nama: "",
     alamat: "",
+    rw: "",
     nomor_telepon: "",
     kepala: "",
     user_id: "",
     koordinat_id: "",
     username: "",
     password: "",
+    confirm_password: ""
   });
 
   // Menggunakan useEffect untuk mengambil data dari API
@@ -21,13 +23,14 @@ function EditAkunPuskesmas({ idPuskesmas }) {
     // Panggil API untuk mengambil data puskesmas
     axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`)
       .then((response) => {
-        const data = response.data;
+        const data = response.data.data;
         // Mengisi state formData dengan data dari API
         setFormData({
           nama: data.nama,
           alamat: data.alamat,
+          rw: data.rw,
           nomor_telepon: data.nomor_telepon,
-          kepala: data.ketua,
+          kepala: data.kepala,
           user_id: data.user_id
         });
         console.log(data)
@@ -37,8 +40,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              username: userData.username,
-              password: userData.password,
+              username: userData.username
             }));
           })
           .catch((error) => {
@@ -59,7 +61,8 @@ function EditAkunPuskesmas({ idPuskesmas }) {
       nama: formData.nama,
       alamat: formData.alamat,
       nomor_telepon: formData.nomor_telepon,
-      ketua: formData.kepala,
+      kepala: formData.kepala,
+      rw: formData.rw
     })
       .then((response) => {
         console.log("Puskesmas updated:", response.data);
@@ -71,6 +74,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
     axios.put(`${BASE_URL}/user/${formData.user_id}`, {
       username: formData.username,
       password: formData.password,
+      confirm_password: formData.confirm_password
     })
       .then((response) => {
         console.log("User updated:", response.data);
@@ -97,7 +101,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
 
         <form onSubmit={handleSubmit}>
           <label htmlFor="nama">
-            <span>NAMA</span>
+            <span>Nama</span>
             <input
               type="text"
               id="nama"
@@ -109,7 +113,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
           </label>
 
           <label htmlFor="alamat">
-            <span>ALAMAT</span>
+            <span>Alamat</span>
             <input
               type="text"
               id="alamat"
@@ -120,20 +124,8 @@ function EditAkunPuskesmas({ idPuskesmas }) {
             />
           </label>
 
-          <label htmlFor="nomor_telepon">
-            <span>NOMOR TELEPON</span>
-            <input
-              type="text"
-              id="nomor_telepon"
-              name="nomor_telepon"
-              required
-              value={formData.nomor_telepon}
-              onChange={handleChange}
-            />
-          </label>
-
           <label htmlFor="kepala">
-            <span>KEPALA</span>
+            <span>Kepala</span>
             <input
               type="text"
               id="kepala"
@@ -144,8 +136,21 @@ function EditAkunPuskesmas({ idPuskesmas }) {
             />
           </label>
 
+          <label htmlFor="nomor_telepon">
+            <span>Nomor Telepon</span>
+            <input
+              type="text"
+              id="nomor_telepon"
+              name="nomor_telepon"
+              required
+              value={formData.nomor_telepon}
+              onChange={handleChange}
+            />
+          </label>
+
+
           <label htmlFor="username">
-            <span>USERNAME</span>
+            <span>username</span>
             <input
               type="text"
               id="username"
@@ -157,12 +162,22 @@ function EditAkunPuskesmas({ idPuskesmas }) {
           </label>
 
           <label htmlFor="password">
-            <span>PASSWORD</span>
+            <span>Password</span>
             <input
               type="text"
               id="password"
               name="password"
               value={formData.password}
+              onChange={handleChange}
+            />
+          </label>
+          <label htmlFor="confirm_password">
+            <span>Confirm Password*</span>
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              value={formData.confirm_password}
               onChange={handleChange}
             />
           </label>

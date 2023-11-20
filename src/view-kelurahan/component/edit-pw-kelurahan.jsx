@@ -12,12 +12,13 @@ function EditPwKelurahan() {
     password_baru: "",
     konfirmasi_password: "",
   });
+  let $users = 'puskesbidcin1';
 
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
-    axios.get(`${BASE_URL}/user/username/admin`) // Ganti dengan endpoint yang sesuai
+    axios.get(`${BASE_URL}/user/username/${$users}`) // Ganti dengan endpoint yang sesuai
       .then((response) => {
-        const userData = response.data;
+        const userData = response.data.data;
         // Mengisi state formData dengan data user yang sedang login
         setFormData({
           id: userData.id,
@@ -49,6 +50,7 @@ function EditPwKelurahan() {
     axios.put(`${BASE_URL}/user/${formData.id}`, {
       username: formData.username,
       password: formData.password_baru,
+      confirm_password: formData.konfirmasi_password
     })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
