@@ -24,6 +24,7 @@ import DaftarPuskesmasKelurahan from "./view-kelurahan/pages/DaftarPuskesmasKelu
 import DetailPuskesmasKelurahan from "./view-kelurahan/pages/DetailPuskesmasKelurahan";
 import LihatPage from "./view-posyandu/pages/lihatpage";
 import CalculateStunting from "./CalculateStunting";
+import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
 
 function App() {
   return (
