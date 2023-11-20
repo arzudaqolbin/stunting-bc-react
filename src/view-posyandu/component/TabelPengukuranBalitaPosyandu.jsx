@@ -213,7 +213,7 @@ function TabelPengukuranBalitaPosyandu({idBalita}) {
                 <td>{pengukuran.tinggi_badan}</td>
                 <td data-status_tbu="Sangat Pendek">
                   <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
-                </td>
+                  </td>
                 <td data-status_bbtb="Gizi Buruk">
                   <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
                 </td>
