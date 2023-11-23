@@ -1,11 +1,10 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import SidebarPuskesmas from "../component/sidebar-puskesmas";
 import TabelDaftarPosyanduPuskesmas from "../component/TabelDaftarPosyanduPuskesmas";
+import { apiAuth, dataAuth } from "../../base/apiConfig";
 
 function PageDaftarPosyanduPuskesmas() {
-    const { idPuskesmas } = useParams();
-    return <SidebarPuskesmas content={<TabelDaftarPosyanduPuskesmas idPuskesmas={idPuskesmas} />} />;
+    return <SidebarPuskesmas content={<TabelDaftarPosyanduPuskesmas idPuskesmas={dataAuth().id} apiAuth={apiAuth()}     />} />;
 }
 
 export default PageDaftarPosyanduPuskesmas;

@@ -4,7 +4,7 @@ import "../css/tabel-balita-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 
-function TabelBalitaPosyandu({ idPosyandu }) {
+function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
 
   useEffect(() => {

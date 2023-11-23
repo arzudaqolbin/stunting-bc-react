@@ -3,7 +3,7 @@ import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-puskesmas.css";
 
-function TabelDaftarPosyanduPuskesmas({ idPuskesmas }) {
+function TabelDaftarPosyanduPuskesmas({idPuskesmas, apiAuth}) {
     // const { idPuskesmas } = useParams();
     const [posyanduList, setPosyanduList] = useState([]);
 

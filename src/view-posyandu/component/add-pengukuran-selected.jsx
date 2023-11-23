@@ -21,9 +21,8 @@ import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 
-function AddPengukuranSelected() {
+function AddPengukuranSelected({idPosyandu, apiAuth, idBalita}) {
   let navigate = useNavigate();
-  const { idPosyandu, idBalita } = useParams();
   console.log("id posyandu = ", idPosyandu);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balita, setBalita] = useState([]);

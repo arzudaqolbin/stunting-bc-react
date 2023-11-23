@@ -4,7 +4,7 @@ import "../css/form-kelurahan.css";
 import BASE_URL from '../../base/apiConfig';
 import { useParams } from 'react-router-dom';
 
-function TambahAkunPosyandu() {
+function TambahAkunPosyandu({idKelurahan, apiAuth }) {
   const { idPuskesmas } = useParams();
 
   const [puskesmasList, setPuskesmasList] = useState([]);

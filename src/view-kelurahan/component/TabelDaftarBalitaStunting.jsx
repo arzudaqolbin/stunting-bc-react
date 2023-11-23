@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/tabel-daftar-balita-stunting.css";
 import BASE_URL from "../../base/apiConfig";
 
-function TabelDaftarBalitaStunting() {
+function TabelDaftarBalitaStunting({idKelurahan, apiAuth }) {
   const [balita, setBalita] = useState([]);
   console.log(balita);
 

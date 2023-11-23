@@ -5,7 +5,7 @@ import EditPwPuskesmas from "../component/edit-pw-puskesmas";
 import { useParams } from "react-router";
 
 function PageEditPwPuskesmas() {
-  const { idPuskesmas } = useParams();
+  // const { idPuskesmas } = useParams();
   return (
     <SidebarPuskesmas content={<EditPwPuskesmas idPuskesmas={idPuskesmas} />} />
   );

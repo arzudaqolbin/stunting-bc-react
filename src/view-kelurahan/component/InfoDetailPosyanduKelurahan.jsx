@@ -4,7 +4,7 @@ import BASE_URL from "../../base/apiConfig";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function InfoDetailPosyanduKelurahan({idPosyandu}) {
+function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
 
   const [kader, setKader] = useState([]);
   const [posyandu, setPosyandu] = useState([]);

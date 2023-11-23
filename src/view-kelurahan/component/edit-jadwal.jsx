@@ -1,7 +1,7 @@
 import React from 'react';
 import "../css/form-kelurahan.css";
 
-function EditJadwal() {
+function EditJadwal({idKelurahan, apiAuth, idJadwal}) {
   return (
     <main className="container">
       {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}

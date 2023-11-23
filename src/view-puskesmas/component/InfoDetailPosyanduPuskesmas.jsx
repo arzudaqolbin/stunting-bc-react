@@ -3,7 +3,7 @@ import "../css/detail-posyandu-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
 import axios from "axios";
 
-function InfoDetailPosyanduPuskesmas({idPosyandu}) {
+function InfoDetailPosyanduPuskesmas({idPuskesmas, apiAuth, idPosyandu}) {
 
   const [kader, setKader] = useState([]);
   const [posyandu, setPosyandu] = useState([]);

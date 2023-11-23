@@ -64,7 +64,7 @@ function applyStatusStyle(element) {
     }
     }
 
-    function TabelPengukuranBalitaPuskesmas() {
+    function TabelPengukuranBalitaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
     useEffect(() => {
         const statusTBUElements = document.querySelectorAll("[data-status_tbu]");
         const statusBBTBElements = document.querySelectorAll("[data-status_bbtb]");

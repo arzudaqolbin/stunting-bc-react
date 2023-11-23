@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import axios from 'axios';
 
-function InfoDetailPuskesmasKelurahan({idPuskesmas}) {
+function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
 
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);

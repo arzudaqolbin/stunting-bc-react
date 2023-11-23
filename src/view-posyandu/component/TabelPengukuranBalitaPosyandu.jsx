@@ -106,11 +106,10 @@ function applyStatusStyle(statusValue) {
   }
 }
 
-function TabelPengukuranBalitaPosyandu({idBalita}) {
+function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
 
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
-  const {idPosyandu} = useParams();
 
   // console.log("tanggal lahir");
   // console.log(typeof tanggalLahir);
