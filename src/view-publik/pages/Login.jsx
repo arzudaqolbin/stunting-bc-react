@@ -3,6 +3,7 @@ import axios from "axios";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
+import { isExpired, decodeToken } from "react-jwt";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -11,16 +12,40 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+      const response = await axios.post(`http://127.0.0.1:8000/api/login`, {
         username: username,
         password: password,
       });
+      const { data } = response;
+      const token = data.access_token;
+      // const roleA = data.role;
+      localStorage.setItem("access_token", token);
+      // localStorage.setItem('roleA', roleA);
 
-      // Handle respons di sini
-      console.log(response.data);
+      // Use the correct parameter for jwtDecode (token instead of localStorage.getItem(token))
+
+      const decodedToken = decodeToken(token);
+      // localStorage.setItem("decodedToken", JSON.stringify(decodedToken)); // Convert to JSON string
+      console.log(decodedToken); // Tampilkan seluruh objek
+
+      const roleName = decodedToken.role; // Pastikan properti role ada di sini
+      console.log(roleName);
+      // localStorage.setIte;
+      // navigate(/kelurahan/profile);
     } catch (error) {
-      console.error("Login failed!", error.message);
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        console.error("Terjadi kesalahan:", error.message);
+      }
     }
   };
 
