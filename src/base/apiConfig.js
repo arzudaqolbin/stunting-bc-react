@@ -21,13 +21,15 @@ const dataAuth = () => {
     if (decoded) {
         return {
             id: decoded.instansi_id,
-            nama: decoded.instansi
+            nama: decoded.instansi,
+            userId: decoded.user_id
         };
     } else {
         // Jika token tidak valid atau belum tersedia
         return {
             id: null,
-            nama: null
+            nama: null,
+            userId: null
         };
     }
 };
