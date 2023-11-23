@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwPuskesmas({ userId, apiAuth }) {
+function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -46,7 +46,7 @@ function EditPwPuskesmas({ userId, apiAuth }) {
     console.log(formData);
     // ... (tambahkan logika sesuai kebutuhan)
     axios
-      .put(`${BASE_URL}/user/${idPuskesmas}`, {
+      .put(`${BASE_URL}/user/${userId}`, {
         username: formData.username,
         password: formData.password_baru,
       })

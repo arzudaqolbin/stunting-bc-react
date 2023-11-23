@@ -6,7 +6,7 @@ import { dataAuth, apiAuth } from "../../base/apiConfig";
 const PageEditPwPosyandu = () => {
   return (
     // <SidebarPosyandu content={<AddBayi/>} />
-    <SidebarPosyandu content={<EditPwPosyandu userId={dataAuth().userId} apiAuth={apiAuth()} />} />
+    <SidebarPosyandu content={<EditPwPosyandu idPosyandu={dataAuth().idPosyandu} userId={dataAuth().userId} apiAuth={apiAuth()} />} />
   );
 };
 

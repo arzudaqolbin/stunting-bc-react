@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwPosyandu({ userId, apiAuth }) {
+function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",

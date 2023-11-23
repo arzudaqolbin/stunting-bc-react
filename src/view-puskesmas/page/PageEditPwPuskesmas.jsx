@@ -6,7 +6,7 @@ import { dataAuth, apiAuth } from "../../base/apiConfig";
 
 function PageEditPwPuskesmas() {
   return (
-    <SidebarPuskesmas content={<EditPwPuskesmas userId={dataAuth().userId} apiAuth={apiAuth()} />} />
+    <SidebarPuskesmas content={<EditPwPuskesmas idPuskesmas={dataAuth().id} userId={dataAuth().userId} apiAuth={apiAuth()} />} />
   );
 }
 
