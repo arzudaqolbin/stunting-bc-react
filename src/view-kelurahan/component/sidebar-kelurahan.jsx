@@ -1,10 +1,11 @@
 import React from "react";
 import "../css/sidebar-kelurahan.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logoDki from '../../aset/logo-dki.png';
 import logoJaktim from '../../aset/logo-jaktim.png';
 import logoKantor from '../../aset/logo-kantor.png';
 import { Link, useParams } from "react-router-dom";
+import { dataAuth } from "../../base/apiConfig";
 
 
 const SidebarKelurahan = ({content}) =>  {
@@ -14,6 +15,22 @@ const SidebarKelurahan = ({content}) =>  {
     const toggleNavbar = () => {
         setIsCollapsed(!isCollapsed);
     };
+
+    useEffect(() => {
+      const mediaQuery = window.matchMedia("(max-width: 768px)");
+  
+      const handleMediaQueryChange = () => {
+        // Set isCollapsed ke true jika layar adalah medium atau lebih kecil
+        setIsCollapsed(mediaQuery.matches);
+      };
+  
+      handleMediaQueryChange();
+      mediaQuery.addEventListener("change", handleMediaQueryChange);
+  
+      return () => {
+        mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      };
+    }, []);
     
 
   return (
@@ -22,7 +39,7 @@ const SidebarKelurahan = ({content}) =>  {
       <aside id="sidenav" className={isCollapsed? "collapse" : ""} style={{ backgroundColor: "#026670" }}>
         <div className="h-100">
           <div className="sidebar-logo">
-            <Link to={"/kelurahan"}>
+            <Link to={"/kelurahan/profile"}>
             <img src={logoDki} className="img-fluid" style={{ width: "40px" }} alt="" />
             <img src={logoJaktim} className="img-fluid" style={{ width: "45px" }} alt="" />
             </Link>
@@ -78,7 +95,7 @@ const SidebarKelurahan = ({content}) =>  {
             <i className="fas fa-bars"></i>
           </button>
           <div className="d-flex align-items-center navbar-title">
-            <p className="mb-0 font-weight-bold text-light" style={{ fontSize: "1.2rem" }}>Kelurahan Bidara Cina</p>
+            <p className="mb-0 font-weight-bold text-light" style={{ fontSize: "1.2rem" }}>{dataAuth().nama}</p>
           </div>
           <div className="navbar-collapse navbar">
             <ul className="navbar-nav">

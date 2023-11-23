@@ -1,12 +1,67 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import "../css/info-detail-puskesmas-kelurahan.css";
+import { Link } from 'react-router-dom';
+import BASE_URL from '../../base/apiConfig';
+import axios from 'axios';
 
-function InfoDetailPuskesmasKelurahan() {
+function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
+
+  const [posyandu, setPosyandu] = useState([]);
+  const [puskesmas, setPuskesmas] = useState([]);
+  const [username, setUsername] = useState([]);
+  
+  // fetch data Puskesmas
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+          // nanti ganti api dengan getKader by idPosyandu
+            const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`);
+            // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+            setPuskesmas(result.data);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+        
+    fetchData();
+  }, [idPuskesmas]);
+  
+  // fetch data Posyandu
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`);
+        // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+        setPosyandu(result.data.data);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+        
+    fetchData();
+  }, [idPuskesmas]);
+  
+  // fetch data Username
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const result3 = await axios.get(`${BASE_URL}/user/${puskesmas.user_id}}`);
+            setUsername(result3.data);
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+        
+    fetchData();
+  }, [puskesmas.user_id]);
+
+
+
     return (
         <main className="container">
         <div className="container-fluid">
             {/* Mulai isi kontennya disini */}
-            <h2 className="custom-judul">Puskesmas Bidara Cina I</h2>
+            <h2 className="custom-judul">{puskesmas.nama}</h2>
 
             <p className="h6" style={{ fontWeight: 'bold' }}>Detail Akun</p>
             <ul className="list-unstyled">
@@ -15,23 +70,23 @@ function InfoDetailPuskesmasKelurahan() {
                 <table>
                     <tr>
                     <td>Nama Puskesmas &nbsp;</td>
-                    <td>: Puskesmas Bidara Cina I</td>
+                    <td>: {puskesmas.nama}</td>
                     </tr>
                     <tr>
                     <td>Kepala Puskesmas &nbsp;</td>
-                    <td>: Ibu Helly</td>
+                    <td>: <strong>Ini belum diupdate DB nya</strong></td>
                     </tr>
                     <tr>
                     <td>Alamat &nbsp;</td>
-                    <td>: Gg. Kober Depok No.19, RT.5/RW.6, Bidara Cina, Kecamatan Jatinegara, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13330</td>
+                    <td>: {puskesmas.alamat}</td>
                     </tr>
                     <tr>
                     <td>Nomor Telepon &nbsp;</td>
-                    <td>: 02185917587</td>
+                    <td>: {puskesmas.nomor_telepon}</td>
                     </tr>
                     <tr>
                     <td>Username &nbsp;</td>
-                    <td>: puskemasabc1</td>
+                    <td>: {username.username}</td>
                     </tr>
                 </table>
                 </ul>
@@ -39,7 +94,9 @@ function InfoDetailPuskesmasKelurahan() {
             </ul>
 
             <div style={{ textAlign: 'right' }}>
-            <button className="btn">Edit Data</button>
+                <Link to={`kelurahan/edit-akun-puskesmas/${puskesmas.id}`}>
+                    <button className="btn">Edit Data</button>
+                </Link>
             </div>
 
             <p className="h6" style={{ fontWeight: 'bold' }}>Posyandu Binaan</p>
@@ -47,7 +104,7 @@ function InfoDetailPuskesmasKelurahan() {
             <table className="table custom-table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">No</th>
                     <th scope="col">Nama Posyandu</th>
                     <th scope="col">Alamat</th>
                     <th scope="col">Nomor Telepon</th>
@@ -55,16 +112,23 @@ function InfoDetailPuskesmasKelurahan() {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Posyandu Kencana Ungu</td>
-                    <td>Jl. Sensus No.4</td>
-                    <td>021021021021</td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
-                </tr>
-                <tr>
+                    {
+                        posyandu.map((poss, idx) => (
+                            <tr key={poss.id}>
+                                <th scope="row">idx</th>
+                                <td>{poss.nama}</td>
+                                <td>{poss.alamat}</td>
+                                <td>{poss.nomor_telepon}</td>
+                                <td>
+                                    <Link to={`/kelurahan/detail-posyandu/${poss.id}`}>
+                                        <button className="btn btn-info">Info</button>
+                                    </Link>
+                                </td>
+                            </tr>
+
+                        ))
+                    }
+                {/* <tr>
                     <th scope="row">2</th>
                     <td></td>
                     <td></td>
@@ -81,7 +145,7 @@ function InfoDetailPuskesmasKelurahan() {
                     <td>
                     <button className="btn btn-info">Info</button>
                     </td>
-                </tr>
+                </tr> */}
                 </tbody>
             </table>
             </div>

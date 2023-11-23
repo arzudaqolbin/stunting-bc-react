@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/form-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 
-function FormDataTambahan({ idBalita, idPosyandu }) {
+function FormDataTambahan({idPosyandu, apiAuth, idBalita}) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
 

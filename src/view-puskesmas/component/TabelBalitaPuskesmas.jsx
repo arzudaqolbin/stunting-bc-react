@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/tabel-daftar-balita-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
 
-function TabelBalitaPuskesmas({ idPuskesmas }) {
+function TabelBalitaPuskesmas({idPuskesmas, apiAuth}) {
   const [balita, setBalita] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
 
@@ -14,9 +14,7 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
 
   const loadDataBalita = async () => {
     try {
-      const result = await axios.get(
-        `${BASE_URL}/balitas/puskesmas/${idPuskesmas}`
-      );
+      const result = await axios.get(`${BASE_URL}/balitas/puskesmas/${idPuskesmas}`, apiAuth);
       setBalita(result.data.balitas);
     } catch (error) {
       if (error.response) {

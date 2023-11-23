@@ -1,7 +1,7 @@
 import React from 'react';
 import "../css/edit-data-tambahan.css";
 
-function EditDataTambahan() {
+function EditDataTambahan({idPuskesmas, apiAuth, idBalita}) {
   return (
     <div className="main d-flex flex-column min-vh-100" style={{ backgroundColor: '#E4F3EF' }}>
       <main className="container">

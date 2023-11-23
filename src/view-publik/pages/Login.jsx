@@ -1,39 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { decodeToken } from "react-jwt";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
-import { isExpired, decodeToken } from "react-jwt";
+import BASE_URL from "../../base/apiConfig";
 
 const Login = () => {
+  let navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("submit login")
 
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/login`, {
-        username: username,
-        password: password,
+      const response = await axios.post(`${BASE_URL}/login`, {
+          username: username,
+          password: password,
       });
       const { data } = response;
-      const token = data.access_token;
-      // const roleA = data.role;
-      localStorage.setItem("access_token", token);
-      // localStorage.setItem('roleA', roleA);
+    const token = data.access_token;
+    localStorage.setItem('access_token', token);
+    
+    const decodedToken = decodeToken(token);
 
-      // Use the correct parameter for jwtDecode (token instead of localStorage.getItem(token))
+    const roleName = decodedToken.role; 
+    // localStorage.setItem('role', roleName);
+    const id = decodedToken.instansi_id;
+    console.log(id)
+    let redirectUrl = "/";
 
-      const decodedToken = decodeToken(token);
-      // localStorage.setItem("decodedToken", JSON.stringify(decodedToken)); // Convert to JSON string
-      console.log(decodedToken); // Tampilkan seluruh objek
-
-      const roleName = decodedToken.role; // Pastikan properti role ada di sini
-      console.log(roleName);
-      // localStorage.setIte;
-      // navigate(/kelurahan/profile);
+    if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
+      redirectUrl = `/${roleName.toLowerCase()}/profile`;
+    } else if (roleName === "KELURAHAN") {
+      redirectUrl = "/kelurahan/profile";
+    }
+    navigate(redirectUrl);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -48,6 +55,7 @@ const Login = () => {
       }
     }
   };
+ 
 
   return (
     <div
@@ -77,7 +85,7 @@ const Login = () => {
                 <div className="card-body">
                   <h4 className="text-center">Silahkan melakukan login</h4>
 
-                  <form onSubmit={handleLogin} className="">
+                  <form onSubmit={onSubmit} className="">
                     <div className="text-center">
                       <input
                         type="text"

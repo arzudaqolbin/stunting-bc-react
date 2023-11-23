@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-puskesmas-kelurahan.css";
 
-function TabelDaftarPuskesmasKelurahan() {
+function TabelDaftarPuskesmasKelurahan({idKelurahan, apiAuth }) {
 
     const [puskesmasList, setPuskesmasList] = useState([]);
 

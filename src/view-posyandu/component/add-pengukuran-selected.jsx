@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
 import BASE_URL from "../../base/apiConfig";
+
+import { toast, ToastContainer } from "react-toastify";
 // import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -19,9 +21,8 @@ import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 
-function AddPengukuranSelected() {
+function AddPengukuranSelected({idPosyandu, apiAuth, idBalita}) {
   let navigate = useNavigate();
-  const { idPosyandu, idBalita } = useParams();
   console.log("id posyandu = ", idPosyandu);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balita, setBalita] = useState([]);
@@ -309,10 +310,10 @@ function AddPengukuranSelected() {
       }
     }
 
-    setPengukuran((prevResult) => ({
-      ...prevResult,
-      status_bbtb: status
-    }));
+    // setPengukuran((prevResult) => ({
+    //   ...prevResult,
+    //   status_bbtb: status
+    // }));
 
     pengukuran.status_bbtb = status;
   }
@@ -420,10 +421,12 @@ function AddPengukuranSelected() {
       console.log(pengukuran);
 
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
-      navigate(`/posyandu/${idPosyandu}`);
+      showSuccessPostToast(idPosyandu, idBalita);
+      // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
 
 
     } catch (error) {
+      showFailedPostToast()
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
@@ -431,12 +434,44 @@ function AddPengukuranSelected() {
           error.response.data
         );
       } else if (error.request) {
+        showFailedPostToast()
         console.error("Tidak ada respon dari server:", error.request);
       } else {
+        showFailedPostToast()
         console.error("Terjadi kesalahan:", error.message);
       }
     }
   };
+
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const showSuccessPostToast = async (idPosyandu, idBalita) => {
+    return new Promise((resolve) => {
+        toast.success("Data berhasil disimpan", {
+            data: {
+                title: "Success",
+                text: "Data berhasil disimpan",
+            },
+            onClose: async () => {
+                // Menunggu 3 detik sebelum melakukan navigasi
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // Mengakhiri janji saat Toast ditutup
+                navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+                resolve();
+            },
+        });
+    });
+};
+  
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -539,6 +574,7 @@ function AddPengukuranSelected() {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useParams } from "react-router-dom";
 // import { Line } from 'react-chartjs-2';
+<<<<<<< HEAD
 import {
   CartesianGrid,
   LineChart,
@@ -16,6 +17,17 @@ import * as htmlToImage from "html-to-image";
 import { toPng } from "html-to-image";
 import { useCurrentPng } from "recharts-to-png";
 import FileSaver from "file-saver";
+=======
+import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+// import { saveAs } from 'file-saver';
+// import * as htmlToImage from 'html-to-image';
+// import { toPng } from 'html-to-image';
+// import { useCurrentPng } from 'recharts-to-png';
+// import FileSaver from 'file-saver';
+
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 
 const dataLK = [
   { umur: 24, sd_3: 78.0, sd_2: 81.0, med: 87.1, sd2: 93.2, sd3: 96.3 },
@@ -98,6 +110,7 @@ const dataPR = [
 ];
 
 const LineChart_Umur_24_60 = () => {
+<<<<<<< HEAD
   const [dataPatokan, setDataPatokan] = useState([]);
   const [dataTarget, setDataTarget] = useState([]);
   const [dataCombine, setDataCombine] = useState([]);
@@ -105,6 +118,16 @@ const LineChart_Umur_24_60 = () => {
   // const [getPng, { chartRef, isLoading }] = useCurrentPng();
   const [getPng, { chartRef, isLoading }] = useCurrentPng();
   console.log(chartRef); // Check if chartRef is defined here
+=======
+    const [dataPatokan, setDataPatokan] = useState([]);
+    const [dataTarget, setDataTarget] = useState([]);
+    const [dataCombine, setDataCombine] = useState([]);
+    const [parentWidth, setParentWidth] = useState([])
+    const { idBalita } = useParams();
+    // const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    // const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    // console.log(chartRef); // Check if chartRef is defined here
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 
   // const chartRef = useRef(null);
   let namaBalita = "";
@@ -115,6 +138,7 @@ const LineChart_Umur_24_60 = () => {
         const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
         // setBalita(result.data);
 
+<<<<<<< HEAD
         const jk = result.data.jenis_kelamin;
         namaBalita = result.data.nama;
         if (jk === "Laki-laki") {
@@ -137,6 +161,89 @@ const LineChart_Umur_24_60 = () => {
         console.error("Error fetching data:", error);
       }
     };
+=======
+                const jk = result.data.jenis_kelamin;
+                namaBalita = result.data.nama;
+                if (jk === 'Laki-laki') {
+                    setDataPatokan(dataLK);
+                } else {
+                    setDataPatokan(dataPR);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        const fetchDataTarget = async () => {
+            try {
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`);
+                setDataTarget(result.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchDataBalita();
+        fetchDataTarget();
+    }, [idBalita]);
+
+    useEffect(() => {
+
+        const dataGabungan = dataPatokan.map(patokanItem => {
+            const targetItem = dataTarget.find(target => target.umur === patokanItem.umur);
+            return { ...patokanItem, TB: targetItem ? targetItem.tinggi_badan : null };
+        });
+
+        setDataCombine(dataGabungan)
+
+        // const parentElement = document.getElementById('collapseFour'); // Ganti dengan ID atau class yang sesuai
+        // if (parentElement) {
+        //   setParentWidth(parentElement.clientWidth);
+        // }
+
+    }, [dataPatokan, dataTarget]);
+
+
+    // const downloadChart = useCallback(async() => {
+    //     try {
+    //         const chartNode = chartRef.current;
+    //         const dataUrl = await htmlToImage.toPng(chartNode);
+    //         saveAs(dataUrl, `${namaBalita}_statusTBU_0_24.png`);
+    //     } catch (error) {
+    //         console.error('Error downloading chart:', error);
+    //     }
+    // }, [namaBalita]);
+
+
+    // Can also pass in options for html2canvas
+    // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
+
+    // const handleDownload = useCallback(async () => {
+    //     const png = await getPng();
+
+    //     // Verify that png is not undefined
+    //     if (png) {
+    //         // Download with FileSaver
+    //         FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
+    //     }
+    // }, [getPng, namaBalita]);
+
+    return (
+        <>
+            {/* <button onClick={handleDownload}>
+                {isLoading ? 'Downloading...' : 'Download Chart'}
+            </button> */}
+            <LineChart width={1000} height={500} data={dataCombine}>
+                <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
+                <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
+                <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false} />
+                <Line type="monotone" dataKey="med" stroke="green" strokeWidth={1} dot={false} />
+                <Line type="monotone" dataKey="sd2" stroke="red" strokeWidth={1} dot={false} />
+                <Line type="monotone" dataKey="sd3" stroke="black" strokeWidth={1} dot={false} />
+                <CartesianGrid stroke='#ccc' strokeDasharray="5 5" />
+                <XAxis dataKey="umur" label="Umur (bulan)" height={100} tickCount={10} />
+                <YAxis type="number" domain={['dataMin', 'dataMax']} label={{ value: "Tinggi Badan (cm)", angle: -90 }} width={120} />
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 
     fetchDataBalita();
     fetchDataTarget();

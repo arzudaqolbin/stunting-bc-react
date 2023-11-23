@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-kelurahan.css";
 
-function TabelDaftarPosyanduKelurahan() {
+function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
 
     const [posyanduList, setPosyanduList] = useState([]);
     const [puskesmasList, setPuskesmasList] = useState([]);
@@ -14,6 +14,7 @@ function TabelDaftarPosyanduKelurahan() {
         // Panggil API untuk mendapatkan daftar posyandu
         axios.get(`${BASE_URL}/posyandu`)
             .then(response => {
+                // setPosyanduList(response.data.data);
                 setPosyanduList(response.data);
                 // console.log(response.data);
             })

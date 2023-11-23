@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-balita-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
+import { Link } from "react-router-dom";
 
-function TabelBalitaPosyandu({ idPosyandu }) {
+function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
 
   useEffect(() => {
@@ -118,7 +119,7 @@ function TabelBalitaPosyandu({ idPosyandu }) {
             </thead>
             <tbody>
               {balita.map((data, index) => (
-                <tr>
+                <tr key={data.id}>
                   <th scope="row">{index + 1}</th>
                   <td>{data.nama}</td>
                   <td>{data.jenis_kelamin}</td>
@@ -140,7 +141,9 @@ function TabelBalitaPosyandu({ idPosyandu }) {
                     </div>
                   </td>
                   <td>
-                    <button className="btn btn-info">Info</button>
+                    <Link to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`} >
+                      <button className="btn btn-info">Info</button>
+                    </Link>
                   </td>
                 </tr>
               ))}
