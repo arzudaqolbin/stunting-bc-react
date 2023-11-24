@@ -1,4 +1,5 @@
 import React from 'react';
+import berita from "../../aset/berita.png";
 
 const DetailBerita = () => {
   return (
@@ -17,10 +18,10 @@ const DetailBerita = () => {
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img src="berita.png" className="img-fluid" alt="Gambar Berita" />
+            <img src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
           </div>
         </div>
-        <div className="text-berita mt-4">
+        <div className="text-isiberita mt-4">
           <p style={{ textAlign: "justify" }}>
             <span style={{ fontWeight: 700 }}>Paragraf 1</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas porta vulputate. Donec elit neque, sodales sit amet erat in, faucibus tristique urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sodales augue, quis lacinia arcu. Vestibulum vel pulvinar orci, at feugiat erat. Cras efficitur dictum eros, at ullamcorper mauris accumsan vel. Sed id lorem a lectus faucibus tincidunt. Donec at diam fermentum, auctor orci non, auctor lectus. Sed et aliquam tellus.
           </p>
