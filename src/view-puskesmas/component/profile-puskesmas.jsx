@@ -4,8 +4,11 @@ import "../css/profile-puskesmas.css";
 import logoPuskesmas from "../../aset/logo-puskesmas.png";
 import BASE_URL from "../../base/apiConfig";
 
-function ProfilePuskesmas({ id }) {
+function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
   const [Puskesmas, setPuskesmas] = useState({});
+
+  // const dt = dataAuth()
+  // console.log(dt.id)
 
   useEffect(() => {
     loadDataPuskesmas();
@@ -13,8 +16,8 @@ function ProfilePuskesmas({ id }) {
 
   const loadDataPuskesmas = async () => {
     try {
-      const result = await axios.get(`${BASE_URL}/puskesmas/${id}`);
-      setPuskesmas(result.data);
+      const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth);
+      setPuskesmas(result.data.data);
     } catch (error) {
       if (error.response) {
         // Respon dari server dengan kode status tertentu

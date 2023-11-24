@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import LineChart_Umur_24_60 from '../../view-publik/component/linechart_24-60';
 import LineChart_Umur_0_24 from '../../view-publik/component/linechart_0-24';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import TabelPengukuranBalitaPosyandu from './TabelPengukuranBalitaPosyandu';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 
-const DetailBalitaPosyandu = () => {
+const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
 
   // nunggu setting router link
-  let {idBalita} = useParams();
   const[biodata, setBiodata] = useState([]);
   const[riwayat, setRiwayat] = useState([]);
   const[namaPosyandu, setNamaPosyandu] = useState([]);
@@ -19,8 +17,8 @@ const DetailBalitaPosyandu = () => {
 
   const getDataBalita = async () => {
     try {
-      const dataBalita = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
-      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`);
+      const dataBalita = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
+      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
       setBiodata(dataBalita.data);
       setRiwayat(dataTambahanBalita.data);
     } catch (error) {

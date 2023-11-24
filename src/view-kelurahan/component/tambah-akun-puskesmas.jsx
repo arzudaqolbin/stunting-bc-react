@@ -4,7 +4,7 @@ import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
 // import BASE_URL from '../../base/apiConfig';
 
-function TambahAkunPuskesmas() {
+function TambahAkunPuskesmas({idKelurahan, apiAuth }) {
 
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",

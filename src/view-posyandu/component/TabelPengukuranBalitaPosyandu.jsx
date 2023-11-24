@@ -106,11 +106,10 @@ function applyStatusStyle(statusValue) {
   }
 }
 
-function TabelPengukuranBalitaPosyandu({idBalita}) {
+function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
 
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
-  const {idPosyandu} = useParams();
 
   // console.log("tanggal lahir");
   // console.log(typeof tanggalLahir);
@@ -213,7 +212,7 @@ function TabelPengukuranBalitaPosyandu({idBalita}) {
                 <td>{pengukuran.tinggi_badan}</td>
                 <td data-status_tbu="Sangat Pendek">
                   <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
-                </td>
+                  </td>
                 <td data-status_bbtb="Gizi Buruk">
                   <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
                 </td>

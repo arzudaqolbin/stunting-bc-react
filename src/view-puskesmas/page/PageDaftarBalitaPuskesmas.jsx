@@ -1,13 +1,12 @@
 import React from "react";
 import SidebarPuskesmas from "../component/sidebar-puskesmas";
 import TabelBalitaPuskesmas from "../component/TabelBalitaPuskesmas";
-import { useParams } from "react-router";
+import { apiAuth, dataAuth } from "../../base/apiConfig";
 
 function PageDaftarBalitaPuskesmas() {
-  const { idPuskesmas } = useParams();
   return (
     <SidebarPuskesmas
-      content={<TabelBalitaPuskesmas idPuskesmas={idPuskesmas} />}
+      content={<TabelBalitaPuskesmas idPuskesmas={dataAuth().id} apiAuth={apiAuth()} />}
     />
   );
 }

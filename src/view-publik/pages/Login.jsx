@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+<<<<<<< HEAD
 // import jwt from "jsonwebtoken";
 import { isExpired, decodeToken } from "react-jwt";
+=======
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 import { useNavigate } from "react-router-dom";
+import { decodeToken } from "react-jwt";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
@@ -15,15 +19,22 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("submit login")
+
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
+<<<<<<< HEAD
         username: username,
         password: password,
+=======
+          username: username,
+          password: password,
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
       });
-
       const { data } = response;
+<<<<<<< HEAD
       const { access_token } = data;
       // const { decodedToken, isExpired } = useJwt(access_token);
 
@@ -35,12 +46,31 @@ const Login = () => {
           console.error("Error decoding token:", error.message);
         }
       }
+=======
+    const token = data.access_token;
+    localStorage.setItem('access_token', token);
+    
+    const decodedToken = decodeToken(token);
+
+    const roleName = decodedToken.role; 
+    // localStorage.setItem('role', roleName);
+    const id = decodedToken.instansi_id;
+    console.log(id)
+    let redirectUrl = "/";
+
+    if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
+      redirectUrl = `/${roleName.toLowerCase()}/profile`;
+    } else if (roleName === "KELURAHAN") {
+      redirectUrl = "/kelurahan/profile";
+    }
+    navigate(redirectUrl);
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
     } catch (error) {
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
           error.response.status,
-          error.response.data.massage
+          error.response.data
         );
       } else if (error.request) {
         console.error("Tidak ada respon dari server:", error.request);
@@ -49,6 +79,10 @@ const Login = () => {
       }
     }
   };
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 
   return (
     <div
@@ -78,7 +112,7 @@ const Login = () => {
                 <div className="card-body">
                   <h4 className="text-center">Silahkan melakukan login</h4>
 
-                  <form onSubmit={handleLogin} className="">
+                  <form onSubmit={onSubmit} className="">
                     <div className="text-center">
                       <input
                         type="text"

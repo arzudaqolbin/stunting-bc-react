@@ -63,7 +63,7 @@ function applyStatusStyle(element) {
     }
     }
 
-    function TabelPengukuranBalitaStunting() {
+    function TabelPengukuranBalitaStunting({idKelurahan, apiAuth, idBalita}) {
     useEffect(() => {
         const statusTBUElements = document.querySelectorAll("[data-status_tbu]");
         const statusBBTBElements = document.querySelectorAll("[data-status_bbtb]");

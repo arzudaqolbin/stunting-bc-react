@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/edit-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function EditBalita({ idBalita, idPuskesmas }) {
+function EditBalita({idPuskesmas, apiAuth, idBalita}) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({

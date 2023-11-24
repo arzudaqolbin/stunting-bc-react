@@ -34,12 +34,11 @@ function App() {
         <Route path="/*" element={<RoutesPublik />} />
         <Route path="/lihat-page*" element={<LihatPage />} />
         <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
-        <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
-        <Route path="/puskesmas/:idPuskesmas/*" element={<PageEditAkunPosyandu />} />
+        <Route path="/posyandu/*" element={<RoutesPosyandu />} />
+        <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
       </Routes>
     </Router>
   );
 }
-
 
 export default App;

@@ -1,13 +1,12 @@
 import React from 'react';
 import SidebarPosyandu from '../component/sidebar-posyandu';
-import FormDataTambahan from '../component/form-data-tambahan';
-import AddBalita from '../component/add-balita';
 import AddPengukuran from '../component/add-pengukuran';
+import { apiAuth, dataAuth } from "../../base/apiConfig"; 
 
 const PageAddPengukuranPosyandu = () => {
     return(
         // <SidebarPosyandu content={<AddBayi/>} />
-        <SidebarPosyandu content={<AddPengukuran />} />
+        <SidebarPosyandu content={<AddPengukuran idPosyandu={dataAuth().id} apiAuth={apiAuth()} />} />
     )
 }
 

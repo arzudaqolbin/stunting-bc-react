@@ -9,7 +9,7 @@ import {
   Legend,
   CategoryScale,
 } from 'chart.js';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { apiAuth } from '../../base/apiConfig';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
 
@@ -21,7 +21,7 @@ const DoughnutChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`${BASE_URL}/balitas/stat/doughnut`);
+        const result = await axios.get(`${BASE_URL}/balitas/stat/doughnut`, apiAuth());
         setDataReal(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);

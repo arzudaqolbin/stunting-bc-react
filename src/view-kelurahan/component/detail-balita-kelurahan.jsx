@@ -6,10 +6,9 @@ import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
 
-const DetailBalitaKelurahan = () => {
+const DetailBalitaKelurahan = ({idKelurahan, apiAuth, idBalita}) => {
 
   // nunggu setting router link
-  let { idBalita } = useParams();
   const [biodata, setBiodata] = useState([]);
   const [riwayat, setRiwayat] = useState([]);
   const [namaPosyandu, setNamaPosyandu] = useState([]);

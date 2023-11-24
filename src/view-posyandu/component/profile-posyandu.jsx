@@ -4,7 +4,7 @@ import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
 import BASE_URL from "../../base/apiConfig";
 
-function ProfilePosyandu({ id }) {
+function ProfilePosyandu({idPosyandu, apiAuth }) {
   const [Posyandu, setPosyandu] = useState({});
 
   const [Kader, setKader] = useState([]);
@@ -15,11 +15,11 @@ function ProfilePosyandu({ id }) {
 
   const loadDataPosyandu = async () => {
     try {
-      const result = await axios.get(`${BASE_URL}/posyandu/${id}`);
+      const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`);
       setPosyandu(result.data);
 
       axios
-        .get(`${BASE_URL}/posyandu/${id}/kader`)
+        .get(`${BASE_URL}/posyandu/${idPosyandu}/kader`)
         .then((response) => {
           setKader(response.data.data);
         })
