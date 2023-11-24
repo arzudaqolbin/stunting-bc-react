@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
+import BASE_URL from "../../base/apiConfig";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://api-stunting.up.railway.app/api/login", {
+      const response = await axios.post(`${BASE_URL}/login`, {
         username: username,
         password: password,
       });
