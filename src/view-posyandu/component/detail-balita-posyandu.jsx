@@ -294,7 +294,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                     </div>
                     <TabelPengukuranBalitaPosyandu apiAuth={apiAuth} idBalita={idBalita} />
                   </div>
-                  <TabelPengukuranBalitaPosyandu idBalita={idBalita} />
+                  {/* <TabelPengukuranBalitaPosyandu idBalita={idBalita} /> */}
                 </div>
               </div>
               <div className="accordion-item">

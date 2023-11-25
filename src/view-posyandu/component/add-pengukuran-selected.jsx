@@ -451,6 +451,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             // onSubmit(e, balita, pengukuran);
@@ -546,6 +547,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
             Simpan
           </button>
         </form>
+      </div>
       </div>
       <ToastContainer />
     </main>)

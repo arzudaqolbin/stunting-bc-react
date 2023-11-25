@@ -71,6 +71,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
       </a>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <h2 className="custom-judul">EDIT PASSWORD POSYANDU</h2>
 
         <form onSubmit={handleSubmit}>
@@ -114,6 +115,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );
