@@ -1,7 +1,7 @@
 import React from 'react';
 import "../css/form-kelurahan.css";
 
-const TambahBerita = () => {
+const TambahBerita = ({idKelurahan, apiAuth }) => {
     return(
         <main className="container">
             {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}

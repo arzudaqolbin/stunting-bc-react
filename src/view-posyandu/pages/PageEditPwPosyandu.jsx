@@ -1,14 +1,12 @@
 import React from "react";
 import SidebarPosyandu from "../component/sidebar-posyandu";
-import ProfilePosyandu from "../component/profile-posyandu";
 import EditPwPosyandu from "../component/edit-pw-posyandu";
-import { useParams } from "react-router-dom";
+import { dataAuth, apiAuth } from "../../base/apiConfig"; 
 
 const PageEditPwPosyandu = () => {
-  const { idPosyandu } = useParams();
   return (
     // <SidebarPosyandu content={<AddBayi/>} />
-    <SidebarPosyandu content={<EditPwPosyandu idPosyandu={idPosyandu} />} />
+    <SidebarPosyandu content={<EditPwPosyandu idPosyandu={dataAuth().idPosyandu} userId={dataAuth().userId} apiAuth={apiAuth()} />} />
   );
 };
 

@@ -3,7 +3,7 @@ import "../css/form-kelurahan.css";
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 
-function EditAkunPuskesmas({ idPuskesmas }) {
+function EditAkunPuskesmas({idKelurahan, apiAuth, idPuskesmas}) {
 
   const [formData, setFormData] = useState({
     nama: "",

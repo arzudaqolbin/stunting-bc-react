@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-daftar-balita-stunting.css";
 import BASE_URL from "../../base/apiConfig";
+import { ClipLoader } from "react-spinners";
 
-function TabelDaftarBalitaStunting() {
+function TabelDaftarBalitaStunting({idKelurahan, apiAuth }) {
   const [balita, setBalita] = useState([]);
+  const [loading, setLoading] = useState(true)
   console.log(balita);
 
   useEffect(() => {
@@ -15,6 +17,7 @@ function TabelDaftarBalitaStunting() {
     try {
       const result = await axios.get(`${BASE_URL}/balitas/kelurahan/stunting`);
       setBalita(result.data.balitas);
+      setLoading(false)
     } catch (error) {
       if (error.response) {
         // Respon dari server dengan kode status tertentu
@@ -112,6 +115,15 @@ function TabelDaftarBalitaStunting() {
   });
 
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
@@ -170,7 +182,9 @@ function TabelDaftarBalitaStunting() {
           </table>
         </div>
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

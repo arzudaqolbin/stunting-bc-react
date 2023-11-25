@@ -92,12 +92,11 @@ const dataPR = [
     { umur: 60, sd_3: 95.2, sd_2: 99.9, med: 109.4, sd2: 118.9, sd3: 123.7 },
 ];
 
-const LineChart_Umur_24_60 = () => {
+const LineChart_Umur_24_60 = ({idBalita, apiAuth}) => {
     const [dataPatokan, setDataPatokan] = useState([]);
     const [dataTarget, setDataTarget] = useState([]);
     const [dataCombine, setDataCombine] = useState([]);
     const [parentWidth, setParentWidth] = useState([])
-    const { idBalita } = useParams();
     // const [getPng, { chartRef, isLoading }] = useCurrentPng();
     // const [getPng, { chartRef, isLoading }] = useCurrentPng();
     // console.log(chartRef); // Check if chartRef is defined here
@@ -108,7 +107,7 @@ const LineChart_Umur_24_60 = () => {
     useEffect(() => {
         const fetchDataBalita = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
                 // setBalita(result.data);
 
                 const jk = result.data.jenis_kelamin;
@@ -125,7 +124,7 @@ const LineChart_Umur_24_60 = () => {
 
         const fetchDataTarget = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`, apiAuth);
                 setDataTarget(result.data);
             } catch (error) {
                 console.error('Error fetching data:', error);

@@ -3,84 +3,146 @@ import "../css/info-detail-posyandu-kelurahan.css";
 import BASE_URL from "../../base/apiConfig";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ClipLoader } from 'react-spinners';
 
-function InfoDetailPosyanduKelurahan({idPosyandu}) {
+function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
 
   const [kader, setKader] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);
   const [username, setUsername] = useState([]);
+  const [loading, setLoading] = useState(true)
   
   // fetch data Posyandu
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-          // nanti ganti api dengan getKader by idPosyandu
-            const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`);
-            // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-            setPosyandu(result.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       try {
+  //         // nanti ganti api dengan getKader by idPosyandu
+  //           const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
+  //           // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+  //           setPosyandu(result.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
         
-    fetchData();
-  }, [idPosyandu]);
+  //   fetchData();
+  // }, [idPosyandu]);
   
-  // fetch data kader Posyandu
+  // // fetch data kader Posyandu
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // nanti ganti api dengan getKader by idPosyandu
+  //       const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth);
+  //       // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+  //       setKader(result.data.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
+        
+  //   fetchData();
+  // }, [idPosyandu]);
+
+  // // fetch data Puskesmas
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       try {
+  //           const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`, apiAuth);
+  //           setPuskesmas(result2.data);
+            
+  //           // const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
+  //           // setUsername(result3.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
+        
+  //   fetchData();
+  // }, [posyandu.puskesmas_id]);
+  
+  // // fetch data Username
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       try {
+  //           const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`, apiAuth);
+  //           setUsername(result3.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
+        
+  //   fetchData();
+  // }, [posyandu.user_id]);
+      
+  // console.log(kader)
+  // console.log(posyandu)
+  // console.log(posyandu.user_id)
+  // console.log(puskesmas)
+  // console.log(username)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // nanti ganti api dengan getKader by idPosyandu
-        const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`);
-        // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-        setKader(result.data.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-        
+        const [posyanduResult, kaderResult] = await Promise.all([
+          axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth),
+          axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth)
+        ]);
+
+        setPosyandu(posyanduResult.data);
+        setKader(kaderResult.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, [idPosyandu]);
 
-  // fetch data Puskesmas
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`);
-            setPuskesmas(result2.data);
-            
-            // const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
-            // setUsername(result3.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-        
+      try {
+        if (posyandu.puskesmas_id) {
+          const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}`, apiAuth);
+          setPuskesmas(result2.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, [posyandu.puskesmas_id]);
-  
-  // fetch data Username
+
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
-            setUsername(result3.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-        
+      try {
+        if (posyandu.user_id) {
+          const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}`, apiAuth);
+          setUsername(result3.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        // Set loading to false after all data is loaded
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, [posyandu.user_id]);
       
-  console.log(kader)
-  console.log(posyandu)
-  console.log(posyandu.user_id)
-  console.log(puskesmas)
-  console.log(username)
-      
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
@@ -248,7 +310,9 @@ function InfoDetailPosyanduKelurahan({idPosyandu}) {
           </table>
         </div>
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

@@ -3,7 +3,9 @@ import "../css/form-kelurahan.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
-function EditAkunPosyandu({ idPosyandu }) {
+
+
+function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
 
   const [formData, setFormData] = useState({
     nama_posyandu: "",

@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/form-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
+import Swal from "sweetalert2";
+import { ClipLoader } from 'react-spinners';
 
-function FormDataTambahan({ idBalita, idPosyandu }) {
+function FormDataTambahan({idPosyandu, apiAuth, idBalita}) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const [dataTambahan, setDataTambahan] = useState({
     balita_id: idBalita,
@@ -40,7 +43,7 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`)
+      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`, apiAuth)
       .then((response) => {
         const existingDataTambahan = response.data;
 
@@ -48,6 +51,7 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
           setIdData(existingDataTambahan.id);
           setDataTambahan(existingDataTambahan);
         }
+        setLoading(false)
       })
       .catch((error) => {
         console.error(
@@ -69,12 +73,12 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
       if (idData) {
         await axios.put(
           `${BASE_URL}/dataTambahanBalitas/${idData}`,
-          dataTambahan
+          dataTambahan, apiAuth
         );
       } else {
-        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan);
+        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
       }
-      navigate(`/posyandu/${idPosyandu}/daftar-balita`);
+      navigate(`/posyandu/detail-balita/${idBalita}`);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -90,14 +94,44 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
     }
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Menambahkan data riwayat tambahan",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+      }).then((result) => {
+      if (result.isConfirmed) {
+          // acc izin
+          onSubmit(e)
+      }
+  });
+
+  }
+
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <h2 className="custom-judul">Data Tambahan Balita Stunting</h2>
 
       <div className="container-fluid">
         <form
           onSubmit={(e) => {
-            onSubmit(e);
+            // onSubmit(e);
+            confirmAlert(e);
           }}
         >
           <label htmlFor="asi_eksklusif">
@@ -258,7 +292,9 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
           </button>
         </form>
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

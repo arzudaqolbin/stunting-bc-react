@@ -1,23 +1,51 @@
 import React from "react";
-import { Route, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { decodeToken } from "react-jwt";
+import Login from "../view-publik/pages/Login";
+import Swal from "sweetalert2";
 
-const PrivateRoute = ({ element, roles, ...rest }) => {
-    const isAuthenticated = localStorage.getItem("access_token") !== null;
-    const userRole = localStorage.getItem("role");
+const PrivateRoute = ({ element, requiredRole }) => {
+  const token = localStorage.getItem("access_token");
+  let navigate = useNavigate(); // Pindahkan useNavigate ke luar blok kondisional
 
-    if (!isAuthenticated) {
-        // Jika tidak autentikasi, tampilkan alert dan arahkan ke halaman login
-        alert("Anda tidak berhak mengakses halaman ini. Silakan login.");
-        return <Navigate to="/login-admin" replace />;
+  if (!token) {
+    // Token tidak ada, arahkan pengguna ke halaman login
+    // return <Login />;
+    navigate('/login-admin');
+  }
+
+  try {
+    // Coba mendekode token
+    const decodedToken = decodeToken(token);
+
+    console.log("apakah masuk private route")
+    console.log(decodedToken)
+
+    if(decodedToken.exp < (Date.now()/1000)){
+      Swal.fire({
+          title: "Waktu Anda Habis",
+          text: "Silahkan login kembali"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // acc izin
+            localStorage.clear();
+            navigate('/login-admin');
+          }
+      });
     }
 
-    if (roles && roles.indexOf(userRole) === -1) {
-        // Jika peran tidak sesuai, tampilkan alert dan arahkan ke halaman login
-        alert("Anda tidak berhak mengakses halaman ini. Silakan login dengan peran yang sesuai.");
-        return <Navigate to="/login-admin" replace />;
+    // Periksa peran pengguna
+    const roleName = decodedToken.role.toLowerCase();
+    if (!roleName || roleName !== requiredRole.toLowerCase()) {
+      return <Login />;
     }
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return <Login />;
+  }
 
-    return <Route {...rest} element={element} />;
+  // Jika diotorisasi, tampilkan elemen yang sebenarnya
+  return element;
 };
 
 export default PrivateRoute;

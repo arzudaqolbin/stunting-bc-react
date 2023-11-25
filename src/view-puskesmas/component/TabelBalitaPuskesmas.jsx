@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-daftar-balita-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
+import Statistik from "../../view-publik/component/Statistik";
+import { ClipLoader } from 'react-spinners';
+import { Link } from "react-router-dom";
 
-function TabelBalitaPuskesmas({ idPuskesmas }) {
+function TabelBalitaPuskesmas({idPuskesmas, apiAuth}) {
   const [balita, setBalita] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadDataBalita();
@@ -14,10 +18,9 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
 
   const loadDataBalita = async () => {
     try {
-      const result = await axios.get(
-        `${BASE_URL}/balitas/puskesmas/${idPuskesmas}`
-      );
+      const result = await axios.get(`${BASE_URL}/balitas/puskesmas/${idPuskesmas}`, apiAuth);
       setBalita(result.data.balitas);
+      setLoading(false)
     } catch (error) {
       if (error.response) {
         // Respon dari server dengan kode status tertentu
@@ -41,7 +44,7 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
 
   const loadPosyandu = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/posyandu`);
+      const response = await axios.get(`${BASE_URL}/posyandu`, apiAuth);
       setPosyandu(response.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
@@ -130,6 +133,16 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
   };
 
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
+
     <main className="container">
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
@@ -164,7 +177,7 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
             </thead>
             <tbody>
               {balita.map((data, index) => (
-                <tr>
+                <tr key={data.id}>
                   <th scope="row">{index + 1}</th>
                   <td>{data.nama}</td>
                   <td>{data.jenis_kelamin}</td>
@@ -180,15 +193,19 @@ function TabelBalitaPuskesmas({ idPuskesmas }) {
                     <div className="status rounded">{data.status_bbu}</div>
                   </td>
                   <td>
-                    <button className="btn btn-info">Info</button>
+                    <Link to={`/puskesmas/detail-balita/${data.id}`} className="btn btn-info">Info</Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <br />
+        <Statistik />
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

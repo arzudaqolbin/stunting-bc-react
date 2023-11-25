@@ -6,6 +6,8 @@ import React from "react";
 import BASE_URL from "../../base/apiConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+import { ClipLoader } from 'react-spinners';
 // import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -21,12 +23,12 @@ import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 
-function AddPengukuran() {
+function AddPengukuran({idPosyandu, apiAuth }) {
   let navigate = useNavigate();
-  const { idPosyandu } = useParams();
   console.log("id posyandu = ", idPosyandu);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balitaOptions, setBalitaOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tglLahir, setTglLahir] = useState("");
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
@@ -97,9 +99,10 @@ function AddPengukuran() {
       try {
         axios
           // ini nanti ganti endpointnya by posyandu id
-          .get(`${BASE_URL}/balitas`)
+          .get(`${BASE_URL}/balitas/posyandu/${idPosyandu}`, apiAuth)
           .then((response) => {
-            setBalitaOptions(response.data);
+            setBalitaOptions(response.data.balitas);
+            setLoading(false);
           })
           .catch((error) => {
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
@@ -126,6 +129,31 @@ function AddPengukuran() {
       setHasRunEffect(true);
     }
   }, [hasRunEffect]);
+
+  // useEffect(() => {
+  //   if (!hasRunEffect) {
+  //     try {
+  //       axios
+  //         .get(`${BASE_URL}/balitas/posyandu/${idPosyandu}`, apiAuth)
+  //         .then((response) => {
+  //           console.log("balita posyandu = ", response.data)
+  //           if (Array.isArray(response.data) && response.data.length > 0) {
+  //             setBalitaOptions(response.data);
+  //             setLoading(false);
+  //           } else {
+  //             console.error("Respon server tidak sesuai dengan format yang diharapkan.");
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
+  //         });
+  //     } catch (error) {
+  //       console.error("Terjadi kesalahan:", error.message);
+  //     }
+  //     setHasRunEffect(true);
+  //   }
+  // }, [hasRunEffect]);
+  
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -375,7 +403,7 @@ function AddPengukuran() {
       try {
         // const prevUmur = umur - 1;
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
-        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`);
+        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
         const differ = bb - prevPengukuran.data.bb;
 
         let status = "";
@@ -431,11 +459,11 @@ function AddPengukuran() {
       console.log("pengukuran terbaru");
       console.log(pengukuran);
 
-      await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
-      // await showSuccessPostToast(idBalita);
-      showSuccessPostToast(idPosyandu, balita_id);
-      // delay(2000)
-      // navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+      await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((fetch) => {
+        console.log(fetch.status);
+      })
+
+      showSuccessPostToast( balita_id);
 
 
     } catch (error) {
@@ -456,19 +484,9 @@ function AddPengukuran() {
     }
   };
 
-  // const showSuccessPostToast = (idBalita) => {
-  //   toast.success("Hello World", {
-  //     data: {
-  //       title: "Success toast",
-  //       text: "This is a success message",
-  //     },
-  //   });
-  //   history.push(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`)
-  // }
+  // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const showSuccessPostToast = async (idPosyandu, idBalita) => {
+  const showSuccessPostToast = async ( idBalita) => {
     return new Promise((resolve) => {
         toast.success("Data berhasil disimpan", {
             data: {
@@ -480,16 +498,12 @@ function AddPengukuran() {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 
                 // Mengakhiri janji saat Toast ditutup
-                navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+                navigate(`/posyandu/detail-balita/${idBalita}`);
                 resolve();
             },
         });
     });
 };
-
-  
-  
-  
 
   const showFailedPostToast = () => {
     toast.error("Gagal Menyimpan Data", {
@@ -500,7 +514,36 @@ function AddPengukuran() {
     });
   }
 
+  const confirmAlert = (e, balita, pengukuran) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Menambahkan data pengukuran",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+      }).then((result) => {
+      if (result.isConfirmed) {
+          // acc izin
+          onSubmit(e, balita, pengukuran)
+      }
+  });
+
+  }
+
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <h2 className="custom-judul">Form Pengukuran Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
@@ -508,7 +551,8 @@ function AddPengukuran() {
       <div className="container-fluid">
         <form
           onSubmit={(e) => {
-            onSubmit(e, balita, pengukuran);
+            // onSubmit(e, balita, pengukuran);
+            confirmAlert(e, balita, pengukuran);
           }}
         >
           <label htmlFor="balita_id">
@@ -608,7 +652,9 @@ function AddPengukuran() {
         </form>
       </div>
       <ToastContainer />
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 
