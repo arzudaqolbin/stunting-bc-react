@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita({idPosyandu, apiAuth }) {
+function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({
@@ -46,7 +46,7 @@ function AddBalita({idPosyandu, apiAuth }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/posyandu`)
+      .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
         setPosyanduOptions(response.data);
       })

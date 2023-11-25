@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-<<<<<<< HEAD
 // import jwt from "jsonwebtoken";
-import { isExpired, decodeToken } from "react-jwt";
-=======
->>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
+// import { isExpired, decodeToken } from "react-jwt";
 import { useNavigate } from "react-router-dom";
 import { decodeToken } from "react-jwt";
 
@@ -25,46 +22,27 @@ const Login = () => {
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
-<<<<<<< HEAD
         username: username,
         password: password,
-=======
-          username: username,
-          password: password,
->>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
       });
       const { data } = response;
-<<<<<<< HEAD
-      const { access_token } = data;
-      // const { decodedToken, isExpired } = useJwt(access_token);
+      const token = data.access_token;
+      localStorage.setItem('access_token', token);
 
-      if (access_token) {
-        try {
-          console.log(access_token);
-          console.log(decodeToken(access_token));
-        } catch (error) {
-          console.error("Error decoding token:", error.message);
-        }
+      const decodedToken = decodeToken(token);
+
+      const roleName = decodedToken.role;
+      // localStorage.setItem('role', roleName);
+      const id = decodedToken.instansi_id;
+      console.log(id)
+      let redirectUrl = "/";
+
+      if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
+        redirectUrl = `/${roleName.toLowerCase()}/profile`;
+      } else if (roleName === "KELURAHAN") {
+        redirectUrl = "/kelurahan/profile";
       }
-=======
-    const token = data.access_token;
-    localStorage.setItem('access_token', token);
-    
-    const decodedToken = decodeToken(token);
-
-    const roleName = decodedToken.role; 
-    // localStorage.setItem('role', roleName);
-    const id = decodedToken.instansi_id;
-    console.log(id)
-    let redirectUrl = "/";
-
-    if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
-      redirectUrl = `/${roleName.toLowerCase()}/profile`;
-    } else if (roleName === "KELURAHAN") {
-      redirectUrl = "/kelurahan/profile";
-    }
-    navigate(redirectUrl);
->>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
+      navigate(redirectUrl);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -79,10 +57,6 @@ const Login = () => {
       }
     }
   };
-<<<<<<< HEAD
-=======
- 
->>>>>>> 5b8305410666bb0f396cd74dee7250991944cfcd
 
   return (
     <div

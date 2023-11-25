@@ -10,11 +10,11 @@ const apiAuth = () => {
     const token = localStorage.getItem("access_token")
     return {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
         },
     };
-} 
+}
 
 const dataAuth = () => {
     const decoded = decodeToken(localStorage.getItem("access_token"))
@@ -38,4 +38,4 @@ const dataAuth = () => {
 
 export default BASE_URL;
 
-export {apiAuth, dataAuth, token}
+export { apiAuth, dataAuth, token }

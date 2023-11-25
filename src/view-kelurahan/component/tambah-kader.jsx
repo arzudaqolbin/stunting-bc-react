@@ -4,7 +4,7 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 
-function EditKader({ idKelurahan, apiAuth, idKader }) {
+function TambahKader({ idKelurahan, apiAuth }) {
   let navigate = useNavigate();
 
   const [kader, setKader] = useState({
@@ -14,23 +14,11 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
   });
 
   const [posyanduOptions, setPosyanduOptions] = useState([]);
-  const [jabatanOptions, setJabatanOptions] = useState(["Ketua", "Sekretaris", "Anggota"]);
+  const [jabatanOptions] = useState(["Ketua", "Sekretaris", "Anggota", "Bendahara"]);
+
+  const { nama, jabatan, posyandu_id } = kader;
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/kader/${idKader}`, apiAuth)
-      .then((response) => {
-        const kaderData = response.data.data;
-        setKader({
-          nama: kaderData.nama,
-          jabatan: kaderData.jabatan,
-          posyandu_id: kaderData.posyandu_id,
-        });
-      })
-      .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil data kader:", error);
-      });
-
     axios
       .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
@@ -39,40 +27,39 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil data posyandu:", error);
       });
-  }, [idKader, apiAuth]);
+  }, []);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
+
     setKader({ ...kader, [name]: value });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // axios.post(`${BASE_URL}/kader`, kader, apiAuth)
+    //   .then((response) => {
+    //     console.log(response.data)
+    //   }).catch((error) => {
+    //     console.log("Terjadi kesalahan saat mengambil data posyandu:", error)
+    //   })
 
     try {
-      const response = await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth);
-      navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
-      // console.log(response.data.data)
+      // console.log(kader);
+      const response = await axios.post(`${BASE_URL}/kader`, kader, apiAuth);
+      navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
+      console.log(response.data.data)
     } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
-      }
+      // Handle errors
+      console.error("Error submitting data:", error);
     }
   };
 
   return (
     <main className="container">
-      <i className="fa-solid fa-arrow-left"></i>
       <div className="container-fluid">
-        <h2 className="custom-judul">EDIT KADER POSYANDU</h2>
+        <h2 className="custom-judul">TAMBAH KADER POSYANDU</h2>
+
         <form onSubmit={onSubmit}>
           <label htmlFor="nama">
             <span>Nama Kader*</span>
@@ -80,7 +67,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
               type="text"
               id="nama"
               name="nama"
-              value={kader.nama}
+              value={nama}
               onChange={onInputChange}
               required
             />
@@ -90,17 +77,19 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
             <span>Nama Posyandu*</span>
             <select
               id="posyandu"
-              name="posyandu_id"
-              value={kader.posyandu_id}
+              name="posyandu_id"  // Match the name attribute with the key in the kader state
+              value={posyandu_id}
               onChange={onInputChange}
             >
               <option value="">--Pilih--</option>
-              {posyanduOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.nama}
-                </option>
-              ))}
+              {posyanduOptions &&
+                posyanduOptions.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.nama}
+                  </option>
+                ))}
             </select>
+
           </label>
 
           <label htmlFor="jabatan">
@@ -108,7 +97,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
             <select
               id="jabatan"
               name="jabatan"
-              value={kader.jabatan}
+              value={jabatan}
               onChange={onInputChange}
             >
               <option value="">--Pilih--</option>
@@ -129,4 +118,4 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
   );
 }
 
-export default EditKader;
+export default TambahKader;
