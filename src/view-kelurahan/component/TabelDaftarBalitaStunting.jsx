@@ -3,9 +3,8 @@ import axios from "axios";
 import "../css/tabel-daftar-balita-stunting.css";
 import BASE_URL from "../../base/apiConfig";
 
-function TabelDaftarBalitaStunting({idKelurahan, apiAuth }) {
+function TabelDaftarBalitaStunting({ apiAuth }) {
   const [balita, setBalita] = useState([]);
-  console.log(balita);
 
   useEffect(() => {
     loadDataBalita();
@@ -13,7 +12,10 @@ function TabelDaftarBalitaStunting({idKelurahan, apiAuth }) {
 
   const loadDataBalita = async () => {
     try {
-      const result = await axios.get(`${BASE_URL}/balitas/kelurahan/stunting`);
+      const result = await axios.get(
+        `${BASE_URL}/balitas/kelurahan/stunting`,
+        apiAuth
+      );
       setBalita(result.data.balitas);
     } catch (error) {
       if (error.response) {

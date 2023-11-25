@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/tabel-daftar-balita-semua-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
 
-function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
+function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
   const [balita, setBalita] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
 
@@ -39,8 +39,8 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
 
   const loadPosyandu = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/posyandu`);
-      setPosyandu(response.data);
+      const response = await axios.get(`${BASE_URL}/posyandu`, apiAuth);
+      setPosyandu(response.data.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
     }
@@ -94,7 +94,7 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
 
   const getPosyanduName = (posyanduId) => {
     const posyanduData =
-      posyandu.length > 0 ? posyandu[0].find((p) => p.id === posyanduId) : null;
+      posyandu.length > 0 ? posyandu.find((p) => p.id === posyanduId) : null;
     return posyanduData ? posyanduData.nama : "";
   };
 
@@ -139,13 +139,19 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
                   <td>{getPosyanduName(data.posyandu_id)}</td>
                   <td>{data.umur}</td>
                   <td data-status_tbu={data.status_tbu}>
-                    <div className="status rounded">{data.status_tbu}</div>
+                    <div className={getStatusTBUClass(data.status_tbu)}>
+                      {data.status_tbu}
+                    </div>
                   </td>
                   <td data-status_bbtb={data.status_bbtb}>
-                    <div className="status rounded">{data.status_bbtb}</div>
+                    <div className={getStatusBBTBClass(data.status_bbtb)}>
+                      {data.status_bbtb}
+                    </div>
                   </td>
                   <td data-status_bbu={data.status_bbu}>
-                    <div className="status rounded">{data.status_bbu}</div>
+                    <div className={getStatusBBUClass(data.status_bbu)}>
+                      {data.status_bbu}
+                    </div>
                   </td>
                 </tr>
               ))}

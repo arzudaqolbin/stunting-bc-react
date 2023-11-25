@@ -46,13 +46,17 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
     console.log(formData);
     // ... (tambahkan logika sesuai kebutuhan)
     axios
-      .put(`${BASE_URL}/user/${userId}`, {
-        username: formData.username,
-        password: formData.password_baru,
-      }, apiAuth)
+      .put(
+        `${BASE_URL}/user/${userId}`,
+        {
+          username: formData.username,
+          password: formData.password_baru,
+        },
+        apiAuth
+      )
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        navigate(`/posyandu/${idPosyandu}/profile`);
+        navigate(`/posyandu/profile`);
       })
       .catch((error) => {
         console.error("Error:", error);

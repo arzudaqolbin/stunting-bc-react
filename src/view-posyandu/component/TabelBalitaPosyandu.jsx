@@ -4,7 +4,7 @@ import "../css/tabel-balita-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 
-function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
+function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,8 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   const loadDataBalita = async () => {
     try {
       const result = await axios.get(
-        `${BASE_URL}/balitas/posyandu/${idPosyandu}`
+        `${BASE_URL}/balitas/posyandu/${idPosyandu}`,
+        apiAuth
       );
       setBalita(result.data.balitas);
     } catch (error) {
@@ -141,7 +142,9 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
                     </div>
                   </td>
                   <td>
-                    <Link to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`} >
+                    <Link
+                      to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`}
+                    >
                       <button className="btn btn-info">Info</button>
                     </Link>
                   </td>

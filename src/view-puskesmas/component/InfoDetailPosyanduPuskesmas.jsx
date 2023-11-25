@@ -15,7 +15,7 @@ function InfoDetailPosyanduPuskesmas({idPuskesmas, apiAuth, idPosyandu}) {
     const fetchData = async () => {
         try {
           // nanti ganti api dengan getKader by idPosyandu
-            const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`);
+            const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
             // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
             setPosyandu(result.data);
           } catch (error) {
@@ -31,7 +31,7 @@ function InfoDetailPosyanduPuskesmas({idPuskesmas, apiAuth, idPosyandu}) {
     const fetchData = async () => {
       try {
         // nanti ganti api dengan getKader by idPosyandu
-        const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`);
+        const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth);
         // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
         setKader(result.data.data);
           } catch (error) {
@@ -46,7 +46,7 @@ function InfoDetailPosyanduPuskesmas({idPuskesmas, apiAuth, idPosyandu}) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`);
+            const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`, apiAuth);
             setPuskesmas(result2.data);
             
             // const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
@@ -63,7 +63,7 @@ function InfoDetailPosyanduPuskesmas({idPuskesmas, apiAuth, idPosyandu}) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
+            const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`, apiAuth);
             setUsername(result3.data);
           } catch (error) {
             console.error("Error fetching data:", error);

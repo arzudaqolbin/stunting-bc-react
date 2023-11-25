@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/form-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 
-function FormDataTambahan({idPosyandu, apiAuth, idBalita}) {
+function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
 
@@ -40,7 +40,7 @@ function FormDataTambahan({idPosyandu, apiAuth, idBalita}) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`)
+      .get(`${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`, apiAuth)
       .then((response) => {
         const existingDataTambahan = response.data;
 
@@ -69,12 +69,17 @@ function FormDataTambahan({idPosyandu, apiAuth, idBalita}) {
       if (idData) {
         await axios.put(
           `${BASE_URL}/dataTambahanBalitas/${idData}`,
-          dataTambahan
+          dataTambahan,
+          apiAuth
         );
       } else {
-        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan);
+        await axios.post(
+          `${BASE_URL}/dataTambahanBalitas`,
+          dataTambahan,
+          apiAuth
+        );
       }
-      navigate(`/posyandu/${idPosyandu}/daftar-balita`);
+      navigate(`/posyandu/detail-balita/${idBalita}`);
     } catch (error) {
       if (error.response) {
         console.error(

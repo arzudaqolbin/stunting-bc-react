@@ -5,7 +5,7 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 
-function EditKader({idKelurahan, apiAuth, idKader}) {
+function EditKader({ apiAuth, idKader }) {
   let navigate = useNavigate();
 
   const [kader, setKader] = useState({
@@ -22,7 +22,7 @@ function EditKader({idKelurahan, apiAuth, idKader}) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/kader/${idKader}`)
+      .get(`${BASE_URL}/kader/${idKader}`, apiAuth)
       .then((response) => {
         setKader(response.data.data);
         setNamaLama(response.data.data.nama);
@@ -59,7 +59,7 @@ function EditKader({idKelurahan, apiAuth, idKader}) {
     e.preventDefault();
 
     try {
-      await axios.put(`${BASE_URL}/kader/${idKader}`, kader);
+      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth);
       navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
     } catch (error) {
       if (error.response) {

@@ -4,7 +4,7 @@ import BASE_URL from "../../base/apiConfig";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
+function InfoDetailPosyanduKelurahan({apiAuth, idPosyandu}) {
 
   const [kader, setKader] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
@@ -16,9 +16,9 @@ function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
     const fetchData = async () => {
         try {
           // nanti ganti api dengan getKader by idPosyandu
-            const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`);
+            const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
             // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-            setPosyandu(result.data);
+            setPosyandu(result.data.data);
           } catch (error) {
             console.error("Error fetching data:", error);
           }
@@ -32,7 +32,7 @@ function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
     const fetchData = async () => {
       try {
         // nanti ganti api dengan getKader by idPosyandu
-        const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`);
+        const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth);
         // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
         setKader(result.data.data);
           } catch (error) {
@@ -47,8 +47,8 @@ function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`);
-            setPuskesmas(result2.data);
+            const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`, apiAuth);
+            setPuskesmas(result2.data.data);
             
             // const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
             // setUsername(result3.data);
@@ -64,8 +64,8 @@ function InfoDetailPosyanduKelurahan({idKelurahan, apiAuth, idPosyandu}) {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
-            setUsername(result3.data);
+            const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`, apiAuth);
+            setUsername(result3.data.data);
           } catch (error) {
             console.error("Error fetching data:", error);
           }
