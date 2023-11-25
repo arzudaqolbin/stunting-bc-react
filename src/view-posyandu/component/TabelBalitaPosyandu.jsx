@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import $ from 'jquery';
 import 'datatables.net';
 import { ClipLoader } from 'react-spinners';
+// import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
@@ -46,8 +47,38 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
   }, [balita]);
 
   useEffect(() => {
-    loadDataBalita();
-  }, []);
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (!$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+          "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+          "infoEmpty": "Tidak ada data tersedia",
+          "infoFiltered": "(Disaring dari _MAX_ data total)",
+          "decimal": "",
+          "emptyTable": "Data tidak tersedia",
+          "loadingRecords": "Memuat...",
+          "processing": "Memproses...",
+          "search": 'Cari:  <i class="bi bi-search"></i> ',
+          "searchPlaceholder": 'Cari data balita...',
+          "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            // "next": "Selanjutnya",
+            // "previous": "Sebelumnya"
+            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+          },
+          "aria": {
+            "sortAscending": ": klik untuk mengurutkan A-Z",
+            "sortDescending": ": klik untuk mengurutkan Z-A"
+          }
+        }
+      });
+    }
+  }, [balita]);
 
   const loadDataBalita = async () => {
     try {
@@ -77,21 +108,81 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
     }
   };
 
-  const getStatusTBUClass = (status) => {
-    if (status === "Sangat Pendek") {
+  useEffect(() => {
+    loadDataBalita();
+  }, []);
+
+  // Fungsi applyStatusStyle untuk mengatur status gaya CSS
+  function applyStatusStyle(element) {
+    element.style.color = "white";
+    element.style.borderRadius = "10px";
+    element.style.padding = "1px";
+    element.style.margin = "1px";
+
+    var statusValue = element.textContent;
+
+    switch (statusValue) {
+      // status TB/U
+      case "Sangat Pendek":
+        element.style.backgroundColor = "darkred";
+        break;
+      case "Pendek":
+        element.style.backgroundColor = "red";
+        break;
+      case "Normal":
+        element.style.backgroundColor = "limegreen";
+        break;
+      case "Tinggi":
+        element.style.backgroundColor = "darkblue";
+        break;
+      // status BB/TB
+      case "Gizi Buruk":
+        element.style.backgroundColor = "darkred";
+        break;
+      case "Gizi Kurang":
+        element.style.backgroundColor = "red";
+        break;
+      case "Risiko Lebih":
+        element.style.backgroundColor = "dodgerblue";
+        break;
+      case "Gizi Lebih":
+        element.style.backgroundColor = "mediumblue";
+        break;
+      case "Obesitas":
+        element.style.backgroundColor = "darkblue";
+        break;
+      // status BB/U
+      case "BB Sangat Kurang":
+        element.style.backgroundColor = "darkred";
+        break;
+      case "BB Kurang":
+        element.style.backgroundColor = "red";
+        break;
+      case "Risiko BB Lebih":
+        element.style.backgroundColor = "darkblue";
+        break;
+      default:
+        // Default background color for unknown status
+        element.style.backgroundColor = "black";
+    }
+  };
+
+  const getStatusBBUClass = (status) => {
+    if (status === "BB Sangat Kurang") {
       return "status rounded darkred";
-    } else if (status === "Pendek") {
+    } else if (status === "BB Kurang") {
       return "status rounded red";
     } else if (status === "Normal") {
       return "status rounded limegreen";
-    } else if (status === "Tinggi") {
+    } else if (status === "Risiko BB Lebih") {
       return "status rounded darkblue";
     } else {
       return "status rounded black";
     }
   };
 
-  const getStatusBBUClass = (status) => {
+  // perbaiki ini pak
+  const getStatusTBUClass = (status) => {
     if (status === "BB Sangat Kurang") {
       return "status rounded darkred";
     } else if (status === "BB Kurang") {

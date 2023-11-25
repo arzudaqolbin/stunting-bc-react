@@ -45,7 +45,7 @@ function applyStatusStyle(statusValue) {
   }
 }
 
-function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita}) {
+function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
 
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
@@ -61,10 +61,10 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita}) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [dataPengukuran]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,24 +74,24 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita}) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [tanggalLahir]);
 
   const handleValidate = () => {
     Swal.fire({
-        title: "Apakah kamu yakin?",
-        text: "Memvalidasi data pengukuran",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, yakin!",
-        cancelButtonText: "Kembali"
-        }).then((result) => {
-        if (result.isConfirmed) {
-            // lakukan api validasiiii
-        }
+      title: "Apakah kamu yakin?",
+      text: "Memvalidasi data pengukuran",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // lakukan api validasiiii
+      }
     });
   }
 
@@ -127,42 +127,42 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita}) {
             </thead>
             <tbody>
               {dataPengukuran.map((pengukuran, index) => (
-              <tr key={pengukuran.id}>
-                <th scope="row">{index+1}</th>
-                <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
-                <td>{format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}</td>
-                <td>{pengukuran.umur}</td>
-                <td>{pengukuran.posisi_balita}</td>
-                <td>{pengukuran.berat_badan}</td>
-                <td>{pengukuran.tinggi_badan}</td>
-                <td data-status_tbu="Sangat Pendek">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
+                <tr key={pengukuran.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
+                  <td>{format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}</td>
+                  <td>{pengukuran.umur}</td>
+                  <td>{pengukuran.posisi_balita}</td>
+                  <td>{pengukuran.berat_badan}</td>
+                  <td>{pengukuran.tinggi_badan}</td>
+                  <td data-status_tbu="Sangat Pendek">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
                   </td>
-                <td data-status_bbtb="Gizi Buruk">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
-                </td>
-                <td data-status_bbu="BB Sangat Kurang">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbu)}>{pengukuran.status_bbu}</div>
-                </td>
-                <td>{pengukuran.rambu_gizi}</td>
-                <td data-status_kms="Hijau Atas">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.kms)}>{pengukuran.kms}</div>
-                </td>
-                <td>
+                  <td data-status_bbtb="Gizi Buruk">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
+                  </td>
+                  <td data-status_bbu="BB Sangat Kurang">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbu)}>{pengukuran.status_bbu}</div>
+                  </td>
+                  <td>{pengukuran.rambu_gizi}</td>
+                  <td data-status_kms="Hijau Atas">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.kms)}>{pengukuran.kms}</div>
+                  </td>
+                  <td>
                     <Link to={`puskesmas/edit-pengukuran/${pengukuran.id}`}>
-                        <i class="fa-solid fa-pen-to-square"></i>
+                      <i class="fa-solid fa-pen-to-square"></i>
                     </Link>
-                  {pengukuran.validasi == true ? 
-                    <div className="tervalidasi rounded">Tervalidasi</div>
-                  :
-                    <Link onClick={handleValidate}>
+                    {pengukuran.validasi == true ?
+                      <div className="tervalidasi rounded">Tervalidasi</div>
+                      :
+                      <Link onClick={handleValidate}>
                         {/* <button className="fa-solid fa-pen-to-square"></button> */}
                         <i class="fa-solid fa-circle-check mx-2" style="color: #408d30;"></i>
-                    </Link>
-                  }
-                </td>
-              </tr>
-                
+                      </Link>
+                    }
+                  </td>
+                </tr>
+
               ))}
             </tbody>
           </table>

@@ -1,17 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import "../css/info-detail-puskesmas-kelurahan.css";
 import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
+// import $ from 'jquery';
+// import 'datatables.net';
+// import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
-function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
-
+function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);
   const [username, setUsername] = useState([]);
   const [loading, setLoading] = useState(true)
-  
+
   // fetch data Puskesmas
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -24,10 +26,10 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
   //           console.error("Error fetching data:", error);
   //         }
   //       };
-        
+
   //   fetchData();
   // }, [idPuskesmas]);
-  
+
   // // fetch data Posyandu
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -39,10 +41,10 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
   //           console.error("Error fetching data:", error);
   //         }
   //       };
-        
+
   //   fetchData();
   // }, [idPuskesmas]);
-  
+
   // // fetch data Username
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -53,7 +55,7 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
   //           console.error("Error fetching data:", error);
   //         }
   //       };
-        
+
   //   fetchData();
   // }, [puskesmas.user_id]);
 
@@ -82,116 +84,116 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
 
 
 
-    return (
-      <>
-    {
-      loading ?(
-      <div className='text-center'>
-        <ClipLoader
-          loading={loading}
-          size={150}
-        />
-      </div>) : (
-        <main className="container">
-        <div className="container-fluid">
-            {/* Mulai isi kontennya disini */}
-            <h2 className="custom-judul">{puskesmas.nama}</h2>
+  return (
+    <>
+      {
+        loading ? (
+          <div className='text-center'>
+            <ClipLoader
+              loading={loading}
+              size={150}
+            />
+          </div>) : (
+          <main className="container">
+            <div className="container-fluid">
+              {/* Mulai isi kontennya disini */}
+              <h2 className="custom-judul">{puskesmas.nama}</h2>
 
-            <p className="h6" style={{ fontWeight: 'bold' }}>Detail Akun</p>
-            <ul className="list-unstyled">
-            <li>
-                <ul style={{ fontSize: '15px' }}>
-                <table>
-                    <tr>
-                    <td>Nama Puskesmas &nbsp;</td>
-                    <td>: {puskesmas.nama}</td>
-                    </tr>
-                    <tr>
-                    <td>Kepala Puskesmas &nbsp;</td>
-                    <td>: <strong>Ini belum diupdate DB nya</strong></td>
-                    </tr>
-                    <tr>
-                    <td>Alamat &nbsp;</td>
-                    <td>: {puskesmas.alamat}</td>
-                    </tr>
-                    <tr>
-                    <td>Nomor Telepon &nbsp;</td>
-                    <td>: {puskesmas.nomor_telepon}</td>
-                    </tr>
-                    <tr>
-                    <td>Username &nbsp;</td>
-                    <td>: {username.username}</td>
-                    </tr>
-                </table>
-                </ul>
-            </li>
-            </ul>
+              <p className="h6" style={{ fontWeight: 'bold' }}>Detail Akun</p>
+              <ul className="list-unstyled">
+                <li>
+                  <ul style={{ fontSize: '15px' }}>
+                    <table>
+                      <tr>
+                        <td>Nama Puskesmas &nbsp;</td>
+                        <td>: {puskesmas.nama}</td>
+                      </tr>
+                      <tr>
+                        <td>Kepala Puskesmas &nbsp;</td>
+                        <td>: <strong>Ini belum diupdate DB nya</strong></td>
+                      </tr>
+                      <tr>
+                        <td>Alamat &nbsp;</td>
+                        <td>: {puskesmas.alamat}</td>
+                      </tr>
+                      <tr>
+                        <td>Nomor Telepon &nbsp;</td>
+                        <td>: {puskesmas.nomor_telepon}</td>
+                      </tr>
+                      <tr>
+                        <td>Username &nbsp;</td>
+                        <td>: {username.username}</td>
+                      </tr>
+                    </table>
+                  </ul>
+                </li>
+              </ul>
 
-            <div style={{ textAlign: 'right' }}>
+              <div style={{ textAlign: 'right' }}>
                 <Link to={`kelurahan/edit-akun-puskesmas/${puskesmas.id}`}>
-                    <button className="btn">Edit Data</button>
+                  <button className="btn">Edit Data</button>
                 </Link>
-            </div>
+              </div>
 
-            <p className="h6" style={{ fontWeight: 'bold' }}>Posyandu Binaan</p>
-            <div className="p-3 mb-2 bg-light custom-border rounded">
-            <table className="table custom-table">
-                <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama Posyandu</th>
-                    <th scope="col">Alamat</th>
-                    <th scope="col">Nomor Telepon</th>
-                    <th scope="col">Detail</th>
-                </tr>
-                </thead>
-                <tbody>
+              <p className="h6" style={{ fontWeight: 'bold' }}>Posyandu Binaan</p>
+              <div className="p-3 mb-2 bg-light custom-border rounded">
+                <table className="table custom-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nama Posyandu</th>
+                      <th scope="col">Alamat</th>
+                      <th scope="col">Nomor Telepon</th>
+                      <th scope="col">Detail</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {
-                        posyandu.map((poss, idx) => (
-                            <tr key={poss.id}>
-                                <th scope="row">{idx}</th>
-                                <td>{poss.nama}</td>
-                                <td>{poss.alamat}</td>
-                                <td>{poss.nomor_telepon}</td>
-                                <td>
-                                    <Link to={`/kelurahan/detail-posyandu/${poss.id}`}>
-                                        <button className="btn btn-info">Info</button>
-                                    </Link>
-                                </td>
-                            </tr>
+                      posyandu.map((poss, idx) => (
+                        <tr key={poss.id}>
+                          <th scope="row">{idx}</th>
+                          <td>{poss.nama}</td>
+                          <td>{poss.alamat}</td>
+                          <td>{poss.nomor_telepon}</td>
+                          <td>
+                            <Link to={`/kelurahan/detail-posyandu/${poss.id}`}>
+                              <button className="btn btn-info">Info</button>
+                            </Link>
+                          </td>
+                        </tr>
 
-                        ))
+                      ))
                     }
-                {/* <tr>
-                    <th scope="row">2</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
-                </tr> */}
-                </tbody>
-            </table>
-            </div>
+                    {/* <tr>
+                      <th scope="row">2</th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                      <button className="btn btn-info">Info</button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th scope="row">3</th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                      <button className="btn btn-info">Info</button>
+                      </td>
+                  </tr> */}
+                  </tbody>
+                </table>
+              </div >
+            </div >
 
             <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-            <Link to={`kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
+              <Link to={`kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
             </div>
-        </div>
-        </main>)
-    }
+          </main >)
+      }
     </>
-    );
+  );
 }
 
 export default InfoDetailPuskesmasKelurahan;

@@ -292,7 +292,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                     <div className="accordion-body">
                       {/* Isi komponen accordion disini */}
                     </div>
-                    <TabelPengukuranBalitaPosyandu apiAuth={apiAuth} idBalita={idBalita} />
+                    <TabelPengukuranBalitaPosyandu idPosyandu={idPosyandu} apiAuth={apiAuth} idBalita={idBalita} />
                   </div>
                   {/* <TabelPengukuranBalitaPosyandu idBalita={idBalita} /> */}
                 </div>

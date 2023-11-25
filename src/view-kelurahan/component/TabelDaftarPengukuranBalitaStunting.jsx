@@ -44,7 +44,7 @@ function applyStatusStyle(statusValue) {
   }
 }
 
-function TabelPengukuranBalitaStunting({ apiAuth, idBalita}) {
+function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
 
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
@@ -60,10 +60,10 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita}) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [dataPengukuran]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,7 +73,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita}) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [tanggalLahir]);
 
@@ -109,28 +109,28 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita}) {
             </thead>
             <tbody>
               {dataPengukuran.map((pengukuran, index) => (
-              <tr key={pengukuran.id}>
-                <th scope="row">{index+1}</th>
-                <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
-                <td>{format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}</td>
-                <td>{pengukuran.umur}</td>
-                <td>{pengukuran.posisi_balita}</td>
-                <td>{pengukuran.berat_badan}</td>
-                <td>{pengukuran.tinggi_badan}</td>
-                <td data-status_tbu="Sangat Pendek">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
+                <tr key={pengukuran.id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
+                  <td>{format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}</td>
+                  <td>{pengukuran.umur}</td>
+                  <td>{pengukuran.posisi_balita}</td>
+                  <td>{pengukuran.berat_badan}</td>
+                  <td>{pengukuran.tinggi_badan}</td>
+                  <td data-status_tbu="Sangat Pendek">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
                   </td>
-                <td data-status_bbtb="Gizi Buruk">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
-                </td>
-                <td data-status_bbu="BB Sangat Kurang">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbu)}>{pengukuran.status_bbu}</div>
-                </td>
-                <td>{pengukuran.rambu_gizi}</td>
-                <td data-status_kms="Hijau Atas">
-                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.kms)}>{pengukuran.kms}</div>
-                </td>
-                {/* <td>
+                  <td data-status_bbtb="Gizi Buruk">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
+                  </td>
+                  <td data-status_bbu="BB Sangat Kurang">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbu)}>{pengukuran.status_bbu}</div>
+                  </td>
+                  <td>{pengukuran.rambu_gizi}</td>
+                  <td data-status_kms="Hijau Atas">
+                    <div className="validasi rounded" style={applyStatusStyle(pengukuran.kms)}>{pengukuran.kms}</div>
+                  </td>
+                  {/* <td>
                   {pengukuran.validasi == true ? 
                     <div className="tervalidasi rounded">Tervalidasi</div>
                   :
@@ -139,8 +139,8 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita}) {
                   </Link>
                   }
                 </td> */}
-              </tr>
-                
+                </tr>
+
               ))}
             </tbody>
           </table>

@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-kelurahan.css";
 import { ClipLoader } from 'react-spinners';
+import $ from 'jquery';
+import 'datatables.net';
+// import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
-function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
+function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
 
     const [posyanduList, setPosyanduList] = useState([]);
     const [puskesmasList, setPuskesmasList] = useState([]);
@@ -13,11 +16,45 @@ function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        // Inisialisasi DataTable hanya pada mounting pertama
+        if (!$.fn.DataTable.isDataTable('#myTable')) {
+            $('#myTable').DataTable({
+                "aaSorting": [],
+                "language": {
+                    "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+                    "zeroRecords": "Data tidak ditemukan",
+                    "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                    "infoEmpty": "Tidak ada data tersedia",
+                    "infoFiltered": "(Disaring dari _MAX_ data total)",
+                    "decimal": "",
+                    "emptyTable": "Data tidak tersedia",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Memproses...",
+                    "search": 'Cari:  <i class="bi bi-search"></i> ',
+                    "searchPlaceholder": 'Cari data balita...',
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        // "next": "Selanjutnya",
+                        // "previous": "Sebelumnya"
+                        "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
+                        "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+                    },
+                    "aria": {
+                        "sortAscending": ": klik untuk mengurutkan A-Z",
+                        "sortDescending": ": klik untuk mengurutkan Z-A"
+                    }
+                }
+            });
+        }
+    }, []);
+
+    useEffect(() => {
         // Panggil API untuk mendapatkan daftar posyandu
         axios.get(`${BASE_URL}/posyandu`, apiAuth)
             .then(response => {
                 // setPosyanduList(response.data.data);
-                setPosyanduList(response.data);
+                setPosyanduList(response.data.data);
                 // console.log(response.data);
             })
             .catch(error => {
@@ -35,87 +72,65 @@ function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
         setLoading(false)
     }, []);
 
-    const handlePuskesmasChange = (e) => {
-        setSelectedPuskesmas(e.target.value);
-    };
+    // const handlePuskesmasChange = (e) => {
+    //     console.log(e.target.val);
+    //     setSelectedPuskesmas(e.target.value);
+    // };
 
-    const filteredPosyanduList = selectedPuskesmas
-        ? posyanduList.filter(posyandu => posyandu.puskesmas_id === parseInt(selectedPuskesmas))
-        : posyanduList;
+    //     useEffect(() => {
+    //         handlePuskesmasChange();
+    //     }, []);
 
     return (
         <>
-        {
-          loading ?(
-          <div className='text-center'>
-            <ClipLoader
-              loading={loading}
-              size={150}
-            />
-          </div>) : (
-        <main className="container">
-            <div className="container-fluid">
-                {/* Mulai isi kontennya disini */}
-                <h2 className="custom-judul">Daftar Posyandu di Kelurahan Bidara Cina</h2>
+            {
+                loading ? (
+                    <div className='text-center'>
+                        <ClipLoader
+                            loading={loading}
+                            size={150}
+                        />
+                    </div>) : (
+                    <main className="container">
+                        {/* Mulai isi kontennya disini */}
+                        <h2 className="custom-judul">Daftar Posyandu di Kelurahan Bidara Cina</h2>
 
-                <form className="d-flex align-items-center">
-                    <div className="mb-3">
-                        <label htmlFor="puskesmasDropdown" className="form-label">Filter berdasarkan Puskesmas</label>
-                        <select
-                            id="puskesmasDropdown"
-                            className="form-select"
-                            value={selectedPuskesmas}
-                            onChange={handlePuskesmasChange}
-                        >
-                            <option value="">Semua Puskesmas</option>
-                            {puskesmasList.map(puskesmas => (
-                                <option key={puskesmas.id} value={puskesmas.id}>
-                                    {puskesmas.nama}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <input className="form-control me-2" type="text" placeholder="Cari nama posyandu..." aria-label="Search" />
-                    <button className="btn btn-success btn-rounded btn-sm" type="submit">Cari</button>
-                </form>
+                        <div className='table-responsive'>
+                            <table id="myTable" className="table custom-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nama Posyandu</th>
+                                        <th scope="col">Alamat</th>
+                                        <th scope="col">Nomor Telepon</th>
+                                        {/* <th scope="col">Nama Puskesmas</th> */}
+                                        <th scope="col">Lihat Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {posyanduList.map(posyandu => (
+                                        <tr key={posyandu.id}>
+                                            <th scope="row">{posyandu.id}</th>
+                                            <td>{posyandu.nama}</td>
+                                            <td>{posyandu.alamat}</td>
+                                            <td>{posyandu.nomor_telepon}</td>
+                                            {/* <td>{posyandu.puskesmas.nama}</td> */}
+                                            <td>
+                                                <Link to={`/kelurahan/detail-posyandu/${posyandu.id}`} className="btn btn-info">Info</Link>
+                                                <Link to={`/kelurahan/edit-posyandu/${posyandu.id}`} className="btn btn-warning">Edit</Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div className="p-3 mb-2 bg-light custom-border rounded">
-                    <table className="table custom-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nama Posyandu</th>
-                                <th scope="col">Alamat</th>
-                                <th scope="col">Nomor Telepon</th>
-                                {/* <th scope="col">Nama Puskesmas</th> */}
-                                <th scope="col">Lihat Detail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredPosyanduList.map(posyandu => (
-                                <tr key={posyandu.id}>
-                                    <th scope="row">{posyandu.id}</th>
-                                    <td>{posyandu.nama}</td>
-                                    <td>{posyandu.alamat}</td>
-                                    <td>{posyandu.nomor_telepon}</td>
-                                    {/* <td>{posyandu.puskesmas.nama}</td> */}
-                                    <td>
-                                        <Link to={`/kelurahan/detail-posyandu/${posyandu.id}`} className="btn btn-info">Info</Link>
-                                        <Link to={`/kelurahan/edit-posyandu/${posyandu.id}`} className="btn btn-warning">Edit</Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-                    <Link to="/kelurahan/tambah-posyandu" className="btn btn-success btn-rounded btn-sm">+ Tambah Posyandu</Link>
-                </div>
-            </div>
-        </main>)
-    }
-    </>
+                        <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
+                            <Link to="/kelurahan/tambah-posyandu" className="btn btn-success btn-rounded btn-sm">+ Tambah Posyandu</Link>
+                        </div>
+                    </main>)
+            }
+        </>
     );
 }
 

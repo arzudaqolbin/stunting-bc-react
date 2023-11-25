@@ -4,6 +4,9 @@ import "../css/tabel-daftar-balita-semua-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
 import Statistik from "../../view-publik/component/Statistik";
 import { ClipLoader } from 'react-spinners';
+import $ from 'jquery';
+import 'datatables.net';
+// import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
   const [balita, setBalita] = useState([]);
@@ -11,9 +14,38 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadDataBalita();
-    loadPosyandu();
-  }, []);
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (!$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+          "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+          "infoEmpty": "Tidak ada data tersedia",
+          "infoFiltered": "(Disaring dari _MAX_ data total)",
+          "decimal": "",
+          "emptyTable": "Data tidak tersedia",
+          "loadingRecords": "Memuat...",
+          "processing": "Memproses...",
+          "search": 'Cari:  <i class="bi bi-search"></i> ',
+          "searchPlaceholder": 'Cari data balita...',
+          "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            // "next": "Selanjutnya",
+            // "previous": "Sebelumnya"
+            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+          },
+          "aria": {
+            "sortAscending": ": klik untuk mengurutkan A-Z",
+            "sortDescending": ": klik untuk mengurutkan Z-A"
+          }
+        }
+      });
+    }
+  }, [balita]);
 
   const loadDataBalita = async () => {
     try {
