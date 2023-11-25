@@ -8,12 +8,11 @@ import { ClipLoader } from 'react-spinners';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
-
+const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
   // nunggu setting router link
-  const[biodata, setBiodata] = useState([]);
-  const[riwayat, setRiwayat] = useState([]);
-  const[namaPosyandu, setNamaPosyandu] = useState([]);
+  const [biodata, setBiodata] = useState([]);
+  const [riwayat, setRiwayat] = useState([]);
+  const [namaPosyandu, setNamaPosyandu] = useState([]);
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate()
 
@@ -34,10 +33,10 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
       console.error("Error fetching balita data:", error);
     }
 
-    
+
   };
 
-  const getDataTambahan = async() => {
+  const getDataTambahan = async () => {
     try {
       const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
       setRiwayat(dataTambahanBalita.data);
@@ -68,26 +67,28 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
-    return value === 1 ? 'Ya' : 'Tidak';
+    return value === 1 ? "Ya" : "Tidak";
   };
-  
+
   // console.log(riwayat);
 
   return (
     <>
-    {
-      loading ?(
-      <div className='text-center'>
-        <ClipLoader
-          loading={loading}
-          size={150}
-        />
-      </div>) : (
-      
-      <main className="container">
+      {loading ? (
+        <div className="text-center">
+          <ClipLoader loading={loading} size={150} />
+        </div>
+      ) : (
+        <main className="container">
           <div className="container-fluid">
             <div className="container">
-              <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
+              <h2
+                style={{
+                  textAlign: "center",
+                  marginTop: "50px",
+                  marginBottom: "50px",
+                }}
+              >
                 Detail Balita
               </h2>
               <div className="accordion mb-3" id="accordionExample">
@@ -187,111 +188,135 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body">
-                      {riwayat.length === 0 ? 
-                      
-                      <div>
-                        <div>Belum mengisikan data tambahan riwayat</div>
-                        <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Tambah Data Tambahan</Link>
-                      </div>
+                      {riwayat.length === 0 ?
 
-                      : 
-                      <div>
-                      <table className="table table-hover">
-                        <tbody>
-                          <tr>
-                            <th scope="row">Asi Eksklusif</th>
-                            <td> : &nbsp;{convertStr(riwayat.asi_eksklusif)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">IMD</th>
-                            <td> : &nbsp;{convertStr(riwayat.imd)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Penyakit Penyerta</th>
-                            <td> : &nbsp;{convertStr(riwayat.penyakit_penyerta)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Riwayat Sakit</th>
-                            <td> : &nbsp;{riwayat.riwayat_sakit}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Riwayat Imunisasi</th>
-                            <td> : &nbsp;{convertStr(riwayat.riwayat_imunisasi)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Riwayat Ibu Hamil KEK</th>
-                            <td> : &nbsp;{convertStr(riwayat.riwayat_ibu_hamil_kek)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Riwayat Ibu Anemia</th>
-                            <td> : &nbsp;Tidak</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Kepemilikan Jamban Sehat</th>
-                            <td> : &nbsp;{convertStr(riwayat.kepemilikan_jamban_sehat)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Akses Air Minum</th>
-                            <td> : &nbsp;Air isi ulang</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">KTP</th>
-                            <td> : &nbsp;{riwayat.ktp}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Kepemilikan BPJS/KIS/JKN/KAJ</th>
-                            <td> : &nbsp;{riwayat.jaminan_kesehatan}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Akses Terhadap Makanan Sehat</th>
-                            <td> : &nbsp;{convertStr(riwayat.akses_makanan_sehat)}</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Sudah Konfirmasi ke DSA</th>
-                            <td> : &nbsp;{convertStr(riwayat.konfirmasi_dsa)}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Edit Data Tambahan</Link>
-                      </div>
+                        <div>
+                          <div>Belum mengisikan data tambahan riwayat</div>
+                          <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Tambah Data Tambahan</Link>
+                        </div>
+
+                        :
+                        <div>
+                          <table className="table table-hover">
+                            <tbody>
+                              <tr>
+                                <th scope="row">Asi Eksklusif</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;{convertStr(riwayat.asi_eksklusif)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">IMD</th>
+                                <td> : &nbsp;{convertStr(riwayat.imd)}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Penyakit Penyerta</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;{convertStr(riwayat.penyakit_penyerta)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Riwayat Sakit</th>
+                                <td> : &nbsp;{riwayat.riwayat_sakit}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Riwayat Imunisasi</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;{convertStr(riwayat.riwayat_imunisasi)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Riwayat Ibu Hamil KEK</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;
+                                  {convertStr(riwayat.riwayat_ibu_hamil_kek)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Riwayat Ibu Anemia</th>
+                                <td> : &nbsp;Tidak</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Kepemilikan Jamban Sehat</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;
+                                  {convertStr(riwayat.kepemilikan_jamban_sehat)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Akses Air Minum</th>
+                                <td> : &nbsp;Air isi ulang</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">KTP</th>
+                                <td> : &nbsp;{riwayat.ktp}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Kepemilikan BPJS/KIS/JKN/KAJ</th>
+                                <td> : &nbsp;{riwayat.jaminan_kesehatan}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Akses Terhadap Makanan Sehat</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;{convertStr(riwayat.akses_makanan_sehat)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Sudah Konfirmasi ke DSA</th>
+                                <td>
+                                  {" "}
+                                  : &nbsp;{convertStr(riwayat.konfirmasi_dsa)}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Edit Data Tambahan</Link>
+                        </div>
                       }
                     </div>
                   </div>
                 </div>
                 <div className="accordion-item">
-                    <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                        Data Pengukuran
-                        </button>
-                    </h2>
-                    <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                        {/* Isi komponen accordion disini */}
-                        </div>
-                        <TabelPengukuranBalitaPosyandu apiAuth={apiAuth} idBalita={idBalita}/>
+                  <h2 className="accordion-header">
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      Data Pengukuran
+                    </button>
+                  </h2>
+                  <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div className="accordion-body">
+                      {/* Isi komponen accordion disini */}
                     </div>
+                    <TabelPengukuranBalitaPosyandu apiAuth={apiAuth} idBalita={idBalita} />
+                  </div>
+                  <TabelPengukuranBalitaPosyandu idBalita={idBalita} />
                 </div>
-                <div className="accordion-item">
-                    <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
-                        Grafik Stunting
-                        </button>
-                    </h2>
-                    <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                        <div className="accordion-body">
-                        {/* Isi komponen accordion disini */}
-                        <LineChart_Umur_0_24 apiAuth={apiAuth} idBalita={idBalita}/>
-                        <LineChart_Umur_24_60 apiAuth={apiAuth} idBalita={idBalita}/>
-                        </div>
-                    </div>
+              </div>
+              <div className="accordion-item">
+                <h2 className="accordion-header">
+                  <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                    Grafik Stunting
+                  </button>
+                </h2>
+                <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                  <div className="accordion-body">
+                    {/* Isi komponen accordion disini */}
+                    <LineChart_Umur_0_24 apiAuth={apiAuth} idBalita={idBalita} />
+                    <LineChart_Umur_24_60 apiAuth={apiAuth} idBalita={idBalita} />
+                  </div>
                 </div>
+              </div>
             </div>
-            </div>
-          </div>
-        </main>)
-    }
+          </div >
+        </main >
+      )}
     </>
   );
-}
+};
 
 export default DetailBalitaPosyandu;

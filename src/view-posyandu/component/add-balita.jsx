@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita({idPosyandu, apiAuth }) {
+function AddBalita({ apiAuth }) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({
@@ -24,8 +24,6 @@ function AddBalita({idPosyandu, apiAuth }) {
     status_bbu: "Normal",
     status_bbtb: "Normal",
   });
-
-  console.log(balita);
 
   const {
     nik,
@@ -46,9 +44,9 @@ function AddBalita({idPosyandu, apiAuth }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/posyandu`)
+      .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
-        setPosyanduOptions(response.data);
+        setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
@@ -58,8 +56,9 @@ function AddBalita({idPosyandu, apiAuth }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -81,8 +80,8 @@ function AddBalita({idPosyandu, apiAuth }) {
     e.preventDefault();
 
     try {
-      await axios.post(`${BASE_URL}/balitas`, balita);
-      navigate(`/posyandu/${idPosyandu}/daftar-balita`);
+      const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
+      navigate(`/posyandu/detail-balita/${respon.data.id}`);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -289,8 +288,8 @@ function AddBalita({idPosyandu, apiAuth }) {
               onChange={(e) => onInputChange(e)}
             >
               <option value="">--Pilih--</option>
-              {posyanduOptions[0] &&
-                posyanduOptions[0].map((option) => (
+              {posyanduOptions &&
+                posyanduOptions.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.nama}
                   </option>

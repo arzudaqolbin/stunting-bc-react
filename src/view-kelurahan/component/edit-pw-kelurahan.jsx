@@ -4,24 +4,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwKelurahan() {
+function EditPwKelurahan(userId, idKelurahan, apiAuth) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: "",
     username: "",
     password_baru: "",
     konfirmasi_password: "",
   });
-  let $users = 'puskesbidcin1';
 
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
-    axios.get(`${BASE_URL}/user/username/${$users}`) // Ganti dengan endpoint yang sesuai
+    axios
+      .get(`${BASE_URL}/user/${userId}`, apiAuth) // Ganti dengan endpoint yang sesuai
       .then((response) => {
-        const userData = response.data.data;
+        const userData = response.data;
         // Mengisi state formData dengan data user yang sedang login
         setFormData({
-          id: userData.id,
           username: userData.username,
           password_baru: "",
           konfirmasi_password: "",
@@ -45,13 +43,11 @@ function EditPwKelurahan() {
       return;
     }
 
-    console.log(formData);
-    // ... (tambahkan logika sesuai kebutuhan)
-    axios.put(`${BASE_URL}/user/${formData.id}`, {
-      username: formData.username,
-      password: formData.password_baru,
-      confirm_password: formData.konfirmasi_password
-    })
+    axios
+      .put(`${BASE_URL}/user/${userId}`, {
+        username: formData.username,
+        password: formData.password_baru,
+      })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");

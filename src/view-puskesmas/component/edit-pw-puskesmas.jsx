@@ -43,8 +43,6 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
       return;
     }
 
-    console.log(formData);
-    // ... (tambahkan logika sesuai kebutuhan)
     axios
       .put(`${BASE_URL}/user/${userId}`, {
         username: formData.username,
@@ -52,7 +50,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
       })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        navigate(`/puskesmas/${idPuskesmas}/profile`);
+        navigate(`/puskesmas/profile`);
       })
       .catch((error) => {
         console.error("Error:", error);

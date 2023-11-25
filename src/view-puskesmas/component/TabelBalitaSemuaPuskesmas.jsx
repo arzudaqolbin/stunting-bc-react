@@ -5,7 +5,7 @@ import BASE_URL from "../../base/apiConfig";
 import Statistik from "../../view-publik/component/Statistik";
 import { ClipLoader } from 'react-spinners';
 
-function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
+function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
   const [balita, setBalita] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
   const [loading, setLoading] = useState(true)
@@ -43,162 +43,139 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
 
   const loadPosyandu = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/posyandu`,apiAuth);
-      setPosyandu(response.data);
+      const response = await axios.get(`${BASE_URL}/posyandu`, apiAuth);
+      setPosyandu(response.data.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
     }
   };
 
-  // Fungsi applyStatusStyle untuk mengatur status gaya CSS
-  function applyStatusStyle(element) {
-    element.style.color = "white";
-    element.style.borderRadius = "10px";
-    element.style.padding = "1px";
-    element.style.margin = "1px";
-
-    var statusValue = element.textContent;
-
-    switch (statusValue) {
-      // status TB/U
-      case "Sangat Pendek":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "Pendek":
-        element.style.backgroundColor = "red";
-        break;
-      case "Normal":
-        element.style.backgroundColor = "limegreen";
-        break;
-      case "Tinggi":
-        element.style.backgroundColor = "darkblue";
-        break;
-      // status BB/TB
-      case "Gizi Buruk":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "Gizi Kurang":
-        element.style.backgroundColor = "red";
-        break;
-      case "Risiko Lebih":
-        element.style.backgroundColor = "dodgerblue";
-        break;
-      case "Gizi Lebih":
-        element.style.backgroundColor = "mediumblue";
-        break;
-      case "Obesitas":
-        element.style.backgroundColor = "darkblue";
-        break;
-      // status BB/U
-      case "BB Sangat Kurang":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "BB Kurang":
-        element.style.backgroundColor = "red";
-        break;
-      case "Risiko BB Lebih":
-        element.style.backgroundColor = "darkblue";
-        break;
-      default:
-        // Default background color for unknown status
-        element.style.backgroundColor = "black";
+  const getStatusTBUClass = (status) => {
+    if (status === "Sangat Pendek") {
+      return "status rounded darkred";
+    } else if (status === "Pendek") {
+      return "status rounded red";
+    } else if (status === "Normal") {
+      return "status rounded limegreen";
+    } else if (status === "Tinggi") {
+      return "status rounded darkblue";
+    } else {
+      return "status rounded black";
     }
-  }
+  };
 
-  // Mengatur status pada elemen-elemen yang memiliki atribut data-status_tbu, data-status_bbtb, data-status_bbu, dan data-status_kms
-  var statusTBUElements = document.querySelectorAll("[data-status_tbu]");
-  var statusBBTBElements = document.querySelectorAll("[data-status_bbtb]");
-  var statusBBUElements = document.querySelectorAll("[data-status_bbu]");
+  const getStatusBBUClass = (status) => {
+    if (status === "BB Sangat Kurang") {
+      return "status rounded darkred";
+    } else if (status === "BB Kurang") {
+      return "status rounded red";
+    } else if (status === "Normal") {
+      return "status rounded limegreen";
+    } else if (status === "Risiko BB Lebih") {
+      return "status rounded darkblue";
+    } else {
+      return "status rounded black";
+    }
+  };
 
-  statusTBUElements.forEach(function (statusElement) {
-    var divElement = statusElement.querySelector("div.status");
-    applyStatusStyle(divElement);
-  });
-
-  statusBBTBElements.forEach(function (statusElement) {
-    var divElement = statusElement.querySelector("div.status");
-    applyStatusStyle(divElement);
-  });
-
-  statusBBUElements.forEach(function (statusElement) {
-    var divElement = statusElement.querySelector("div.status");
-    applyStatusStyle(divElement);
-  });
+  const getStatusBBTBClass = (status) => {
+    if (status === "Gizi Buruk") {
+      return "status rounded darkred";
+    } else if (status === "Gizi Kurang") {
+      return "status rounded red";
+    } else if (status === "Normal") {
+      return "status rounded limegreen";
+    } else if (status === "Risiko Lebih") {
+      return "status rounded dodgerblue";
+    } else if (status === "Gizi Lebih") {
+      return "status rounded mediumblue";
+    } else if (status === "Obesitas") {
+      return "status rounded darkblue";
+    } else {
+      return "status rounded black";
+    }
+  };
 
   const getPosyanduName = (posyanduId) => {
     const posyanduData =
-      posyandu.length > 0 ? posyandu[0].find((p) => p.id === posyanduId) : null;
+      posyandu.length > 0 ? posyandu.find((p) => p.id === posyanduId) : null;
     return posyanduData ? posyanduData.nama : "";
   };
 
   return (
     <>
-    {
-      loading ?(
-      <div className='text-center'>
-        <ClipLoader
-          loading={loading}
-          size={150}
-        />
-      </div>) : (
-        
-    <main className="container">
-      <div className="container-fluid">
-        {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
+      {
+        loading ? (
+          <div className='text-center'>
+            <ClipLoader
+              loading={loading}
+              size={150}
+            />
+          </div>) : (
 
-        <form className="d-flex align-items-center">
-          <input
-            className="form-control me-2"
-            type="text"
-            placeholder="Cari nama balita..."
-            aria-label="Search"
-          />
-          <button className="btn btn-success btn-rounded btn-sm" type="submit">
-            Cari
-          </button>
-        </form>
+          <main className="container">
+            <div className="container-fluid">
+              {/* Mulai isi kontennya disini */}
+              <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
 
-        <div className="p-3 mb-2 bg-light custom-border rounded">
-          <table className="table custom-table">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama Balita</th>
-                <th scope="col">Jenis Kelamin</th>
-                <th scope="col">Nama Posyandu</th>
-                <th scope="col">Umur (Bulan)</th>
-                <th scope="col">Status TB/U</th>
-                <th scope="col">Status BB/TB</th>
-                <th scope="col">Status BB/U</th>
-              </tr>
-            </thead>
-            <tbody>
-              {balita.map((data, index) => (
-                <tr key={data.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{data.nama}</td>
-                  <td>{data.jenis_kelamin}</td>
-                  <td>{getPosyanduName(data.posyandu_id)}</td>
-                  <td>{data.umur}</td>
-                  <td data-status_tbu={data.status_tbu}>
-                    <div className="status rounded">{data.status_tbu}</div>
-                  </td>
-                  <td data-status_bbtb={data.status_bbtb}>
-                    <div className="status rounded">{data.status_bbtb}</div>
-                  </td>
-                  <td data-status_bbu={data.status_bbu}>
-                    <div className="status rounded">{data.status_bbu}</div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <Statistik />
-      </div>
-    </main>)
-    }
+              <form className="d-flex align-items-center">
+                <input
+                  className="form-control me-2"
+                  type="text"
+                  placeholder="Cari nama balita..."
+                  aria-label="Search"
+                />
+                <button className="btn btn-success btn-rounded btn-sm" type="submit">
+                  Cari
+                </button>
+              </form>
+
+              <div className="p-3 mb-2 bg-light custom-border rounded">
+                <table className="table custom-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nama Balita</th>
+                      <th scope="col">Jenis Kelamin</th>
+                      <th scope="col">Nama Posyandu</th>
+                      <th scope="col">Umur (Bulan)</th>
+                      <th scope="col">Status TB/U</th>
+                      <th scope="col">Status BB/TB</th>
+                      <th scope="col">Status BB/U</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {balita.map((data, index) => (
+                      <tr key={data.id}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{data.nama}</td>
+                        <td>{data.jenis_kelamin}</td>
+                        <td>{getPosyanduName(data.posyandu_id)}</td>
+                        <td>{data.umur}</td>
+                        <td data-status_tbu={data.status_tbu}>
+                          <div className={getStatusTBUClass(data.status_tbu)}>
+                            {data.status_tbu}
+                          </div>
+                        </td>
+                        <td data-status_bbtb={data.status_bbtb}>
+                          <div className={getStatusBBTBClass(data.status_bbtb)}>
+                            {data.status_bbtb}
+                          </div>
+                        </td>
+                        <td data-status_bbu={data.status_bbu}>
+                          <div className={getStatusBBUClass(data.status_bbu)}>
+                            {data.status_bbu}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Statistik />
+            </div>
+          </main>)
+      }
     </>
   );
 }

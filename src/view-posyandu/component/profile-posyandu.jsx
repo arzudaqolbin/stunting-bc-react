@@ -4,7 +4,7 @@ import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
 import BASE_URL from "../../base/apiConfig";
 
-function ProfilePosyandu({idPosyandu, apiAuth }) {
+function ProfilePosyandu({ idPosyandu, apiAuth }) {
   const [Posyandu, setPosyandu] = useState({});
 
   const [Kader, setKader] = useState([]);
@@ -76,21 +76,21 @@ function ProfilePosyandu({idPosyandu, apiAuth }) {
                   <td>Ketua</td>
                   <td>
                     {Kader.find((kader) => kader.jabatan === "Ketua")?.nama ||
-                      "-"}
+                      "Loading..."}
                   </td>
                 </tr>
                 <tr>
                   <td>Sekretaris</td>
                   <td>
                     {Kader.find((kader) => kader.jabatan === "Sekretaris")
-                      ?.nama || "-"}
+                      ?.nama || "Loading..."}
                   </td>
                 </tr>
                 <tr>
                   <td>Bendahara</td>
                   <td>
                     {Kader.find((kader) => kader.jabatan === "Bendahara")
-                      ?.nama || "-"}
+                      ?.nama || "Loading..."}
                   </td>
                 </tr>
                 {Kader.filter(
