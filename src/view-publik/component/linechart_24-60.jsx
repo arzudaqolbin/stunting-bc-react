@@ -4,11 +4,11 @@ import { useParams } from 'react-router-dom';
 import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-// import { saveAs } from 'file-saver';
-// import * as htmlToImage from 'html-to-image';
-// import { toPng } from 'html-to-image';
-// import { useCurrentPng } from 'recharts-to-png';
-// import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
+import * as htmlToImage from 'html-to-image';
+import { toPng } from 'html-to-image';
+import { useCurrentPng } from 'recharts-to-png';
+import FileSaver from 'file-saver';
 
 
 const dataLK = [

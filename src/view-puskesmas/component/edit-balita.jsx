@@ -41,6 +41,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
   const [posyanduOptions, setPosyanduOptions] = useState([]);
+  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     axios
@@ -110,23 +111,149 @@ function EditBalita({ idBalita, idPuskesmas }) {
     }
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi NIK
+    if (!balita.nik) {
+      isValid = false;
+      newErrors.nik = "NIK tidak boleh kosong";
+    } else if(!/^[0-9]+$/.test(balita.nik)) {
+      newErrors.nik = "NIK harus berisi angka tanpa huruf dan simbol";
+      isValid = false;
+    } else {
+      newErrors.nik = "";
+    }
+
+    // Validasi Nama
+    if (!balita.nama) {
+      isValid = false;
+      newErrors.nama = "Nama balita tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama)) {
+      newErrors.nama = "Nama tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!balita.nama_ortu) {
+      isValid = false;
+      newErrors.nama_ortu = "Nama orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama_ortu)) {
+      newErrors.nama_ortu = "Nama orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama_ortu = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!balita.jenis_kelamin) {
+      isValid = false;
+      newErrors.jenis_kelamin= "Pilih jenis kelamin";
+    } else {
+      newErrors.jenis_kelamin = "";
+    }
+
+    // Validasi Pekerjaan Orang Tua
+    if (!balita.pekerjaan_ortu) {
+      isValid = false;
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong";
+    }else if ( !/^[a-zA-Z\s]+$/.test(balita.pekerjaan_ortu)) {
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.pekerjaan_ortu = "";
+    }
+
+    // Validasi Anak-ke
+    if (!balita.anak_ke) {
+      isValid = false;
+      newErrors.anak_ke= "Anak-ke tidak boleh kosong";
+    } else if(!/^[0-9]+$/.test(balita.anak_ke)) {
+      newErrors.anak_ke = "Tulis hanya dalam angka";
+      isValid = false;
+    } else {
+      newErrors.anak_ke = "";
+    }
+
+    // Validasi Tanggal Lahir
+    const today = new Date();
+    const selectedDate = new Date(balita.tgl_lahir);
+
+    if (!balita.tgl_lahir) {
+      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong ";
+      isValid = false;
+    } else if(selectedDate >= today){
+      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kurang dari hari ini";
+      isValid = false;
+    } else {
+      newErrors.tgl_lahir = "";
+    }
+
+    // Validasi RT dan RW
+    const rtRwRegex = /^[0-9]+$/;
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong .";
+    }else if(!rtRwRegex.test(rt)) {
+      newErrors.rt = "RT harus berisi angka tanpa huruf dan simbol";
+      isValid = false;
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!balita.rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong .";
+    }else if(!balita.rw || !rtRwRegex.test(balita.rw)) {
+      newErrors.rw = "RW harus berisi angka tanpa huruf dan simbol";
+      isValid = false;
+    } else {
+      newErrors.rw = "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
+  const [errors, setErrors] = useState({
+    nik: "",
+    nama: "",
+    jenis_kelamin: "",
+    nama_ortu: "",
+    pekerjaan_ortu: "",
+    alamat: "",
+    rt:"",
+    rw: "",
+    tgl_lahir: "",
+    anak_ke: "",
+    umur: "",
+    nama_posyandu: "",
+  });
+  
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita);
-      navigate(`/puskesmas/${idPuskesmas}/daftar-balita-puskesmas`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()){
+      try {
+        await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita);
+        navigate(`/puskesmas/${idPuskesmas}/daftar-balita-puskesmas`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
   };
@@ -153,8 +280,9 @@ function EditBalita({ idBalita, idPuskesmas }) {
               name="nik"
               value={nik}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.nik}</div>
           </label>
 
           <label htmlFor="nama">
@@ -165,8 +293,9 @@ function EditBalita({ idBalita, idPuskesmas }) {
               name="nama"
               value={nama}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.nama}</div>
           </label>
 
           <label htmlFor="jenis_kelamin">
@@ -177,39 +306,42 @@ function EditBalita({ idBalita, idPuskesmas }) {
               value={jenis_kelamin}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
+              <option value="" disabled selected>Pilih jenis kelamin</option>
               <option value="Laki-Laki">Laki-Laki</option>
               <option value="Perempuan">Perempuan</option>
             </select>
+            <div className={`error`}>{errors.jenis_kelamin}</div>
           </label>
 
           <label htmlFor="anak_ke">
             <span>Anak Ke-*</span>
             <input
-              type="number"
+              type="type"
               id="anak_ke"
               name="anak_ke"
               value={anak_ke}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.anak_ke}</div>
           </label>
 
           <label htmlFor="umur">
             <span>Umur*</span>
             <input
-              type="number"
+              type="type"
               id="umur"
               name="umur"
               value={umur}
               onChange={(e) => onInputChange(e)}
-              required
-              onKeyPress={(e) => {
-                if (e.key < "0" || e.key > "9") {
-                  e.preventDefault();
-                }
-              }}
+              // required
+              // onKeyPress={(e) => {
+              //   if (e.key < "0" || e.key > "9") {
+              //     e.preventDefault();
+              //   }
+              // }}
             />
+            <div className={`error`}>{errors.umur}</div>
           </label>
 
           <label htmlFor="nama_ortu">
@@ -220,8 +352,9 @@ function EditBalita({ idBalita, idPuskesmas }) {
               name="nama_ortu"
               value={nama_ortu}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.nama_ortu}</div>
           </label>
 
           <label htmlFor="pekerjaan_ortu">
@@ -232,8 +365,9 @@ function EditBalita({ idBalita, idPuskesmas }) {
               name="pekerjaan_ortu"
               value={pekerjaan_ortu}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.pekerjaan_ortu}</div>
           </label>
 
           <div className="address-section">
@@ -259,7 +393,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                   name="jalan"
                   value={jalan}
                   onChange={(e) => onInputChange(e)}
-                  required
+                  // required
                 />
               </label>
 
@@ -271,7 +405,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                   name="rt"
                   value={rt}
                   onChange={(e) => onInputChange(e)}
-                  required
+                  // required
                   pattern="\d{2,}"
                   title="Awali angka satuan dengan angka 0, misal 01"
                   onKeyPress={(e) => {
@@ -280,6 +414,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                     }
                   }}
                 />
+                <div className={`error`}>{errors.rt}</div>
               </label>
 
               <label htmlFor="rw">
@@ -290,7 +425,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                   name="rw"
                   value={rw}
                   onChange={(e) => onInputChange(e)}
-                  required
+                  // required
                   pattern="\d{2,}"
                   title="Awali angka satuan dengan angka 0, misal 01"
                   onKeyPress={(e) => {
@@ -299,6 +434,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                     }
                   }}
                 />
+                <div className={`error`}>{errors.rw}</div>
               </label>
             </div>
           </div>
@@ -312,8 +448,10 @@ function EditBalita({ idBalita, idPuskesmas }) {
               name="tgl_lahir"
               value={tgl_lahir}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
+              max={today}
             />
+            <div className={`error`}>{errors.tgl_lahir}</div>
           </label>
 
           <label htmlFor="posyandu">
@@ -332,6 +470,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
                   </option>
                 ))}
             </select>
+            <div className={`error`}>{errors.nama_posyandu}</div>
           </label>
           <button type="submit" className="submit-button">
             Simpan

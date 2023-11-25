@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
 import BASE_URL from "../../base/apiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -40,7 +42,7 @@ function AddPengukuran() {
     posisi_balita: "",
     validasi: false
   });
-  console.log("chi");
+  console.log("pengukuran");
   console.log(pengukuran);
 
   const [balita, setBalita] = useState({
@@ -130,6 +132,7 @@ function AddPengukuran() {
     if (name === "balita_id") {
       setPengukuran({ ...initialPengukuran, balita_id: parseInt(value) });
       const selectedBalita = balitaOptions.find((option) => option.id == value);
+      // const selectedBalita = balitaOptions.find((option) => option.nama === value);
       setTglLahir(selectedBalita.tgl_lahir);
       // balita = selectedBalita;
 
@@ -277,6 +280,8 @@ function AddPengukuran() {
     let status = "";
     let tbAdj = adjustTinggi(tb);
 
+    console.log("jk = ", jk,"umur = ", umur,"bb = ", bb,"tb = ", tb,"tbAdj = ", tbAdj)
+
     let patokanData = [];
     if (jk == "Laki-Laki") {
       patokanData = umur <= 24 ? data_bbpb_lk : data_bbtb_lk;
@@ -313,15 +318,18 @@ function AddPengukuran() {
       }
     }
 
-    setPengukuran((prevResult) => ({
-      ...prevResult,
-      status_bbtb: status
-    }));
+    console.log("statusbbtb : ", status)
+
+    // setPengukuran((prevResult) => ({
+    //   ...prevResult,
+    //   status_bbtb: status
+    // }));
 
     pengukuran.status_bbtb = status;
   }
 
   const generateKms = (jk, umur, bb) => {
+
     let status = "";
 
     let patokanData = jk === 1 ? data_bbu_lk : data_bbu_pr;
@@ -407,7 +415,7 @@ function AddPengukuran() {
     // console.log(pengukuran)
 
     const jk = balita.jenis_kelamin;
-    const idBalita = parseInt(balita.id)
+    const idBalita = parseInt(balita_id)
     const umur = parseInt(pengukuran.umur);
     const bb = parseFloat(pengukuran.berat_badan);
     const tb = parseFloat(pengukuran.tinggi_badan);
@@ -424,10 +432,14 @@ function AddPengukuran() {
       console.log(pengukuran);
 
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
-      navigate(`/posyandu/${idPosyandu}`);
+      // await showSuccessPostToast(idBalita);
+      showSuccessPostToast(idPosyandu, balita_id);
+      // delay(2000)
+      // navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
 
 
     } catch (error) {
+      showFailedPostToast()
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
@@ -435,12 +447,58 @@ function AddPengukuran() {
           error.response.data
         );
       } else if (error.request) {
+        showFailedPostToast()
         console.error("Tidak ada respon dari server:", error.request);
       } else {
+        showFailedPostToast()
         console.error("Terjadi kesalahan:", error.message);
       }
     }
   };
+
+  // const showSuccessPostToast = (idBalita) => {
+  //   toast.success("Hello World", {
+  //     data: {
+  //       title: "Success toast",
+  //       text: "This is a success message",
+  //     },
+  //   });
+  //   history.push(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`)
+  // }
+
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const showSuccessPostToast = async (idPosyandu, idBalita) => {
+    return new Promise((resolve) => {
+        toast.success("Data berhasil disimpan", {
+            data: {
+                title: "Success",
+                text: "Data berhasil disimpan",
+            },
+            onClose: async () => {
+                // Menunggu 3 detik sebelum melakukan navigasi
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // Mengakhiri janji saat Toast ditutup
+                navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+                resolve();
+            },
+        });
+    });
+};
+
+  
+  
+  
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -459,7 +517,7 @@ function AddPengukuran() {
               id="balita_id"
               name="balita_id"
               value={balita_id}
-              required
+              // required
               onChange={(e) => onInputChange(e)}
             >
               <option value="">--Pilih--</option>
@@ -489,7 +547,7 @@ function AddPengukuran() {
               name="tgl_input"
               value={tgl_input}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
           </label>
 
@@ -515,7 +573,7 @@ function AddPengukuran() {
               name="berat_badan"
               value={berat_badan}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
           </label>
 
@@ -549,6 +607,7 @@ function AddPengukuran() {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </main>
   );
 }

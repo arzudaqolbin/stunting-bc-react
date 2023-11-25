@@ -34,7 +34,7 @@ function App() {
         <Route path="/lihat-page*" element={<LihatPage />} />
         <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
         <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
-        <Route path="/puskesmas/:idPuskesmas/*" element={<PageEditAkunPosyandu />} />
+        <Route path="/puskesmas/:idPuskesmas/*" element={<RoutesPuskesmas />} />
       </Routes>
     </Router>
   );

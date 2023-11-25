@@ -21,7 +21,7 @@
     border: 1px solid #026670;
     background-color: #fff;
     margin-top: 0px;
-    display: flex; /* Menggunakan display flex */
+    display: flex; 
     flex-direction: column;
 }
 
@@ -65,3 +65,10 @@
     width: 50px;
     height: auto; 
 }
+
+
+.input-wrapper{
+    display: flex;
+    flex-direction: column;   
+}
+  
