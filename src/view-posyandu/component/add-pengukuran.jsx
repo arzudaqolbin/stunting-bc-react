@@ -506,6 +506,7 @@ function AddPengukuran() {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e, balita, pengukuran);
@@ -606,6 +607,7 @@ function AddPengukuran() {
             Simpan
           </button>
         </form>
+        </div>
       </div>
       <ToastContainer />
     </main>

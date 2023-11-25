@@ -99,6 +99,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT AKUN PUSKESMAS</h2>
 
+        <div className="table-responsive">
         <form onSubmit={handleSubmit}>
           <label htmlFor="nama">
             <span>Nama</span>
@@ -183,6 +184,7 @@ function EditAkunPuskesmas({ idPuskesmas }) {
           </label>
           <button type="submit" className="submit-button">Simpan</button>
         </form>
+      </div>
       </div>
     </main>
   );

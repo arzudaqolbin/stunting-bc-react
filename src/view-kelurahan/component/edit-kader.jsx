@@ -84,14 +84,14 @@ function EditKader({ id }) {
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT KADER POSYANDU</h2>
-
+        <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
           }}
         >
           <label htmlFor="posyandu">
-            <span>Nama Posyandu*</span>
+            <span>NAMA POSYANDU*</span>
             <select
               id="posyandu"
               name="posyandu"
@@ -148,6 +148,7 @@ function EditKader({ id }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );

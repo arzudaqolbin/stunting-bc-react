@@ -133,13 +133,12 @@ function EditBalita({ idBalita, idPuskesmas }) {
 
   return (
     <main className="container">
-      <a href="">
-        <img src="back.png" alt="Back" className="logo-back" />
-      </a>
+            <i class="fa-solid fa-arrow-left text-2x"></i>
       <h2 className="custom-judul">Form Edit Data Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
@@ -337,6 +336,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );

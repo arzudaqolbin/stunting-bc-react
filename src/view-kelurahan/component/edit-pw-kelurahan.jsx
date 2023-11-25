@@ -70,7 +70,7 @@ function EditPwKelurahan() {
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT PASSWORD KELURAHAN</h2>
-
+        <div className="table-responsive">
         <form onSubmit={handleSubmit}>
           <label htmlFor="username">
             <span>USERNAME</span>
@@ -112,6 +112,7 @@ function EditPwKelurahan() {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );

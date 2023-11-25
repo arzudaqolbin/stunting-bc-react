@@ -95,6 +95,7 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
       <h2 className="custom-judul">Data Tambahan Balita Stunting</h2>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
@@ -257,6 +258,7 @@ function FormDataTambahan({ idBalita, idPosyandu }) {
             Simpan
           </button>
         </form>
+      </div>
       </div>
     </main>
   );

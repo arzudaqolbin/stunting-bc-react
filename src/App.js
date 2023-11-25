@@ -25,19 +25,26 @@ import DetailPuskesmasKelurahan from "./view-kelurahan/pages/DetailPuskesmasKelu
 import LihatPage from "./view-posyandu/pages/lihatpage";
 import CalculateStunting from "./CalculateStunting";
 import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
+import PageAddBalitaPosyandu from "./view-posyandu/pages/PageAddBalitaPosyandu";
+import Login from "./view-publik/pages/Login";
+
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/coba-api" element={<CalculateStunting />} />
-        <Route path="/*" element={<RoutesPublik />} />
-        <Route path="/lihat-page*" element={<LihatPage />} />
-        <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
-        <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
-        <Route path="/puskesmas/:idPuskesmas/*" element={<PageEditAkunPosyandu />} />
-      </Routes>
-    </Router>
+  <Router>
+    <Routes>
+      <Route path="/coba-api" element={<CalculateStunting />} />
+      <Route path="/*" element={<RoutesPublik />} />
+      <Route path="/lihat-page*" element={<LihatPage />} />
+      <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
+      <Route path="/posyandu/:idPosyandu/*" element={<RoutesPosyandu />} />
+      <Route path="/puskesmas/:idPuskesmas/*" element={<RoutesPuskesmas />} />
+       
+    </Routes>
+  </Router>
+  //  <PageEditAkunPosyandu/>
+    // <Login />
+   // <PageAddBalitaPosyandu/>
   );
 }
 

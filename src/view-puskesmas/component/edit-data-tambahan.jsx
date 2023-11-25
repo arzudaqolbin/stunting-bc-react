@@ -5,10 +5,11 @@ function EditDataTambahan() {
   return (
     <div className="main d-flex flex-column min-vh-100" style={{ backgroundColor: '#E4F3EF' }}>
       <main className="container">
-        <a href=""><img src="back.png" alt="Back" className="logo-back" /></a>
+      <i class="fa-solid fa-arrow-left text-2x"></i>
         <h2 className="custom-judul">Ubah Data Tambahan Balita Stunting</h2>
         <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
         <div className="container-fluid">
+        <div className="table-responsive">
           <form action="" method="post">
             <label htmlFor="asi_eksklusif">
               <span>Asi Eksklusif</span>
@@ -92,6 +93,7 @@ function EditDataTambahan() {
               </select>
             </label>
           </form>
+          </div>
         </div>
         <button type="submit" className="submit-button">Simpan</button>
       </main>

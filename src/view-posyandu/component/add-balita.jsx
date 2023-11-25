@@ -104,6 +104,7 @@ function AddBalita({ idPosyandu }) {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
@@ -301,6 +302,7 @@ function AddBalita({ idPosyandu }) {
             Simpan
           </button>
         </form>
+      </div>
       </div>
     </main>
   );

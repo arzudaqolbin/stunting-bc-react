@@ -67,12 +67,12 @@ function EditPwPuskesmas({ idPuskesmas }) {
     >
       {/* Main content */}
       <main className="container">
-        <a href="">
-          <img src="back.png" alt="Back" className="logo-back" />
-        </a>
+      <i class="fa-solid fa-arrow-left text-2x"></i>
+
         <div className="container-fluid">
           {/* Edit Password Form */}
           <h2 className="custom-judul">EDIT PASSWORD PUSKESMAS</h2>
+          <div className="table-responsive">
           <form onSubmit={handleSubmit}>
             <label htmlFor="username">
               <span>USERNAME</span>
@@ -114,6 +114,7 @@ function EditPwPuskesmas({ idPuskesmas }) {
               Simpan
             </button>
           </form>
+          </div>
         </div>
       </main>
     </div>

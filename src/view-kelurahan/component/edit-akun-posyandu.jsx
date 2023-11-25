@@ -109,9 +109,11 @@ function EditAkunPosyandu({ idPosyandu }) {
       <i class="fa-solid fa-arrow-left text-2x"></i>
 
       <div className="container-fluid">
+      
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT AKUN POSYANDU</h2>
-
+        
+        <div className="table-responsive">
         <form onSubmit={handleSubmit}>
           <label htmlFor="nama_posyandu">
             <span>Nama Puskesmas</span>
@@ -180,7 +182,7 @@ function EditAkunPosyandu({ idPosyandu }) {
           </label>
 
           <label htmlFor="username">
-            <span>USERNAME</span>
+            <span>Username</span>
             <input
               type="text"
               id="username"
@@ -192,7 +194,7 @@ function EditAkunPosyandu({ idPosyandu }) {
           </label>
 
           <label htmlFor="password">
-            <span>PASSWORD</span>
+            <span>Password</span>
             <input
               type="password"
               id="password"
@@ -213,6 +215,7 @@ function EditAkunPosyandu({ idPosyandu }) {
           </label>
           <button type="submit" className="submit-button">Simpan</button>
         </form>
+        </div>
       </div>
     </main>
   );

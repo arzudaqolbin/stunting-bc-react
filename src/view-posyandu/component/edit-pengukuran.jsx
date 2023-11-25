@@ -565,6 +565,7 @@ function EditPengukuran() {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e, pengukuran);
@@ -660,7 +661,7 @@ function EditPengukuran() {
           </button>
         </form>
       </div>
-      
+      </div>
       <ToastContainer />
     </main>
   );
