@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-daftar-balita-semua-puskesmas.css";
 import BASE_URL from "../../base/apiConfig";
+import Statistik from "../../view-publik/component/Statistik";
+import { ClipLoader } from 'react-spinners';
 
 function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
   const [balita, setBalita] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadDataBalita();
@@ -16,6 +19,7 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
     try {
       const result = await axios.get(`${BASE_URL}/balitas`, apiAuth);
       setBalita(result.data);
+      setLoading(false)
     } catch (error) {
       if (error.response) {
         // Respon dari server dengan kode status tertentu
@@ -39,7 +43,7 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
 
   const loadPosyandu = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/posyandu`);
+      const response = await axios.get(`${BASE_URL}/posyandu`,apiAuth);
       setPosyandu(response.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
@@ -128,6 +132,16 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
   };
 
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
+        
     <main className="container">
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
@@ -161,7 +175,7 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
             </thead>
             <tbody>
               {balita.map((data, index) => (
-                <tr>
+                <tr key={data.id}>
                   <th scope="row">{index + 1}</th>
                   <td>{data.nama}</td>
                   <td>{data.jenis_kelamin}</td>
@@ -181,8 +195,11 @@ function TabelBalitaSemuaPuskesmas({idPuskesmas, apiAuth, idBalita}) {
             </tbody>
           </table>
         </div>
+        <Statistik />
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

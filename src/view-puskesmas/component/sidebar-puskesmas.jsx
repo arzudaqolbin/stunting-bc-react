@@ -4,13 +4,14 @@ import { useState, useEffect } from "react";
 import logoDki from '../../aset/logo-dki.png';
 import logoJaktim from '../../aset/logo-jaktim.png';
 import logoPuskesmas from '../../aset/logo-puskesmas.png';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataAuth } from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 
 const SidebarPuskesmas = ({content}) =>  {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    // const {idPuskesmas} = useParams();
+    let navigate = useNavigate()
 
     // fungsi toggle
     const toggleNavbar = () => {
@@ -33,6 +34,24 @@ const SidebarPuskesmas = ({content}) =>  {
       };
     }, []);
     
+    const handleLogout = () => {
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Keluar dari akun puskesmas",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Keluar!",
+        cancelButtonText: "Kembali"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            // acc izin
+            localStorage.clear()
+            navigate(`/login-admin`)
+        }
+      });
+    }
 
   return (
     <div className="wrapper">
@@ -73,9 +92,9 @@ const SidebarPuskesmas = ({content}) =>  {
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link to={`/login-admin`} class="sidebar-link border-bottom">
-                              <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Keluar
-                        </Link>
+                    <Link onClick={handleLogout} className="sidebar-link border-bottom" style={{textDecoration: "none"}}>
+                      <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>Keluar
+                    </Link>
                     </li>
           </ul>
         </div>
@@ -99,7 +118,7 @@ const SidebarPuskesmas = ({content}) =>  {
                 </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <Link to={`/puskesmas/profile`} className="dropdown-item">Profile</Link>
-                  <Link to={`/login-admin`} className="dropdown-item">Keluar</Link>
+                  <Link onClick={handleLogout} className="dropdown-item">Keluar</Link>
                 </div>
               </li>
             </ul>

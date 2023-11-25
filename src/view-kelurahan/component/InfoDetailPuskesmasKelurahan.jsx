@@ -3,61 +3,95 @@ import "../css/info-detail-puskesmas-kelurahan.css";
 import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import axios from 'axios';
+import { ClipLoader } from 'react-spinners';
 
 function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
 
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);
   const [username, setUsername] = useState([]);
+  const [loading, setLoading] = useState(true)
   
   // fetch data Puskesmas
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-          // nanti ganti api dengan getKader by idPosyandu
-            const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`);
-            // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-            setPuskesmas(result.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       try {
+  //         // nanti ganti api dengan getKader by idPosyandu
+  //           const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`,apiAuth);
+  //           // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+  //           setPuskesmas(result.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
         
-    fetchData();
-  }, [idPuskesmas]);
+  //   fetchData();
+  // }, [idPuskesmas]);
   
-  // fetch data Posyandu
+  // // fetch data Posyandu
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`, apiAuth);
+  //       // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
+  //       setPosyandu(result.data.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
+        
+  //   fetchData();
+  // }, [idPuskesmas]);
+  
+  // // fetch data Username
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //       try {
+  //           const result3 = await axios.get(`${BASE_URL}/user/${puskesmas.user_id}}`, apiAuth);
+  //           setUsername(result3.data);
+  //         } catch (error) {
+  //           console.error("Error fetching data:", error);
+  //         }
+  //       };
+        
+  //   fetchData();
+  // }, [puskesmas.user_id]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`);
-        // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-        setPosyandu(result.data.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-        
+        const puskesmasPromise = axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth);
+        const posyanduPromise = axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`, apiAuth);
+
+        const [puskesmasResult, posyanduResult] = await Promise.all([puskesmasPromise, posyanduPromise]);
+
+        setPuskesmas(puskesmasResult.data);
+        setPosyandu(posyanduResult.data.data);
+
+        const result3 = await axios.get(`${BASE_URL}/user/${puskesmasResult.data.user_id}`, apiAuth);
+        setUsername(result3.data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, [idPuskesmas]);
-  
-  // fetch data Username
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const result3 = await axios.get(`${BASE_URL}/user/${puskesmas.user_id}}`);
-            setUsername(result3.data);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        };
-        
-    fetchData();
-  }, [puskesmas.user_id]);
 
 
 
     return (
+      <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
         <main className="container">
         <div className="container-fluid">
             {/* Mulai isi kontennya disini */}
@@ -115,7 +149,7 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
                     {
                         posyandu.map((poss, idx) => (
                             <tr key={poss.id}>
-                                <th scope="row">idx</th>
+                                <th scope="row">{idx}</th>
                                 <td>{poss.nama}</td>
                                 <td>{poss.alamat}</td>
                                 <td>{poss.nomor_telepon}</td>
@@ -151,10 +185,12 @@ function InfoDetailPuskesmasKelurahan({idKelurahan, apiAuth, idPuskesmas}) {
             </div>
 
             <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-            <button className="btn">+ Tambah Posyandu</button>
+            <Link to={`kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
             </div>
         </div>
-        </main>
+        </main>)
+    }
+    </>
     );
 }
 

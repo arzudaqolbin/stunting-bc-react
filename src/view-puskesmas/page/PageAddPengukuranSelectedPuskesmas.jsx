@@ -7,7 +7,7 @@ import { apiAuth, dataAuth } from "../../base/apiConfig";
 function PageAddPengukuranSelectedPuskesmas() {
   let {idBalita} = useParams()
   return (
-        <SidebarPuskesmas content={<AddPengukuranSelected idPuskesmas={dataAuth().id} apiAuth={apiAuth()} idBalita={idBalita}     />} />
+        <SidebarPuskesmas content={<AddPengukuranSelected apiAuth={apiAuth()} idBalita={idBalita}     />} />
     );
 }
 

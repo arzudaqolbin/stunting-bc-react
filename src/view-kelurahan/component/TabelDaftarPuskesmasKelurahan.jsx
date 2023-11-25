@@ -3,16 +3,19 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-puskesmas-kelurahan.css";
+import { ClipLoader } from 'react-spinners';
 
 function TabelDaftarPuskesmasKelurahan({idKelurahan, apiAuth }) {
 
     const [puskesmasList, setPuskesmasList] = useState([]);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // Panggil API untuk mendapatkan daftar puskesmas
-        axios.get(`${BASE_URL}/puskesmas`)
+        axios.get(`${BASE_URL}/puskesmas`, apiAuth)
             .then(response => {
                 setPuskesmasList(response.data.data);
+                setLoading(false)
             })
             .catch(error => {
                 console.error('Error fetching puskesmas:', error);
@@ -20,6 +23,15 @@ function TabelDaftarPuskesmasKelurahan({idKelurahan, apiAuth }) {
     }, []);
 
     return (
+        <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
         <main className="container">
             <div className="container-fluid">
                 {/* Mulai isi kontennya disini */}
@@ -62,7 +74,9 @@ function TabelDaftarPuskesmasKelurahan({idKelurahan, apiAuth }) {
                     <Link to="/kelurahan/tambah-puskesmas" className="btn btn-success btn-rounded btn-sm">+ Tambah Puskesmas</Link>
                 </div>
             </div>
-        </main>
+        </main>)
+    }
+    </>
     );
 }
 

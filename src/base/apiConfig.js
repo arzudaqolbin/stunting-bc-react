@@ -1,7 +1,6 @@
 // apiConfig.js
 import { decodeToken } from "react-jwt";
 
-
 const BASE_URL = 'https://api-stunting.up.railway.app/api'; // Ganti dengan base URL Anda
 
 const token = localStorage.getItem("access_token")
@@ -12,6 +11,7 @@ const apiAuth = () => {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
+        //   'content-type': 'multipart/form-data'
         },
     };
 } 
@@ -33,7 +33,6 @@ const dataAuth = () => {
         };
     }
 };
-
 
 
 export default BASE_URL;

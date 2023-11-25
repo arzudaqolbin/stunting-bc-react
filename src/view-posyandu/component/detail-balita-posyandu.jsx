@@ -5,7 +5,8 @@ import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import TabelPengukuranBalitaPosyandu from './TabelPengukuranBalitaPosyandu';
 import { ClipLoader } from 'react-spinners';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
 
@@ -14,22 +15,41 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
   const[riwayat, setRiwayat] = useState([]);
   const[namaPosyandu, setNamaPosyandu] = useState([]);
   const [loading, setLoading] = useState(true);
+  let navigate = useNavigate()
 
   const getDataBalita = async () => {
     try {
       const dataBalita = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
-      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
       setBiodata(dataBalita.data);
+    } catch (error) {
+      //   Swal.fire({
+      //     title: "Data Tidak Ditemukan"
+      //     // text: "Silahkan login kembali"
+      // }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       navigate('/posyandu/profile');
+      //       return;
+      //     }
+      // });
+      console.error("Error fetching balita data:", error);
+    }
+
+    
+  };
+
+  const getDataTambahan = async() => {
+    try {
+      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
       setRiwayat(dataTambahanBalita.data);
     } catch (error) {
       console.error("Error fetching balita data:", error);
     }
-  };
+  }
 
   const getNamaPosyandu = async () => {
     try {
-      const namaPos = await axios.get(`${BASE_URL}/posyandu/${idBalita}`);
-      setNamaPosyandu(namaPos.data);
+      const namaPos = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
+      setNamaPosyandu(namaPos.data.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
     }
@@ -38,12 +58,13 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
+      await getDataTambahan();
       await getNamaPosyandu();
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
@@ -142,6 +163,7 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                           </tr>
                         </tbody>
                       </table>
+                      <Link to={`/posyandu/edit-data-balita/${idBalita}`} className='btn btn-primary'>Edit Data Balita</Link>
                     </div>
                   </div>
                 </div>
@@ -165,6 +187,15 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body">
+                      {riwayat.length === 0 ? 
+                      
+                      <div>
+                        <div>Belum mengisikan data tambahan riwayat</div>
+                        <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Tambah Data Tambahan</Link>
+                      </div>
+
+                      : 
+                      <div>
                       <table className="table table-hover">
                         <tbody>
                           <tr>
@@ -221,6 +252,9 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                           </tr>
                         </tbody>
                       </table>
+                      <Link to={`/posyandu/tambah-data-tambahan/${idBalita}`} className='btn btn-primary'>Edit Data Tambahan</Link>
+                      </div>
+                      }
                     </div>
                   </div>
                 </div>
@@ -234,7 +268,7 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                         <div className="accordion-body">
                         {/* Isi komponen accordion disini */}
                         </div>
-                        <TabelPengukuranBalitaPosyandu idBalita={idBalita}/>
+                        <TabelPengukuranBalitaPosyandu apiAuth={apiAuth} idBalita={idBalita}/>
                     </div>
                 </div>
                 <div className="accordion-item">
@@ -246,8 +280,8 @@ const DetailBalitaPosyandu = ({idPosyandu, apiAuth, idBalita}) => {
                     <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
                         {/* Isi komponen accordion disini */}
-                        <LineChart_Umur_0_24 />
-                        <LineChart_Umur_24_60 />
+                        <LineChart_Umur_0_24 apiAuth={apiAuth} idBalita={idBalita}/>
+                        <LineChart_Umur_24_60 apiAuth={apiAuth} idBalita={idBalita}/>
                         </div>
                     </div>
                 </div>

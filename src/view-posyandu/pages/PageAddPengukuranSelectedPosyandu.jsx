@@ -8,7 +8,7 @@ const PageAddPengukuranSelectedPosyandu = () => {
     let {idBalita} = useParams()
     return(
         // <SidebarPosyandu content={<AddBayi/>} />
-        <SidebarPosyandu content={<AddPengukuranSelected idPosyandu={dataAuth().id} apiAuth={apiAuth()} idBalita={idBalita}/>} />
+        <SidebarPosyandu content={<AddPengukuranSelected apiAuth={apiAuth()} idBalita={idBalita}/>} />
     )
 }
 

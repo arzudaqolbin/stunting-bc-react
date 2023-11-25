@@ -3,9 +3,47 @@ import axios from "axios";
 import "../css/tabel-balita-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 import { Link } from "react-router-dom";
+import $ from 'jquery';
+import 'datatables.net';
+import { ClipLoader } from 'react-spinners';
 
 function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (!$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+            "lengthMenu": "Menampilkan _MENU_ data per halaman",
+            "zeroRecords": "Tidak ada izin masuk",
+            "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+            "infoEmpty": "Tidak ada data tersedia",
+            "infoFiltered": "(Disaring dari _MAX_ data total)",
+            "decimal": "",
+            "emptyTable": "Tidak ada izin masuk",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": 'Pencarian <i class="bi bi-search"></i> ',
+            "searchPlaceholder": 'keyword...',
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                // "next": "Selanjutnya",
+                // "previous": "Sebelumnya"
+                "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
+                "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+            },
+            "aria": {
+                "sortAscending": ": klik untuk mengurutkan A-Z",
+                "sortDescending": ": klik untuk mengurutkan Z-A"
+            }
+        }
+    });
+    }
+  }, [balita]);
 
   useEffect(() => {
     loadDataBalita();
@@ -14,9 +52,10 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   const loadDataBalita = async () => {
     try {
       const result = await axios.get(
-        `${BASE_URL}/balitas/posyandu/${idPosyandu}`
+        `${BASE_URL}/balitas/posyandu/${idPosyandu}`, apiAuth
       );
       setBalita(result.data.balitas);
+      setLoading(false);
     } catch (error) {
       if (error.response) {
         // Respon dari server dengan kode status tertentu
@@ -114,6 +153,15 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
   });
 
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
@@ -132,7 +180,7 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
         </form>
 
         <div className="p-3 mb-2 bg-light custom-border rounded">
-          <table className="table custom-table">
+          <table id="myTable" className="table custom-table">
             <thead>
               <tr>
                 <th scope="col">No</th>
@@ -164,17 +212,40 @@ function TabelBalitaPosyandu({idPosyandu, apiAuth }) {
                     <div className="status rounded">{data.status_bbu}</div>
                   </td>
                   <td>
-                    <Link to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`} >
+                    <Link to={`/posyandu/detail-balita/${data.id}`} >
                       <button className="btn btn-info">Info</button>
                     </Link>
                   </td>
                 </tr>
               ))}
+                {/* <tr key="12">
+                  <th scope="row">12</th>
+                  <td>aaa</td>
+                  <td>bbb</td>
+                  <td>12</td>
+                  <td>12</td>
+                  <td data-status_tbu="q2e">
+                    <div className="status rounded">123</div>
+                  </td>
+                  <td data-status_bbtb="123">
+                    <div className="status rounded">erv</div>
+                  </td>
+                  <td data-status_bbu="123">
+                    <div className="status rounded">xyz</div>
+                  </td>
+                  <td>
+                    <Link to={`/posyandu/${idPosyandu}/detail-balita/1`} >
+                      <button className="btn btn-info">Info</button>
+                    </Link>
+                  </td>
+                </tr> */}
             </tbody>
           </table>
         </div>
       </div>
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

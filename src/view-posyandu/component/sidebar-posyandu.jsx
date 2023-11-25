@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import logoDki from '../../aset/logo-dki.png';
 import logoJaktim from '../../aset/logo-jaktim.png';
 import logoPosyandu from '../../aset/logo-posyandu.png';
-import { useParams, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataAuth } from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 const SidebarPosyandu = ({content}) =>  {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    let navigate = useNavigate();
     // const {idPosyandu} = useParams();
 
     // fungsi toggle
@@ -31,6 +33,25 @@ const SidebarPosyandu = ({content}) =>  {
         mediaQuery.removeEventListener("change", handleMediaQueryChange);
       };
     }, []);
+
+    const handleLogout = () => {
+      Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Keluar dari akun posyandu",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Keluar!",
+        cancelButtonText: "Kembali"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            // acc izin
+            localStorage.clear()
+            navigate(`/login-admin`)
+        }
+      });
+    }
     
 
   return (
@@ -69,7 +90,7 @@ const SidebarPosyandu = ({content}) =>  {
               </Link>
             </li>
             <li className="sidebar-item">
-              <Link to={`/login-admin`} className="sidebar-link border-bottom" style={{textDecoration: "none"}}>
+              <Link onClick={handleLogout} className="sidebar-link border-bottom" style={{textDecoration: "none"}}>
                 <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>Keluar
               </Link>
             </li>
@@ -95,7 +116,7 @@ const SidebarPosyandu = ({content}) =>  {
                 </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <Link to={`/posyandu/profile`} className="dropdown-item">Profile</Link>
-                  <Link to={`/login-admin`} className="dropdown-item">Keluar</Link>
+                  <Link onClick={handleLogout} className="dropdown-item">Keluar</Link>
                 </div>
               </li>
             </ul>

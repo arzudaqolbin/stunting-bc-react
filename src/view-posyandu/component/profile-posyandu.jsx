@@ -15,11 +15,11 @@ function ProfilePosyandu({idPosyandu, apiAuth }) {
 
   const loadDataPosyandu = async () => {
     try {
-      const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`);
-      setPosyandu(result.data);
+      const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
+      setPosyandu(result.data.data);
 
       axios
-        .get(`${BASE_URL}/posyandu/${idPosyandu}/kader`)
+        .get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth)
         .then((response) => {
           setKader(response.data.data);
         })

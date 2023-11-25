@@ -8,7 +8,7 @@ const PageEditPengukuranPosyandu = () => {
     let { idPengukuran } = useParams()
     return(
         // <SidebarPosyandu content={<AddBayi/>} />
-        <SidebarPosyandu content={<EditPengukuran idPosyandu={dataAuth().id} apiAuth={apiAuth()} idPengukuran={idPengukuran}/>} />
+        <SidebarPosyandu content={<EditPengukuran apiAuth={apiAuth()} idPengukuran={idPengukuran}/>} />
     )
 }
 

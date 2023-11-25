@@ -1,17 +1,21 @@
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-puskesmas.css";
+import { Link } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 
 function TabelDaftarPosyanduPuskesmas({idPuskesmas, apiAuth}) {
     // const { idPuskesmas } = useParams();
     const [posyanduList, setPosyanduList] = useState([]);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // Fetch posyandu data for the specific puskesmas
-        axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`)
+        axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`, apiAuth)
             .then(response => {
                 setPosyanduList(response.data.data);
+                setLoading(false)
             })
             .catch(error => {
                 console.error('Error fetching posyandu:', error);
@@ -19,6 +23,15 @@ function TabelDaftarPosyanduPuskesmas({idPuskesmas, apiAuth}) {
     }, [idPuskesmas]);
 
     return (
+        <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
         <main className="container">
             <div className="container-fluid">
                 {/* Mulai isi kontennya disini */}
@@ -50,7 +63,7 @@ function TabelDaftarPosyanduPuskesmas({idPuskesmas, apiAuth}) {
                                     <td>{posyandu.ketua_kader}</td>
                                     <td>{posyandu.nomor_telepon}</td>
                                     <td>
-                                        <button className="btn btn-info">Info</button>
+                                        <Link to={`puskesmas/detail-posyandu/${posyandu.id}`} className="btn btn-info">Info</Link>
                                     </td>
                                 </tr>
                             ))}
@@ -58,7 +71,9 @@ function TabelDaftarPosyanduPuskesmas({idPuskesmas, apiAuth}) {
                     </table>
                 </div>
             </div>
-        </main>
+        </main>)
+    }
+    </>
     )
 }
 

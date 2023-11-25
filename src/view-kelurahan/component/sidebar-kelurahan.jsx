@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import logoDki from '../../aset/logo-dki.png';
 import logoJaktim from '../../aset/logo-jaktim.png';
 import logoKantor from '../../aset/logo-kantor.png';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataAuth } from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 
 const SidebarKelurahan = ({content}) =>  {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    let navigate = useNavigate()
 
     // fungsi toggle
     const toggleNavbar = () => {
@@ -31,6 +33,26 @@ const SidebarKelurahan = ({content}) =>  {
         mediaQuery.removeEventListener("change", handleMediaQueryChange);
       };
     }, []);
+
+  
+  const handleLogout = () =>{
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Keluar dari akun kelurahan",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Keluar!",
+      cancelButtonText: "Kembali"
+      }).then((result) => {
+      if (result.isConfirmed) {
+          // acc izin
+          localStorage.clear()
+          navigate(`/login-admin`)
+      }
+    });
+  }
     
 
   return (
@@ -79,9 +101,9 @@ const SidebarKelurahan = ({content}) =>  {
                         </Link>
                     </li>
                     <li class="sidebar-item">
-                        <Link to={"/login-admin"} class="sidebar-link border-bottom border-top">
-                              <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Keluar
-                        </Link>
+                    <Link onClick={handleLogout} className="sidebar-link border-bottom border-top" style={{textDecoration: "none"}}>
+                      <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>Keluar
+                    </Link>
                     </li>
           </ul>
         </div>
@@ -105,7 +127,7 @@ const SidebarKelurahan = ({content}) =>  {
                 </a>
                 <div className="dropdown-menu dropdown-menu-end">
                   <Link to={"/kelurahan/profile"} className="dropdown-item">Profile</Link>
-                  <Link to={"/login-admin"} className="dropdown-item">Keluar</Link>
+                  <Link onClick={handleLogout} className="dropdown-item">Keluar</Link>
                 </div>
               </li>
             </ul>

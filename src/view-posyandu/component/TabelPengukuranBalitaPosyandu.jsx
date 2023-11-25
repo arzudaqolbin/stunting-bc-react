@@ -3,69 +3,7 @@ import "../css/tabel-pengukuran-balita-posyandu.css";
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import format from 'date-fns/format';
-import { Link, useParams } from 'react-router-dom';
-
-// function applyStatusStyle(element) {
-//   element.style.color = "white";
-//   element.style.borderRadius = "10px";
-//   element.style.padding = "1px";
-//   element.style.margin = "1px";
-
-//   const statusValue = element.textContent;
-
-//   switch (statusValue) {
-//     case "Sangat Pendek":
-//       element.style.backgroundColor = "darkred";
-//       break;
-//     case "Pendek":
-//       element.style.backgroundColor = "red";
-//       break;
-//     case "Normal":
-//       element.style.backgroundColor = "limegreen";
-//       break;
-//     case "Tinggi":
-//       element.style.backgroundColor = "darkblue";
-//       break;
-//     case "Gizi Buruk":
-//       element.style.backgroundColor = "darkred";
-//       break;
-//     case "Gizi Kurang":
-//       element.style.backgroundColor = "red";
-//       break;
-//     case "Risiko Lebih":
-//       element.style.backgroundColor = "dodgerblue";
-//       break;
-//     case "Gizi Lebih":
-//       element.style.backgroundColor = "mediumblue";
-//       break;
-//     case "Obesitas":
-//       element.style.backgroundColor = "darkblue";
-//       break;
-//     case "BB Sangat Kurang":
-//       element.style.backgroundColor = "darkred";
-//       break;
-//     case "BB Kurang":
-//       element.style.backgroundColor = "red";
-//       break;
-//     case "Risiko BB Lebih":
-//       element.style.backgroundColor = "darkblue";
-//       break;
-//     case "Hijau Atas":
-//       element.style.backgroundColor = "green";
-//       break;
-//     case "Hijau":
-//       element.style.backgroundColor = "limegreen";
-//       break;
-//     case "Kuning":
-//       element.style.backgroundColor = "gold";
-//       break;
-//     case "Merah":
-//       element.style.backgroundColor = "red";
-//       break;
-//     default:
-//       element.style.backgroundColor = "black";
-//   }
-// }
+import { Link } from 'react-router-dom';
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -106,46 +44,15 @@ function applyStatusStyle(statusValue) {
   }
 }
 
-function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
+function TabelPengukuranBalitaPosyandu({ apiAuth, idBalita}) {
 
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
 
-  // console.log("tanggal lahir");
-  // console.log(typeof tanggalLahir);
-  // console.log(tanggalLahir);
-
-  // useEffect(() => {
-  //   const statusTBUElements = document.querySelectorAll("[data-status_tbu]");
-  //   const statusBBTBElements = document.querySelectorAll("[data-status_bbtb]");
-  //   const statusBBUElements = document.querySelectorAll("[data-status_bbu]");
-  //   const statusKMSElements = document.querySelectorAll("[data-status_kms]");
-
-  //   statusTBUElements.forEach((statusElement) => {
-  //     const divElement = statusElement.querySelector(".validasi");
-  //     applyStatusStyle(divElement);
-  //   });
-
-  //   statusBBTBElements.forEach((statusElement) => {
-  //     const divElement = statusElement.querySelector(".validasi");
-  //     applyStatusStyle(divElement);
-  //   });
-
-  //   statusBBUElements.forEach((statusElement) => {
-  //     const divElement = statusElement.querySelector(".validasi");
-  //     applyStatusStyle(divElement);
-  //   });
-
-  //   statusKMSElements.forEach((statusElement) => {
-  //     const divElement = statusElement.querySelector(".validasi");
-  //     applyStatusStyle(divElement);
-  //   });
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`${BASE_URL}/pengukurans/balita/${idBalita}`);
+        const result = await axios.get(`${BASE_URL}/pengukurans/balita/${idBalita}`, apiAuth);
         const pengukuranArray = Array.isArray(result.data) ? result.data : [result.data];
         pengukuranArray.sort((a, b) => a.umur - b.umur);
         setDataPengukuran(pengukuranArray);
@@ -160,11 +67,7 @@ function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
-        // const pengukuranArray = Array.isArray(result.data) ? result.data : [result.data];
-        // setDataPengukuran(pengukuranArray);
-        // console.log("isi fetch")
-        // console.log(result.data)
+        const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
         setTanggalLahir(result.data.tgl_lahir);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -181,7 +84,7 @@ function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
         <h2 className="custom-judul">Data Pengukuran</h2>
 
         <div className="p-3 mb-2 bg-light custom-border rounded">
-          <Link to={`/posyandu/${idPosyandu}/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
+          <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
           <table className="table custom-table">
             <thead>
               <tr>
@@ -227,7 +130,7 @@ function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
                   {pengukuran.validasi == true ? 
                     <div className="tervalidasi rounded">Tervalidasi</div>
                   :
-                  <Link to={`/posyandu/${idPosyandu}/edit-pengukuran/${pengukuran.id}`}>
+                  <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
                     <button className="fa-solid fa-pen-to-square"></button>
                   </Link>
                   }
@@ -235,119 +138,6 @@ function TabelPengukuranBalitaPosyandu({idPosyandu, apiAuth, idBalita}) {
               </tr>
                 
               ))}
-              {/* <tr>
-                <th scope="row">2</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td data-status_tbu="Pendek">
-                  <div className="validasi rounded">Pendek</div>
-                </td>
-                <td data-status_bbtb="Gizi Kurang">
-                  <div className="validasi rounded">Gizi Kurang</div>
-                </td>
-                <td data-status_bbu="BB Kurang">
-                  <div className="validasi rounded">BB Kurang</div>
-                </td>
-                <td>T</td>
-                <td data-status_kms="Hijau">
-                  <div className="validasi rounded">Hijau</div>
-                </td>
-                <td>
-                  <div className="tervalidasi rounded">Tervalidasi</div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td data-status_tbu="Normal">
-                  <div className="validasi rounded">Normal</div>
-                </td>
-                <td data-status_bbtb="Normal">
-                  <div className="validasi rounded">Normal</div>
-                </td>
-                <td data-status_bbu="Normal">
-                  <div className="validasi rounded">Normal</div>
-                </td>
-                <td>B</td>
-                <td data-status_kms="Kuning">
-                  <div className="validasi rounded">Kuning</div>
-                </td>
-                <td>
-                  <button className="fa-solid fa-pen-to-square"></button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">4</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td data-status_tbu="Tinggi">
-                  <div className="validasi rounded">Tinggi</div>
-                </td>
-                <td data-status_bbtb="Risiko Lebih">
-                  <div className="validasi rounded">Risiko Lebih</div>
-                </td>
-                <td data-status_bbu="Risiko BB Lebih">
-                  <div className="validasi rounded">Risiko BB Lebih</div>
-                </td>
-                <td>O</td>
-                <td data-status_kms="Merah">
-                  <div className="validasi rounded">Merah</div>
-                </td>
-                <td>
-                  <div className="tervalidasi rounded">Tervalidasi</div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">5</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td data-status_bbtb="Gizi Lebih">
-                  <div className="validasi rounded">Gizi Lebih</div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <button className="fa-solid fa-pen-to-square"></button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">6</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td data-status_bbtb="Obesitas">
-                  <div className="validasi rounded">Obesitas</div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                  <button className="fa-solid fa-pen-to-square"></button>
-                </td> 
-              </tr>*/}
             </tbody>
           </table>
         </div>

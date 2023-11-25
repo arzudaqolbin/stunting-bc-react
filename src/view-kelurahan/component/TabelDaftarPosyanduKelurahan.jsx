@@ -3,16 +3,18 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-kelurahan.css";
+import { ClipLoader } from 'react-spinners';
 
 function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
 
     const [posyanduList, setPosyanduList] = useState([]);
     const [puskesmasList, setPuskesmasList] = useState([]);
     const [selectedPuskesmas, setSelectedPuskesmas] = useState("");
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // Panggil API untuk mendapatkan daftar posyandu
-        axios.get(`${BASE_URL}/posyandu`)
+        axios.get(`${BASE_URL}/posyandu`, apiAuth)
             .then(response => {
                 // setPosyanduList(response.data.data);
                 setPosyanduList(response.data);
@@ -23,13 +25,14 @@ function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
             });
 
         // Panggil API untuk mendapatkan daftar puskesmas
-        axios.get(`${BASE_URL}/puskesmas`)
+        axios.get(`${BASE_URL}/puskesmas`, apiAuth)
             .then(response => {
                 setPuskesmasList(response.data.data);
             })
             .catch(error => {
                 console.error('Error fetching puskesmas:', error);
             });
+        setLoading(false)
     }, []);
 
     const handlePuskesmasChange = (e) => {
@@ -41,6 +44,15 @@ function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
         : posyanduList;
 
     return (
+        <>
+        {
+          loading ?(
+          <div className='text-center'>
+            <ClipLoader
+              loading={loading}
+              size={150}
+            />
+          </div>) : (
         <main className="container">
             <div className="container-fluid">
                 {/* Mulai isi kontennya disini */}
@@ -101,7 +113,9 @@ function TabelDaftarPosyanduKelurahan({idKelurahan, apiAuth }) {
                     <Link to="/kelurahan/tambah-posyandu" className="btn btn-success btn-rounded btn-sm">+ Tambah Posyandu</Link>
                 </div>
             </div>
-        </main>
+        </main>)
+    }
+    </>
     );
 }
 
