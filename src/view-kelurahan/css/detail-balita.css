@@ -1,0 +1,14 @@
+/* .txt-res{
+    text-decoration: none;
+    color: #E4F3EF;
+  } */
+/* .accordion-body, .accordion-button{
+    background-color: #E4F3EF;
+  } */
+.custom-table{
+    border: none;
+}
+.custom-table th,
+.custom-table td{
+    border: none;
+}

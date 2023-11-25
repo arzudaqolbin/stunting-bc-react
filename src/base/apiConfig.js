@@ -9,12 +9,12 @@ const apiAuth = () => {
     const token = localStorage.getItem("access_token")
     return {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        //   'content-type': 'multipart/form-data'
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            //   'content-type': 'multipart/form-data'
         },
     };
-} 
+}
 
 const dataAuth = () => {
     const decoded = decodeToken(localStorage.getItem("access_token"))
@@ -37,4 +37,4 @@ const dataAuth = () => {
 
 export default BASE_URL;
 
-export {apiAuth, dataAuth, token}
+export { apiAuth, dataAuth, token }
