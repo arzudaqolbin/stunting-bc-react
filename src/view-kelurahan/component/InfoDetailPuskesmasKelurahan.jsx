@@ -3,9 +3,11 @@ import "../css/info-detail-puskesmas-kelurahan.css";
 import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import axios from 'axios';
+import $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 function InfoDetailPuskesmasKelurahan({idPuskesmas}) {
-
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);
   const [username, setUsername] = useState([]);
@@ -101,53 +103,55 @@ function InfoDetailPuskesmasKelurahan({idPuskesmas}) {
 
             <p className="h6" style={{ fontWeight: 'bold' }}>Posyandu Binaan</p>
             <div className="p-3 mb-2 bg-light custom-border rounded">
-            <table className="table custom-table">
-                <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama Posyandu</th>
-                    <th scope="col">Alamat</th>
-                    <th scope="col">Nomor Telepon</th>
-                    <th scope="col">Detail</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {
-                        posyandu.map((poss, idx) => (
-                            <tr key={poss.id}>
-                                <th scope="row">idx</th>
-                                <td>{poss.nama}</td>
-                                <td>{poss.alamat}</td>
-                                <td>{poss.nomor_telepon}</td>
-                                <td>
-                                    <Link to={`/kelurahan/detail-posyandu/${poss.id}`}>
-                                        <button className="btn btn-info">Info</button>
-                                    </Link>
-                                </td>
-                            </tr>
+              <div className='table-responsive'>
+                <table className="table custom-table">
+                  <thead>
+                  <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nama Posyandu</th>
+                      <th scope="col">Alamat</th>
+                      <th scope="col">Nomor Telepon</th>
+                      <th scope="col">Detail</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                      {
+                          posyandu.map((poss, idx) => (
+                              <tr key={poss.id}>
+                                  <th scope="row">idx</th>
+                                  <td>{poss.nama}</td>
+                                  <td>{poss.alamat}</td>
+                                  <td>{poss.nomor_telepon}</td>
+                                  <td>
+                                      <Link to={`/kelurahan/detail-posyandu/${poss.id}`}>
+                                          <button className="btn btn-info">Info</button>
+                                      </Link>
+                                  </td>
+                              </tr>
 
-                        ))
-                    }
-                {/* <tr>
-                    <th scope="row">2</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    <button className="btn btn-info">Info</button>
-                    </td>
-                </tr> */}
-                </tbody>
-            </table>
+                          ))
+                      }
+                  {/* <tr>
+                      <th scope="row">2</th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                      <button className="btn btn-info">Info</button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th scope="row">3</th>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                      <button className="btn btn-info">Info</button>
+                      </td>
+                  </tr> */}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>

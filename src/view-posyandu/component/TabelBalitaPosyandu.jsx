@@ -3,13 +3,46 @@ import axios from "axios";
 import "../css/tabel-balita-posyandu.css";
 import BASE_URL from "../../base/apiConfig";
 import { Link } from "react-router-dom";
+import $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 function TabelBalitaPosyandu({ idPosyandu }) {
   const [balita, setBalita] = useState([]);
 
   useEffect(() => {
-    loadDataBalita();
-  }, []);
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (!$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+            "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+            "zeroRecords": "Data tidak ditemukan",
+            "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+            "infoEmpty": "Tidak ada data tersedia",
+            "infoFiltered": "(Disaring dari _MAX_ data total)",
+            "decimal": "",
+            "emptyTable": "Data tidak tersedia",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": 'Cari:  <i class="bi bi-search"></i> ',
+            "searchPlaceholder": 'Cari data balita...',
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                // "next": "Selanjutnya",
+                // "previous": "Sebelumnya"
+                "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
+                "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+            },
+            "aria": {
+                "sortAscending": ": klik untuk mengurutkan A-Z",
+                "sortDescending": ": klik untuk mengurutkan Z-A"
+            }
+        }
+    });
+    }
+  }, [balita]);
 
   const loadDataBalita = async () => {
     try {
@@ -37,6 +70,10 @@ function TabelBalitaPosyandu({ idPosyandu }) {
       }
     }
   };
+
+    useEffect(() => {
+    loadDataBalita();
+  }, []);
 
   // Fungsi applyStatusStyle untuk mengatur status gaya CSS
   function applyStatusStyle(element) {
@@ -115,65 +152,51 @@ function TabelBalitaPosyandu({ idPosyandu }) {
 
   return (
     <main className="container">
-      <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">Daftar Balita Posyandu</h2>
 
-        <form className="d-flex align-items-center">
-          <input
-            className="form-control me-2"
-            type="text"
-            placeholder="Cari nama balita..."
-            aria-label="Search"
-          />
-          <button className="btn btn-success btn-rounded btn-sm" type="submit">
-            Cari
-          </button>
-        </form>
-
-        <div className="p-3 mb-2 bg-light custom-border rounded">
-          <table className="table custom-table">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama Balita</th>
-                <th scope="col">Jenis Kelamin</th>
-                <th scope="col">Nama Orang Tua</th>
-                <th scope="col">Umur (Bulan)</th>
-                <th scope="col">Status TB/U</th>
-                <th scope="col">Status BB/TB</th>
-                <th scope="col">Status BB/U</th>
-                <th scope="col">Lihat Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {balita.map((data, index) => (
-                <tr key={data.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{data.nama}</td>
-                  <td>{data.jenis_kelamin}</td>
-                  <td>{data.nama_ortu}</td>
-                  <td>{data.umur}</td>
-                  <td data-status_tbu={data.status_tbu}>
-                    <div className="status rounded">{data.status_tbu}</div>
-                  </td>
-                  <td data-status_bbtb={data.status_bbtb}>
-                    <div className="status rounded">{data.status_bbtb}</div>
-                  </td>
-                  <td data-status_bbu={data.status_bbu}>
-                    <div className="status rounded">{data.status_bbu}</div>
-                  </td>
-                  <td>
-                    <Link to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`} >
-                      <button className="btn btn-info">Info</button>
-                    </Link>
-                  </td>
+        <div className="table-responsive">
+        <table id="myTable" className="table custom-table">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama Balita</th>
+                  <th scope="col">Jenis Kelamin</th>
+                  <th scope="col">Nama Orang Tua</th>
+                  <th scope="col">Umur (Bulan)</th>
+                  <th scope="col">Status TB/U</th>
+                  <th scope="col">Status BB/TB</th>
+                  <th scope="col">Status BB/U</th>
+                  <th scope="col">Lihat Detail</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+              </thead>
+              <tbody>
+                {balita.map((data, index) => (
+                  <tr key={data.id}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{data.nama}</td>
+                    <td>{data.jenis_kelamin}</td>
+                    <td>{data.nama_ortu}</td>
+                    <td>{data.umur}</td>
+                    <td data-status_tbu={data.status_tbu}>
+                      <div className="status rounded">{data.status_tbu}</div>
+                    </td>
+                    <td data-status_bbtb={data.status_bbtb}>
+                      <div className="status rounded">{data.status_bbtb}</div>
+                    </td>
+                    <td data-status_bbu={data.status_bbu}>
+                      <div className="status rounded">{data.status_bbu}</div>
+                    </td>
+                    <td>
+                      <Link to={`/posyandu/${idPosyandu}/detail-balita/${data.id}`} >
+                        <button className="btn btn-info">Info</button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
     </main>
   );
 }

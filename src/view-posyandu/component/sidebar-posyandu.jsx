@@ -86,11 +86,7 @@ const SidebarPosyandu = ({content}) =>  {
         </nav>
 
         {/* Main Content Section */}
-        <main className="container">
-          <div className="container-fluid">
             {content}
-          </div>
-        </main>
 
 
       </div>
