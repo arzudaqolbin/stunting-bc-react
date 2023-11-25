@@ -284,7 +284,7 @@ const SliderBerita = () => {
           <span className="carousel-control-next-icon" aria-hidden="true"></span>
           <span className="visually-hidden">Next</span>
         </div>
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'right', marginTop: '20px' }}>
           <a className="text-berita" style={{ textDecoration: 'none' }}>
             Berita Selengkapnya&gt;&gt;<br /><br />
           </a>
