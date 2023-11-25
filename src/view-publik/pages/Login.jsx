@@ -223,9 +223,9 @@ const Login = () => {
             alt="Logo Jakarta Timur"
           />
         </div>
-        <div className="title text-center mt-3">
-          <h4 style={{ color: "white" }}>Single Sign On</h4>
-          <h4 style={{ color: "orange" }}>
+        <div className="title-login mt-5">
+          <h4 style={{ color: "white", textAlign: 'center'}}>Single Sign On</h4>
+          <h4 style={{ color: "orange", textAlign: 'center'}}>
             Dashboard Monitoring Stunting Kelurahan Bidara Cina
           </h4>
         </div>

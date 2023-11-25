@@ -18,7 +18,7 @@ const DetailBerita = () => {
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img className="img-berita" src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
           </div>
         </div>
         <div className="text-isiberita mt-4">
