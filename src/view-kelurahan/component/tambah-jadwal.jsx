@@ -25,6 +25,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
       const response = await axios.post(`${BASE_URL}/jadwals`, jadwal, apiAuth);
       // console.log(response.data);
       // navi
+      console.log(response.data);
     } catch (error) {
       // Handle errors, e.g., show an error message
       console.error('Error submitting data:', error);
