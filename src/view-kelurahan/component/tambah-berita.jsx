@@ -9,7 +9,7 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
   let navigate = useNavigate();
 
   const [berita, setBerita] = useState({
-    tgl_berita: "",
+    // tgl_berita: "",
     judul: "",
     deskripsi: "",
     isi: "",
@@ -18,7 +18,8 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
 
   console.log(berita);
 
-  const { tgl_berita, judul, deskripsi, isi, gambar } = berita;
+  // const { tgl_berita, judul, deskripsi, isi, gambar } = berita;
+  const { judul, deskripsi, isi, gambar } = berita;
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,14 +30,21 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("tgl_berita", tgl_berita);
+    // formData.append("tgl_berita", tgl_berita);
     formData.append("judul", judul);
     formData.append("deskripsi", deskripsi);
     formData.append("isi", isi);
     formData.append("gambar", gambar); // Ini adalah file yang akan dikirim
 
     try {
-      await axios.post(`${BASE_URL}/beritas`, formData, apiAuth);
+      // await axios.post(`${BASE_URL}/beritas`, formData, apiAuth);
+      await axios.post(`http://127.0.0.1:8000/api/beritas`, formData, {
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IktFTFVSQUhBTiIsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYmlkY2lua2VsIiwiaW5zdGFuc2kiOiJLZWx1cmFoYW4gQmlkYXJhIENpbmEiLCJpbnN0YW5zaV9pZCI6MSwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTcwMTA2MjgwMiwiZXhwIjoxNzAxMDY2NDAyLCJuYmYiOjE3MDEwNjI4MDIsImp0aSI6InhmbjR1RkZSWFFUUHhGTEEifQ.pqQjgWhNiK_xu1QxzfBuzPoTi08SuG_a7PH9iH0j_YA",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       //   navigate("/"); // Redirect ke halaman lain setelah sukses
     } catch (error) {
       if (error.response) {
@@ -67,7 +75,7 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
             onSubmit(e);
           }}
         >
-          <label htmlFor="tgl_berita">
+          {/* <label htmlFor="tgl_berita">
             <span>Tanggal*</span>
             <input
               type="date"
@@ -76,7 +84,7 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               required
               onChange={(e) => onInputChange(e)}
             />
-          </label>
+          </label> */}
 
           <label htmlFor="judul">
             <span>Judul*</span>
