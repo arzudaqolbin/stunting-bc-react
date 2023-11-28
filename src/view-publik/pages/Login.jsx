@@ -56,7 +56,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <div
       className="d-flex flex-column min-vh-100"
@@ -73,8 +72,8 @@ const Login = () => {
           />
         </div>
         <div className="title-login mt-5">
-          <h4 style={{ color: "white", textAlign: 'center'}}>Single Sign On</h4>
-          <h4 style={{ color: "orange", textAlign: 'center'}}>
+          <h4 style={{ color: "white", textAlign: 'center' }}>Single Sign On</h4>
+          <h4 style={{ color: "orange", textAlign: 'center' }}>
             Dashboard Monitoring Stunting Kelurahan Bidara Cina
           </h4>
         </div>

@@ -4,7 +4,7 @@ import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
 // import BASE_URL from '../../base/apiConfig';
 
-function TambahAkunPuskesmas({idKelurahan, apiAuth }) {
+function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
 
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",
@@ -36,7 +36,7 @@ function TambahAkunPuskesmas({idKelurahan, apiAuth }) {
       koordinat_id: 1
     };
 
-    axios.post(`${BASE_URL}/puskesmas`, puskesmasData)
+    axios.post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
       .then(response => {
         console.log(response.data);
       })
