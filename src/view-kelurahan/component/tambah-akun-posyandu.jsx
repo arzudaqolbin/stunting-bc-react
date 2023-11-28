@@ -4,11 +4,12 @@ import "../css/form-kelurahan.css";
 import BASE_URL from '../../base/apiConfig';
 import { useParams } from 'react-router-dom';
 
-function TambahAkunPosyandu({idKelurahan, apiAuth }) {
+function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
   const { idPuskesmas } = useParams();
 
   const [puskesmasList, setPuskesmasList] = useState([]);
   // const [selectedPuskesmas, setSelectedPuskesmas] = useState('');
+  const token = localStorage.getItem('access_token');
 
   const [posyanduData, setPosyanduData] = useState({
     nama_posyandu: "",
@@ -43,9 +44,9 @@ function TambahAkunPosyandu({idKelurahan, apiAuth }) {
       koordinat_id: posyanduData.koordinat_id
     };
 
-    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
+    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit, apiAuth)
       .then(response => {
-        console.log(response.data);
+        console.log(response);
         // Reset form atau navigasi ke halaman lain jika diperlukan
       })
       .catch(error => {
@@ -56,7 +57,7 @@ function TambahAkunPosyandu({idKelurahan, apiAuth }) {
   };
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/puskesmas`)
+    axios.get(`${BASE_URL}/puskesmas`, apiAuth)
       .then(response => {
         setPuskesmasList(response.data.data);
       })

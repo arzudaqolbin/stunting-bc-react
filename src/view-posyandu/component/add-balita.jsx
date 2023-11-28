@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita({ apiAuth }) {
+function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
 
   const [balita, setBalita] = useState({
@@ -56,9 +56,8 @@ function AddBalita({ apiAuth }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -103,205 +102,205 @@ function AddBalita({ apiAuth }) {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-      <div className="table-responsive">
-        <form
-          onSubmit={(e) => {
-            onSubmit(e);
-          }}
-        >
-          <label htmlFor="nik">
-            <span>NIK*</span>
-            <input
-              type="text"
-              id="nik"
-              name="nik"
-              value={nik}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="nama">
-            <span>Nama Balita*</span>
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              value={nama}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="jenis_kelamin">
-            <span>Jenis Kelamin*</span>
-            <select
-              id="jenis_kelamin"
-              name="jenis_kelamin"
-              value={jenis_kelamin}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">--Pilih--</option>
-              <option value="Laki-Laki">Laki-Laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
-          </label>
-
-          <label htmlFor="anak_ke">
-            <span>Anak Ke-*</span>
-            <input
-              type="number"
-              id="anak_ke"
-              name="anak_ke"
-              value={anak_ke}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="umur">
-            <span>Umur*</span>
-            <input
-              type="number"
-              id="umur"
-              name="umur"
-              value={umur}
-              onChange={(e) => onInputChange(e)}
-              required
-              onKeyPress={(e) => {
-                if (e.key < "0" || e.key > "9") {
-                  e.preventDefault();
-                }
-              }}
-            />
-          </label>
-
-          <label htmlFor="nama_ortu">
-            <span>Nama Orang Tua*</span>
-            <input
-              type="text"
-              id="nama_ortu"
-              name="nama_ortu"
-              value={nama_ortu}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="pekerjaan_ortu">
-            <span>Pekerjaan Orang Tua*</span>
-            <input
-              type="text"
-              id="pekerjaan_ortu"
-              name="pekerjaan_ortu"
-              value={pekerjaan_ortu}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <div className="address-section">
-            <label htmlFor="alamat">
-              <span>Alamat</span>
+        <div className="table-responsive">
+          <form
+            onSubmit={(e) => {
+              onSubmit(e);
+            }}
+          >
+            <label htmlFor="nik">
+              <span>NIK*</span>
+              <input
+                type="text"
+                id="nik"
+                name="nik"
+                value={nik}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
             </label>
-            <input
-              type={"text"}
-              className="form-control"
-              placeholder="alamat"
-              name="alamat"
-              value={alamat}
-              onChange={(e) => onInputChange(e)}
-              readOnly
-            />
 
-            <div className="address-details">
-              <label htmlFor="jalan">
-                <span>Jalan*</span>
-                <input
-                  type="text"
-                  id="jalan"
-                  name="jalan"
-                  value={jalan}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                />
-              </label>
+            <label htmlFor="nama">
+              <span>Nama Balita*</span>
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                value={nama}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
 
-              <label htmlFor="rt">
-                <span>RT*</span>
-                <input
-                  type="text"
-                  id="rt"
-                  name="rt"
-                  value={rt}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                  pattern="\d{2,}"
-                  title="Awali angka satuan dengan angka 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-              </label>
+            <label htmlFor="jenis_kelamin">
+              <span>Jenis Kelamin*</span>
+              <select
+                id="jenis_kelamin"
+                name="jenis_kelamin"
+                value={jenis_kelamin}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">--Pilih--</option>
+                <option value="Laki-Laki">Laki-Laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </label>
 
-              <label htmlFor="rw">
-                <span>RW*</span>
-                <input
-                  type="text"
-                  id="rw"
-                  name="rw"
-                  value={rw}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                  pattern="\d{2,}"
-                  title="Awali angka satuan dengan angka 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
+            <label htmlFor="anak_ke">
+              <span>Anak Ke-*</span>
+              <input
+                type="number"
+                id="anak_ke"
+                name="anak_ke"
+                value={anak_ke}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <label htmlFor="umur">
+              <span>Umur*</span>
+              <input
+                type="number"
+                id="umur"
+                name="umur"
+                value={umur}
+                onChange={(e) => onInputChange(e)}
+                required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </label>
+
+            <label htmlFor="nama_ortu">
+              <span>Nama Orang Tua*</span>
+              <input
+                type="text"
+                id="nama_ortu"
+                name="nama_ortu"
+                value={nama_ortu}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <label htmlFor="pekerjaan_ortu">
+              <span>Pekerjaan Orang Tua*</span>
+              <input
+                type="text"
+                id="pekerjaan_ortu"
+                name="pekerjaan_ortu"
+                value={pekerjaan_ortu}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <div className="address-section">
+              <label htmlFor="alamat">
+                <span>Alamat</span>
               </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="alamat"
+                name="alamat"
+                value={alamat}
+                onChange={(e) => onInputChange(e)}
+                readOnly
+              />
+
+              <div className="address-details">
+                <label htmlFor="jalan">
+                  <span>Jalan*</span>
+                  <input
+                    type="text"
+                    id="jalan"
+                    name="jalan"
+                    value={jalan}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                  />
+                </label>
+
+                <label htmlFor="rt">
+                  <span>RT*</span>
+                  <input
+                    type="text"
+                    id="rt"
+                    name="rt"
+                    value={rt}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                    pattern="\d{2,}"
+                    title="Awali angka satuan dengan angka 0, misal 01"
+                    onKeyPress={(e) => {
+                      if (e.key < "0" || e.key > "9") {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </label>
+
+                <label htmlFor="rw">
+                  <span>RW*</span>
+                  <input
+                    type="text"
+                    id="rw"
+                    name="rw"
+                    value={rw}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                    pattern="\d{2,}"
+                    title="Awali angka satuan dengan angka 0, misal 01"
+                    onKeyPress={(e) => {
+                      if (e.key < "0" || e.key > "9") {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </label>
+              </div>
             </div>
-          </div>
 
-          <label htmlFor="Tanggal Lahir" className="form-label">
-            <span>Tanggal Lahir Balita*</span>
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Masukkan Tanggal Lahir"
-              name="tgl_lahir"
-              value={tgl_lahir}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
+            <label htmlFor="Tanggal Lahir" className="form-label">
+              <span>Tanggal Lahir Balita*</span>
+              <input
+                type="date"
+                className="form-control"
+                placeholder="Masukkan Tanggal Lahir"
+                name="tgl_lahir"
+                value={tgl_lahir}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
 
-          <label htmlFor="posyandu">
-            <span>Nama Posyandu*</span>
-            <select
-              id="posyandu"
-              name="posyandu"
-              value={posyandu}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">--Pilih--</option>
-              {posyanduOptions &&
-                posyanduOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.nama}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
-      </div>
+            <label htmlFor="posyandu">
+              <span>Nama Posyandu*</span>
+              <select
+                id="posyandu"
+                name="posyandu"
+                value={posyandu}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">--Pilih--</option>
+                {posyanduOptions &&
+                  posyanduOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.nama}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );
