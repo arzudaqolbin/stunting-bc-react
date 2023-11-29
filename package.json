@@ -38,7 +38,8 @@
     "recharts-to-png": "^2.3.0",
     "sweetalert2": "^11.10.1",
     "util": "^0.12.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
