@@ -4,6 +4,7 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import format from "date-fns/format";
 import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -149,6 +150,7 @@ function applyStatusStyle(statusValue) {
 function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
+  const [namaBalita, setNamaBalita] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -178,6 +180,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
           apiAuth
         );
         setTanggalLahir(result.data.tgl_lahir);
+        setNamaBalita(result.data.nama);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -345,9 +348,6 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
               ))}
             </tbody>
           </table>
-          <button onClick={handleExport()} className="btn btn-primary">
-            Export Table
-          </button>
         </div>
       </div>
     </main>

@@ -5,6 +5,7 @@ import BASE_URL from "../../base/apiConfig";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -150,6 +151,7 @@ function applyStatusStyle(statusValue) {
 function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
+  const [namaBalita, setNamaBalita] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -179,6 +181,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
           apiAuth
         );
         setTanggalLahir(result.data.tgl_lahir);
+        setNamaBalita(result.data.nama);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -363,7 +366,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
                         {/* <button className="fa-solid fa-pen-to-square"></button> */}
                         <i
                           class="fa-solid fa-circle-check mx-2"
-                          style="color: #408d30;"
+                          style={{ color: "#408d30" }}
                         ></i>
                       </Link>
                     )}
@@ -372,9 +375,6 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
               ))}
             </tbody>
           </table>
-          <button onClick={handleExport()} className="btn btn-primary">
-            Export Table
-          </button>
         </div>
       </div>
     </main>
