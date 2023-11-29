@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 
 
-function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
+function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
   const [formData, setFormData] = useState({
     nama_posyandu: "",
@@ -23,7 +23,7 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
   const [puskesmasList, setPuskesmasList] = useState([]);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/puskesmas`)
+    axios.get(`${BASE_URL}/puskesmas`, apiAuth)
       .then((response) => {
         // console.log(response.data);
         setPuskesmasList(response.data.data);
@@ -33,7 +33,7 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
       });
 
 
-    axios.get(`${BASE_URL}/posyandu/${idPosyandu}`)
+    axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth)
       .then((response) => {
         const data = response.data.data;
         setFormData({
@@ -47,7 +47,7 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
         });
         console.log(data);
 
-        axios.get(`${BASE_URL}/user/${data.user_id}`)
+        axios.get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
           .then((userResponse) => {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
@@ -81,7 +81,7 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
       rw: formData.rw,
       kepala: formData.kepala,
       nomor_telepon: formData.nomor_telepon
-    })
+    }, apiAuth)
       .then((response) => {
         console.log("Posyandu updated:", response.data);
       })
@@ -93,7 +93,7 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
       username: formData.username,
       password: formData.password,
       confirm_password: formData.confirm_password
-    })
+    }, apiAuth)
       .then((response) => {
         console.log("User updated:", response.data);
         navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
@@ -111,112 +111,112 @@ function EditAkunPosyandu({idKelurahan, apiAuth, idPosyandu}) {
       <i class="fa-solid fa-arrow-left text-2x"></i>
 
       <div className="container-fluid">
-      
+
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT AKUN POSYANDU</h2>
-        
+
         <div className="table-responsive">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="nama_posyandu">
-            <span>Nama Puskesmas</span>
-            <input
-              type="text"
-              id="nama_posyandu"
-              name="nama_posyandu"
-              required
-              value={formData.nama_posyandu}
-              onChange={handleChange}
-            />
-          </label>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="nama_posyandu">
+              <span>Nama Puskesmas</span>
+              <input
+                type="text"
+                id="nama_posyandu"
+                name="nama_posyandu"
+                required
+                value={formData.nama_posyandu}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="nama_puskesmas">
-            <span>Nama Puskesmas*</span>
-            <select
-              id="nama_puskesmas"
-              name="nama_puskesmas"
-              required
-              value={formData.nama_puskesmas}
-              onChange={handleChange}
-            >
-              <option value="">Pilih Puskesmas</option>
-              {puskesmasList.map((puskesmas) => (
-                <option key={puskesmas.id} value={puskesmas.id}>
-                  {puskesmas.nama}
-                </option>
-              ))}
-            </select>
-          </label>
+            <label htmlFor="nama_puskesmas">
+              <span>Nama Puskesmas*</span>
+              <select
+                id="nama_puskesmas"
+                name="nama_puskesmas"
+                required
+                value={formData.nama_puskesmas}
+                onChange={handleChange}
+              >
+                <option value="">Pilih Puskesmas</option>
+                {puskesmasList.map((puskesmas) => (
+                  <option key={puskesmas.id} value={puskesmas.id}>
+                    {puskesmas.nama}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label htmlFor="alamat">
-            <span>Alamat</span>
-            <input
-              type="text"
-              id="alamat"
-              name="alamat"
-              required
-              value={formData.alamat}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="alamat">
+              <span>Alamat</span>
+              <input
+                type="text"
+                id="alamat"
+                name="alamat"
+                required
+                value={formData.alamat}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="kepala">
-            <span>Kepala Posyandu*</span>
-            <input
-              type="text"
-              id="kepala"
-              name="kepala"
-              required
-              value={formData.kepala}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="kepala">
+              <span>Kepala Posyandu*</span>
+              <input
+                type="text"
+                id="kepala"
+                name="kepala"
+                required
+                value={formData.kepala}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="nomor_telepon">
-            <span>Nomor Kepala</span>
-            <input
-              type="text"
-              id="nomor_telepon"
-              name="nomor_telepon"
-              required
-              value={formData.nomor_telepon}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="nomor_telepon">
+              <span>Nomor Kepala</span>
+              <input
+                type="text"
+                id="nomor_telepon"
+                name="nomor_telepon"
+                required
+                value={formData.nomor_telepon}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="username">
-            <span>Username</span>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              required
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="username">
+              <span>Username</span>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="password">
-            <span>Password</span>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </label>
-          <label htmlFor="confirm_password">
-            <span>Confirm Password*</span>
-            <input
-              type="password"
-              id="confirm_password"
-              name="confirm_password"
-              value={formData.confirm_password}
-              onChange={handleChange}
-            />
-          </label>
-          <button type="submit" className="submit-button">Simpan</button>
-        </form>
+            <label htmlFor="password">
+              <span>Password</span>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </label>
+            <label htmlFor="confirm_password">
+              <span>Confirm Password*</span>
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                value={formData.confirm_password}
+                onChange={handleChange}
+              />
+            </label>
+            <button type="submit" className="submit-button">Simpan</button>
+          </form>
         </div>
       </div>
     </main>

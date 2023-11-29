@@ -6,8 +6,8 @@ import { apiAuth, dataAuth } from "../../base/apiConfig";
 import TambahKader from "../component/tambah-kader";
 
 const PageTambahKader = () => {
-  const { idKader } = useParams();
-  return <SidebarKelurahan content={<TambahKader idKelurahan={dataAuth().id} apiAuth={apiAuth()} idKader={idKader} />} />;
+  const { idPosyandu, jabatan } = useParams();
+  return <SidebarKelurahan content={<TambahKader idKelurahan={dataAuth().id} apiAuth={apiAuth()} idPosyandu={idPosyandu} jabatans={jabatan} />} />;
 };
 
 export default PageTambahKader;
