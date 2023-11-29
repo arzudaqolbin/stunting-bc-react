@@ -194,13 +194,8 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
         <h2 className="custom-judul">Data Pengukuran</h2>
 
         <div className="p-3 mb-2 bg-light custom-border rounded">
-          <Link
-            to={`/posyandu/${idPosyandu}/tambah-pengukuran/${idBalita}`}
-            className="btn btn-primary"
-          >
-            Tambah Pengukuran
-          </Link>
-          <div className="table-responsive">
+          <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
+          <div className='table-responsive'>
             <table className="table custom-table">
               <thead>
                 <tr>
@@ -266,14 +261,13 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
                     </td>
                     <td>
                       {pengukuran.validasi == true ? (
-                        <div className="tervalidasi rounded">Tervalidasi</div>
-                      ) : (
-                        <Link
-                          to={`/posyandu/${idPosyandu}/edit-pengukuran/${pengukuran.id}`}
-                        >
-                          <button className="fa-solid fa-pen-to-square"></button>
-                        </Link>
-                      )}
+                        <div className="tervalidasi rounded">Tervalidasi</div>)
+                        :
+                        (
+                          <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
+                            <button className="fa-solid fa-pen-to-square"></button>
+                          </Link>
+                        )}
                     </td>
                   </tr>
                 ))}

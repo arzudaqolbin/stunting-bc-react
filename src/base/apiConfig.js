@@ -22,7 +22,8 @@ const dataAuth = () => {
         return {
             id: decoded.instansi_id,
             nama: decoded.instansi,
-            userId: decoded.user_id
+            userId: decoded.user_id,
+            role: decoded.role
         };
     } else {
         // Jika token tidak valid atau belum tersedia

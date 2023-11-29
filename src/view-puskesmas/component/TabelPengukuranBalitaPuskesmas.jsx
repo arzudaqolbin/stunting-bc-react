@@ -257,8 +257,10 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
     document.body.removeChild(dataLink);
   };
 
-  const handleValidate = () => {
-    Swal.fire({
+  const handleValidate = async (id_Pengukuran) => {
+    console.log("ini id pengukuranann = ", id_Pengukuran);
+    let validate = true;
+    await Swal.fire({
       title: "Apakah kamu yakin?",
       text: "Memvalidasi data pengukuran",
       icon: "warning",
@@ -270,11 +272,13 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
     }).then((result) => {
       if (result.isConfirmed) {
         // lakukan api validasiiii
+        axios.put(`${BASE_URL}/pengukurans/validasi/${id_Pengukuran}`, { validasi: validate }, apiAuth)
+
       }
     });
   };
 
-  const handleExport = () => {};
+  const handleExport = () => { };
 
   return (
     <main className="container">
@@ -356,20 +360,17 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
                     </div>
                   </td>
                   <td>
-                    <Link to={`puskesmas/edit-pengukuran/${pengukuran.id}`}>
+                    <Link to={`/puskesmas/edit-pengukuran/${pengukuran.id}`}>
                       <i class="fa-solid fa-pen-to-square"></i>
                     </Link>
                     {pengukuran.validasi == true ? (
-                      <div className="tervalidasi rounded">Tervalidasi</div>
-                    ) : (
-                      <Link onClick={handleValidate}>
+                      <div className="tervalidasi rounded">Tervalidasi</div>)
+                      :
+                      <span role='button' onClick={() => handleValidate(pengukuran.id)}>
                         {/* <button className="fa-solid fa-pen-to-square"></button> */}
-                        <i
-                          class="fa-solid fa-circle-check mx-2"
-                          style={{ color: "#408d30" }}
-                        ></i>
-                      </Link>
-                    )}
+                        <i class="fa-solid fa-circle-check mx-2" style={{ color: "#408d30" }}></i>
+                      </span>
+                    }
                   </td>
                 </tr>
               ))}

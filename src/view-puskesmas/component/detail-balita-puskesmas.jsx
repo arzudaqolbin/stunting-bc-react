@@ -25,11 +25,19 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
         apiAuth
       );
       setBiodata(dataBalita.data);
-      setRiwayat(dataTambahanBalita.data);
     } catch (error) {
       console.error("Error fetching balita data:", error);
     }
   };
+
+  const getDataTambahan = async () => {
+    try {
+      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
+      setRiwayat(dataTambahanBalita.data);
+    } catch (error) {
+      console.error("Error fetching balita data:", error);
+    }
+  }
 
   const getNamaPosyandu = async () => {
     try {
@@ -43,15 +51,26 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await getDataBalita();
+  //     await getNamaPosyandu();
+  //     setLoading(false);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
+      await getDataTambahan();
       await getNamaPosyandu();
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {

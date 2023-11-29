@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 // import { Line } from 'react-chartjs-2';
 import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-import { useParams } from 'react-router-dom';
 
 const dataLK = [
     { umur: 0, sd_3: 44.2, sd_2: 46.1, med: 49.9, sd2: 53.7, sd3: 55.6 },
@@ -68,53 +67,63 @@ const dataLK = [
 
 
 const LineChart_Umur_0_24 = ({apiAuth, idBalita}) => {
-  const [dataPatokan, setDataPatokan] = useState([]);
+    const [dataPatokan, setDataPatokan] = useState([]);
     const [dataTarget, setDataTarget] = useState([]);
     const [dataCombine, setDataCombine] = useState([]);
-
+    const chartRef = useRef();
+  
     useEffect(() => {
-        const fetchDataBalita = async () => {
-            try {
-                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
-                // setBalita(result.data);
-
-                const jk = result.data.jenis_kelamin;
-                if (jk === 'Laki-laki') {
-                    setDataPatokan(dataLK);
-                } else {
-                    setDataPatokan(dataPR);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        const fetchDataTarget = async () => {
-            try {
-                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-1/${idBalita}`, apiAuth);
-                setDataTarget(result.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchDataBalita();
-        fetchDataTarget();
-    }, [idBalita]);
-
+      const fetchDataBalita = async () => {
+        try {
+          const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
+  
+          const jk = result.data.jenis_kelamin;
+          const patokanData = jk === 'Laki-laki' ? dataLK : dataPR;
+          setDataPatokan(patokanData);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      const fetchDataTarget = async () => {
+        try {
+          const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-1/${idBalita}`, apiAuth);
+          setDataTarget(result.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchDataBalita();
+      fetchDataTarget();
+    }, [idBalita, apiAuth]);
+  
     useEffect(() => {
-
-        const dataGabungan = dataPatokan.map(patokanItem => {
-            const targetItem = dataTarget.find(target => target.umur === patokanItem.umur);
-            return { ...patokanItem, PB: targetItem ? targetItem.tinggi_badan : null };
-          });
-        
-        setDataCombine(dataGabungan)
-
+      const dataGabungan = dataPatokan.map((patokanItem) => {
+        const targetItem = dataTarget.find((target) => target.umur === patokanItem.umur);
+        return { ...patokanItem, PB: targetItem ? targetItem.tinggi_badan : null };
+      });
+  
+      setDataCombine(dataGabungan);
     }, [dataPatokan, dataTarget]);
 
+
+    // const handleDownload = () => {
+    //     const svgString = new XMLSerializer().serializeToString(chartRef.current);
+    //     const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    //     const blobURL = URL.createObjectURL(blob);
+    
+    //     const downloadLink = document.createElement('a');
+    //     downloadLink.href = blobURL;
+    //     downloadLink.download = 'chart.svg';
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //     document.body.removeChild(downloadLink);
+    //   };
+
     return(
-        <LineChart width={1000} height={500} data={dataCombine}>
+        <>
+        <LineChart ref={chartRef} width={1000} height={500} data={dataCombine}>
             <Line type="monotone" dataKey="PB" stroke="blue" strokeWidth={2} dot={true} fill='blue' />
             <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
             <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false}  />
@@ -127,6 +136,8 @@ const LineChart_Umur_0_24 = ({apiAuth, idBalita}) => {
 
             <Tooltip />
         </LineChart>
+        {/* <button onClick={handleDownload}>Download Chart</button> */}
+        </>
     )
 }
 

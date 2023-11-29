@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, {dataAuth} from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -455,7 +455,14 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 
                 // Mengakhiri janji saat Toast ditutup
-                navigate(`/posyandu/detail-balita/${idBalita}`);
+                if(dataAuth().role === "PUSKESMAS"){
+
+                  navigate(`/puskesmas/detail-balita/${idBalita}`);
+                }
+                else{
+
+                  navigate(`/posyandu/detail-balita/${idBalita}`);
+                }
                 resolve();
             },
         });
