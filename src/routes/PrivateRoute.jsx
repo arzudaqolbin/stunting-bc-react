@@ -18,8 +18,8 @@ const PrivateRoute = ({ element, requiredRole }) => {
     // Coba mendekode token
     const decodedToken = decodeToken(token);
 
-    console.log("apakah masuk private route")
-    console.log(decodedToken)
+    // console.log("apakah masuk private route")
+    // console.log(decodedToken)
 
     if(decodedToken.exp < (Date.now()/1000)){
       Swal.fire({
