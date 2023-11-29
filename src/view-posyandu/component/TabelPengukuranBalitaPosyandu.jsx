@@ -150,7 +150,6 @@ function applyStatusStyle(statusValue) {
 function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
-  const [namaBalita, setNamaBalita] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,7 +179,6 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
           apiAuth
         );
         setTanggalLahir(result.data.tgl_lahir);
-        setNamaBalita(result.data.nama);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -188,73 +186,6 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
 
     fetchData();
   }, [tanggalLahir]);
-
-  const exportToXLSX = () => {
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-
-    const formatDate = (date) => {
-      const formattedDate = new Date(date).toLocaleDateString("en-GB");
-      return formattedDate;
-    };
-
-    const formattedData = dataPengukuran.map((item) => [
-      item.id,
-      formatDate(item.tgl_input),
-      item.umur,
-      item.tinggi_badan,
-      item.berat_badan,
-      item.posisi_balita,
-      item.rambu_gizi,
-      item.kms,
-      item.status_tbu,
-      item.status_bbu,
-      item.status_bbtb,
-      formatDate(item.created_at),
-    ]);
-
-    const ws = XLSX.utils.aoa_to_sheet([
-      [
-        "ID",
-        "Tanggal Input",
-        "Umur",
-        "Tinggi Badan",
-        "Berat Badan",
-        "Posisi Balita",
-        "Rambu Gizi",
-        "KMS",
-        "Status TBU",
-        "Status BBU",
-        "Status BBTB",
-        "Tanggal Penambahan",
-      ],
-      ...formattedData,
-    ]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
-    const excelBuffer = XLSX.write(wb, {
-      bookType: "xlsx",
-      type: "array",
-    });
-
-    const dataFile = new Blob([excelBuffer], { type: fileType });
-    const fileName = namaBalita + "_Data Pengukuran Balita" + fileExtension;
-
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(dataFile, fileName);
-      return;
-    }
-
-    const dataFileURL = URL.createObjectURL(dataFile);
-    const dataLink = document.createElement("a");
-    dataLink.href = dataFileURL;
-    dataLink.setAttribute("download", fileName);
-    document.body.appendChild(dataLink);
-    dataLink.click();
-    document.body.removeChild(dataLink);
-  };
 
   return (
     <main className="container">
@@ -270,9 +201,6 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
             Tambah Pengukuran
           </Link>
           <div className="table-responsive">
-            <button className="btn btn-primary" onClick={exportToXLSX}>
-              Export
-            </button>
             <table className="table custom-table">
               <thead>
                 <tr>
