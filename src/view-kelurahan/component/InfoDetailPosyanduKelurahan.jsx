@@ -246,7 +246,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                             <td>Ketua</td>
                             <td>{ketua.nama}</td>
                             <td>
-                              <Link to={`/edit-kader/${ketua.id}`}>
+                              <Link to={`/kelurahan/edit-kader/${ketua.id}`}>
                                 <button className="fa-solid fa-pen-to-square"></button>
                               </Link>
                             </td>
@@ -257,7 +257,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                           <td>Ketua</td>
                           <td><i>belum terdaftar</i></td>
                           <td>
-                            <Link to={`/tambah-kader/ketua/${idPosyandu}`}>
+                            <Link to={`/kelurahan/tambah-kader/Ketua/${idPosyandu}`}>
                               <button className="fa-solid fa-pen-to-square"></button>
                             </Link>
                           </td>
@@ -273,7 +273,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                             <td>Sekretaris</td>
                             <td>{Sekretaris.nama}</td>
                             <td>
-                              <Link to={`/edit-kader/${Sekretaris.id}`}>
+                              <Link to={`/kelurahan/edit-kader/${Sekretaris.id}`}>
                                 <button className="fa-solid fa-pen-to-square"></button>
                               </Link>
                             </td>
@@ -284,7 +284,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                           <td>Sekretaris</td>
                           <td><i>belum terdaftar</i></td>
                           <td>
-                            <Link to={`/tambah-kader/ketua/${idPosyandu}`}>
+                            <Link to={`/kelurahan/tambah-kader/Sekretaris/${idPosyandu}`}>
                               <button className="fa-solid fa-pen-to-square"></button>
                             </Link>
                           </td>
@@ -300,7 +300,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                             <td>Bendahara</td>
                             <td>{Bendahara.nama}</td>
                             <td>
-                              <Link to={`/edit-kader/${Bendahara.id}`}>
+                              <Link to={`/kelurahan/edit-kader/${Bendahara.id}`}>
                                 <button className="fa-solid fa-pen-to-square"></button>
                               </Link>
                             </td>
@@ -311,7 +311,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                           <td>Bendahara</td>
                           <td><i>belum terdaftar</i></td>
                           <td>
-                            <Link to={`/tambah-kader/ketua/${idPosyandu}`}>
+                            <Link to={`/tambah-kader/Bendahara/${idPosyandu}`}>
                               <button className="fa-solid fa-pen-to-square"></button>
                             </Link>
                           </td>
@@ -324,7 +324,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                       <td rowSpan={kader.filter((k) => k.jabatan === "Anggota").length + 1}>Anggota Kader</td>
                       <td><i>silahkan tambah anggota</i></td>
                       <td>
-                        <Link to={`/tambah-kader/anggota/${idPosyandu}`}>
+                        <Link to={`/kelurahan/tambah-kader/Anggota/${idPosyandu}`}>
                           <button><i class="fa-solid fa-plus" style={{ color: "#0a9e59" }}></i></button>
                         </Link>
                       </td>
@@ -334,7 +334,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                         <tr key={anggota.id}>
                           <td>{anggota.nama}</td>
                           <td>
-                            <Link to={`edit-kader/${anggota.id}`}>
+                            <Link to={`/kelurahan/edit-kader/${anggota.id}`}>
                               <button className="fa-solid fa-pen-to-square"></button>
                             </Link>
                             <button><i class="fa-solid fa-trash"></i></button>
