@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/profile-kelurahan.css";
 import logoJaktim from "../../aset/logo-jaktim.png";
 import BASE_URL from "../../base/apiConfig";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 function ProfileKelurahan({ idKelurahan, apiAuth }) {
   const [kelurahan, setKelurahan] = useState({});
