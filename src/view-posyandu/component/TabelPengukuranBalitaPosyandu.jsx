@@ -4,7 +4,7 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import format from "date-fns/format";
 import { Link } from "react-router-dom";
-import * as XLSX from "xlsx";
+// import * as XLSX from "xlsx";
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {

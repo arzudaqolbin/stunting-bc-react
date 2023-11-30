@@ -35,9 +35,9 @@ const Navbar = () => {
                   Pencegahan
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Stunting</a></li>
-                  <li><a className="dropdown-item" href="#">Underweight</a></li>
-                  <li><a className="dropdown-item" href="#">Wasting</a></li>
+                  <li><a className="dropdown-item" href="/pencegahan/stunting">Stunting</a></li>
+                  <li><a className="dropdown-item" href="/pencegahan/underweight">Underweight</a></li>
+                  <li><a className="dropdown-item" href="/pencegahan/wasting">Wasting</a></li>
                 </ul>
               </li>
               <li className="nav-item dropdown">
@@ -45,9 +45,9 @@ const Navbar = () => {
                   Pengukuran
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Stunting</a></li>
-                  <li><a className="dropdown-item" href="#">Underweight</a></li>
-                  <li><a className="dropdown-item" href="#">Wasting</a></li>
+                  <li><a className="dropdown-item" href="/pengukuran/stunting">Stunting</a></li>
+                  <li><a className="dropdown-item" href="/pengukuran/underweight">Underweight</a></li>
+                  <li><a className="dropdown-item" href="/pengukuran/wasting">Wasting</a></li>
                 </ul>
               </li>
               <li className="nav-item">

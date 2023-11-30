@@ -22,7 +22,7 @@ import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 
-function AddPengukuranSelected({ apiAuth, idBalita}) {
+function AddPengukuranSelected({ apiAuth, idBalita }) {
   let navigate = useNavigate();
 
   const today = new Date().toISOString().split('T')[0];
@@ -93,7 +93,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
           // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
         }
       }
-      
+
       setHasRunEffect(true);
     }
   }, [hasRunEffect]);
@@ -348,25 +348,25 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
       newErrors.tgl_input = "Tanggal pengukuran tidak boleh kosong";
       isValid = false;
     } else {
-      newErrors.tgl_input= "";
+      newErrors.tgl_input = "";
     }
 
     if (!pengukuran.berat_badan) {
       newErrors.berat_badan = "Berat badan tidak boleh kosong";
       isValid = false;
-    } else if (!/^[0-9,.]+$/.test(pengukuran.berat_badan)){
+    } else if (!/^[0-9,.]+$/.test(pengukuran.berat_badan)) {
       newErrors.berat_badan = "Berat badan tidak valid";
       isValid = false;
     } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.berat_badan)) {
       newErrors.berat_badan = "Maksimal dua digit angka di belakang koma";
       isValid = false;
-    } else if (parseFloat(pengukuran.berat_badan) <= 2 || parseFloat(pengukuran.berat_badan)>30) {
+    } else if (parseFloat(pengukuran.berat_badan) <= 2 || parseFloat(pengukuran.berat_badan) > 30) {
       newErrors.berat_badan = "Berat badan harus diantara 2-30";
       isValid = false;
     } else {
       newErrors.berat_badan = "";
     }
-    
+
 
     if (!pengukuran.tinggi_badan) {
       newErrors.tinggi_badan = "Tinggi badan tidak boleh kosong";
@@ -377,7 +377,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
     } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.tinggi_badan)) {
       newErrors.tinggi_badan = "Maksimal dua digit angka di belakang koma";
       isValid = false;
-    } else if (parseFloat(pengukuran.tinggi_badan) <= 30 || parseFloat(pengukuran.tinggi_badan)>120) {
+    } else if (parseFloat(pengukuran.tinggi_badan) <= 30 || parseFloat(pengukuran.tinggi_badan) > 120) {
       newErrors.tinggi_badan = "Tinggi badan harus diantara 30-120";
       isValid = false;
     } else {
@@ -389,7 +389,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
       isValid = false;
       newErrors.posisi_balita = "Pilih posisi pengukuran";
     } else {
-      newErrors.posisi_balita= "";
+      newErrors.posisi_balita = "";
     }
 
     // Set ulang state errors
@@ -409,7 +409,7 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       console.log("balita")
       console.log(balita)
 
@@ -433,9 +433,18 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
         console.log("pengukuran terbaru");
         console.log(pengukuran);
 
+        console.log("pengukuran terbaru");
+        console.log(pengukuran);
+
         await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
           console.log(hasil.status)
         })
+        await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, {
+          umur: pengukuran.umur,
+          status_tbu: pengukuran.status_tbu,
+          status_bbu: pengukuran.status_bbu,
+          status_bbtb: pengukuran.status_bbtb
+        }, apiAuth)
         showSuccessPostToast(idBalita);
         // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
 
@@ -461,32 +470,32 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const showSuccessPostToast = async ( idBalita) => {
+  const showSuccessPostToast = async (idBalita) => {
     return new Promise((resolve) => {
-        toast.success("Data berhasil disimpan", {
-            data: {
-                title: "Success",
-                text: "Data berhasil disimpan",
-            },
-            onClose: async () => {
-                // Menunggu 3 detik sebelum melakukan navigasi
-                await new Promise(resolve => setTimeout(resolve, 3000));
-                
-                // Mengakhiri janji saat Toast ditutup
-                if(dataAuth().role === "PUSKESMAS"){
+      toast.success("Data berhasil disimpan", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
 
-                  navigate(`/puskesmas/detail-balita/${idBalita}`);
-                }
-                else{
+          // Mengakhiri janji saat Toast ditutup
+          if (dataAuth().role === "PUSKESMAS") {
 
-                  navigate(`/posyandu/detail-balita/${idBalita}`);
-                }
-                resolve();
-            },
-        });
+            navigate(`/puskesmas/detail-balita/${idBalita}`);
+          }
+          else {
+
+            navigate(`/posyandu/detail-balita/${idBalita}`);
+          }
+          resolve();
+        },
+      });
     });
-};
-  
+  };
+
   const showFailedPostToast = () => {
     toast.error("Gagal Menyimpan Data", {
       data: {
@@ -507,137 +516,137 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
       cancelButtonText: "Kembali"
-      }).then((result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-          // acc izin
-          onSubmit(e, balita, pengukuran)
+        // acc izin
+        onSubmit(e, balita, pengukuran)
       }
-  });
+    });
 
   }
 
   return (
     <>
-    {
-      loading ?(
-      <div className='text-center'>
-        <ClipLoader
-          loading={loading}
-          size={150}
-        />
-      </div>) : (
-    <main className="container">
-      <h2 className="custom-judul">Form Pengukuran Balita</h2>
-      <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
-
-      <div className="container-fluid">
-      <div className="table-responsive">
-        <form
-          onSubmit={(e) => {
-            // onSubmit(e, balita, pengukuran);
-            confirmAlert(e, balita, pengukuran);
-          }}
-        >
-          <label htmlFor="nama_balita">
-            <span>Nama Balita</span>
-            <input
-              type="text"
-              id="nama_balita"
-              name="nama_bali"
-              value={balita.nama}
-              readOnly
-            // onChange={(e) => onInputChange(e)}
+      {
+        loading ? (
+          <div className='text-center'>
+            <ClipLoader
+              loading={loading}
+              size={150}
             />
-          </label>
-          <label>
-            <span>Tanggal Lahir*</span>
-            <input
-              type="date"
-              id="tgl_lahir"
-              name="tgl_lahir"
-              value={balita.tgl_lahir}
-              disabled
-            />
-          </label>
-          <label htmlFor="tgl_input">
-            <span>Tanggal Pengukuran*</span>
-            <input
-              type="date"
-              className="form-control"
-              id="tgl_input"
-              name="tgl_input"
-              value={tgl_input}
-              onChange={(e) => onInputChange(e)}
-              // required
-              max={today}
-              min={fiveYearsAgoFormatted}
-            />
-            <div className={`error`}>{errors.tgl_input}</div>
-          </label>
+          </div>) : (
+          <main className="container">
+            <h2 className="custom-judul">Form Pengukuran Balita</h2>
+            <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
+
+            <div className="container-fluid">
+              <div className="table-responsive">
+                <form
+                  onSubmit={(e) => {
+                    // onSubmit(e, balita, pengukuran);
+                    confirmAlert(e, balita, pengukuran);
+                  }}
+                >
+                  <label htmlFor="nama_balita">
+                    <span>Nama Balita</span>
+                    <input
+                      type="text"
+                      id="nama_balita"
+                      name="nama_bali"
+                      value={balita.nama}
+                      readOnly
+                    // onChange={(e) => onInputChange(e)}
+                    />
+                  </label>
+                  <label>
+                    <span>Tanggal Lahir*</span>
+                    <input
+                      type="date"
+                      id="tgl_lahir"
+                      name="tgl_lahir"
+                      value={balita.tgl_lahir}
+                      disabled
+                    />
+                  </label>
+                  <label htmlFor="tgl_input">
+                    <span>Tanggal Pengukuran*</span>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="tgl_input"
+                      name="tgl_input"
+                      value={tgl_input}
+                      onChange={(e) => onInputChange(e)}
+                      // required
+                      max={today}
+                      min={fiveYearsAgoFormatted}
+                    />
+                    <div className={`error`}>{errors.tgl_input}</div>
+                  </label>
 
 
-          <label htmlFor="umur">
-            <span>Umur dalam Bulan*</span>
-            <input
-              type="text"
-              id="umur"
-              name="umur"
-              value={umur}
-              onChange={(e) => onInputChange(e)}
-              readOnly
-              placeholder="auto system dari tanggal pengukuran"
-            />
-          </label>
+                  <label htmlFor="umur">
+                    <span>Umur dalam Bulan*</span>
+                    <input
+                      type="text"
+                      id="umur"
+                      name="umur"
+                      value={umur}
+                      onChange={(e) => onInputChange(e)}
+                      readOnly
+                      placeholder="auto system dari tanggal pengukuran"
+                    />
+                  </label>
 
-          <label htmlFor="berat_badan">
-            <span>Berat (kg)*</span>
-            <input
-              type="number"
-              id="berat_badan"
-              name="berat_badan"
-              value={berat_badan}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.berat_badan}</div>
-          </label>
+                  <label htmlFor="berat_badan">
+                    <span>Berat (kg)*</span>
+                    <input
+                      type="number"
+                      id="berat_badan"
+                      name="berat_badan"
+                      value={berat_badan}
+                      onChange={(e) => onInputChange(e)}
+                    // required
+                    />
+                    <div className={`error`}>{errors.berat_badan}</div>
+                  </label>
 
-          <label htmlFor="tinggi_badan">
-            <span>Tinggi Badan (cm)*</span>
-            <input
-              type="number"
-              id="tinggi_badan"
-              name="tinggi_badan"
-              value={tinggi_badan}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.tinggi_badan}</div>
-          </label>
+                  <label htmlFor="tinggi_badan">
+                    <span>Tinggi Badan (cm)*</span>
+                    <input
+                      type="number"
+                      id="tinggi_badan"
+                      name="tinggi_badan"
+                      value={tinggi_badan}
+                      onChange={(e) => onInputChange(e)}
+                    // required
+                    />
+                    <div className={`error`}>{errors.tinggi_badan}</div>
+                  </label>
 
-          <label htmlFor="posisi_balita">
-            <span>Posisi Pengukuran</span>
-            <select
-              id="posisi_balita"
-              name="posisi_balita"
-              value={posisi_balita}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="" disabled selected>Pilih posisi balita</option>
-              <option value="Berdiri">Berdiri</option>
-              <option value="Tidur">Tidur</option>
-            </select>
-            <div className={`error`}>{errors.posisi_balita}</div>
-          </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
-      </div>
-      </div>
-      <ToastContainer />
-    </main>)
-    }
+                  <label htmlFor="posisi_balita">
+                    <span>Posisi Pengukuran</span>
+                    <select
+                      id="posisi_balita"
+                      name="posisi_balita"
+                      value={posisi_balita}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="" disabled selected>Pilih posisi balita</option>
+                      <option value="Berdiri">Berdiri</option>
+                      <option value="Tidur">Tidur</option>
+                    </select>
+                    <div className={`error`}>{errors.posisi_balita}</div>
+                  </label>
+                  <button type="submit" className="submit-button">
+                    Simpan
+                  </button>
+                </form>
+              </div>
+            </div>
+            <ToastContainer />
+          </main>)
+      }
     </>
   );
 }
