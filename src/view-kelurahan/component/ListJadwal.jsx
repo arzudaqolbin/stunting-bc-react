@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "../css/list-jadwal.css";
 import BASE_URL from '../../base/apiConfig';
 import { Link } from 'react-router-dom';
+import "../../view-publik/css/list-jadwal.css";
 
 const ListJadwal = () => {
 
@@ -41,9 +41,9 @@ const ListJadwal = () => {
     <main className="container">
       <div className="container">
         <h2 className="text-center mt-5 mb-5">Jadwal Kegiatan Kelurahan Bidara Cina</h2>
-        {/* <div className="text-end mb-3">
+        <div className="text-end mb-3">
           <button className="btn btn-primary">Tambah Kegiatan</button>
-        </div> */}
+        </div>
         {
           jadwals.map(jadwal => (
 
@@ -67,12 +67,12 @@ const ListJadwal = () => {
                   <div className="float-end">{new Date(jadwal.tanggal).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</div>
                     <h4 className="card-title text-muted">{jadwal.judul}</h4>
                     <p className="card-text text-muted">{jadwal.deskripsi}</p>
-                    {/* <button className="btn btn-danger float-end">
+                    <button className="btn btn-danger float-end">
                       <i className="fas fa-trash"></i>
                     </button>
                     <Link to={`/kelurahan/edit-jadwal/${jadwal.id}`} className="btn btn-primary float-end me-2">
                       <i className="fas fa-edit"></i>
-                    </Link> */}
+                    </Link>
                   </div>
                 </div>
               </div>

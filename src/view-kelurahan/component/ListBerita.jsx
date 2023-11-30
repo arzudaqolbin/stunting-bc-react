@@ -2,7 +2,7 @@ import React from 'react';
 import berita from "../../aset/berita.png";
 import logokelurahan from "../../aset/logokelurahan.png"
 import { Link } from 'react-router-dom';
-import "../css/list-berita.css";
+import "../../view-publik/css/list-berita.css";
 
 const ListBerita = () => {
   return (
@@ -19,9 +19,9 @@ const ListBerita = () => {
           </form>
         </div>
       </div>
-      {/* <div className="text-end mb-5">
+      <div className="text-end mb-5">
           <button className="btn btn-primary">Tambah Berita</button>
-      </div> */}
+      </div>
       <div className="row mt-3">
   {[1, 2, 3, 4, 5, 6].map((index) => (
     <div key={index} className="col-md-4 mb-5">
@@ -39,12 +39,12 @@ const ListBerita = () => {
           <a href="#" className="btn btn-primary">
             Baca berita
           </a>
-          {/* <button className="btn btn-danger float-end">
+          <button className="btn btn-danger float-end">
             <i className="fas fa-trash"></i>
           </button>
           <Link to={`/kelurahan/edit-jadwal`} className="btn btn-primary float-end me-2">
             <i className="fas fa-edit"></i>
-          </Link> */}
+          </Link>
         </div>
       </div>
     </div>

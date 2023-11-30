@@ -6,6 +6,7 @@ import BASE_URL from '../../base/apiConfig';
 import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
 import { ClipLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
+import "../css/detail-balita.css";
 
 const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
 
@@ -69,6 +70,21 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                 <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
                   Detail Balita
                 </h2>
+                <div className="accordion mb-3" id="accordionExample">
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button
+                      className="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                      style={{ fontWeight: "bold", fontSize: "20px" }}
+                    >
+                      Biodata Balita
+                    </button>
+                  </h2>
                 <div
                   id="collapseOne"
                   className="accordion-collapse collapse show"
@@ -236,6 +252,8 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   </div>
                 </div>
               </div>
+            </div>
+            </div>
             </div>
           </main>
         )

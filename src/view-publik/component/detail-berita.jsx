@@ -4,11 +4,9 @@ import berita from "../../aset/berita.png";
 const DetailBerita = () => {
   return (
     <div className="container mt-5 mb-3">
-      <div className="container">
         <h6 className="my-2">
           <a href="#" className="text-dark"><i className="fas fa-arrow-left fa-3x"></i></a>
         </h6>
-      </div>
       <div className="col-11" style={{ marginLeft: "50px", marginRight: "50px" }}>
         <h1 style={{ fontWeight: 700, textAlign: "justify", marginBottom: "30px" }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -18,7 +16,7 @@ const DetailBerita = () => {
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img className="img-berita" src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img className="gambar-berita" src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
           </div>
         </div>
         <div className="text-isiberita mt-4">

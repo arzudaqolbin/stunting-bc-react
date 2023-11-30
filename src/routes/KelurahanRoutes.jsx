@@ -19,6 +19,8 @@ import PageDaftarPuskesmasKelurahan from "../view-kelurahan/pages/PageDaftarPusk
 import PageDaftarPosyanduKelurahan from "../view-kelurahan/pages/PageDaftarPosyanduKelurahan";
 import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPuskesmasKelurahan";
 import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
+import PageListBerita from "../view-kelurahan/pages/PageListBerita";
+import PageListJadwal from "../view-kelurahan/pages/PageListJadwal";
 
 
 const RoutesKelurahan = () => {
@@ -34,8 +36,8 @@ const RoutesKelurahan = () => {
             <Route path="/daftar-balita" element={<PrivateRoute element={<PageDaftarBalitaKelurahan />} requiredRole="Kelurahan" />} />
             <Route path="/daftar-puskesmas" element={<PrivateRoute element={<PageDaftarPuskesmasKelurahan />} requiredRole="Kelurahan" />} />
             <Route path="/daftar-posyandu" element={<PrivateRoute element={<PageDaftarPosyanduKelurahan />} requiredRole="Kelurahan" />} />
-            <Route path="/jadwal" element={<Coba />} />
-            <Route path="/berita" element={<Coba />} />
+            <Route path="/jadwal" element={<PageListJadwal />} />
+            <Route path="/berita" element={<PageListBerita />} />
             {/* balita */}
             <Route path="/detail-balita/:idBalita" element={<PrivateRoute element={<PageDetailBalitaKelurahan />} requiredRole="Kelurahan" />} />
             {/* puskesmas */}
