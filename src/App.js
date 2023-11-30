@@ -36,7 +36,7 @@ function App() {
       <Routes>
         <Route path="/coba-api" element={<CalculateStunting />} />
         <Route path="/*" element={<RoutesPublik />} />
-        <Route path="/lihat-page*" element={<LihatPage />} />
+        <Route path="/lihat-page/*" element={<LihatPage />} />
         <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
         <Route path="/posyandu/*" element={<RoutesPosyandu />} />
         <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />

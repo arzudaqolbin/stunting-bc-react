@@ -465,6 +465,12 @@ function AddPengukuran({idPosyandu, apiAuth }) {
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((fetch) => {
         console.log(fetch.status);
       })
+      await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, { 
+        umur: pengukuran.umur,
+        status_tbu: pengukuran.status_tbu,
+        status_bbu: pengukuran.status_bbu,
+        status_bbtb: pengukuran.status_bbtb
+      }, apiAuth)
 
       showSuccessPostToast( balita_id);
 

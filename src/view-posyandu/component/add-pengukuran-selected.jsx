@@ -364,6 +364,12 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
       await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
         console.log(hasil.status)
       })
+      await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, { 
+        umur: pengukuran.umur,
+        status_tbu: pengukuran.status_tbu,
+        status_bbu: pengukuran.status_bbu,
+        status_bbtb: pengukuran.status_bbtb
+      }, apiAuth)
       showSuccessPostToast(idBalita);
       // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
 
