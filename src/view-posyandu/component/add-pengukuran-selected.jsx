@@ -24,6 +24,12 @@ import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 function AddPengukuranSelected({ apiAuth, idBalita}) {
   let navigate = useNavigate();
+
+  const today = new Date().toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [loading, setLoading] = useState(true);
   const [balita, setBalita] = useState([]);
@@ -333,55 +339,122 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
     }
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi Tanggal input
+    if (!pengukuran.tgl_input) {
+      newErrors.tgl_input = "Tanggal pengukuran tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_input= "";
+    }
+
+    if (!pengukuran.berat_badan) {
+      newErrors.berat_badan = "Berat badan tidak boleh kosong";
+      isValid = false;
+    } else if (!/^[0-9,.]+$/.test(pengukuran.berat_badan)){
+      newErrors.berat_badan = "Berat badan tidak valid";
+      isValid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.berat_badan)) {
+      newErrors.berat_badan = "Maksimal dua digit angka di belakang koma";
+      isValid = false;
+    } else if (parseFloat(pengukuran.berat_badan) <= 2 || parseFloat(pengukuran.berat_badan)>30) {
+      newErrors.berat_badan = "Berat badan harus diantara 2-30";
+      isValid = false;
+    } else {
+      newErrors.berat_badan = "";
+    }
+    
+
+    if (!pengukuran.tinggi_badan) {
+      newErrors.tinggi_badan = "Tinggi badan tidak boleh kosong";
+      isValid = false;
+    } else if (!/^[0-9,.]+$/.test(pengukuran.tinggi_badan)) {
+      newErrors.tinggi_badan = "Tinggi badan tidak valid";
+      isValid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.tinggi_badan)) {
+      newErrors.tinggi_badan = "Maksimal dua digit angka di belakang koma";
+      isValid = false;
+    } else if (parseFloat(pengukuran.tinggi_badan) <= 30 || parseFloat(pengukuran.tinggi_badan)>120) {
+      newErrors.tinggi_badan = "Tinggi badan harus diantara 30-120";
+      isValid = false;
+    } else {
+      newErrors.berat_badan = "";
+    }
+
+    // Validasi Nama
+    if (!pengukuran.posisi_balita) {
+      isValid = false;
+      newErrors.posisi_balita = "Pilih posisi pengukuran";
+    } else {
+      newErrors.posisi_balita= "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
+  const [errors, setErrors] = useState({
+    tgl_input,
+    tinggi_badan,
+    berat_badan,
+    umur,
+    posisi_balita,
+  });
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
+    if (validateForm()){
+      console.log("balita")
+      console.log(balita)
 
-    console.log("balita")
-    console.log(balita)
+      // console.log("pengukuran")
+      // console.log(pengukuran)
 
-    // console.log("pengukuran")
-    // console.log(pengukuran)
+      const jk = balita.jenis_kelamin;
+      const idBalita = parseInt(balita.id)
+      const umur = parseInt(pengukuran.umur);
+      const bb = parseFloat(pengukuran.berat_badan);
+      const tb = parseFloat(pengukuran.tinggi_badan);
+      console.log("jk = ", jk, "umur = ", umur);
+      generateStatus_bbtb(jk, umur, bb, tb);
+      generateStatus_tbu(jk, umur, tb);
+      generateStatus_bbu(jk, umur, bb);
+      generateKms(jk, umur, bb);
+      generateRambuGizi(jk, umur, bb, idBalita);
 
-    const jk = balita.jenis_kelamin;
-    const idBalita = parseInt(balita.id)
-    const umur = parseInt(pengukuran.umur);
-    const bb = parseFloat(pengukuran.berat_badan);
-    const tb = parseFloat(pengukuran.tinggi_badan);
-    console.log("jk = ", jk, "umur = ", umur);
-    generateStatus_bbtb(jk, umur, bb, tb);
-    generateStatus_tbu(jk, umur, tb);
-    generateStatus_bbu(jk, umur, bb);
-    generateKms(jk, umur, bb);
-    generateRambuGizi(jk, umur, bb, idBalita);
+      try {
 
-    try {
+        console.log("pengukuran terbaru");
+        console.log(pengukuran);
 
-      console.log("pengukuran terbaru");
-      console.log(pengukuran);
-
-      await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
-        console.log(hasil.status)
-      })
-      showSuccessPostToast(idBalita);
-      // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
+        await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
+          console.log(hasil.status)
+        })
+        showSuccessPostToast(idBalita);
+        // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
 
 
-    } catch (error) {
-      showFailedPostToast()
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
+      } catch (error) {
         showFailedPostToast()
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        showFailedPostToast()
-        console.error("Terjadi kesalahan:", error.message);
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          showFailedPostToast()
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          showFailedPostToast()
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
   };
@@ -495,8 +568,11 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
               name="tgl_input"
               value={tgl_input}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
+              max={today}
+              min={fiveYearsAgoFormatted}
             />
+            <div className={`error`}>{errors.tgl_input}</div>
           </label>
 
 
@@ -521,8 +597,9 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
               name="berat_badan"
               value={berat_badan}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.berat_badan}</div>
           </label>
 
           <label htmlFor="tinggi_badan">
@@ -533,8 +610,9 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
               name="tinggi_badan"
               value={tinggi_badan}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.tinggi_badan}</div>
           </label>
 
           <label htmlFor="posisi_balita">
@@ -545,10 +623,11 @@ function AddPengukuranSelected({ apiAuth, idBalita}) {
               value={posisi_balita}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
+              <option value="" disabled selected>Pilih posisi balita</option>
               <option value="Berdiri">Berdiri</option>
               <option value="Tidur">Tidur</option>
             </select>
+            <div className={`error`}>{errors.posisi_balita}</div>
           </label>
           <button type="submit" className="submit-button">
             Simpan

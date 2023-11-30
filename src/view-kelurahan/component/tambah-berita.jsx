@@ -7,6 +7,10 @@ import BASE_URL from "../../base/apiConfig";
 
 const TambahBerita = ({ idKelurahan, apiAuth }) => {
   let navigate = useNavigate();
+  const today = new Date().toISOString().split('T')[0];
+  // const tomorrow = new Date();
+  // tomorrow.setDate(new Date().getDate() + 1);
+  // const tomorrowString = tomorrow.toISOString().split('T')[0];
 
   const [berita, setBerita] = useState({
     // tgl_berita: "",
@@ -31,37 +35,87 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     }
   };
 
+  const [errors, setErrors] = useState({
+    tgl_berita: "",
+    judul: "",
+    deskripsi: "",
+    isi: "",
+    gambar: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi Nama tanggal
+    if (!berita.tgl_berita) {
+      newErrors.tgl_berita = "Tanggal berita tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_berita = "";
+    }
+
+    // Validation for Username
+    if (!berita.judul) {
+      isValid = false;
+      newErrors.judul = "Judul tidak boleh kosong";
+    } else {
+      newErrors.judul = "";
+    }
+
+    // Validation for Password
+    if (!berita.deskripsi) {
+      isValid = false;
+      newErrors.deskripsi = "Beri deskripsi singkat";
+    } else {
+      newErrors.deskripsi = "";
+    }
+
+    // Validation for Password
+    if (!berita.isi) {
+      isValid = false;
+      newErrors.isi = "Isi berita tidak boleh kosong";
+    } else {
+      newErrors.isi = "";
+    }
+
+    if (!berita.gambar) {
+      isValid = false;
+      newErrors.gambar = "Pilih gambar";
+    } else {
+      newErrors.gambar = "";
+    }
+
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      const formData = new FormData();
+      formData.append("tgl_berita", tgl_berita);
+      formData.append("judul", judul);
+      formData.append("deskripsi", deskripsi);
+      formData.append("isi", isi);
+      formData.append("gambar", gambar); // Ini adalah file yang akan dikirim
 
-    const formData = new FormData();
-    // formData.append("tgl_berita", tgl_berita);
-    formData.append("judul", berita.judul);
-    formData.append("deskripsi", berita.deskripsi);
-    formData.append("isi", berita.isi);
-    formData.append("gambar", berita.gambar); // Ini adalah file yang akan dikirim
-
-    try {
-      // await axios.post(`${BASE_URL}/beritas`, formData, apiAuth);
-      await axios.post(`http://127.0.0.1:8000/api/beritas`, formData, {
-        headers: {
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwicm9sZSI6IktFTFVSQUhBTiIsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoiYmlkY2lua2VsIiwiaW5zdGFuc2kiOiJLZWx1cmFoYW4gQmlkYXJhIENpbmEiLCJpbnN0YW5zaV9pZCI6MSwiaXNzIjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FwaS9sb2dpbiIsImlhdCI6MTcwMTE3ODMyMiwiZXhwIjoxNzAxMTgxOTIyLCJuYmYiOjE3MDExNzgzMjIsImp0aSI6InZyejN6WDNydnhLZnhHZWsifQ.ygA0k0vOk4svZddafCXP8BXsoiqBND-tAg5mq4ZLbxw",
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      //   navigate("/"); // Redirect ke halaman lain setelah sukses
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+      try {
+        await axios.post(`${BASE_URL}/beritas`, formData, apiAuth);
+        //   navigate("/"); // Redirect ke halaman lain setelah sukses
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
   };
@@ -86,8 +140,9 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="date"
               id="tgl_berita"
               name="tgl_berita"
-              required
+              // required
               onChange={(e) => onInputChange(e)}
+              max={today}
             />
           </label> */}
 
@@ -97,9 +152,10 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="text"
               id="judul"
               name="judul"
-              required
+              // required
               onChange={(e) => onInputChange(e)}
             />
+            <div className={`error`}>{errors.judul}</div>
           </label>
 
           <label htmlFor="deskripsi">
@@ -107,10 +163,11 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
             <textarea
               id="deskripsi"
               name="deskripsi"
-              required
+              // required
               rows="5"
               onChange={(e) => onInputChange(e)}
             ></textarea>
+            <div className={`error`}>{errors.deskripsi}</div>
           </label>
 
           <label htmlFor="isi">
@@ -118,10 +175,11 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
             <textarea
               id="isi"
               name="isi"
-              required
+              // required
               rows="35"
               onChange={(e) => onInputChange(e)}
             ></textarea>
+            <div className={`error`}>{errors.isi}</div>
           </label>
 
           <label htmlFor="gambar">
@@ -130,15 +188,17 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="file"
               id="gambar"
               name="gambar"
+              accept="image/*"
               onChange={(e) => onInputChange(e)}
             />
+            <div className={`error`}>{errors.gambar}</div>
           </label>
           <button type="submit" className="submit-button">
             Simpan
           </button>
         </form>
       </div>
-    </main>
+    </main >
   );
 };
 

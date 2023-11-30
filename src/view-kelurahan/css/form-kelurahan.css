@@ -65,3 +65,10 @@
     width: 50px;
     height: auto; 
 }
+
+
+.input-wrapper{
+    display: flex;
+    flex-direction: column;   
+}
+  

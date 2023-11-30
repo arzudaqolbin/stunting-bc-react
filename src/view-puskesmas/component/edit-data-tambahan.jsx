@@ -62,29 +62,52 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
     setDataTambahan({ ...dataTambahan, [name]: value });
   };
 
+  const [errors, setErrors] = useState({
+    riwayat_sakit: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi riwayat penyakit
+    if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
+      isValid = false;
+      newErrors.riwayat_sakit= "Riwayat penyakit tidak valid.";
+    } else {
+      newErrors.riwayat_sakit= "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      if (idData) {
-        await axios.put(
-          `${BASE_URL}/dataTambahanBalitas/${idData}`,
-          dataTambahan,
-          apiAuth
-        );
-      }
-      navigate(`/posyandu/detail-balita/${idBalita}`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()){
+      try {
+        if (idData) {
+          await axios.put(
+            `${BASE_URL}/dataTambahanBalitas/${idData}`,
+            dataTambahan,
+            apiAuth
+          );
+        }
+        navigate(`/posyandu/detail-balita/${idBalita}`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
   };
@@ -153,6 +176,7 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
                   value={riwayat_sakit}
                   onChange={(e) => onInputChange(e)}
                 />
+                <div className={`error`}>{errors.riwayat_sakit}</div>
               </label>
 
               <label htmlFor="riwayat_imunisasi">

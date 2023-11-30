@@ -34,7 +34,6 @@ const PrivateRoute = ({ element, requiredRole }) => {
       });
     }
 
-    // Periksa peran pengguna
     const roleName = decodedToken.role.toLowerCase();
     if (!roleName || roleName !== requiredRole.toLowerCase()) {
       return <Login />;

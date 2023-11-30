@@ -94,6 +94,7 @@ const Login = () => {
                         className="form control my-1 py-1 col-12 mt-3"
                         placeholder="Username"
                       />
+                      <div className="error">ghj</div>
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -102,6 +103,7 @@ const Login = () => {
                         className="form control my-1 py-1 col-12"
                         placeholder="Password"
                       />
+                      <div className="error">ghj</div>
                     </div>
                     <div className="checkbox">
                       <input
