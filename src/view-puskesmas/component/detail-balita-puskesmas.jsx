@@ -25,6 +25,17 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
         apiAuth
       );
       setBiodata(dataBalita.data);
+    } catch (error) {
+      console.error("Error fetching balita data:", error);
+    }
+  };
+
+  const getDataTambahan = async () => {
+    try {
+      const dataTambahanBalita = await axios.get(
+        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
+        apiAuth
+      );
       setRiwayat(dataTambahanBalita.data);
     } catch (error) {
       console.error("Error fetching balita data:", error);
@@ -33,25 +44,38 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
 
   const getNamaPosyandu = async () => {
     try {
+      console.log(biodata.posyandu_id);
       const namaPos = await axios.get(
-        `${BASE_URL}/posyandu/${biodata.data.posyandu_id}`,
+        `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
         apiAuth
       );
+      console.log(namaPos);
       setNamaPosyandu(namaPos.data.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
     }
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await getDataBalita();
+  //     await getNamaPosyandu();
+  //     setLoading(false);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
+      await getDataTambahan();
       await getNamaPosyandu();
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {

@@ -6,49 +6,49 @@ import BASE_URL from "../../base/apiConfig";
 
 function ProfilePosyandu({ idPosyandu, apiAuth }) {
   const [Posyandu, setPosyandu] = useState({});
-
+  const [koordinat, setKoordinat] = useState({ latitude: 0, longitut: 0 });
   const [Kader, setKader] = useState([]);
 
   useEffect(() => {
-    loadDataPosyandu();
-  }, []);
+    axios
+      .get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth)
+      .then((response) => {
+        setPosyandu(response.data.data);
+        axios
+          .get(
+            `${BASE_URL}/koordinat/${response.data.data.koordinat_id}`,
+            apiAuth
+          )
+          .then((koordinatResponse) => {
+            setKoordinat(koordinatResponse.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching koordinat:", error);
+          });
 
-  const loadDataPosyandu = async () => {
-    try {
-      const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
-      setPosyandu(result.data.data);
+        axios
+          .get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth)
+          .then((response) => {
+            setKader(response.data.data);
+          })
+          .catch((error) => {
+            console.error(
+              "Terjadi kesalahan saat mengambil opsi Posyandu:",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching puskesmas:", error);
+      });
+  }, [idPosyandu, apiAuth]);
 
-      axios
-        .get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth)
-        .then((response) => {
-          setKader(response.data.data);
-        })
-        .catch((error) => {
-          console.error(
-            "Terjadi kesalahan saat mengambil opsi Posyandu:",
-            error
-          );
-        });
-    } catch (error) {
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
-    }
-  };
+  const [mapUrl, setMapUrl] = useState("");
+
+  useEffect(() => {
+    const url = `https://www.openstreetmap.org/export/embed.html?bbox=${koordinat.longitut},${koordinat.latitude}&marker=${koordinat.latitude},${koordinat.longitut}`;
+    setMapUrl(url);
+  }, [koordinat.latitude, koordinat.longitut]);
 
   return (
     <main className="container">
@@ -62,7 +62,19 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
             <p>{Posyandu?.alamat || "Loading..."}</p>
             <h1>NO. TELP</h1>
             <p>{Posyandu?.nomor_telepon || "Loading..."}</p>
-            <img src="posyandu.png" alt="Peta Lokasi" />
+            <h1>KOORDINAT</h1>
+            <div className="text-center">
+              {mapUrl && (
+                <iframe
+                  title="Open Street Map"
+                  width="50%"
+                  height="200px"
+                  loading="lazy"
+                  allowFullScreen
+                  src={mapUrl}
+                ></iframe>
+              )}
+            </div>
             <h3>Pengurus Kader</h3>
             <table className="table">
               <thead>

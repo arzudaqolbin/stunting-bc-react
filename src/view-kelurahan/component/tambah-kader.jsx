@@ -4,13 +4,13 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 
-function TambahKader({ idKelurahan, apiAuth }) {
+function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
   let navigate = useNavigate();
 
   const [kader, setKader] = useState({
     nama: "",
-    jabatan: "",
-    posyandu_id: "",
+    jabatan: jabatans,
+    posyandu_id: idPosyandu,
   });
 
   const [posyanduOptions, setPosyanduOptions] = useState([]);

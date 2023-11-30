@@ -36,7 +36,7 @@ function AddPengukuran({idPosyandu, apiAuth }) {
     umur: 0,
     tinggi_badan: "",
     berat_badan: "",
-    rambu_gizi: "N",
+    rambu_gizi: "",
     kms: "",
     status_tbu: "",
     status_bbu: "",
@@ -83,7 +83,7 @@ function AddPengukuran({idPosyandu, apiAuth }) {
     umur: "",
     tinggi_badan: "",
     berat_badan: "",
-    rambu_gizi: "N",
+    rambu_gizi: "",
     kms: "",
     status_tbu: "",
     status_bbu: "",
@@ -396,14 +396,17 @@ function AddPengukuran({idPosyandu, apiAuth }) {
   const generateRambuGizi = async (jk, umur, bb, idBalita) => {
     const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
     const kbm = patokanData.find((data) => data.umur === umur).kbm;
+    console.log("melbu rambu gizi")
 
     if (umur === 0) {
       pengukuran.rambu_gizi = "B";
     } else {
       try {
-        // const prevUmur = umur - 1;
-        // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
-        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
+        const prevUmur = umur - 1;
+        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
+        console.log("wkjebfiwefbwkevfiwyevfbwbefljwqbfuoqw fhqw fwqufvwqufvwdqqqqqqqqqq")
+        console.log("pengukuran sbelumnya = ", prevPengukuran)
+        // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
         const differ = bb - prevPengukuran.data.bb;
 
         let status = "";

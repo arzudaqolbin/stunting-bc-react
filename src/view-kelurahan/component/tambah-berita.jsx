@@ -9,7 +9,7 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
   let navigate = useNavigate();
 
   const [berita, setBerita] = useState({
-    // tgl_berita: "",
+    tgl_berita: "",
     judul: "",
     deskripsi: "",
     isi: "",
@@ -18,8 +18,8 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
 
   console.log(berita);
 
-  // const { tgl_berita, judul, deskripsi, isi, gambar } = berita;
-  const { judul, deskripsi, isi, gambar } = berita;
+  const { tgl_berita, judul, deskripsi, isi, gambar } = berita;
+  // const { judul, deskripsi, isi, gambar } = berita;
 
   const onInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -35,7 +35,7 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     e.preventDefault();
 
     const formData = new FormData();
-    // formData.append("tgl_berita", tgl_berita);
+    formData.append("tgl_berita", tgl_berita);
     formData.append("judul", berita.judul);
     formData.append("deskripsi", berita.deskripsi);
     formData.append("isi", berita.isi);

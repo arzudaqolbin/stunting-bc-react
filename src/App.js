@@ -30,6 +30,7 @@ import Login from "./view-publik/pages/Login";
 
 
 function App() {
+  // uploadFile();
   return (
     <Router>
       <Routes>

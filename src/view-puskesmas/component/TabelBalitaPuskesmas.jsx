@@ -46,6 +46,9 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
         },
       });
     }
+
+    loadDataBalita()
+    loadPosyandu()
   }, [balita]);
 
   useEffect(() => {
