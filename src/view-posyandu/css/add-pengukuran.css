@@ -1,6 +1,6 @@
 .container {
-    width: 80%;
-    margin: 0 auto;
+    width: 80% !important;
+    margin: 0 auto !important;
 }
 
 .custom-judul {
@@ -16,35 +16,35 @@
 }
 
 .container-fluid {
-    border-radius: 10px;
-    padding: 20px;
-    border: 1px solid #026670;
-    background-color: #fff;
-    margin-top: 0px;
-    display: flex; /* Menggunakan display flex */
-    flex-direction: column;
+    border-radius: 10px !important;
+    padding: 20px !important;
+    border: 1px solid #026670 !important;
+    background-color: #fff !important;
+    margin-top: 0px !important;
+    display: flex !important; /* Menggunakan display flex */
+    flex-direction: column !important;
 }
 
 .container-fluid label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
 }
 
 .container-fluid label > span {
-    flex: 1;
-    text-align: left;
-    padding-right: 10px;
+    flex: 1 !important;
+    text-align: left !important;
+    padding-right: 10px !important;
 }
 
 .container-fluid input, .container-fluid select {
-    flex: 2;
-    width: 100%;
-    padding: 5px;
-    margin-bottom: 10px;
-    background-color:#E4F3EF;
-    border: none;
+    flex: 2 !important;
+    width: 100% !important;
+    padding: 5px !important;
+    margin-bottom: 10px !important;
+    background-color:#E4F3EF !important;
+    border: none !important;
 }
 
 .submit-button {

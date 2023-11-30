@@ -5,9 +5,15 @@ import axios from "axios";
 import "../css/edit-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function EditBalita({ idBalita, idPuskesmas }) {
+function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
+  const tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
 
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
   const [balita, setBalita] = useState({
     nik: "",
     nama: "",
@@ -41,13 +47,12 @@ function EditBalita({ idBalita, idPuskesmas }) {
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
   const [posyanduOptions, setPosyanduOptions] = useState([]);
-  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/posyandu`)
+      .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
-        setPosyanduOptions(response.data);
+        setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
@@ -56,18 +61,25 @@ function EditBalita({ idBalita, idPuskesmas }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/balitas/${idBalita}`)
+      .get(`${BASE_URL}/balitas/${idBalita}`, apiAuth)
       .then((response) => {
         const dataBalita = response.data;
-        console.log(response.data);
-        console.log(dataBalita);
-        // Memisahkan alamat menjadi jalan, RT, dan RW
+        // Memisahkan alamat menjadi bagian-bagian terpisah
         const parts = dataBalita.alamat.split(", ");
-        const jalan = parts[0];
+
+        let jalan = "";
         let rt = "";
-        if (parts.length > 1 && parts[1].startsWith("RT ")) {
-          rt = parts[1].replace("RT ", "");
+
+        if (parts.length > 0) {
+          jalan = parts[0];
         }
+        if (parts.length > 1) {
+          const rtPart = parts[1].trim();
+          if (rtPart.startsWith("RT")) {
+            rt = rtPart.replace("RT ", "");
+          }
+        }
+
         setBalita({
           ...dataBalita,
         });
@@ -92,8 +104,9 @@ function EditBalita({ idBalita, idPuskesmas }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -178,15 +191,8 @@ function EditBalita({ idBalita, idPuskesmas }) {
       newErrors.anak_ke = "";
     }
 
-    // Validasi Tanggal Lahir
-    const today = new Date();
-    const selectedDate = new Date(balita.tgl_lahir);
-
     if (!balita.tgl_lahir) {
       newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong ";
-      isValid = false;
-    } else if(selectedDate >= today){
-      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kurang dari hari ini";
       isValid = false;
     } else {
       newErrors.tgl_lahir = "";
@@ -240,8 +246,8 @@ function EditBalita({ idBalita, idPuskesmas }) {
     e.preventDefault();
     if (validateForm()){
       try {
-        await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita);
-        navigate(`/puskesmas/${idPuskesmas}/daftar-balita-puskesmas`);
+        await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
+        navigate(`/puskesmas/detail-balita/${idBalita}`);
       } catch (error) {
         if (error.response) {
           console.error(
@@ -260,13 +266,12 @@ function EditBalita({ idBalita, idPuskesmas }) {
 
   return (
     <main className="container">
-      <a href="">
-        <img src="back.png" alt="Back" className="logo-back" />
-      </a>
+            <i class="fa-solid fa-arrow-left text-2x"></i>
       <h2 className="custom-judul">Form Edit Data Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
@@ -449,7 +454,8 @@ function EditBalita({ idBalita, idPuskesmas }) {
               value={tgl_lahir}
               onChange={(e) => onInputChange(e)}
               // required
-              max={today}
+              max={tomorrowString}
+              min={fiveYearsAgoFormatted}
             />
             <div className={`error`}>{errors.tgl_lahir}</div>
           </label>
@@ -463,8 +469,8 @@ function EditBalita({ idBalita, idPuskesmas }) {
               onChange={(e) => onInputChange(e)}
             >
               <option value="">--Pilih--</option>
-              {posyanduOptions[0] &&
-                posyanduOptions[0].map((option) => (
+              {posyanduOptions &&
+                posyanduOptions.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.nama}
                   </option>
@@ -476,6 +482,7 @@ function EditBalita({ idBalita, idPuskesmas }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );

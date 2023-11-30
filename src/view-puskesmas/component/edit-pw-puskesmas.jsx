@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwPuskesmas({ idPuskesmas }) {
+function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -15,7 +15,7 @@ function EditPwPuskesmas({ idPuskesmas }) {
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
     axios
-      .get(`${BASE_URL}/user/${idPuskesmas}`) // Ganti dengan endpoint yang sesuai
+      .get(`${BASE_URL}/user/${userId}`, apiAuth) // Ganti dengan endpoint yang sesuai
       .then((response) => {
         const userData = response.data;
         // Mengisi state formData dengan data user yang sedang login
@@ -43,16 +43,14 @@ function EditPwPuskesmas({ idPuskesmas }) {
       return;
     }
 
-    console.log(formData);
-    // ... (tambahkan logika sesuai kebutuhan)
     axios
-      .put(`${BASE_URL}/user/${idPuskesmas}`, {
+      .put(`${BASE_URL}/user/${userId}`, {
         username: formData.username,
         password: formData.password_baru,
       })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        navigate(`/puskesmas/${idPuskesmas}/profile`);
+        navigate(`/puskesmas/profile`);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -67,12 +65,12 @@ function EditPwPuskesmas({ idPuskesmas }) {
     >
       {/* Main content */}
       <main className="container">
-        <a href="">
-          <img src="back.png" alt="Back" className="logo-back" />
-        </a>
+      <i class="fa-solid fa-arrow-left text-2x"></i>
+
         <div className="container-fluid">
           {/* Edit Password Form */}
           <h2 className="custom-judul">EDIT PASSWORD PUSKESMAS</h2>
+          <div className="table-responsive">
           <form onSubmit={handleSubmit}>
             <label htmlFor="username">
               <span>USERNAME</span>
@@ -114,6 +112,7 @@ function EditPwPuskesmas({ idPuskesmas }) {
               Simpan
             </button>
           </form>
+          </div>
         </div>
       </main>
     </div>

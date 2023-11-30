@@ -4,12 +4,12 @@ import "../css/profile-kelurahan.css";
 import logoJaktim from "../../aset/logo-jaktim.png";
 import BASE_URL from "../../base/apiConfig";
 
-function ProfileKelurahan({ kelurahanId }) {
+function ProfileKelurahan({ idKelurahan, apiAuth }) {
   const [kelurahan, setKelurahan] = useState({});
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/kelurahan/${kelurahanId}`)
+      .get(`${BASE_URL}/kelurahan/${idKelurahan}`, apiAuth)
       .then((response) => {
         setKelurahan(response.data);
         // Setelah mendapatkan data kelurahan, lakukan permintaan untuk mendapatkan data koordinat

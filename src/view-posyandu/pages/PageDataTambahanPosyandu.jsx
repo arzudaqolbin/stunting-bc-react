@@ -2,12 +2,13 @@ import React from "react";
 import SidebarPosyandu from "../component/sidebar-posyandu";
 import FormDataTambahan from "../component/form-data-tambahan";
 import { useParams } from "react-router-dom";
+import { apiAuth, dataAuth } from "../../base/apiConfig"; 
 
 const PageDataTambahanPosyandu = () => {
-  const { idBalita, idPosyandu } = useParams();
+  const { idBalita } = useParams();
   return (
     <SidebarPosyandu
-      content={<FormDataTambahan idBalita={idBalita} idPosyandu={idPosyandu} />}
+      content={<FormDataTambahan idPosyandu={dataAuth().id} apiAuth={apiAuth()} idBalita={idBalita} />}
     />
   );
 };

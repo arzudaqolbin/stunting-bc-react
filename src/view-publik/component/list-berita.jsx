@@ -1,4 +1,5 @@
 import React from 'react';
+import berita from "../../aset/berita.png";
 
 const ListBerita = () => {
   return (
@@ -18,8 +19,8 @@ const ListBerita = () => {
       <div className="row mt-3">
         {[1, 2, 3, 4, 5, 6].map((index) => (
           <div key={index} className="col-md-4 mb-5">
-            <div className="card" style={{ width: '18rem' }}>
-              <img src="berita.png" className="card-img-top" alt="" />
+            <div className="card" style={{ width: '18rem'}}>
+              <img src={berita} className="card-img-top" alt="" />
               <div className="card-body">
                 <h5 className="card-title">Judul berita</h5>
                 <p className="card-text">

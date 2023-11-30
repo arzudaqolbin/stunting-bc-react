@@ -3,8 +3,9 @@ import axios from 'axios';
 import "../css/form-kelurahan.css";
 import BASE_URL from '../../base/apiConfig';
 import { useParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
-function TambahAkunPosyandu() {
+function TambahAkunPosyandu({idKelurahan, apiAuth }) {
   const { idPuskesmas } = useParams();
 
   const [puskesmasList, setPuskesmasList] = useState([]);
@@ -14,21 +15,57 @@ function TambahAkunPosyandu() {
     nama_posyandu: "",
     nama_puskesmas: idPuskesmas || "", // Ini akan diisi dengan ID Puskesmas yang dipilih
     alamat: "",
+    rt: "",
+    rw: "",
+    kepala: "",
     nomor_telepon: "",
     username: "",
     password: "",
     confirm_password: "",
+    koordinat_id: "1"
   });
 
   const [errors, setErrors] = useState({
     nama_posyandu: "",
     nama_puskesmas: "", // Ini akan diisi dengan ID Puskesmas yang dipilih
     alamat: "",
+    rt:"",
+    rw:"",
+    kepala:"",
     nomor_telepon: "",
     username: "",
     password: "",
     confirm_password: "",
   });
+
+  const {
+    rw,
+    alamat,
+  } = posyanduData;
+
+  const [jalan, setJalan] = useState("");
+  const [rt, setRt] = useState("");
+
+  useEffect(() => {
+    setPosyanduData((prevPosyanduData) => ({
+      ...posyanduData,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+    }));
+  }, [jalan, rw, rt]);
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "jalan") {
+      setJalan(value);
+    } else if (name === "rt") {
+      setRt(value);
+    } else {
+      setPosyanduData({ ...posyanduData, [name]: value });
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +95,37 @@ function TambahAkunPosyandu() {
       newErrors.nama_puskesmas = "";
     }
   
-    // Validation for Alamat
-    if (!posyanduData.alamat) {
+    // Validasi RT dan RW
+    if (!jalan) {
       isValid = false;
-      newErrors.alamat = "Alamat harus diisi.";
+      newErrors.jalan = "Jalan tidak boleh kosong";
     } else {
-      newErrors.alamat = "";
+      newErrors.jalan = "";
+    }
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
+    } else {
+      newErrors.rw = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!posyanduData.kepala) {
+      isValid = false;
+      newErrors.kepala = "Nama orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(posyanduData.kepala)) {
+      newErrors.kepala = "Nama orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.kepala = "";
     }
   
     // Validation for Nomor Telepon
@@ -83,7 +145,7 @@ function TambahAkunPosyandu() {
     // Validation for Username
     if (!posyanduData.username) {
       isValid = false;
-      newErrors.username = "Username harus diisi.";
+      newErrors.username = "Username tidak boleh kosong";
     } else {
       newErrors.username = "";
     }
@@ -91,7 +153,7 @@ function TambahAkunPosyandu() {
     // Validation for Password
     if (!posyanduData.password) {
       isValid = false;
-      newErrors.password = "Password harus diisi.";
+      newErrors.password = "Password tidak boleh kosong";
     } else {
       newErrors.password = "";
     }
@@ -106,6 +168,7 @@ function TambahAkunPosyandu() {
     } else {
       newErrors.confirm_password = "";
     }
+    // alert(DOMPurify.sanitize(jalan));
   
     setErrors(newErrors);
     return isValid;
@@ -135,9 +198,6 @@ function TambahAkunPosyandu() {
       console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
     }
   };
-
-
-
 
   useEffect(() => {
     axios.get(`${BASE_URL}/puskesmas`)
@@ -191,7 +251,7 @@ function TambahAkunPosyandu() {
             <div className={`error`}>{errors.nama_puskesmas}</div>
           </label>
 
-          <label htmlFor="alamat">
+          {/* <label htmlFor="alamat">
             <span>Alamat*</span>
             <input
               type="text"
@@ -202,10 +262,93 @@ function TambahAkunPosyandu() {
               onChange={handleInputChange}
             />
             <div className={`error`}>{errors.alamat}</div>
+          </label> */}
+          <label htmlFor="alamat">
+              <span>Alamat</span>
+              <input
+              type={"text"}
+              className="form-control"
+              placeholder="Alamat"
+              name="alamat"
+              value={alamat}
+              onChange={(e) => onInputChange(e)}
+              readOnly
+            />
+          </label>
+            
+
+          <div className="address-section">
+
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
+                <input
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                />
+                <div className={`error`}>{errors.jalan}</div>
+              </label>
+
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="0\d{1,}"
+                  title="Awali angka satuan dengan 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
+
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="0\d{1,}"
+                  title="Awali angka satuan dengan 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
+            </div>
+          </div>
+
+          <label htmlFor="kepala">
+            <span>Kepala Posyandu*</span>
+            <input
+              type="text"
+              id="kepala"
+              name="kepala"
+              // required
+              value={posyanduData.kepala}
+              onChange={handleInputChange}
+            />
           </label>
 
           <label htmlFor="nomor_telepon">
-            <span>Nomor Telepon*</span>
+            <span>Nomor Telepon Kepala*</span>
             <input
               type="text"
               id="nomor_telepon"

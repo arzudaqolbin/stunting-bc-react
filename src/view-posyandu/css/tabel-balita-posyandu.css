@@ -9,11 +9,11 @@
     }
 
     /* searching */
-    button.btn-success{
+    button.btn{
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        padding: 5px 10px; /* Atur padding sesuai kebutuhan (diatur jd inline)*/
         cursor: pointer;
     }
 
@@ -21,7 +21,6 @@
         background-color: #9fedd7;
         color: #000;
     }
-
 
     /* custom table */
     .custom-border{
@@ -71,4 +70,26 @@
         vertical-align: middle;
         justify-content: center;
         display: inline-flex;
+    }
+
+    .status.rounded.limegreen {
+        background-color: limegreen;
+    }
+    .status.rounded.darkred {
+        background-color: darkred;
+    }
+    .status.rounded.red {
+        background-color: red;
+    }
+    .status.rounded.darkblue {
+        background-color: darkblue;
+    }
+    .status.rounded.black {
+        background-color: black;
+    }
+    .status.rounded.dodgerblue {
+        background-color: dodgerblue;
+    }
+    .status.rounded.mediumblue {
+        background-color: mediumblue;
     }

@@ -4,11 +4,7 @@ import { useParams } from 'react-router-dom';
 import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-import { saveAs } from 'file-saver';
-import * as htmlToImage from 'html-to-image';
-import { toPng } from 'html-to-image';
 import { useCurrentPng } from 'recharts-to-png';
-import FileSaver from 'file-saver';
 
 
 const dataLK = [
@@ -92,14 +88,14 @@ const dataPR = [
     { umur: 60, sd_3: 95.2, sd_2: 99.9, med: 109.4, sd2: 118.9, sd3: 123.7 },
 ];
 
-const LineChart_Umur_24_60 = () => {
+const LineChart_Umur_24_60 = ({idBalita, apiAuth}) => {
     const [dataPatokan, setDataPatokan] = useState([]);
     const [dataTarget, setDataTarget] = useState([]);
     const [dataCombine, setDataCombine] = useState([]);
-    const { idBalita } = useParams();
+    const [parentWidth, setParentWidth] = useState([])
     // const [getPng, { chartRef, isLoading }] = useCurrentPng();
-    const [getPng, { chartRef, isLoading }] = useCurrentPng();
-    console.log(chartRef); // Check if chartRef is defined here
+    // const [getPng, { chartRef, isLoading }] = useCurrentPng();
+    // console.log(chartRef); // Check if chartRef is defined here
 
     // const chartRef = useRef(null);
     let namaBalita = "";
@@ -107,7 +103,7 @@ const LineChart_Umur_24_60 = () => {
     useEffect(() => {
         const fetchDataBalita = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
                 // setBalita(result.data);
 
                 const jk = result.data.jenis_kelamin;
@@ -124,7 +120,7 @@ const LineChart_Umur_24_60 = () => {
 
         const fetchDataTarget = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-2/${idBalita}`, apiAuth);
                 setDataTarget(result.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -144,39 +140,19 @@ const LineChart_Umur_24_60 = () => {
 
         setDataCombine(dataGabungan)
 
+        // const parentElement = document.getElementById('collapseFour'); // Ganti dengan ID atau class yang sesuai
+        // if (parentElement) {
+        //   setParentWidth(parentElement.clientWidth);
+        // }
+
     }, [dataPatokan, dataTarget]);
-
-
-    // const downloadChart = useCallback(async() => {
-    //     try {
-    //         const chartNode = chartRef.current;
-    //         const dataUrl = await htmlToImage.toPng(chartNode);
-    //         saveAs(dataUrl, `${namaBalita}_statusTBU_0_24.png`);
-    //     } catch (error) {
-    //         console.error('Error downloading chart:', error);
-    //     }
-    // }, [namaBalita]);
-
-
-    // Can also pass in options for html2canvas
-    // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
-
-    const handleDownload = useCallback(async () => {
-        const png = await getPng();
-
-        // Verify that png is not undefined
-        if (png) {
-            // Download with FileSaver
-            FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
-        }
-    }, [getPng, namaBalita]);
 
     return (
         <>
-            <button onClick={handleDownload}>
+            {/* <button onClick={handleDownload}>
                 {isLoading ? 'Downloading...' : 'Download Chart'}
-            </button>
-            <LineChart ref={chartRef} width={800} height={500} data={dataCombine}>
+            </button> */}
+            <LineChart width={1000} height={500} data={dataCombine}>
                 <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
                 <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
                 <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false} />

@@ -16,29 +16,31 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("submit login")
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
-          username: username,
-          password: password,
+        username: username,
+        password: password,
       });
       const { data } = response;
-    const token = data.access_token;
-    localStorage.setItem('access_token', token);
-    
-    const decodedToken = decodeToken(token);
+      const token = data.access_token;
+      localStorage.setItem('access_token', token);
 
-    const roleName = decodedToken.role; 
-    // localStorage.setItem('role', roleName);
-    const id = decodedToken.user.id;
-    let redirectUrl = "/";
+      const decodedToken = decodeToken(token);
 
-    if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
-      redirectUrl = `/${roleName.toLowerCase()}/${id}/profile`;
-    } else if (roleName === "KELURAHAN") {
-      redirectUrl = "/kelurahan/profile";
-    }
-    navigate(redirectUrl);
+      const roleName = decodedToken.role;
+      // localStorage.setItem('role', roleName);
+      const id = decodedToken.instansi_id;
+      console.log(id)
+      let redirectUrl = "/";
+
+      if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
+        redirectUrl = `/${roleName.toLowerCase()}/profile`;
+      } else if (roleName === "KELURAHAN") {
+        redirectUrl = "/kelurahan/profile";
+      }
+      navigate(redirectUrl);
     } catch (error) {
       if (error.response) {
         console.error(
@@ -53,7 +55,6 @@ const Login = () => {
       }
     }
   };
- 
 
   return (
     <div
@@ -70,9 +71,9 @@ const Login = () => {
             alt="Logo Jakarta Timur"
           />
         </div>
-        <div className="title text-center mt-3">
-          <h4 style={{ color: "white" }}>Single Sign On</h4>
-          <h4 style={{ color: "orange" }}>
+        <div className="title-login mt-5">
+          <h4 style={{ color: "white", textAlign: 'center'}}>Single Sign On</h4>
+          <h4 style={{ color: "orange", textAlign: 'center'}}>
             Dashboard Monitoring Stunting Kelurahan Bidara Cina
           </h4>
         </div>
@@ -93,6 +94,7 @@ const Login = () => {
                         className="form control my-1 py-1 col-12 mt-3"
                         placeholder="Username"
                       />
+                      <div className="error">ghj</div>
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -101,6 +103,7 @@ const Login = () => {
                         className="form control my-1 py-1 col-12"
                         placeholder="Password"
                       />
+                      <div className="error">ghj</div>
                     </div>
                     <div className="checkbox">
                       <input
@@ -119,12 +122,12 @@ const Login = () => {
                     </div>
                   </form>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+              </div >
+            </div >
+          </div >
+        </div >
+      </section >
+    </div >
   );
 };
 

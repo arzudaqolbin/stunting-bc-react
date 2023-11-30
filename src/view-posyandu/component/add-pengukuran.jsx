@@ -6,6 +6,8 @@ import React from "react";
 import BASE_URL from "../../base/apiConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+import { ClipLoader } from 'react-spinners';
 // import 'react-datepicker/dist/react-datepicker.css';
 
 
@@ -21,12 +23,20 @@ import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 
-function AddPengukuran() {
+function AddPengukuran({idPosyandu, apiAuth }) {
   let navigate = useNavigate();
-  const { idPosyandu } = useParams();
   console.log("id posyandu = ", idPosyandu);
+
+  const tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balitaOptions, setBalitaOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tglLahir, setTglLahir] = useState("");
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
@@ -97,9 +107,10 @@ function AddPengukuran() {
       try {
         axios
           // ini nanti ganti endpointnya by posyandu id
-          .get(`${BASE_URL}/balitas`)
+          .get(`${BASE_URL}/balitas/posyandu/${idPosyandu}`, apiAuth)
           .then((response) => {
-            setBalitaOptions(response.data);
+            setBalitaOptions(response.data.balitas);
+            setLoading(false);
           })
           .catch((error) => {
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
@@ -126,6 +137,33 @@ function AddPengukuran() {
       setHasRunEffect(true);
     }
   }, [hasRunEffect]);
+
+  // useEffect(() => {
+  //   if (!hasRunEffect) {
+  //     try {
+  //       axios
+  //         .get(`${BASE_URL}/balitas/posyandu/${idPosyandu}`, apiAuth)
+  //         .then((response) => {
+  //           console.log("balita posyandu = ", response.data)
+  //           if (Array.isArray(response.data) && response.data.length > 0) {
+  //             setBalitaOptions(response.data);
+  //             setLoading(false);
+  //           } else {
+  //             console.error("Respon server tidak sesuai dengan format yang diharapkan.");
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
+  //         });
+  //     } catch (error) {
+  //       console.error("Terjadi kesalahan:", error.message);
+  //     }
+  //     setHasRunEffect(true);
+  //   }
+  // }, [hasRunEffect]);
+
+  
+  
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -375,7 +413,7 @@ function AddPengukuran() {
       try {
         // const prevUmur = umur - 1;
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
-        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`);
+        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
         const differ = bb - prevPengukuran.data.bb;
 
         let status = "";
@@ -403,72 +441,141 @@ function AddPengukuran() {
     }
   };
 
+  const [errors, setErrors] = useState({
+    balita_id,
+    tgl_input,
+    tinggi_badan,
+    berat_badan,
+    umur,
+    posisi_balita,
+  });
+
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi Nama
+    if (!pengukuran.balita_id) {
+      isValid = false;
+      newErrors.balita_id = "Pilih balita";
+    } else {
+      newErrors.balita_id = "";
+    }
+
+    // Validasi Tanggal input
+    if (!pengukuran.tgl_input) {
+      newErrors.tgl_input = "Tanggal pengukuran tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_input= "";
+    }
+
+    if (!pengukuran.berat_badan) {
+      newErrors.berat_badan = "Berat badan tidak boleh kosong";
+      isValid = false;
+    } else if (!/^[0-9,.]+$/.test(pengukuran.berat_badan)){
+      newErrors.berat_badan = "Berat badan tidak valid";
+      isValid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.berat_badan)) {
+      newErrors.berat_badan = "Maksimal dua digit angka di belakang koma";
+      isValid = false;
+    } else if (parseFloat(pengukuran.berat_badan) <= 2 || parseFloat(pengukuran.berat_badan)>30) {
+      newErrors.berat_badan = "Berat badan harus diantara 2-30";
+      isValid = false;
+    } else {
+      newErrors.berat_badan = "";
+    }
+    
+
+    if (!pengukuran.tinggi_badan) {
+      newErrors.tinggi_badan = "Tinggi badan tidak boleh kosong";
+      isValid = false;
+    } else if (!/^[0-9,.]+$/.test(pengukuran.tinggi_badan)) {
+      newErrors.tinggi_badan = "Tinggi badan tidak valid";
+      isValid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.tinggi_badan)) {
+      newErrors.tinggi_badan = "Maksimal dua digit angka di belakang koma";
+      isValid = false;
+    } else if (parseFloat(pengukuran.tinggi_badan) <= 30 || parseFloat(pengukuran.tinggi_badan)>120) {
+      newErrors.tinggi_badan = "Tinggi badan harus diantara 30-120";
+      isValid = false;
+    } else {
+      newErrors.berat_badan = "";
+    }
+
+    // Validasi Nama
+    if (!pengukuran.posisi_balita) {
+      isValid = false;
+      newErrors.posisi_balita = "Posisi pengukuran tidak boleh kosong";
+    } else {
+      newErrors.posisi_balita= "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
+    if (validateForm()){
+      console.log("balita")
+      console.log(balita)
 
-    console.log("balita")
-    console.log(balita)
+      // console.log("pengukuran")
+      // console.log(pengukuran)
 
-    // console.log("pengukuran")
-    // console.log(pengukuran)
+      const jk = balita.jenis_kelamin;
+      const idBalita = parseInt(balita_id)
+      const umur = parseInt(pengukuran.umur);
+      const bb = parseFloat(pengukuran.berat_badan);
+      const tb = parseFloat(pengukuran.tinggi_badan);
+      console.log("jk = ", jk, "umur = ", umur);
+      generateStatus_bbtb(jk, umur, bb, tb);
+      generateStatus_tbu(jk, umur, tb);
+      generateStatus_bbu(jk, umur, bb);
+      generateKms(jk, umur, bb);
+      generateRambuGizi(jk, umur, bb, idBalita);
 
-    const jk = balita.jenis_kelamin;
-    const idBalita = parseInt(balita_id)
-    const umur = parseInt(pengukuran.umur);
-    const bb = parseFloat(pengukuran.berat_badan);
-    const tb = parseFloat(pengukuran.tinggi_badan);
-    console.log("jk = ", jk, "umur = ", umur);
-    generateStatus_bbtb(jk, umur, bb, tb);
-    generateStatus_tbu(jk, umur, tb);
-    generateStatus_bbu(jk, umur, bb);
-    generateKms(jk, umur, bb);
-    generateRambuGizi(jk, umur, bb, idBalita);
+      try {
 
-    try {
+        console.log("pengukuran terbaru");
+        console.log(pengukuran);
 
-      console.log("pengukuran terbaru");
-      console.log(pengukuran);
+        await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((fetch) => {
+          console.log(fetch.status);
+        })
 
-      await axios.post(`${BASE_URL}/pengukurans`, pengukuran);
-      // await showSuccessPostToast(idBalita);
-      showSuccessPostToast(idPosyandu, balita_id);
-      // delay(2000)
-      // navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+        showSuccessPostToast( balita_id);
 
 
-    } catch (error) {
-      showFailedPostToast()
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
+      } catch (error) {
         showFailedPostToast()
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        showFailedPostToast()
-        console.error("Terjadi kesalahan:", error.message);
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          showFailedPostToast()
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          showFailedPostToast()
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
+
+    
   };
 
-  // const showSuccessPostToast = (idBalita) => {
-  //   toast.success("Hello World", {
-  //     data: {
-  //       title: "Success toast",
-  //       text: "This is a success message",
-  //     },
-  //   });
-  //   history.push(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`)
-  // }
+  // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const showSuccessPostToast = async (idPosyandu, idBalita) => {
+  const showSuccessPostToast = async ( idBalita) => {
     return new Promise((resolve) => {
         toast.success("Data berhasil disimpan", {
             data: {
@@ -480,16 +587,12 @@ function AddPengukuran() {
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 
                 // Mengakhiri janji saat Toast ditutup
-                navigate(`/posyandu/${idPosyandu}/detail-balita/${idBalita}`);
+                navigate(`/posyandu/detail-balita/${idBalita}`);
                 resolve();
             },
         });
     });
 };
-
-  
-  
-  
 
   const showFailedPostToast = () => {
     toast.error("Gagal Menyimpan Data", {
@@ -500,15 +603,47 @@ function AddPengukuran() {
     });
   }
 
+  const confirmAlert = (e, balita, pengukuran) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Menambahkan data pengukuran",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+      }).then((result) => {
+      if (result.isConfirmed) {
+          // acc izin
+          onSubmit(e, balita, pengukuran)
+      }
+  });
+
+  }
+
   return (
+    <>
+    {
+      loading ?(
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>) : (
     <main className="container">
       <h2 className="custom-judul">Form Pengukuran Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-        <form
+      <div className="table-responsive">
+      <form
           onSubmit={(e) => {
-            onSubmit(e, balita, pengukuran);
+            // onSubmit(e, balita, pengukuran);
+            confirmAlert(e, balita, pengukuran);
+            // onSubmit(e, balita, pengukuran);
           }}
         >
           <label htmlFor="balita_id">
@@ -520,13 +655,14 @@ function AddPengukuran() {
               // required
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
+              <option value="" disabled selected>Pilih balita</option>
               {balitaOptions.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.nama}
                 </option>
               ))}
             </select>
+            <div className={`error`}>{errors.balita_id}</div>
           </label>
           <label>
             <span>Tanggal Lahir*</span>
@@ -537,6 +673,7 @@ function AddPengukuran() {
               value={tglLahir}
               disabled
             />
+            <div className={`error`}>{errors.tgl_lahir}</div>
           </label>
           <label htmlFor="tgl_input">
             <span>Tanggal Pengukuran*</span>
@@ -547,8 +684,11 @@ function AddPengukuran() {
               name="tgl_input"
               value={tgl_input}
               onChange={(e) => onInputChange(e)}
+              max={tomorrowString}
+              min={fiveYearsAgoFormatted}
               // required
             />
+            <div className={`error`}>{errors.tgl_input}</div>
           </label>
 
 
@@ -568,25 +708,27 @@ function AddPengukuran() {
           <label htmlFor="berat_badan">
             <span>Berat (kg)*</span>
             <input
-              type="number"
+              type="text"
               id="berat_badan"
               name="berat_badan"
               value={berat_badan}
               onChange={(e) => onInputChange(e)}
               // required
             />
+            <div className={`error`}>{errors.berat_badan}</div>
           </label>
 
           <label htmlFor="tinggi_badan">
             <span>Tinggi Badan (cm)*</span>
             <input
-              type="number"
+              type="text"
               id="tinggi_badan"
               name="tinggi_badan"
               value={tinggi_badan}
               onChange={(e) => onInputChange(e)}
-              required
+              // required
             />
+            <div className={`error`}>{errors.tinggi_badan}</div>
           </label>
 
           <label htmlFor="posisi_balita">
@@ -597,18 +739,22 @@ function AddPengukuran() {
               value={posisi_balita}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
+              <option value="" disabled selected>Pilih posisi balita</option>
               <option value="Berdiri">Berdiri</option>
               <option value="Tidur">Tidur</option>
             </select>
+            <div className={`error`}>{errors.posisi_balita}</div>
           </label>
           <button type="submit" className="submit-button">
             Simpan
           </button>
         </form>
+        </div>
       </div>
       <ToastContainer />
-    </main>
+    </main>)
+    }
+    </>
   );
 }
 

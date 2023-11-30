@@ -22,6 +22,8 @@ import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosya
 
 
 const RoutesKelurahan = () => {
+
+    
     return (
         <Routes>
             {/* first path */}

@@ -1,27 +1,55 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
+import { ClipLoader } from 'react-spinners';
+import DynamicLoader from '../../base/DynamicLoader';
+
+// const override: CSSProperties = {
+//   display: "block",
+//   margin: "0 auto",
+//   borderColor: "red",
+// };
 
 const StatUmum = () => {
 
   const [dataReal, setDataReal] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await axios.get(`${BASE_URL}/balitas/stat/umum`);
-                console.log(result.data);
-                setDataReal(result.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-    
-        fetchData();
-    }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await axios.get(`${BASE_URL}/balitas/stat/umum`);
+        // console.log(result.data);
+        setDataReal(result.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <div className="container p-5 text-center">
+    <>
+    {
+      loading ?
+
+      (<div className='text-center'>
+      <ClipLoader
+        loading={loading}
+        size={150}
+      />
+    </div>)
+
+      // <DynamicLoader loading={loading} />
+
+      :
+
+    (<div className="container p-5 text-center">
       <div className="row">
         <div className="col-12">
           {/* Total balita */}
@@ -107,7 +135,9 @@ const StatUmum = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>)
+    }
+    </>
   );
 }
 

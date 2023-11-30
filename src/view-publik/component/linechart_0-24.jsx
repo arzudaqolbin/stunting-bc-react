@@ -67,16 +67,15 @@ const dataLK = [
   
 
 
-const LineChart_Umur_0_24 = () => {
+const LineChart_Umur_0_24 = ({apiAuth, idBalita}) => {
   const [dataPatokan, setDataPatokan] = useState([]);
     const [dataTarget, setDataTarget] = useState([]);
     const [dataCombine, setDataCombine] = useState([]);
-    const { idBalita } = useParams();
 
     useEffect(() => {
         const fetchDataBalita = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/balitas/${idBalita}`, apiAuth);
                 // setBalita(result.data);
 
                 const jk = result.data.jenis_kelamin;
@@ -92,7 +91,7 @@ const LineChart_Umur_0_24 = () => {
 
         const fetchDataTarget = async () => {
             try {
-                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-1/${idBalita}`);
+                const result = await axios.get(`${BASE_URL}/pengukurans/umur-cat-1/${idBalita}`, apiAuth);
                 setDataTarget(result.data);
             } catch (error) {
                 console.error('Error fetching data:', error);

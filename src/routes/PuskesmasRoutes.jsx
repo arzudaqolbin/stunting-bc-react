@@ -13,6 +13,7 @@ import PageDaftarBalitaPuskesmas from "../view-puskesmas/page/PageDaftarBalitaPu
 import PageDaftarPosyanduPuskesmas from "../view-puskesmas/page/PageDaftarPosyanduPuskesmas";
 import PageDetailPosyanduPuskesmas from "../view-puskesmas/page/PageDetailPosyanduPuskesmas";
 import Login from "../view-publik/pages/Login";
+import PageEditPengukuranPuskesmas from "../view-puskesmas/page/PageEditPengukuranPuskesmas";
 
 const RoutesPuskesmas = () => {
     return (
@@ -31,7 +32,7 @@ const RoutesPuskesmas = () => {
             <Route path="/edit-data-balita/:idBalita" element={<PrivateRoute element={<PageEditBalitaPuskesmas />} requiredRole="Puskesmas" />}/>
             <Route path="/edit-data-tambahan-balita/:idBalita" element={<PrivateRoute element={<PageEditDataTambahanPuskesmas />} requiredRole="Puskesmas" />}/>
             <Route path="/tambah-pengukuran/:idBalita" element={<PrivateRoute element={<PageAddPengukuranSelectedPuskesmas />} requiredRole="Puskesmas" />}/>
-            <Route path="/edit-pengukuran/:idPengukuran" element={<PrivateRoute element={<Coba />} requiredRole="Puskesmas" />}/>
+            <Route path="/edit-pengukuran/:idPengukuran" element={<PrivateRoute element={<PageEditPengukuranPuskesmas />} requiredRole="Puskesmas" />}/>
             {/* detail posyandu */}
             <Route path="/detail-posyandu/:idPosyandu" element={<PrivateRoute element={<PageDetailPosyanduPuskesmas />} requiredRole="Puskesmas" />}/>
         </Routes>

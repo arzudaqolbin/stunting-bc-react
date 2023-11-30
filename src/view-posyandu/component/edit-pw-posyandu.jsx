@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwPosyandu({ idPosyandu }) {
+function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -15,7 +15,7 @@ function EditPwPosyandu({ idPosyandu }) {
   useEffect(() => {
     // Panggil API untuk mendapatkan data user yang sedang login
     axios
-      .get(`${BASE_URL}/user/${idPosyandu}`) // Ganti dengan endpoint yang sesuai
+      .get(`${BASE_URL}/user/${userId}`, apiAuth) // Ganti dengan endpoint yang sesuai
       .then((response) => {
         const userData = response.data;
         // Mengisi state formData dengan data user yang sedang login
@@ -46,13 +46,17 @@ function EditPwPosyandu({ idPosyandu }) {
     console.log(formData);
     // ... (tambahkan logika sesuai kebutuhan)
     axios
-      .put(`${BASE_URL}/user/${idPosyandu}`, {
-        username: formData.username,
-        password: formData.password_baru,
-      })
+      .put(
+        `${BASE_URL}/user/${userId}`,
+        {
+          username: formData.username,
+          password: formData.password_baru,
+        },
+        apiAuth
+      )
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        navigate(`/posyandu/${idPosyandu}/profile`);
+        navigate(`/posyandu/profile`);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -67,6 +71,7 @@ function EditPwPosyandu({ idPosyandu }) {
       </a>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <h2 className="custom-judul">EDIT PASSWORD POSYANDU</h2>
 
         <form onSubmit={handleSubmit}>
@@ -110,6 +115,7 @@ function EditPwPosyandu({ idPosyandu }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );

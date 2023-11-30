@@ -4,31 +4,47 @@ import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
 // import BASE_URL from '../../base/apiConfig';
 
-function TambahAkunPuskesmas() {
+function TambahAkunPuskesmas({idKelurahan, apiAuth }) {
 
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",
     alamat: "",
+    rw: "",
+    kepala: "",
     nomor_telepon: "",
-    ketua: "",
     username: "",
     password: "",
+    confirm_password: ""
   });
 
   const [errors, setErrors] = useState({
     nama: "",
     alamat: "",
+    rt: "",
+    rw: "",
     nomor_telepon: "",
-    ketua: "",
+    kepala: "",
     username: "",
     password: "",
     confirm_password: "",
   });
+  
+  const {
+    rw,
+    alamat,
+  } = puskesmasReq;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setpuskesmasReq({ ...puskesmasReq, [name]: value });
-  };
+  const [jalan, setJalan] = useState("");
+  const [rt, setRt] = useState("");
+
+  useEffect(() => {
+    setpuskesmasReq((prevpuskesmasReq) => ({
+      ...puskesmasReq,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+    }));
+  }, [jalan, rw, rt]);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,8 +57,11 @@ function TambahAkunPuskesmas() {
       setpuskesmasReq({ ...puskesmasReq, [name]: value });
     }
   };
-  const [jalan, setJalan] = useState("");
-  const [rt, setRt] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setpuskesmasReq({ ...puskesmasReq, [name]: value });
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -81,21 +100,43 @@ function TambahAkunPuskesmas() {
       newErrors.nomor_telepon = "";
     }
   
-    // Validation for Ketua Puskesmas
-    if (!puskesmasReq.ketua) {
+    // Validation for kepala Puskesmas
+    if (!puskesmasReq.kepala) {
       isValid = false;
-      newErrors.ketua = "Ketua Puskesmas harus diisi.";
-    } else if (!/^[a-zA-Z0-9]+$/.test(puskesmasReq.ketua)) {
+      newErrors.kepala = "Kepala Puskesmas harus diisi.";
+    } else if (!/^[a-zA-Z0-9]+$/.test(puskesmasReq.kepala)) {
       isValid = false;
-      newErrors.ketua = "Ketua Puskesmas tidak valid.";
+      newErrors.kepala = "kepala Puskesmas tidak valid.";
     } else {
-      newErrors.ketua = "";
+      newErrors.kepala = "";
+    }
+
+    // Validasi RT dan RW
+    if (!jalan) {
+      isValid = false;
+      newErrors.jalan = "Jalan tidak boleh kosong";
+    } else {
+      newErrors.jalan = "";
+    }
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
+    } else {
+      newErrors.rw = "";
     }
   
     // Validation for Username
     if (!puskesmasReq.username) {
       isValid = false;
-      newErrors.username = "Username harus diisi.";
+      newErrors.username = "Username tidak boleh kosong";
     } else {
       newErrors.username = "";
     }
@@ -103,7 +144,7 @@ function TambahAkunPuskesmas() {
     // Validation for Password
     if (!puskesmasReq.password) {
       isValid = false;
-      newErrors.password = "Password harus diisi.";
+      newErrors.password = "Password tidak boleh kosong";
     } else {
       newErrors.password = "";
     }
@@ -111,7 +152,7 @@ function TambahAkunPuskesmas() {
     // Validation for Confirm Password
     if (!puskesmasReq.confirm_password) {
       isValid = false;
-      newErrors.confirm_password = "Konfirmasi Password harus diisi.";
+      newErrors.confirm_password = "Silakan konfirmasi password";
     } else if (puskesmasReq.confirm_password !== puskesmasReq.password) {
       isValid = false;
       newErrors.confirm_password = "Password tidak cocok.";
@@ -129,31 +170,25 @@ function TambahAkunPuskesmas() {
 
     if (validateForm()){
       const puskesmasData = {
-          nama: puskesmasReq.nama,
-          alamat: puskesmasReq.alamat,
-          nomor_telepon: puskesmasReq.nomor_telepon,
-          ketua: puskesmasReq.ketua,
-          username: puskesmasReq.username,
-          password: puskesmasReq.password,
-        };
-        axios.post(`${BASE_URL}/puskesmas`, puskesmasData)
-          .then(response => {
-          console.log(response.headers);
-          setErrors({
-            nama: "",
-            alamat: "",
-            nomor_telepon: "",
-            ketua: "",
-            username: "",
-            password: "",
-            confirm_password: "",
-        });
-        document.querySelector('.container-fluid').classList.add('success');
+        nama: puskesmasReq.nama,
+        alamat: puskesmasReq.alamat,
+        rw: 9,
+        nomor_telepon: puskesmasReq.nomor_telepon,
+        kepala: puskesmasReq.kepala,
+        username: puskesmasReq.username,
+        password: puskesmasReq.password,
+        confirm_password: puskesmasReq.confirm_password,
+        koordinat_id: 1
+      };
+  
+      axios.post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
+        .then(response => {
+          console.log(response.data);
         })
         .catch(error => {
           console.error('Error:', error);
         });
-        console.log(JSON.stringify(puskesmasReq, null, 2));
+      console.log(JSON.stringify(puskesmasReq, null, 2));
     }
   };
 
@@ -180,7 +215,7 @@ function TambahAkunPuskesmas() {
             <div className={`error`}>{errors.nama}</div>
           </label>
 
-          <label htmlFor="alamat">
+          {/* <label htmlFor="alamat">
             <span>Alamat*</span>
             
             <input
@@ -192,20 +227,22 @@ function TambahAkunPuskesmas() {
               onChange={handleChange}
             />
             <div className={`error`}>{errors.alamat}</div>
-          </label>
-          {/* <div className="address-section">
-            <label htmlFor="alamat">
+          </label> */}
+          <label htmlFor="alamat">
               <span>Alamat</span>
-            </label>
-            <input
+              <input
               type={"text"}
               className="form-control"
-              placeholder="alamat"
+              placeholder="Alamat"
               name="alamat"
               value={alamat}
               onChange={(e) => onInputChange(e)}
               readOnly
             />
+          </label>
+            
+
+          <div className="address-section">
 
             <div className="address-details">
               <label htmlFor="jalan">
@@ -230,7 +267,7 @@ function TambahAkunPuskesmas() {
                   value={rt}
                   onChange={(e) => onInputChange(e)}
                   // required
-                  pattern="\d{2,}"
+                  pattern="0\d{1,}"
                   title="Awali angka satuan dengan 0, misal 01"
                   onKeyPress={(e) => {
                     if (e.key < "0" || e.key > "9") {
@@ -250,7 +287,7 @@ function TambahAkunPuskesmas() {
                   value={rw}
                   onChange={(e) => onInputChange(e)}
                   // required
-                  pattern="\d{2,}"
+                  pattern="0\d{1,}"
                   title="Awali angka satuan dengan 0, misal 01"
                   onKeyPress={(e) => {
                     if (e.key < "0" || e.key > "9") {
@@ -261,7 +298,7 @@ function TambahAkunPuskesmas() {
                 <div className={`error`}>{errors.rw}</div>
               </label>
             </div>
-          </div> */}
+          </div>
 
           <label htmlFor="nomor_telepon">
             <span>Nomor Telepon*</span>
@@ -276,17 +313,17 @@ function TambahAkunPuskesmas() {
             <div className={`error`}>{errors.nomor_telepon}</div>
           </label>
 
-          <label htmlFor="ketua_puskesmas">
-            <span>Ketua Puskesmas*</span>
+          <label htmlFor="kepala_puskesmas">
+            <span>Kepala  Puskesmas*</span>
             <input
               type="text"
-              id="ketua_puskesmas"
-              name="ketua"
+              id="kepala_puskesmas"
+              name="kepala"
               // required
-              value={puskesmasReq.ketua}
+              value={puskesmasReq.kepala}
               onChange={handleChange}
             />
-            <div className={`error`}>{errors.ketua}</div>
+            <div className={`error`}>{errors.kepala}</div>
           </label>
 
           <label htmlFor="username">
@@ -316,12 +353,13 @@ function TambahAkunPuskesmas() {
           </label>
 
           <label htmlFor="confirm_password">
-            <span> Konfirmasi Password*</span>
+            <span>Confirm Password*</span>
             <input
               type="password"
               id="confirm_password"
               name="confirm_password"
               // required
+              value={puskesmasReq.confirm_password}
               onChange={handleChange}
             />
             <div className={`error`}>{errors.confirm_password}</div>

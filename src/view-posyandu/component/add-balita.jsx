@@ -5,27 +5,16 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita({ idPosyandu }) {
+function AddBalita({ apiAuth }) {
   let navigate = useNavigate();
-  const today = new Date().toISOString().split('T')[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
 
-  const [balita, setBalita] = useState({
-    nik: "",
-    nama: "",
-    jenis_kelamin: "",
-    nama_ortu: "",
-    pekerjaan_ortu: "",
-    alamat: "",
-    rt:"",
-    rw: "",
-    tgl_lahir: "",
-    anak_ke: "",
-    umur: "",
-    posyandu_id: "",
-    status_tbu: "Normal",
-    status_bbu: "Normal",
-    status_bbtb: "Normal",
-  });
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+
   const [errors, setErrors] = useState({
     nik: "",
     nama: "",
@@ -38,10 +27,25 @@ function AddBalita({ idPosyandu }) {
     tgl_lahir: "",
     anak_ke: "",
     umur: "",
-    nama_posyandu: "",
+    posyandu: "",
   });
 
-  console.log(balita);
+  const [balita, setBalita] = useState({
+    nik: "",
+    nama: "",
+    jenis_kelamin: "",
+    nama_ortu: "",
+    pekerjaan_ortu: "",
+    alamat: "",
+    rw: "",
+    tgl_lahir: "",
+    anak_ke: "",
+    umur: "",
+    posyandu_id: "",
+    status_tbu: "Normal",
+    status_bbu: "Normal",
+    status_bbtb: "Normal",
+  });
 
   const {
     nik,
@@ -62,9 +66,9 @@ function AddBalita({ idPosyandu }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/posyandu`)
+      .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
-        setPosyanduOptions(response.data);
+        setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
@@ -74,8 +78,9 @@ function AddBalita({ idPosyandu }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -100,7 +105,7 @@ function AddBalita({ idPosyandu }) {
     // Validasi NIK
     if (!balita.nik) {
       isValid = false;
-      newErrors.nik = "NIK tidak boleh kosong .";
+      newErrors.nik = "NIK tidak boleh kosong";
     } else if(!/^[0-9]+$/.test(balita.nik)) {
       newErrors.nik = "NIK harus berisi angka tanpa huruf dan simbol";
       isValid = false;
@@ -111,7 +116,7 @@ function AddBalita({ idPosyandu }) {
     // Validasi Nama
     if (!balita.nama) {
       isValid = false;
-      newErrors.nama = "Nama balita tidak boleh kosong .";
+      newErrors.nama = "Nama balita tidak boleh kosong";
     } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama)) {
       newErrors.nama = "Nama tidak valid";
       isValid = false;
@@ -119,10 +124,21 @@ function AddBalita({ idPosyandu }) {
       newErrors.nama = "";
     }
 
+    // Validasi Umur
+    if (!balita.umur) {
+      isValid = false;
+      newErrors.umur = "Umur tidak boleh kosong";
+    } else if (balita.umur<=0 || balita.umur>60) {
+      newErrors.umur = "Umur harus diantara 1-60 tahun";
+      isValid = false;
+    } else {
+      newErrors.umur = "";
+    }
+
     // Validasi Nama Orang Tua
     if (!balita.nama_ortu) {
       isValid = false;
-      newErrors.nama_ortu = "Nama orang tua tidak boleh kosong .";
+      newErrors.nama_ortu = "Nama orang tua tidak boleh kosong";
     } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama_ortu)) {
       newErrors.nama_ortu = "Nama orang tua tidak valid";
       isValid = false;
@@ -130,7 +146,7 @@ function AddBalita({ idPosyandu }) {
       newErrors.nama_ortu = "";
     }
 
-    // Validasi Nama Orang Tua
+    // Validasi jenis kelamin
     if (!balita.jenis_kelamin) {
       isValid = false;
       newErrors.jenis_kelamin= "Pilih jenis kelamin.";
@@ -141,8 +157,8 @@ function AddBalita({ idPosyandu }) {
     // Validasi Pekerjaan Orang Tua
     if (!balita.pekerjaan_ortu) {
       isValid = false;
-      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong .";
-    } else if ( !/^[a-zA-Z\s]+$/.test(balita.pekerjaan_ortu)) {
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong";
+    } else if ( !/^[a-zA-Z0-9\s]+$/.test(balita.pekerjaan_ortu)) {
       newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak valid";
       isValid = false;
     } else {
@@ -152,49 +168,51 @@ function AddBalita({ idPosyandu }) {
     // Validasi Anak-ke
     if (!balita.anak_ke) {
       isValid = false;
-      newErrors.anak_ke= "Anak-ke tidak boleh kosong .";
-    } else if(!/^[0-9]+$/.test(balita.anak_ke)) {
-      newErrors.anak_ke = "Tulis hanya dalam angka";
+      newErrors.anak_ke= "Anak-ke tidak boleh kosong";
+    } else if(balita.anak_ke<1 || balita.anak_ke>25) {
+      newErrors.anak_ke = "Anak ke- tidak valid";
       isValid = false;
     } else {
       newErrors.anak_ke = "";
     }
 
-    // Validasi Tanggal Lahir
-    const today = new Date();
-    const selectedDate = new Date(balita.tgl_lahir);
-
     if (!balita.tgl_lahir) {
-      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong ";
-      isValid = false;
-    } else if(selectedDate >= today){
-      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kurang dari hari ini";
+      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong";
       isValid = false;
     } else {
       newErrors.tgl_lahir = "";
     }
 
     // Validasi RT dan RW
-    const rtRwRegex = /^[0-9]+$/;
+
+    if (!jalan) {
+      isValid = false;
+      newErrors.jalan = "Jalan tidak boleh kosong";
+    } else {
+      newErrors.jalan = "";
+    }
 
     if (!rt) {
       isValid = false;
-      newErrors.rt = "RT tidak boleh kosong .";
-    }else if(!rtRwRegex.test(rt)) {
-      newErrors.rt = "RT harus berisi angka tanpa huruf dan simbol";
-      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
     } else {
       newErrors.rt = "";
     }
 
     if (!balita.rw) {
       isValid = false;
-      newErrors.rw = "RW tidak boleh kosong .";
-    }else if(!rtRwRegex.test(balita.rw)) {
-      newErrors.rw = "RW harus berisi angka tanpa huruf dan simbol";
-      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
     } else {
       newErrors.rw = "";
+    }
+    // alert(balita.posyandu_id);
+
+     // Validasi nama posyandu
+     if (!balita.posyandu_id) {
+      isValid = false;
+      newErrors.posyandu= "Pilih posyandu";
+    } else {
+      newErrors.posyandu = "";
     }
 
     // Set ulang state errors
@@ -208,8 +226,8 @@ function AddBalita({ idPosyandu }) {
     e.preventDefault();
     if (validateForm()){
       try {
-        await axios.post(`${BASE_URL}/balitas`, balita);
-        navigate(`/posyandu/${idPosyandu}/daftar-balita`);
+        const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
+        navigate(`/posyandu/detail-balita/${respon.data.id}`);
       } catch (error) {
         if (error.response) {
           console.error(
@@ -234,6 +252,7 @@ function AddBalita({ idPosyandu }) {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
+      <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
@@ -273,7 +292,7 @@ function AddBalita({ idPosyandu }) {
               value={jenis_kelamin}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
+              <option value="" disabled selected>Pilih jenis kelamin</option>
               <option value="Laki-Laki">Laki-Laki</option>
               <option value="Perempuan">Perempuan</option>
             </select>
@@ -283,7 +302,7 @@ function AddBalita({ idPosyandu }) {
           <label htmlFor="anak_ke">
             <span>Anak Ke-*</span>
             <input
-              type="text"
+              type="number"
               id="anak_ke"
               name="anak_ke"
               value={anak_ke}
@@ -296,17 +315,17 @@ function AddBalita({ idPosyandu }) {
           <label htmlFor="umur">
             <span>Umur*</span>
             <input
-              type="type"
+              type="number"
               id="umur"
               name="umur"
               value={umur}
               onChange={(e) => onInputChange(e)}
               // required
-              // onKeyPress={(e) => {
-              //   if (e.key < "0" || e.key > "9") {
-              //     e.preventDefault();
-              //   }
-              // }}
+              onKeyPress={(e) => {
+                if (e.key < "0" || e.key > "9") {
+                  e.preventDefault();
+                }
+              }}
             />
             <div className={`error`}>{errors.umur}</div>
           </label>
@@ -337,19 +356,21 @@ function AddBalita({ idPosyandu }) {
             <div className={`error`}>{errors.pekerjaan_ortu}</div>
           </label>
 
-          <div className="address-section">
-            <label htmlFor="alamat">
+          <label htmlFor="alamat">
               <span>Alamat</span>
-            </label>
-            <input
+              <input
               type={"text"}
               className="form-control"
-              placeholder="alamat"
+              placeholder="Alamat"
               name="alamat"
               value={alamat}
               onChange={(e) => onInputChange(e)}
               readOnly
             />
+          </label>
+            
+
+          <div className="address-section">
 
             <div className="address-details">
               <label htmlFor="jalan">
@@ -374,7 +395,7 @@ function AddBalita({ idPosyandu }) {
                   value={rt}
                   onChange={(e) => onInputChange(e)}
                   // required
-                  pattern="\d{2,}"
+                  pattern="0\d{1,}"
                   title="Awali angka satuan dengan 0, misal 01"
                   onKeyPress={(e) => {
                     if (e.key < "0" || e.key > "9") {
@@ -394,7 +415,7 @@ function AddBalita({ idPosyandu }) {
                   value={rw}
                   onChange={(e) => onInputChange(e)}
                   // required
-                  pattern="\d{2,}"
+                  pattern="0\d{1,}"
                   title="Awali angka satuan dengan 0, misal 01"
                   onKeyPress={(e) => {
                     if (e.key < "0" || e.key > "9") {
@@ -417,7 +438,8 @@ function AddBalita({ idPosyandu }) {
               value={tgl_lahir}
               onChange={(e) => onInputChange(e)}
               // required
-              max={today}
+              max={tomorrowString}
+              min={fiveYearsAgoFormatted}
             />
             <div className={`error`}>{errors.tgl_lahir}</div>
           </label>
@@ -430,9 +452,9 @@ function AddBalita({ idPosyandu }) {
               value={posyandu}
               onChange={(e) => onInputChange(e)}
             >
-              <option value="">--Pilih--</option>
-              {posyanduOptions[0] &&
-                posyanduOptions[0].map((option) => (
+              <option value="" disabled selected>Pilih posyandu</option>
+              {posyanduOptions &&
+                posyanduOptions.map((option) => (
                   <option key={option.id} value={option.id}>
                     {option.nama}
                   </option>
@@ -444,6 +466,7 @@ function AddBalita({ idPosyandu }) {
             Simpan
           </button>
         </form>
+      </div>
       </div>
     </main>
   );

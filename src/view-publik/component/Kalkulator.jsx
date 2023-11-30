@@ -8,6 +8,7 @@ import data_bbpb_lk from '../../data-patokan-pengukuran/data-bbpb-0_24-lk';
 import data_bbpb_pr from '../../data-patokan-pengukuran/data-bbpb-0_24-pr';
 import data_bbtb_lk from '../../data-patokan-pengukuran/data-bbtb-24_60-lk';
 import data_bbtb_pr from '../../data-patokan-pengukuran/data-bbtb-24_60-pr';
+import "../css/kalkulator.css";
 
 const Kalkulator = () => {
   const[openModal, setOpenModal] = useState(false);
@@ -189,8 +190,6 @@ const Kalkulator = () => {
   const validateInput = () => {
     const jk = parseInt(data.jk);
     const umur = parseInt(data.umur);
-    const bb = parseFloat(data.bb);
-    const tb = parseFloat(data.tb);
     const asi= data.asi;
 
     let valid = true;
@@ -209,49 +208,57 @@ const Kalkulator = () => {
       setErrorMessages((prevErrors) => ({ ...prevErrors, jk: '' }));
     }
 
-    if (!umur){
-      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diisi' }));
-      valid = false;
-    } else if(!/^[0-9]+$/.test(umur)){
-      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur tidak valid' }));
-      valid = false;
-    } else if(umur <= 0 || umur >60) {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diantara 1-60' }));
+    if (!umur) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur tidak boleh kosong' }));
+    //   valid = false;
+    // } else if (!/^[0-9]+$/.test(umur)) {
+    //   setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur tidak valid' }));
+    //   valid = false;
+    // } else if (umur.includes('.') || umur.includes(',')) {
+    //   setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus bilangan bulat' }));
+    //   valid = false;
+    } else if (umur <= 0 || umur > 60) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diantara 1-60 tahun' }));
       valid = false;
     } else {
       setErrorMessages((prevErrors) => ({ ...prevErrors, umur: '' }));
     }
 
-    if (!bb){
-      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan harus diisi' }));
+    if (!data.bb) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan tidak boleh kosong' }));
       valid = false;
-    } else if (!/^[0-9]+([,.][0-9]+)?$/.test(bb)) {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Tinggi badan tidak valid' }));
-      valid = false;
-    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(bb)) {
+    } else if (!/^[0-9,.]+$/.test(data.bb)){
+        setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan tidak valid' }));
+        valid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(data.bb)) {
       setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Maksimal dua digit angka di belakang koma' }));
-    }else if (bb <= 2 || bb>30) {
+      valid = false;
+    } else if (parseFloat(data.bb) <= 2 || parseFloat(data.bb)>30) {
       setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan harus diantara 2-30' }));
       valid = false;
-    }else {
+    } else {
       setErrorMessages((prevErrors) => ({ ...prevErrors, bb: '' }));
     }
+    
 
-    if (!tb){
-      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan harus diisi' }));
+    if (!data.tb) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan tidak boleh kosong' }));
       valid = false;
-    } else if (!/^[0-9]+([,.][0-9]+)?$/.test(tb)) {
+    } else if (!/^[0-9,.]+$/.test(data.tb)) {
       setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan tidak valid' }));
       valid = false;
-    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(tb)) {
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(data.tb)) {
       setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Maksimal dua digit angka di belakang koma' }));
       valid = false;
-    } else if (tb <= 30 || tb>120) {
+    } else if (parseFloat(data.tb) <= 30 || parseFloat(data.tb)>120) {
       setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan harus diantara 30-120' }));
       valid = false;
     } else {
       setErrorMessages((prevErrors) => ({ ...prevErrors, tb: '' }));
     }
+
+    // alert(data.bb);
+    // alert(data.tb);
 
 
     return valid;
@@ -261,10 +268,20 @@ const Kalkulator = () => {
     e.preventDefault();
     // Validasi input sebelum menampilkan popup
     if (validateInput()) {
-      generateStatus_bbtb(data.jk, parseInt(data.umur), parseFloat(data.bb), parseFloat(data.tb));
-      generateStatus_tbu(data.jk, parseInt(data.umur), parseFloat(data.tb));
-      generateStatus_bbu(data.jk, parseInt(data.umur), parseFloat(data.bb));
-  
+      e.preventDefault();
+
+      const jk = parseInt(data.jk);
+      const umur = parseInt(data.umur);
+      const bb = parseFloat(data.bb);
+      const tb = parseFloat(data.tb);
+
+      generateStatus_bbtb(jk, umur, bb, tb);
+      generateStatus_tbu(jk, umur, tb);
+      generateStatus_bbu(jk, umur, bb);
+
+      alert(tb);
+      alert(bb);
+
       console.log(data);
       console.log(result);
       setOpenModal(true);
@@ -315,7 +332,7 @@ const Kalkulator = () => {
               <input
                 className="form-control" name="umur"
                 placeholder="Contoh: 24"
-                type="text"
+                type="number"
                 onChange={handleInputChange}
               />
               <div className="error-message">{errorMessages.umur}</div>

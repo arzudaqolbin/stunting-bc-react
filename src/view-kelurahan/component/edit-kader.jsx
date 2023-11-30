@@ -5,7 +5,7 @@ import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 
-function EditKader({ id }) {
+function EditKader({ apiAuth, idKader }) {
   let navigate = useNavigate();
 
   const [kader, setKader] = useState({
@@ -22,7 +22,7 @@ function EditKader({ id }) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/kader/${id}`)
+      .get(`${BASE_URL}/kader/${idKader}`, apiAuth)
       .then((response) => {
         setKader(response.data.data);
         setNamaLama(response.data.data.nama);
@@ -59,7 +59,7 @@ function EditKader({ id }) {
     e.preventDefault();
 
     try {
-      await axios.put(`${BASE_URL}/kader/${id}`, kader);
+      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth);
       navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
     } catch (error) {
       if (error.response) {
@@ -84,14 +84,14 @@ function EditKader({ id }) {
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT KADER POSYANDU</h2>
-
+        <div className="table-responsive">
         <form
           onSubmit={(e) => {
             onSubmit(e);
           }}
         >
           <label htmlFor="posyandu">
-            <span>Nama Posyandu*</span>
+            <span>NAMA POSYANDU*</span>
             <select
               id="posyandu"
               name="posyandu"
@@ -148,6 +148,7 @@ function EditKader({ id }) {
             Simpan
           </button>
         </form>
+        </div>
       </div>
     </main>
   );
