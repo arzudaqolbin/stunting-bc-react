@@ -66,32 +66,58 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
     setDataTambahan({ ...dataTambahan, [name]: value });
   };
 
+  const [errors, setErrors] = useState({
+    riwayat_sakit: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi riwayat penyakit
+    if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
+      isValid = false;
+      newErrors.riwayat_sakit= "Riwayat penyakit tidak valid.";
+    } else {
+      newErrors.riwayat_sakit= "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      if (idData) {
-        await axios.put(
-          `${BASE_URL}/dataTambahanBalitas/${idData}`,
-          dataTambahan, apiAuth
-        );
-      } else {
-        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
-      }
-      navigate(`/posyandu/detail-balita/${idBalita}`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()){
+      try {
+        alert("as");
+        if (idData) {
+          await axios.put(
+            `${BASE_URL}/dataTambahanBalitas/${idData}`,
+            dataTambahan, apiAuth
+          );
+        } else {
+          await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
+        }
+        navigate(`/posyandu/detail-balita/${idBalita}`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
+
+    
   };
 
   const confirmAlert = (e) => {
@@ -142,7 +168,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={asi_eksklusif}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -156,7 +182,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={imd}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -170,7 +196,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={penyakit_penyerta}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -185,6 +211,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={riwayat_sakit}
                     onChange={(e) => onInputChange(e)}
                   />
+                  <div className={`error`}>{errors.riwayat_sakit}</div>
                 </label>
 
                 <label htmlFor="riwayat_imunisasi">
@@ -195,7 +222,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={riwayat_imunisasi}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -209,7 +236,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={riwayat_ibu_hamil_kek}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -223,7 +250,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={kepemilikan_jamban_sehat}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -237,7 +264,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={ktp}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="DKI">DKI</option>
                     <option value="Non DKI">Non DKI</option>
                   </select>
@@ -251,7 +278,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={jaminan_kesehatan}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="BPJS">BPJS</option>
                     <option value="KIS">KIS</option>
                     <option value="JKn">JKn</option>
@@ -268,7 +295,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={akses_makanan_sehat}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -282,7 +309,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={konfirmasi_dsa}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="">--pilih--</option>
+                    <option value="" disabled selected>--pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>

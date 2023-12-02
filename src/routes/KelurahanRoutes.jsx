@@ -21,16 +21,17 @@ import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPusk
 import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
 import PageListBerita from "../view-kelurahan/pages/PageListBerita";
 import PageListJadwal from "../view-kelurahan/pages/PageListJadwal";
+import PageTambahKader from "../view-kelurahan/pages/PageTambahKader";
 
 
 const RoutesKelurahan = () => {
 
-    
+
     return (
         <Routes>
             {/* first path */}
             <Route path="/" element={<Login />} />
-            <Route path="/profile" element={<PrivateRoute element={<PageProfileKelurahan />} requiredRole="Kelurahan" />}/>
+            <Route path="/profile" element={<PrivateRoute element={<PageProfileKelurahan />} requiredRole="Kelurahan" />} />
             {/* <Route path="/profile" element={<PageProfileKelurahan />} /> */}
             <Route path="/edit-pw" element={<PrivateRoute element={<PageEditPwKelurahan />} requiredRole="Kelurahan" />} />
             <Route path="/daftar-balita" element={<PrivateRoute element={<PageDaftarBalitaKelurahan />} requiredRole="Kelurahan" />} />
@@ -47,6 +48,7 @@ const RoutesKelurahan = () => {
             <Route path="/tambah-posyandu/:idPuskesmas" element={<PrivateRoute element={<PageTambahAkunPosyandu />} requiredRole="Kelurahan" />} />
             {/* posyandu */}
             <Route path="/tambah-posyandu" element={<PrivateRoute element={<PageTambahAkunPosyandu />} requiredRole="Kelurahan" />} />
+            <Route path="/tambah-kader/:jabatan/:idPosyandu" element={<PrivateRoute element={<PageTambahKader />} requiredRole="Kelurahan" />} />
             <Route path="/detail-posyandu/:idPosyandu" element={<PrivateRoute element={<PageDetailPosyanduKelurahan />} requiredRole="Kelurahan" />} />
             <Route path="/edit-posyandu/:idPosyandu" element={<PrivateRoute element={<PageEditAkunPosyandu />} requiredRole="Kelurahan" />} />
             <Route path="/edit-kader/:idKader" element={<PrivateRoute element={<PageEditKader />} requiredRole="Kelurahan" />} />

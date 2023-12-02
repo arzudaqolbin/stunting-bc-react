@@ -1,41 +1,103 @@
-import React from 'react';
-import "../css/form-kelurahan.css";
+import React, { useState } from 'react';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import '../css/form-kelurahan.css';
 
-const TambahJadwal = ({idKelurahan, apiAuth }) => {
+const TambahJadwal = ({ idKelurahan, apiAuth }) => {
+  const [jadwal, setJadwal] = useState({
+    tanggal: '',
+    waktu: '',
+    judul: '',
+    deskripsi: '',
+  });
+
+  const { tanggal, waktu, judul, deskripsi } = jadwal;
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setJadwal({ ...jadwal, [name]: value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    // console.log(jadwal)
+    try {
+      const response = await axios.post(`${BASE_URL}/jadwals`, jadwal, apiAuth);
+      // console.log(response.data);
+      // navi
+      console.log(response.data);
+    } catch (error) {
+      // Handle errors, e.g., show an error message
+      console.error('Error submitting data:', error);
+    }
+  };
+
   return (
     <main className="container">
-      <a href=""><img src="back.png" alt="Back" className="logo-back" /></a>
+      <a href="">
+        <img src="back.png" alt="Back" className="logo-back" />
+      </a>
       <h2 className="custom-judul">Form Tambah Jadwal Kegiatan</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-        {/* Mulai isi kontennya disini */}
-
-        <form action="" method="post">
+        <form onSubmit={onSubmit}>
           <label htmlFor="tanggal">
             <span>Tanggal*</span>
-            <input type="date" id="tanggal" name="tanggal" required />
+            <input
+              type="date"
+              id="tanggal"
+              name="tanggal"
+              value={tanggal}
+              onChange={onInputChange}
+              required
+            />
           </label>
 
           <label htmlFor="waktu">
             <span>Waktu*</span>
-            <input type="text" id="waktu" name="waktu" required />
+            <input
+              type="time"
+              id="waktu"
+              name="waktu"
+              value={waktu}
+              onChange={onInputChange}
+              required
+            />
           </label>
 
-          <label htmlFor="judul_kegiatan">
+          <label htmlFor="judul">
             <span>Judul Kegiatan*</span>
-            <input type="text" id="judul_kegiatan" name="judul_kegiatan" required rows="2" />
+            <input
+              type="text"
+              id="judul"
+              name="judul"
+              value={judul}
+              onChange={onInputChange}
+              required
+              rows="2"
+            />
           </label>
 
-          <label htmlFor="deskripsi_kegiatan">
+          <label htmlFor="deskripsi">
             <span>Deskripsi Kegiatan*</span>
-            <textarea id="deskripsi_kegiatan" name="deskripsi_kegiatan" required rows="4"></textarea>
+            <textarea
+              id="deskripsi"
+              name="deskripsi"
+              value={deskripsi}
+              onChange={onInputChange}
+              required
+              rows="4"
+            ></textarea>
           </label>
+
+          <button type="submit" className="submit-button">
+            Simpan
+          </button>
         </form>
       </div>
-      <button type="submit" className="submit-button">Simpan</button>
     </main>
   );
-}
+};
 
 export default TambahJadwal;

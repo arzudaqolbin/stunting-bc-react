@@ -5,8 +5,30 @@ import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
 
-function AddBalita({ apiAuth }) {
+function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
+  const tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+
+  const [errors, setErrors] = useState({
+    nik: "",
+    nama: "",
+    jenis_kelamin: "",
+    nama_ortu: "",
+    pekerjaan_ortu: "",
+    alamat: "",
+    rt: "",
+    rw: "",
+    tgl_lahir: "",
+    anak_ke: "",
+    umur: "",
+    posyandu: "",
+  });
 
   const [balita, setBalita] = useState({
     nik: "",
@@ -56,9 +78,8 @@ function AddBalita({ apiAuth }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -76,25 +97,152 @@ function AddBalita({ apiAuth }) {
     }
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi NIK
+    if (!balita.nik) {
+      isValid = false;
+      newErrors.nik = "NIK tidak boleh kosong";
+    } else if (!/^[0-9]+$/.test(balita.nik)) {
+      newErrors.nik = "NIK harus berisi angka tanpa huruf dan simbol";
+      isValid = false;
+    } else {
+      newErrors.nik = "";
+    }
+
+    // Validasi Nama
+    if (!balita.nama) {
+      isValid = false;
+      newErrors.nama = "Nama balita tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama)) {
+      newErrors.nama = "Nama tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama = "";
+    }
+
+    // Validasi Umur
+    if (!balita.umur) {
+      isValid = false;
+      newErrors.umur = "Umur tidak boleh kosong";
+    } else if (balita.umur <= 0 || balita.umur > 60) {
+      newErrors.umur = "Umur harus diantara 1-60 tahun";
+      isValid = false;
+    } else {
+      newErrors.umur = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!balita.nama_ortu) {
+      isValid = false;
+      newErrors.nama_ortu = "Nama orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama_ortu)) {
+      newErrors.nama_ortu = "Nama orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama_ortu = "";
+    }
+
+    // Validasi jenis kelamin
+    if (!balita.jenis_kelamin) {
+      isValid = false;
+      newErrors.jenis_kelamin = "Pilih jenis kelamin.";
+    } else {
+      newErrors.jenis_kelamin = "";
+    }
+
+    // Validasi Pekerjaan Orang Tua
+    if (!balita.pekerjaan_ortu) {
+      isValid = false;
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(balita.pekerjaan_ortu)) {
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.pekerjaan_ortu = "";
+    }
+
+    // Validasi Anak-ke
+    if (!balita.anak_ke) {
+      isValid = false;
+      newErrors.anak_ke = "Anak-ke tidak boleh kosong";
+    } else if (balita.anak_ke < 1 || balita.anak_ke > 25) {
+      newErrors.anak_ke = "Anak ke- tidak valid";
+      isValid = false;
+    } else {
+      newErrors.anak_ke = "";
+    }
+
+    if (!balita.tgl_lahir) {
+      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_lahir = "";
+    }
+
+    // Validasi RT dan RW
+
+    if (!jalan) {
+      isValid = false;
+      newErrors.jalan = "Jalan tidak boleh kosong";
+    } else {
+      newErrors.jalan = "";
+    }
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!balita.rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
+    } else {
+      newErrors.rw = "";
+    }
+    // alert(balita.posyandu_id);
+
+    // Validasi nama posyandu
+    if (!balita.posyandu_id) {
+      isValid = false;
+      newErrors.posyandu = "Pilih posyandu";
+    } else {
+      newErrors.posyandu = "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
-      navigate(`/posyandu/detail-balita/${respon.data.id}`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()) {
+      try {
+        const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
+        navigate(`/posyandu/detail-balita/${respon.data.id}`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
+
+
   };
 
   return (
@@ -103,205 +251,205 @@ function AddBalita({ apiAuth }) {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-      <div className="table-responsive">
-        <form
-          onSubmit={(e) => {
-            onSubmit(e);
-          }}
-        >
-          <label htmlFor="nik">
-            <span>NIK*</span>
-            <input
-              type="text"
-              id="nik"
-              name="nik"
-              value={nik}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="nama">
-            <span>Nama Balita*</span>
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              value={nama}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="jenis_kelamin">
-            <span>Jenis Kelamin*</span>
-            <select
-              id="jenis_kelamin"
-              name="jenis_kelamin"
-              value={jenis_kelamin}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">--Pilih--</option>
-              <option value="Laki-Laki">Laki-Laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
-          </label>
-
-          <label htmlFor="anak_ke">
-            <span>Anak Ke-*</span>
-            <input
-              type="number"
-              id="anak_ke"
-              name="anak_ke"
-              value={anak_ke}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="umur">
-            <span>Umur*</span>
-            <input
-              type="number"
-              id="umur"
-              name="umur"
-              value={umur}
-              onChange={(e) => onInputChange(e)}
-              required
-              onKeyPress={(e) => {
-                if (e.key < "0" || e.key > "9") {
-                  e.preventDefault();
-                }
-              }}
-            />
-          </label>
-
-          <label htmlFor="nama_ortu">
-            <span>Nama Orang Tua*</span>
-            <input
-              type="text"
-              id="nama_ortu"
-              name="nama_ortu"
-              value={nama_ortu}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <label htmlFor="pekerjaan_ortu">
-            <span>Pekerjaan Orang Tua*</span>
-            <input
-              type="text"
-              id="pekerjaan_ortu"
-              name="pekerjaan_ortu"
-              value={pekerjaan_ortu}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
-
-          <div className="address-section">
-            <label htmlFor="alamat">
-              <span>Alamat</span>
+        <div className="table-responsive">
+          <form
+            onSubmit={(e) => {
+              onSubmit(e);
+            }}
+          >
+            <label htmlFor="nik">
+              <span>NIK*</span>
+              <input
+                type="text"
+                id="nik"
+                name="nik"
+                value={nik}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
             </label>
-            <input
-              type={"text"}
-              className="form-control"
-              placeholder="alamat"
-              name="alamat"
-              value={alamat}
-              onChange={(e) => onInputChange(e)}
-              readOnly
-            />
 
-            <div className="address-details">
-              <label htmlFor="jalan">
-                <span>Jalan*</span>
-                <input
-                  type="text"
-                  id="jalan"
-                  name="jalan"
-                  value={jalan}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                />
-              </label>
+            <label htmlFor="nama">
+              <span>Nama Balita*</span>
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                value={nama}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
 
-              <label htmlFor="rt">
-                <span>RT*</span>
-                <input
-                  type="text"
-                  id="rt"
-                  name="rt"
-                  value={rt}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                  pattern="\d{2,}"
-                  title="Awali angka satuan dengan angka 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-              </label>
+            <label htmlFor="jenis_kelamin">
+              <span>Jenis Kelamin*</span>
+              <select
+                id="jenis_kelamin"
+                name="jenis_kelamin"
+                value={jenis_kelamin}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">--Pilih--</option>
+                <option value="Laki-Laki">Laki-Laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </label>
 
-              <label htmlFor="rw">
-                <span>RW*</span>
-                <input
-                  type="text"
-                  id="rw"
-                  name="rw"
-                  value={rw}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                  pattern="\d{2,}"
-                  title="Awali angka satuan dengan angka 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
+            <label htmlFor="anak_ke">
+              <span>Anak Ke-*</span>
+              <input
+                type="number"
+                id="anak_ke"
+                name="anak_ke"
+                value={anak_ke}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <label htmlFor="umur">
+              <span>Umur*</span>
+              <input
+                type="number"
+                id="umur"
+                name="umur"
+                value={umur}
+                onChange={(e) => onInputChange(e)}
+                required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </label>
+
+            <label htmlFor="nama_ortu">
+              <span>Nama Orang Tua*</span>
+              <input
+                type="text"
+                id="nama_ortu"
+                name="nama_ortu"
+                value={nama_ortu}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <label htmlFor="pekerjaan_ortu">
+              <span>Pekerjaan Orang Tua*</span>
+              <input
+                type="text"
+                id="pekerjaan_ortu"
+                name="pekerjaan_ortu"
+                value={pekerjaan_ortu}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
+
+            <div className="address-section">
+              <label htmlFor="alamat">
+                <span>Alamat</span>
               </label>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="alamat"
+                name="alamat"
+                value={alamat}
+                onChange={(e) => onInputChange(e)}
+                readOnly
+              />
+
+              <div className="address-details">
+                <label htmlFor="jalan">
+                  <span>Jalan*</span>
+                  <input
+                    type="text"
+                    id="jalan"
+                    name="jalan"
+                    value={jalan}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                  />
+                </label>
+
+                <label htmlFor="rt">
+                  <span>RT*</span>
+                  <input
+                    type="text"
+                    id="rt"
+                    name="rt"
+                    value={rt}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                    pattern="\d{2,}"
+                    title="Awali angka satuan dengan angka 0, misal 01"
+                    onKeyPress={(e) => {
+                      if (e.key < "0" || e.key > "9") {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </label>
+
+                <label htmlFor="rw">
+                  <span>RW*</span>
+                  <input
+                    type="text"
+                    id="rw"
+                    name="rw"
+                    value={rw}
+                    onChange={(e) => onInputChange(e)}
+                    required
+                    pattern="\d{2,}"
+                    title="Awali angka satuan dengan angka 0, misal 01"
+                    onKeyPress={(e) => {
+                      if (e.key < "0" || e.key > "9") {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                </label>
+              </div>
             </div>
-          </div>
 
-          <label htmlFor="Tanggal Lahir" className="form-label">
-            <span>Tanggal Lahir Balita*</span>
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Masukkan Tanggal Lahir"
-              name="tgl_lahir"
-              value={tgl_lahir}
-              onChange={(e) => onInputChange(e)}
-              required
-            />
-          </label>
+            <label htmlFor="Tanggal Lahir" className="form-label">
+              <span>Tanggal Lahir Balita*</span>
+              <input
+                type="date"
+                className="form-control"
+                placeholder="Masukkan Tanggal Lahir"
+                name="tgl_lahir"
+                value={tgl_lahir}
+                onChange={(e) => onInputChange(e)}
+                required
+              />
+            </label>
 
-          <label htmlFor="posyandu">
-            <span>Nama Posyandu*</span>
-            <select
-              id="posyandu"
-              name="posyandu"
-              value={posyandu}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">--Pilih--</option>
-              {posyanduOptions &&
-                posyanduOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.nama}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
-      </div>
+            <label htmlFor="posyandu">
+              <span>Nama Posyandu*</span>
+              <select
+                id="posyandu"
+                name="posyandu"
+                value={posyandu}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">--Pilih--</option>
+                {posyanduOptions &&
+                  posyanduOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.nama}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );

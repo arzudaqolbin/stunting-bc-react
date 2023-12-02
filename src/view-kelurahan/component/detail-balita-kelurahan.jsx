@@ -64,9 +64,9 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
             />
           </div>) : (
 
-          <main className="container">
-            <div className="container-fluid">
-              <div className="container">
+          // <main className="container" style={{ padding: '10px 0' }}>
+            // <div className="container max-content" >
+              <div className="container" style={{padding: "10px"}}>
                 <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
                   Detail Balita
                 </h2>
@@ -231,7 +231,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                     </button>
                   </h2>
                   <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div className="accordion-body">
+                    <div className="accordion-body" style={{ padding: '10px' }}>
                       {/* Isi komponen accordion disini */}
                       <TabelPengukuranBalitaStunting />
                     </div>
@@ -246,16 +246,22 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                       {/* Isi komponen accordion disini */}
-                      <LineChart_Umur_0_24 />
-                      <LineChart_Umur_24_60 />
+                      <LineChart_Umur_0_24 
+                      apiAuth={apiAuth}
+                      idBalita={idBalita}
+                      />
+                      <LineChart_Umur_24_60 
+                      apiAuth={apiAuth}
+                      idBalita={idBalita}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             </div>
-            </div>
-          </main>
+          //   </div>
+          // </main>
         )
       }
     </>
