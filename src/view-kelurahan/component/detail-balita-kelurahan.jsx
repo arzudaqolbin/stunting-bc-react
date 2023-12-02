@@ -217,7 +217,11 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                       {/* Isi komponen accordion disini */}
-                      <TabelPengukuranBalitaStunting />
+                      <TabelPengukuranBalitaStunting 
+                      idKelurahan={idKelurahan}
+                      apiAuth={apiAuth}
+                      idBalita={idBalita}
+                      />
                     </div>
                   </div>
                 </div>
@@ -230,8 +234,14 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                       {/* Isi komponen accordion disini */}
-                      <LineChart_Umur_0_24 />
-                      <LineChart_Umur_24_60 />
+                      <LineChart_Umur_0_24 
+                      apiAuth={apiAuth}
+                      idBalita={idBalita}
+                      />
+                      <LineChart_Umur_24_60 
+                      apiAuth={apiAuth}
+                      idBalita={idBalita}
+                      />
                     </div>
                   </div>
                 </div>

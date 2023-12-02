@@ -35,7 +35,7 @@
     }
 
     .custom-table thead th:nth-child(3) {
-        width: 25%;
+        /* width: 25%; */
     }
 
     .custom-table tbody tr td {

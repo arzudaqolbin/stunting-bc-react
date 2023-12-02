@@ -13,7 +13,7 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
     const [puskesmasList, setPuskesmasList] = useState([]);
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
+    useEffect(() => { 
         // Inisialisasi DataTable hanya pada mounting pertama
         if (!$.fn.DataTable.isDataTable('#myTable')) {
             $('#myTable').DataTable({
@@ -45,7 +45,7 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                 }
             });
         }
-    }, []);
+    }, [puskesmasList]);
 
     useEffect(() => {
         // Panggil API untuk mendapatkan daftar puskesmas
@@ -73,9 +73,8 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                     <main className="container">
                         {/* Mulai isi kontennya disini */}
                         <h2 className="custom-judul">Daftar Puskesmas di Kelurahan Bidara Cina</h2>
-
                         <div className='table-responsive'>
-                            <table id="myTable" className="table custom-table" data-toggle="table">
+                            <table id="myTable" className="table w-100">
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>

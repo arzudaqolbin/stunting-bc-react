@@ -48,7 +48,7 @@
 }
 
 table {
-    max-width: 400px; 
+    /* max-width: 400px;  */
     margin: 0 auto;
     border: 1px solid #026670;
     border-collapse: collapse;
@@ -57,7 +57,7 @@ table {
 }
 
 table th, table td {
-    width: 30%;
+    /* width: 30%; */
     border: 1px solid #026670;
     padding: 8px;
     text-align: center;
