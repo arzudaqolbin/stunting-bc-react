@@ -27,203 +27,203 @@ import NotFound from "../view-publik/pages/NotFound";
 import DetailBerita from "../view-publik/component/detail-berita";
 
 const RoutesKelurahan = () => {
-  return (
-    <Routes>
-      {/* first path */}
-      <Route path="/" element={<Login />} />
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute
-            element={<PageProfileKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      {/* <Route path="/profile" element={<PageProfileKelurahan />} /> */}
-      <Route
-        path="/edit-pw"
-        element={
-          <PrivateRoute
-            element={<PageEditPwKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/daftar-balita"
-        element={
-          <PrivateRoute
-            element={<PageDaftarBalitaKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/daftar-puskesmas"
-        element={
-          <PrivateRoute
-            element={<PageDaftarPuskesmasKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/daftar-posyandu"
-        element={
-          <PrivateRoute
-            element={<PageDaftarPosyanduKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route path="/jadwal" element={<PageListJadwal />} />
-      <Route path="/berita" element={<PageListBerita />} />
-      {/* balita */}
-      <Route
-        path="/detail-balita/:idBalita"
-        element={
-          <PrivateRoute
-            element={<PageDetailBalitaKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      {/* puskesmas */}
-      <Route
-        path="/tambah-puskesmas"
-        element={
-          <PrivateRoute
-            element={<PageTambahAkunPuskesmas />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/detail-puskesmas/:idPuskesmas"
-        element={
-          <PrivateRoute
-            element={<PageDetailPuskesmasKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/edit-puskesmas/:idPuskesmas"
-        element={
-          <PrivateRoute
-            element={<PageEditAkunPuskesmas />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/tambah-posyandu/:idPuskesmas"
-        element={
-          <PrivateRoute
-            element={<PageTambahAkunPosyandu />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      {/* posyandu */}
-      <Route
-        path="/tambah-posyandu"
-        element={
-          <PrivateRoute
-            element={<PageTambahAkunPosyandu />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/tambah-kader/:jabatan/:idPosyandu"
-        element={
-          <PrivateRoute
-            element={<PageTambahKader />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/detail-posyandu/:idPosyandu"
-        element={
-          <PrivateRoute
-            element={<PageDetailPosyanduKelurahan />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/edit-posyandu/:idPosyandu"
-        element={
-          <PrivateRoute
-            element={<PageEditAkunPosyandu />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/edit-kader/:idKader"
-        element={
-          <PrivateRoute element={<PageEditKader />} requiredRole="Kelurahan" />
-        }
-      />
-      {/* jadwal */}
-      <Route
-        path="/tambah-jadwal"
-        element={
-          <PrivateRoute
-            element={<PageTambahJadwal />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/edit-jadwal/:idJadwal"
-        element={
-          <PrivateRoute element={<PageEditJadwal />} requiredRole="Kelurahan" />
-        }
-      />
-      {/* berita */}
-      <Route
-        path="/tambah-berita"
-        element={
-          <PrivateRoute
-            element={<PageTambahBerita />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="berita/detail-berita/:idBerita"
-        element={
-          <PrivateRoute element={<DetailBerita />} requiredRole="Kelurahan" />
-        }
-      />
-      <Route
-        path="/tambah-kader"
-        element={
-          <PrivateRoute
-            element={<PageTambahKader />}
-            requiredRole="Kelurahan"
-          />
-        }
-      />
-      <Route
-        path="/edit-berita/:idBerita"
-        element={
-          <PrivateRoute element={<PageEditBerita />} requiredRole="Kelurahan" />
-        }
-      />
+    return (
+        <Routes>
+            {/* first path */}
+            <Route path="/" element={<Login />} />
+            <Route
+                path="/profile"
+                element={
+                    <PrivateRoute
+                        element={<PageProfileKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            {/* <Route path="/profile" element={<PageProfileKelurahan />} /> */}
+            <Route
+                path="/edit-pw"
+                element={
+                    <PrivateRoute
+                        element={<PageEditPwKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/daftar-balita"
+                element={
+                    <PrivateRoute
+                        element={<PageDaftarBalitaKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/daftar-puskesmas"
+                element={
+                    <PrivateRoute
+                        element={<PageDaftarPuskesmasKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/daftar-posyandu"
+                element={
+                    <PrivateRoute
+                        element={<PageDaftarPosyanduKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route path="/jadwal" element={<PageListJadwal />} />
+            <Route path="/berita" element={<PageListBerita />} />
+            {/* balita */}
+            <Route
+                path="/detail-balita/:idBalita"
+                element={
+                    <PrivateRoute
+                        element={<PageDetailBalitaKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            {/* puskesmas */}
+            <Route
+                path="/tambah-puskesmas"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahAkunPuskesmas />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/detail-puskesmas/:idPuskesmas"
+                element={
+                    <PrivateRoute
+                        element={<PageDetailPuskesmasKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/edit-puskesmas/:idPuskesmas"
+                element={
+                    <PrivateRoute
+                        element={<PageEditAkunPuskesmas />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/tambah-posyandu/:idPuskesmas"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahAkunPosyandu />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            {/* posyandu */}
+            <Route
+                path="/tambah-posyandu"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahAkunPosyandu />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/tambah-kader/:jabatan/:idPosyandu"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahKader />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/detail-posyandu/:idPosyandu"
+                element={
+                    <PrivateRoute
+                        element={<PageDetailPosyanduKelurahan />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/edit-posyandu/:idPosyandu"
+                element={
+                    <PrivateRoute
+                        element={<PageEditAkunPosyandu />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/edit-kader/:idKader"
+                element={
+                    <PrivateRoute element={<PageEditKader />} requiredRole="Kelurahan" />
+                }
+            />
+            {/* jadwal */}
+            <Route
+                path="/tambah-jadwal"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahJadwal />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/edit-jadwal/:idJadwal"
+                element={
+                    <PrivateRoute element={<PageEditJadwal />} requiredRole="Kelurahan" />
+                }
+            />
+            {/* berita */}
+            <Route
+                path="/tambah-berita"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahBerita />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="berita/detail-berita/:idBerita"
+                element={
+                    <PrivateRoute element={<DetailBerita />} requiredRole="Kelurahan" />
+                }
+            />
+            <Route
+                path="/tambah-kader"
+                element={
+                    <PrivateRoute
+                        element={<PageTambahKader />}
+                        requiredRole="Kelurahan"
+                    />
+                }
+            />
+            <Route
+                path="/edit-berita/:idBerita"
+                element={
+                    <PrivateRoute element={<PageEditBerita />} requiredRole="Kelurahan" />
+                }
+            />
 
-      {/* Fallback jika route tidak ditemukan */}
-      <Route path="*" element={<Navigate to="/not-found" replace />} />
+            {/* Fallback jika route tidak ditemukan */}
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
 
-      {/* Halaman Not Found */}
-      <Route path="/not-found" element={<NotFound />} />
-    </Routes>
-  );
+            {/* Halaman Not Found */}
+            <Route path="/not-found" element={<NotFound />} />
+        </Routes>
+    );
 };
 
 export default RoutesKelurahan;
