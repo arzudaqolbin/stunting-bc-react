@@ -48,7 +48,7 @@
 }
 
 table {
-    max-width: 400px; 
+    /* max-width: 400px;  */
     margin: 0 auto;
     border: 1px solid #026670;
     border-collapse: collapse;
