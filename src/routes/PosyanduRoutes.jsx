@@ -1,15 +1,14 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import PageProfilePosyandu from "../view-posyandu/pages/PageProfilePosyandu";
 import PageAddBalitaPosyandu from "../view-posyandu/pages/PageAddBalitaPosyandu";
-import PageAddPengukuranPosyandu from "../view-posyandu/pages/PageAddPengukuranPosyandu";
-import PageAddPengukuranSelectedPosyandu from "../view-posyandu/pages/PageAddPengukuranSelectedPosyandu";
 import PageEditPengukuranPosyandu from "../view-posyandu/pages/PageEditPengukuranPosyandu";
 import PageDetailBalitaPosyandu from "../view-posyandu/pages/PageDetailBalitaPosyandu";
 import PageTabelBalitaPosyandu from "../view-posyandu/pages/PageTabelBalitaPosyandu";
 import PageEditPwPosyandu from "../view-posyandu/pages/PageEditPwPosyandu";
 import PageDataTambahanPosyandu from "../view-posyandu/pages/PageDataTambahanPosyandu";
 import Login from "../view-publik/pages/Login";
+import NotFound from "../view-publik/pages/NotFound";
 
 const RoutesPosyandu = () => {
   return (
@@ -20,8 +19,7 @@ const RoutesPosyandu = () => {
       {/* tambah balita */}
       <Route path="/tambah-balita" element={<PrivateRoute element={<PageAddBalitaPosyandu/>} requiredRole="Posyandu" />}/>
       {/* tambah pengukuran */}
-      <Route path="/tambah-pengukuran" element={<PrivateRoute element={<PageAddPengukuranPosyandu/>} requiredRole="Posyandu" />}/>
-      <Route path="/tambah-pengukuran/:idBalita" element={<PrivateRoute element={<PageAddPengukuranSelectedPosyandu/>} requiredRole="Posyandu" />}/>
+      
       {/* daftar tabel balita */}
       <Route path="/daftar-balita" element={<PrivateRoute element={<PageTabelBalitaPosyandu/>} requiredRole="Posyandu" />}/>
       {/* detail balita */}
@@ -32,6 +30,12 @@ const RoutesPosyandu = () => {
       <Route path="/edit-pw" element={<PrivateRoute element={<PageEditPwPosyandu/>} requiredRole="Posyandu" />}/>
       {/* tambah data tambahan balita*/}
       <Route path="/tambah-data-tambahan/:idBalita" element={<PrivateRoute element={<PageDataTambahanPosyandu/>} requiredRole="Posyandu" />}/>
+
+      {/* Fallback jika route tidak ditemukan */}
+      <Route path="*" element={<Navigate to="/not-found" replace />} />
+
+      {/* Halaman Not Found */}
+      <Route path="/not-found" element={<NotFound />} />
     </Routes>
   );
 };

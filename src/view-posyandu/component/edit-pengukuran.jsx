@@ -448,7 +448,7 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
       newErrors.tinggi_badan = "Tinggi badan harus diantara 30-120";
       isValid = false;
     } else {
-      newErrors.berat_badan = "";
+      newErrors.tinggi_badan = "";
     }
 
     // Validasi Nama
@@ -465,56 +465,53 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
     return isValid;
   };
 
-
   // nanti atur statusnya disini broo
   const onSubmit = async (e, pengukuran) => {
     e.preventDefault();
-    if (validateForm()){
-      // console.log("balita")
-      // console.log(balita)
+    // console.log("balita")
+    // console.log(balita)
 
-      // console.log("pengukuran")
-      // console.log(pengukuran)
+    // console.log("pengukuran")
+    // console.log(pengukuran)
 
-      const jk = dataPatokan.jk;
-      // const idBalita = parseInt(balita.id)
-      const umur = parseInt(pengukuran.umur);
-      const bb = parseFloat(pengukuran.berat_badan);
-      const tb = parseFloat(pengukuran.tinggi_badan);
-      console.log("jk = ", jk, "umur = ", umur);
-      generateStatus_bbtb(jk, umur, bb, tb);
-      generateStatus_tbu(jk, umur, tb);
-      generateStatus_bbu(jk, umur, bb);
-      generateKms(jk, umur, bb);
-      generateRambuGizi(jk, umur, bb, dataPatokan.idBalita);
+    const jk = dataPatokan.jk;
+    // const idBalita = parseInt(balita.id)
+    const umur = parseInt(pengukuran.umur);
+    const bb = parseFloat(pengukuran.berat_badan);
+    const tb = parseFloat(pengukuran.tinggi_badan);
+    console.log("jk = ", jk, "umur = ", umur);
+    generateStatus_bbtb(jk, umur, bb, tb);
+    generateStatus_tbu(jk, umur, tb);
+    generateStatus_bbu(jk, umur, bb);
+    generateKms(jk, umur, bb);
+    generateRambuGizi(jk, umur, bb, dataPatokan.idBalita);
 
-      try {
+    try {
 
-        console.log("pengukuran terbaru");
-        console.log(pengukuran);
+      console.log("pengukuran terbaru");
+      console.log(pengukuran);
 
-        await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran, apiAuth).then((response) => {
-          console.log(response.status)
-        });
-        showSuccessPostToast(pengukuran.balita_id)
-        // navigate(`/posyandu/${idPosyandu}/detail-balita/${pengukuran.balita_id}`);
+      await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran, apiAuth).then((response) => {
+        console.log(response.status)
+      });
+      showSuccessPostToast(pengukuran.balita_id)
+      // navigate(`/posyandu/${idPosyandu}/detail-balita/${pengukuran.balita_id}`);
 
 
-      } catch (error) {
+    } catch (error) {
+      showFailedPostToast()
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data
+          );
+        } else if (error.request) {
         showFailedPostToast()
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-            );
-          } else if (error.request) {
-          showFailedPostToast()
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          showFailedPostToast()
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        showFailedPostToast()
+        console.error("Terjadi kesalahan:", error.message);
       }
     }
 
@@ -597,8 +594,11 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
       <div className="table-responsive">
         <form
           onSubmit={(e) => {
-            // onSubmit(e, pengukuran);
-            confirmAlert(e, pengukuran);
+            // Mencegah pengiriman formulir langsung
+            e.preventDefault();
+            if (validateForm()) {
+              confirmAlert(e, pengukuran);
+            }
           }}
         >
           <label htmlFor="nama_balita">

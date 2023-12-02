@@ -124,7 +124,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
     e.preventDefault();
     Swal.fire({
       title: "Apakah kamu yakin?",
-      text: "Menambahkan data riwayat tambahan",
+      text: "Menambahkan data tambahan",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -168,7 +168,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={asi_eksklusif}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -182,7 +182,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={imd}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -196,7 +196,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={penyakit_penyerta}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -222,7 +222,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={riwayat_imunisasi}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -236,7 +236,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={riwayat_ibu_hamil_kek}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -250,7 +250,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={kepemilikan_jamban_sehat}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -264,7 +264,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={ktp}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="DKI">DKI</option>
                     <option value="Non DKI">Non DKI</option>
                   </select>
@@ -278,7 +278,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={jaminan_kesehatan}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="BPJS">BPJS</option>
                     <option value="KIS">KIS</option>
                     <option value="JKn">JKn</option>
@@ -295,7 +295,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={akses_makanan_sehat}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>
@@ -309,7 +309,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     value={konfirmasi_dsa}
                     onChange={(e) => onInputChange(e)}
                   >
-                    <option value="" disabled selected>--pilih--</option>
+                    <option value="" disabled selected>--Pilih--</option>
                     <option value="1">Ya</option>
                     <option value="0">Tidak</option>
                   </select>

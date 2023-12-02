@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-balita.css";
 import BASE_URL from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
@@ -241,25 +242,43 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     umur: "",
     nama_posyandu: "",
   });
+
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit data balita",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // acc izin
+        onSubmit(e)
+      }
+    });
+  }
+  
   
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()){
-      try {
-        await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
-        navigate(`/puskesmas/detail-balita/${idBalita}`);
-      } catch (error) {
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+    try {
+      await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
+      navigate(`/puskesmas/detail-balita/${idBalita}`);
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        console.error("Terjadi kesalahan:", error.message);
       }
     }
   };
@@ -274,7 +293,10 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
       <div className="table-responsive">
         <form
           onSubmit={(e) => {
-            onSubmit(e);
+            e.preventDefault();
+            if (validateForm()) {
+              confirmAlert(e);
+            }
           }}
         >
           <label htmlFor="nik">
@@ -375,20 +397,20 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
             <div className={`error`}>{errors.pekerjaan_ortu}</div>
           </label>
 
-          <div className="address-section">
-            <label htmlFor="alamat">
-              <span>Alamat</span>
-            </label>
+          <label htmlFor="alamat">
+            <span>Alamat</span>
             <input
               type={"text"}
               className="form-control"
-              placeholder="alamat"
+              placeholder="Alamat"
               name="alamat"
               value={alamat}
               onChange={(e) => onInputChange(e)}
               readOnly
             />
+          </label>
 
+          <div className="address-section">       
             <div className="address-details">
               <label htmlFor="jalan">
                 <span>Jalan*</span>
