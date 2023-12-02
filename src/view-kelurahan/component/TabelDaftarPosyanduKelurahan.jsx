@@ -73,14 +73,6 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
     setLoading(false);
   }, []);
 
-  // const handlePuskesmasChange = (e) => {
-  //     console.log(e.target.val);
-  //     setSelectedPuskesmas(e.target.value);
-  // };
-
-  //     useEffect(() => {
-  //         handlePuskesmasChange();
-  //     }, []);
 
   return (
     <>

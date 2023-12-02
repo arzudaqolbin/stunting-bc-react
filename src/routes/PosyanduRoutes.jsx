@@ -10,6 +10,7 @@ import PageTabelBalitaPosyandu from "../view-posyandu/pages/PageTabelBalitaPosya
 import PageEditPwPosyandu from "../view-posyandu/pages/PageEditPwPosyandu";
 import PageDataTambahanPosyandu from "../view-posyandu/pages/PageDataTambahanPosyandu";
 import Login from "../view-publik/pages/Login";
+import NonRoute from "../base/NonRoute";
 
 const RoutesPosyandu = () => {
   return (
@@ -32,6 +33,8 @@ const RoutesPosyandu = () => {
       <Route path="/edit-pw" element={<PrivateRoute element={<PageEditPwPosyandu/>} requiredRole="Posyandu" />}/>
       {/* tambah data tambahan balita*/}
       <Route path="/tambah-data-tambahan/:idBalita" element={<PrivateRoute element={<PageDataTambahanPosyandu/>} requiredRole="Posyandu" />}/>
+    
+      <Route path='*' element={<NonRoute />} />
     </Routes>
   );
 };

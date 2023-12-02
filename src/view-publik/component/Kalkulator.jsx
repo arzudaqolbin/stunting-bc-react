@@ -279,8 +279,8 @@ const Kalkulator = () => {
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
 
-      alert(tb);
-      alert(bb);
+      // alert(tb);
+      // alert(bb);
 
       console.log(data);
       console.log(result);

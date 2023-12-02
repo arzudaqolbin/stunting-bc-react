@@ -20,6 +20,7 @@ import PageDaftarPosyanduKelurahan from "../view-kelurahan/pages/PageDaftarPosya
 import PageDetailPuskesmasKelurahan from "../view-kelurahan/pages/PageDetailPuskesmasKelurahan";
 import PageDetailPosyanduKelurahan from "../view-kelurahan/pages/PageDetailPosyanduKelurahan";
 import PageTambahKader from "../view-kelurahan/pages/PageTambahKader";
+import NonRoute from "../base/NonRoute";
 
 
 const RoutesKelurahan = () => {
@@ -57,6 +58,8 @@ const RoutesKelurahan = () => {
             <Route path="/tambah-berita" element={<PrivateRoute element={<PageTambahBerita />} requiredRole="Kelurahan" />} />
             <Route path="/detail-berita/:idBerita" element={<PrivateRoute element={<Coba />} requiredRole="Kelurahan" />} />
             <Route path="/edit-berita/:idBerita" element={<PrivateRoute element={<PageEditBerita />} requiredRole="Kelurahan" />} />
+
+            <Route path='*' element={<NonRoute />} />
         </Routes>
     )
 }

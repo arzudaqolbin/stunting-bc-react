@@ -262,7 +262,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">Data Pengukuran</h2>
 
-        <div className="p-3 mb-2 bg-light custom-border rounded">
+        <div className="table-responsive">
           <Link
             to={`/posyandu/tambah-pengukuran/${idBalita}`}
             className="btn btn-primary"

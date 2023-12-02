@@ -8,14 +8,12 @@ const ModalKalkulator = ({open, onClose, result}) => {
     if(!open) return null;
 
     return(
-        <div className="overlay">
+        <div className="overlay align-items-center">
         <div className="modalContainer container" style={{backgroundColor: "#E4F3EF"}}>
             <div className="modalRight">
             <div>
                 <i className="fa-solid fa-square-xmark closeBtn fa-3x" onClick={onClose}></i>
             </div>
-            <br />
-            <br />
             {/* Ini nanti buat 3 flex */}
             <div className="container content">
                 {/* Ini nanti buat 3 flex yang sejajar */}
@@ -88,7 +86,7 @@ const ModalKalkulator = ({open, onClose, result}) => {
             </div>
 
             {/* Ini buat tombol close */}
-            <div className="btnContainer">
+            <div className="d-flex justify-content-end">
                 <button className='btn btn-primary' onClick={onClose}>
                 <span className='bold'>Kembali</span>
                 </button>

@@ -157,7 +157,7 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
           {/* Mulai isi kontennya disini */}
           <h2 className="custom-judul">Daftar Balita Puskemas</h2>
 
-          <form className="d-flex align-items-center">
+          {/* <form className="d-flex align-items-center">
             <input
               className="form-control me-2"
               type="text"
@@ -170,9 +170,9 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
             >
               Cari
             </button>
-          </form>
+          </form> */}
 
-          <div className="p-3 mb-2 bg-light custom-border rounded">
+          <div className="table-responsive">
             <table className="table custom-table">
               <thead>
                 <tr>
