@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL, { apiAuth } from "../../base/apiConfig";
 
-const ListBerita = () => {
+const ListBerita = ({ apiAuth }) => {
   const [daftarBerita, setDaftarBerita] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,18 @@ const ListBerita = () => {
     }
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/beritas/${id}`, apiAuth);
+      console.log("Berita berhasil dihapus:", response.data);
+
+      const updatedBerita = daftarBerita.filter((berita) => berita.id !== id);
+      setDaftarBerita(updatedBerita);
+    } catch (error) {
+      console.error("Error deleting berita:", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -76,7 +88,10 @@ const ListBerita = () => {
                 >
                   Baca berita
                 </Link>
-                <button className="btn btn-danger float-end">
+                <button
+                  className="btn btn-danger float-end"
+                  onClick={() => handleDelete(berita.id)}
+                >
                   <i className="fas fa-trash"></i>
                 </button>
                 <Link
