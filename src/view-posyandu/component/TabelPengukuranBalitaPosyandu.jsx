@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../css/tabel-pengukuran-balita-posyandu.css";
-import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
-import format from "date-fns/format";
-import { Link } from "react-router-dom";
 // import * as XLSX from "xlsx";
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import format from 'date-fns/format';
+import { Link } from 'react-router-dom';
+import $ from 'jquery';
+import 'datatables.net';
+import logoCentang from '../../aset/centang.png';
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -150,6 +153,43 @@ function applyStatusStyle(statusValue) {
 function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
+  const [loadData, setLoadData ] = useState(false)
+
+  // useEffect(() => {
+  //   // Inisialisasi DataTable hanya pada mounting pertama
+  //   const myTable = $('.custom-table');
+  
+  //   if ($.fn.DataTable.isDataTable(myTable)) {
+  //     myTable.DataTable().destroy(); // Hapus DataTable sebelum inisialisasi ulang
+  //   }
+  
+  //   myTable.DataTable({
+  //     "aaSorting": [],
+  //     "language": {
+  //       "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+  //       "zeroRecords": "Data tidak ditemukan",
+  //       "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+  //       "infoEmpty": "Tidak ada data tersedia",
+  //       "infoFiltered": "(Disaring dari _MAX_ data total)",
+  //       "decimal": "",
+  //       "emptyTable": "Data tidak tersedia",
+  //       "loadingRecords": "Memuat...",
+  //       "processing": "Memproses...",
+  //       "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+  //       "searchPlaceholder": "cari data pengukuran...",
+  //       "paginate": {
+  //         "first": "Pertama",
+  //         "last": "Terakhir",
+  //         "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+  //         "next": '<i class="bi bi-chevron-double-right"></i>     Next'
+  //       },
+  //       "aria": {
+  //         "sortAscending": ": klik untuk mengurutkan A-Z",
+  //         "sortDescending": ": klik untuk mengurutkan Z-A"
+  //       }
+  //     }
+  //   });
+  // }, [dataPengukuran]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,13 +203,14 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
           : [result.data];
         pengukuranArray.sort((a, b) => a.umur - b.umur);
         setDataPengukuran(pengukuranArray);
+        setLoadData(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [dataPengukuran]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,16 +228,49 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
     fetchData();
   }, [tanggalLahir]);
 
+  useEffect(() => {
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (loadData && !$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+          "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+          "infoEmpty": "Tidak ada data tersedia",
+          "infoFiltered": "(Disaring dari _MAX_ data total)",
+          "decimal": "",
+          "emptyTable": "Data tidak tersedia",
+          "loadingRecords": "Memuat...",
+          "processing": "Memproses...",
+          "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+          "searchPlaceholder": "cari data pengukuran...",
+          "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>     Next'
+          },
+          "aria": {
+            "sortAscending": ": klik untuk mengurutkan A-Z",
+            "sortDescending": ": klik untuk mengurutkan Z-A"
+          }
+        }
+      });
+    }
+  }, [loadData]);
+
+  if (!loadData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <main className="container">
-      <div className="container-fluid">
-        {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Data Pengukuran</h2>
+      {/* Mulai isi kontennya disini */}
 
-        <div className="p-3 mb-2 bg-light custom-border rounded">
-          <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
+      <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
           <div className='table-responsive'>
-            <table className="table custom-table">
+            <table id='myTable' className="table custom-table">
               <thead>
                 <tr>
                   <th scope="col">No</th>
@@ -296,99 +370,156 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
                     <div className="tervalidasi rounded">Tervalidasi</div>
                   </td>
                 </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td data-status_tbu="Normal">
-                    <div className="validasi rounded">Normal</div>
-                  </td>
-                  <td data-status_bbtb="Normal">
-                    <div className="validasi rounded">Normal</div>
-                  </td>
-                  <td data-status_bbu="Normal">
-                    <div className="validasi rounded">Normal</div>
-                  </td>
-                  <td>B</td>
-                  <td data-status_kms="Kuning">
-                    <div className="validasi rounded">Kuning</div>
-                  </td>
-                  <td>
-                    <button className="fa-solid fa-pen-to-square"></button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td data-status_tbu="Tinggi">
-                    <div className="validasi rounded">Tinggi</div>
-                  </td>
-                  <td data-status_bbtb="Risiko Lebih">
-                    <div className="validasi rounded">Risiko Lebih</div>
-                  </td>
-                  <td data-status_bbu="Risiko BB Lebih">
-                    <div className="validasi rounded">Risiko BB Lebih</div>
-                  </td>
-                  <td>O</td>
-                  <td data-status_kms="Merah">
-                    <div className="validasi rounded">Merah</div>
-                  </td>
-                  <td>
-                    <div className="tervalidasi rounded">Tervalidasi</div>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td data-status_bbtb="Gizi Lebih">
-                    <div className="validasi rounded">Gizi Lebih</div>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button className="fa-solid fa-pen-to-square"></button>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">6</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td data-status_bbtb="Obesitas">
-                    <div className="validasi rounded">Obesitas</div>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                    <button className="fa-solid fa-pen-to-square"></button>
-                  </td> 
-                </tr>*/}
-              </tbody>
-            </table>
-          </div>
+
+              ))}
+              {/* <tr>
+                <th scope="row">2</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td data-status_tbu="Pendek">
+                  <div className="validasi rounded">Pendek</div>
+                </td>
+                <td data-status_bbtb="Gizi Kurang">
+                  <div className="validasi rounded">Gizi Kurang</div>
+                </td>
+                <td data-status_bbu="BB Kurang">
+                  <div className="validasi rounded">BB Kurang</div>
+                </td>
+                <td>T</td>
+                <td data-status_kms="Hijau">
+                  <div className="validasi rounded">Hijau</div>
+                </td>
+                <td>
+                  <div className="tervalidasi rounded">Tervalidasi</div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td data-status_tbu="Normal">
+                  <div className="validasi rounded">Normal</div>
+                </td>
+                <td data-status_bbtb="Normal">
+                  <div className="validasi rounded">Normal</div>
+                </td>
+                <td data-status_bbu="Normal">
+                  <div className="validasi rounded">Normal</div>
+                </td>
+                <td>B</td>
+                <td data-status_kms="Kuning">
+                  <div className="validasi rounded">Kuning</div>
+                </td>
+                <td>
+                  <button className="fa-solid fa-pen-to-square"></button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td data-status_tbu="Tinggi">
+                  <div className="validasi rounded">Tinggi</div>
+                </td>
+                <td data-status_bbtb="Risiko Lebih">
+                  <div className="validasi rounded">Risiko Lebih</div>
+                </td>
+                <td data-status_bbu="Risiko BB Lebih">
+                  <div className="validasi rounded">Risiko BB Lebih</div>
+                </td>
+                <td>O</td>
+                <td data-status_kms="Merah">
+                  <div className="validasi rounded">Merah</div>
+                </td>
+                <td>
+                  <div className="tervalidasi rounded">Tervalidasi</div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td data-status_bbtb="Gizi Lebih">
+                  <div className="validasi rounded">Gizi Lebih</div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button className="fa-solid fa-pen-to-square"></button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">6</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td data-status_bbtb="Obesitas">
+                  <div className="validasi rounded">Obesitas</div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button className="fa-solid fa-pen-to-square"></button>
+                </td> 
+              </tr>*/}
+            </tbody>
+          </table>
         </div>
-      </div>
+
+        {/* <script>
+        $(document).ready(function () {
+        $('#myTable').DataTable({
+          // DataTable options...
+          "aaSorting": [],
+          "language": {
+            "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+            "zeroRecords": "Data tidak ditemukan",
+            "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+            "infoEmpty": "Tidak ada data tersedia",
+            "infoFiltered": "(Disaring dari _MAX_ data total)",
+            "decimal": "",
+            "emptyTable": "Data tidak tersedia",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+            "searchPlaceholder": "cari data pengukuran...",
+            "paginate": {
+              "first": "Pertama",
+              "last": "Terakhir",
+              "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+              "next": '<i class="bi bi-chevron-double-right"></i>     Next'
+            },
+            "aria": {
+              "sortAscending": ": klik untuk mengurutkan A-Z",
+              "sortDescending": ": klik untuk mengurutkan Z-A"
+            }
+          }
+        })
+        });
+        </script> */}
     </main>
   );
 }

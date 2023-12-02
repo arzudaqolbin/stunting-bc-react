@@ -18,40 +18,6 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
       $('#myTable').DataTable({
         "aaSorting": [],
         "language": {
-          "lengthMenu": "Menampilkan _MENU_ data per halaman",
-          "zeroRecords": "Tidak ada izin masuk",
-          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-          "infoEmpty": "Tidak ada data tersedia",
-          "infoFiltered": "(Disaring dari _MAX_ data total)",
-          "decimal": "",
-          "emptyTable": "Tidak ada izin masuk",
-          "loadingRecords": "Memuat...",
-          "processing": "Memproses...",
-          "search": 'Pencarian <i class="bi bi-search"></i> ',
-          "searchPlaceholder": 'keyword...',
-          "paginate": {
-            "first": "Pertama",
-            "last": "Terakhir",
-            // "next": "Selanjutnya",
-            // "previous": "Sebelumnya"
-            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
-            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
-          },
-          "aria": {
-            "sortAscending": ": klik untuk mengurutkan A-Z",
-            "sortDescending": ": klik untuk mengurutkan Z-A"
-          }
-        }
-      });
-    }
-  }, [balita]);
-
-  useEffect(() => {
-    // Inisialisasi DataTable hanya pada mounting pertama
-    if (!$.fn.DataTable.isDataTable('#myTable')) {
-      $('#myTable').DataTable({
-        "aaSorting": [],
-        "language": {
           "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
           "zeroRecords": "Data tidak ditemukan",
           "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
@@ -61,15 +27,15 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
           "emptyTable": "Data tidak tersedia",
           "loadingRecords": "Memuat...",
           "processing": "Memproses...",
-          "search": 'Cari:  <i class="bi bi-search"></i> ',
-          "searchPlaceholder": 'Cari data balita...',
+          "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+          "searchPlaceholder": "cari data balita...",
           "paginate": {
             "first": "Pertama",
             "last": "Terakhir",
             // "next": "Selanjutnya",
             // "previous": "Sebelumnya"
-            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
-            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+            "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>     Next'
           },
           "aria": {
             "sortAscending": ": klik untuk mengurutkan A-Z",
@@ -225,69 +191,56 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
             />
           </div>) : (
           <main className="container">
-            <div className="container-fluid">
-              {/* Mulai isi kontennya disini */}
-              <h2 className="custom-judul">Daftar Balita Posyandu</h2>
+            {/* Mulai isi kontennya disini */}
+            <h2 className="custom-judul">Daftar Balita Posyandu</h2>
 
-              {/* <form className="d-flex align-items-center">
-                <input
-                  className="form-control me-2"
-                  type="text"
-                  placeholder="Cari nama balita..."
-                  aria-label="Search"
-                />
-                <button className="btn btn-success btn-rounded btn-sm" type="submit">
-                  Cari
-                </button>
-              </form> */}
-
-              <div className="table-responsive">
-                <table id="myTable" className="table custom-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">No</th>
-                      <th scope="col">Nama Balita</th>
-                      <th scope="col">Jenis Kelamin</th>
-                      <th scope="col">Nama Orang Tua</th>
-                      <th scope="col">Umur (Bulan)</th>
-                      <th scope="col">Status TB/U</th>
-                      <th scope="col">Status BB/TB</th>
-                      <th scope="col">Status BB/U</th>
-                      <th scope="col">Lihat Detail</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {balita.map((data, index) => (
-                      <tr key={data.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{data.nama}</td>
-                        <td>{data.jenis_kelamin}</td>
-                        <td>{data.nama_ortu}</td>
-                        <td>{data.umur}</td>
-                        <td data-status_tbu={data.status_tbu}>
-                          <div className={getStatusTBUClass(data.status_tbu)}>
-                            {data.status_tbu}
-                          </div>
-                        </td>
-                        <td data-status_bbtb={data.status_bbtb}>
-                          <div className={getStatusBBTBClass(data.status_bbtb)}>
-                            {data.status_bbtb}
-                          </div>
-                        </td>
-                        <td data-status_bbu={data.status_bbu}>
-                          <div className={getStatusBBUClass(data.status_bbu)}>
-                            {data.status_bbu}
-                          </div>
-                        </td>
-                        <td>
-                          <Link to={`/posyandu/detail-balita/${data.id}`} >
-                            <button className="btn btn-info">Info</button>
-                          </Link>
-                        </td>
-                      </tr >
-                    ))
-                    }
-                    {/* <tr key="12">
+            <div className="table-responsive">
+              <table id="myTable" className="table custom-table">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama Balita</th>
+                    <th scope="col">Jenis Kelamin</th>
+                    <th scope="col">Nama Orang Tua</th>
+                    <th scope="col">Umur (Bulan)</th>
+                    <th scope="col">Status TB/U</th>
+                    <th scope="col">Status BB/TB</th>
+                    <th scope="col">Status BB/U</th>
+                    <th scope="col">Lihat Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {balita.map((data, index) => (
+                    <tr key={data.id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{data.nama}</td>
+                      <td>{data.jenis_kelamin}</td>
+                      <td>{data.nama_ortu}</td>
+                      <td>{data.umur}</td>
+                      <td data-status_tbu={data.status_tbu}>
+                        <div className={getStatusTBUClass(data.status_tbu)}>
+                          {data.status_tbu}
+                        </div>
+                      </td>
+                      <td data-status_bbtb={data.status_bbtb}>
+                        <div className={getStatusBBTBClass(data.status_bbtb)}>
+                          {data.status_bbtb}
+                        </div>
+                      </td>
+                      <td data-status_bbu={data.status_bbu}>
+                        <div className={getStatusBBUClass(data.status_bbu)}>
+                          {data.status_bbu}
+                        </div>
+                      </td>
+                      <td>
+                        <Link to={`/posyandu/detail-balita/${data.id}`} >
+                          <button className="btn btn-info">Info</button>
+                        </Link>
+                      </td>
+                    </tr >
+                  ))
+                  }
+                  {/* <tr key="12">
                   <th scope="row">12</th>
                   <td>aaa</td>
                   <td>bbb</td>
@@ -308,9 +261,8 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
                     </Link>
                   </td>
                 </tr> */}
-                  </tbody >
-                </table >
-              </div >
+                </tbody >
+              </table >
             </div >
           </main >)
       }

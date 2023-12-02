@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../css/tabel-daftar-pengukuran-balita-stunting.css";
-import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
-import format from "date-fns/format";
-import { Link } from "react-router-dom";
-import * as XLSX from "xlsx";
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import format from 'date-fns/format';
+import { Link } from 'react-router-dom';
+import $ from 'jquery';
+import 'datatables.net';
+import * as XLSX from 'xlsx';
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -151,6 +153,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
   const [namaBalita, setNamaBalita] = useState(null);
+  const [loadData, setLoadData] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -164,6 +167,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
           : [result.data];
         pengukuranArray.sort((a, b) => a.umur - b.umur);
         setDataPengukuran(pengukuranArray);
+        setLoadData(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -256,99 +260,102 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
     document.body.removeChild(dataLink);
   };
 
+  useEffect(() => {
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (loadData && !$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+          "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+          "infoEmpty": "Tidak ada data tersedia",
+          "infoFiltered": "(Disaring dari _MAX_ data total)",
+          "decimal": "",
+          "emptyTable": "Data tidak tersedia",
+          "loadingRecords": "Memuat...",
+          "processing": "Memproses...",
+          "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+          "searchPlaceholder": "cari data pengukuran...",
+          "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>     Next'
+          },
+          "aria": {
+            "sortAscending": ": klik untuk mengurutkan A-Z",
+            "sortDescending": ": klik untuk mengurutkan Z-A"
+          }
+        }
+      });
+    }
+  }, [loadData]);
+
+  if (!loadData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <main className="container">
-      <div className="container-fluid">
-        {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Data Pengukuran</h2>
-
-        <div className="table-responsive">
-          <Link
-            to={`/posyandu/tambah-pengukuran/${idBalita}`}
-            className="btn btn-primary"
-          >
-            Tambah Pengukuran
-          </Link>
-          <button className="btn btn-primary" onClick={exportToXLSX}>
-            Export
-          </button>
-          <table className="table custom-table">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Tanggal Lahir</th>
-                <th scope="col">Tanggal Pengukuran</th>
-                <th scope="col">Umur (Bulan)</th>
-                <th scope="col">Posisi Pengukuran</th>
-                <th scope="col">BB (Kg)</th>
-                <th scope="col">TB (Cm)</th>
-                <th scope="col">Status TB/U</th>
-                <th scope="col">Status BB/TB</th>
-                <th scope="col">Status BB/U</th>
-                <th scope="col">Rambu Gizi</th>
-                <th scope="col">KMS</th>
-                {/* <th scope="col">Ubah Pengukuran</th> */}
+      {/* Mulai isi kontennya disini */}
+      <div className="table-responsive">
+        <table id="myTable" className="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Tanggal Lahir</th>
+              <th scope="col">Tanggal Pengukuran</th>
+              <th scope="col">Umur (Bulan)</th>
+              <th scope="col">Posisi Pengukuran</th>
+              <th scope="col">BB (Kg)</th>
+              <th scope="col">TB (Cm)</th>
+              <th scope="col">Status TB/U</th>
+              <th scope="col">Status BB/TB</th>
+              <th scope="col">Status BB/U</th>
+              <th scope="col">Rambu Gizi</th>
+              <th scope="col">KMS</th>
+              {/* <th scope="col">Ubah Pengukuran</th> */}
+            </tr>
+          </thead>
+          <tbody>
+            {dataPengukuran.map((pengukuran, index) => (
+              <tr key={pengukuran.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
+                <td>{format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}</td>
+                <td>{pengukuran.umur}</td>
+                <td>{pengukuran.posisi_balita}</td>
+                <td>{pengukuran.berat_badan}</td>
+                <td>{pengukuran.tinggi_badan}</td>
+                <td data-status_tbu="Sangat Pendek">
+                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_tbu)}>{pengukuran.status_tbu}</div>
+                </td>
+                <td data-status_bbtb="Gizi Buruk">
+                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbtb)}>{pengukuran.status_bbtb}</div>
+                </td>
+                <td data-status_bbu="BB Sangat Kurang">
+                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.status_bbu)}>{pengukuran.status_bbu}</div>
+                </td>
+                <td>{pengukuran.rambu_gizi}</td>
+                <td data-status_kms="Hijau Atas">
+                  <div className="validasi rounded" style={applyStatusStyle(pengukuran.kms)}>{pengukuran.kms}</div>
+                </td>
+                {/* <td>
+                {pengukuran.validasi == true ? 
+                  <div className="tervalidasi rounded">Tervalidasi</div>
+                :
+                <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
+                  <button className="fa-solid fa-pen-to-square"></button>
+                </Link>
+                }
+              </td> */}
               </tr>
-            </thead>
-            <tbody>
-              {dataPengukuran.map((pengukuran, index) => (
-                <tr key={pengukuran.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
-                  <td>
-                    {format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}
-                  </td>
-                  <td>{pengukuran.umur}</td>
-                  <td>{pengukuran.posisi_balita}</td>
-                  <td>{pengukuran.berat_badan}</td>
-                  <td>{pengukuran.tinggi_badan}</td>
-                  <td data-status_tbu="Sangat Pendek">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_tbu)}
-                    >
-                      {pengukuran.status_tbu}
-                    </div>
-                  </td>
-                  <td data-status_bbtb="Gizi Buruk">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_bbtb)}
-                    >
-                      {pengukuran.status_bbtb}
-                    </div>
-                  </td>
-                  <td data-status_bbu="BB Sangat Kurang">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_bbu)}
-                    >
-                      {pengukuran.status_bbu}
-                    </div>
-                  </td>
-                  <td>{pengukuran.rambu_gizi}</td>
-                  <td data-status_kms="Hijau Atas">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.kms)}
-                    >
-                      {pengukuran.kms}
-                    </div>
-                  </td>
-                  {/* <td>
-                  {pengukuran.validasi == true ? 
-                    <div className="tervalidasi rounded">Tervalidasi</div>
-                  :
-                  <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
-                    <button className="fa-solid fa-pen-to-square"></button>
-                  </Link>
-                  }
-                </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+
+            ))}
+          </tbody>
+        </table>
+        <button onClick={exportToXLSX} className='btn btn-primary'>Export Table</button>
       </div>
     </main>
   );

@@ -253,7 +253,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body" style={{ padding: '10px' }}>
                       {/* Isi komponen accordion disini */}
-                      <TabelPengukuranBalitaStunting />
+                      <TabelPengukuranBalitaStunting apiAuth={apiAuth} idBalita={idBalita} />
                     </div>
                   </div>
                 </div>
