@@ -51,6 +51,7 @@ const RoutesKelurahan = () => {
             {/* posyandu */}
             <Route path="/tambah-posyandu" element={<PrivateRoute element={<PageTambahAkunPosyandu />} requiredRole="Kelurahan" />} />
             <Route path="/tambah-kader/:jabatan/:idPosyandu" element={<PrivateRoute element={<PageTambahKader />} requiredRole="Kelurahan" />} />
+            <Route path="/tambah-kader" element={<PrivateRoute element={<PageTambahKader />} requiredRole="Kelurahan" />} />
             <Route path="/detail-posyandu/:idPosyandu" element={<PrivateRoute element={<PageDetailPosyanduKelurahan />} requiredRole="Kelurahan" />} />
             <Route path="/edit-posyandu/:idPosyandu" element={<PrivateRoute element={<PageEditAkunPosyandu />} requiredRole="Kelurahan" />} />
             <Route path="/edit-kader/:idKader" element={<PrivateRoute element={<PageEditKader />} requiredRole="Kelurahan" />} />

@@ -188,7 +188,7 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
             </div >
 
             <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-              <Link to={`kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
+              <Link to={`/kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
             </div>
           </main >)
       }
