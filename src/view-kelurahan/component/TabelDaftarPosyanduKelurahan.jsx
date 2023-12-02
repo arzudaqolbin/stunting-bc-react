@@ -67,6 +67,7 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
       .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
         // setPosyanduList(response.data.data);
+        setLoading(false);
         setPosyanduList(response.data.data);
         // console.log(response.data);
       })

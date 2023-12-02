@@ -83,7 +83,8 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
       .put(`${BASE_URL}/user/${userId}`, {
         username: formData.username,
         password: formData.password_baru,
-      })
+        confirm_password: formData.konfirmasi_password
+      }, apiAuth)
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");

@@ -130,7 +130,7 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
               </ul>
 
               <div style={{ textAlign: 'right' }}>
-                <Link to={`kelurahan/edit-akun-puskesmas/${puskesmas.id}`}>
+                <Link to={`/kelurahan/edit-puskesmas/${puskesmas.id}`}>
                   <button className="btn">Edit Data</button>
                 </Link>
               </div>
