@@ -1,44 +1,103 @@
-import React from 'react';
+import React from "react";
 import berita from "../../aset/berita.png";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import BASE_URL from "../../base/apiConfig";
+import { useParams } from "react-router-dom";
+import { log } from "util";
 
 const DetailBerita = () => {
+  let { idBerita } = useParams();
+  const [berita, setBerita] = useState({
+    tgl_berita: "",
+    judul: "",
+    deskripsi: "",
+    isi: "",
+  });
+
+  const { judul, isi, tgl_berita } = berita;
+  const [gambar, setGambar] = useState(null);
+
+  const tanggal = new Date(tgl_berita);
+  const formattedDate = `${tanggal.getDate()}-${
+    tanggal.getMonth() + 1
+  }-${tanggal.getFullYear()}`;
+
+  useEffect(() => {
+    // Mendapatkan data berita dari server
+    axios
+      .get(`${BASE_URL}/beritas/${idBerita}`)
+      .then((response) => {
+        const dataBerita = response.data.berita;
+        // console.log(dataBerita);
+        setBerita({
+          tgl_berita: dataBerita.tgl_berita,
+          judul: dataBerita.judul,
+          deskripsi: dataBerita.deskripsi,
+          isi: dataBerita.isi,
+          gambar: dataBerita.gambar,
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching berita:", error);
+      });
+
+    // Mendapatkan gambar awal dari API
+    fetch(`${BASE_URL}/beritas/${idBerita}/gambar`)
+      .then((response) => response.arrayBuffer())
+      .then((data) => {
+        const base64 = btoa(
+          new Uint8Array(data).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+          )
+        );
+        setGambar(`data:;base64,${base64}`);
+      })
+      .catch((error) => {
+        console.error("Error fetching gambar awal:", error);
+      });
+  }, []);
+
   return (
     <div className="container mt-5 mb-3">
-        <h6 className="my-2">
-          <a href="#" className="text-dark"><i className="fas fa-arrow-left fa-3x"></i></a>
-        </h6>
-      <div className="col-11" style={{ marginLeft: "50px", marginRight: "50px" }}>
-        <h1 style={{ fontWeight: 700, textAlign: "justify", marginBottom: "30px" }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
+      <h6 className="my-2">
+        <a href="#" className="text-dark">
+          <i className="fas fa-arrow-left fa-3x"></i>
+        </a>
+      </h6>
+      <div
+        className="col-11"
+        style={{ marginLeft: "50px", marginRight: "50px" }}
+      >
+        <h1
+          style={{
+            fontWeight: 700,
+            textAlign: "justify",
+            marginBottom: "30px",
+          }}
+        >
+          {judul}
         </h1>
         <hr className="my-2" />
-        <h5 className="text-end">Senin, 12 Agustus 2023</h5>
+        <h5 className="text-end">{formattedDate}</h5>
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img className="gambar-berita" src={berita}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img
+              className="gambar-berita"
+              src={gambar}
+              alt="Gambar Berita"
+              style={{ maxWidth: "100%" }}
+            />
           </div>
         </div>
         <div className="text-isiberita mt-4">
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 1</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas porta vulputate. Donec elit neque, sodales sit amet erat in, faucibus tristique urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sodales augue, quis lacinia arcu. Vestibulum vel pulvinar orci, at feugiat erat. Cras efficitur dictum eros, at ullamcorper mauris accumsan vel. Sed id lorem a lectus faucibus tincidunt. Donec at diam fermentum, auctor orci non, auctor lectus. Sed et aliquam tellus.
-          </p>
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 2</span> Morbi massa risus, tempus at purus suscipit, faucibus ornare dolor. Sed vel varius nunc. Pellentesque eu elit neque. Donec scelerisque malesuada purus, vitae semper felis consectetur ut. Morbi venenatis est eros, nec aliquam lectus gravida quis. Sed tincidunt euismod pharetra. Aenean sed commodo turpis, vel cursus ipsum. Donec iaculis mauris laoreet nunc bibendum, non commodo tellus vulputate. Aliquam erat volutpat. Praesent facilisis luctus est, ut luctus ipsum mattis nec. Duis condimentum lorem et porttitor pulvinar.
-          </p>
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 3</span> Nullam mi augue, tincidunt ac accumsan non, semper vel nunc. Suspendisse sed gravida orci. Quisque ac pellentesque nunc. Fusce pulvinar est vel erat malesuada porta. Curabitur in ante gravida, tincidunt mi a, dignissim augue. Donec a orci a metus venenatis iaculis. Maecenas tincidunt nisl sit amet ultrices auctor.
-          </p>
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 4</span> Ut et eros ac magna mattis consequat eu nec neque. Curabitur vulputate odio eget mi ornare sodales. Duis cursus dictum auctor. Aliquam vulputate pellentesque massa eget pharetra. Etiam laoreet ultricies libero eu sodales. In urna enim, efficitur ac hendrerit in, consectetur ut leo. Duis vel rhoncus purus. Nulla tempus ut sem vel dapibus. Curabitur faucibus, orci quis tristique pulvinar, nisl arcu pharetra orci, eget vestibulum felis lorem eu nibh. Praesent molestie libero eget nisi tempor hendrerit. Mauris nec erat non velit commodo aliquam nec a mauris. Nam et lacus turpis. Aliquam eu vulputate libero. Sed mollis auctor lacus, id facilisis diam volutpat convallis. Maecenas lacus neque, feugiat vel mauris sed, eleifend sagittis ex.
-          </p>
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 5</span> Maecenas nec elit sed leo finibus luctus. Cras pharetra interdum est, sed pellentesque diam hendrerit quis. Sed blandit tincidunt nunc ac volutpat. Morbi eu egestas enim. Morbi id mi eu eros mollis condimentum ac id diam. Aliquam dictum tristique velit ac tincidunt. Aliquam massa augue, cursus eu augue nec, finibus auctor sem.
-          </p>
+          <p style={{ textAlign: "justify" }}>{isi}</p>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default DetailBerita;

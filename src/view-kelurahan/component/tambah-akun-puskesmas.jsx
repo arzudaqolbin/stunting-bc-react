@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import BASE_URL from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 import Swal from "sweetalert2";
 // import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
-
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",
     alamat: "",
@@ -15,7 +14,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     nomor_telepon: "",
     username: "",
     password: "",
-    confirm_password: ""
+    confirm_password: "",
   });
 
   const [errors, setErrors] = useState({
@@ -30,10 +29,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     confirm_password: "",
   });
 
-  const {
-    rw,
-    alamat,
-  } = puskesmasReq;
+  const { rw, alamat } = puskesmasReq;
 
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
@@ -41,8 +37,9 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
   useEffect(() => {
     setpuskesmasReq((prevpuskesmasReq) => ({
       ...puskesmasReq,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -166,7 +163,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Menambahkan akun puskesmas",
@@ -175,14 +172,14 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya, yakin!",
-        cancelButtonText: "Kembali"
+        cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
-          handleSubmit(e)
+          handleSubmit(e);
         }
       });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -195,15 +192,16 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
       username: puskesmasReq.username,
       password: puskesmasReq.password,
       confirm_password: puskesmasReq.confirm_password,
-      koordinat_id: 1
+      koordinat_id: 1,
     };
 
-    axios.post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
-      .then(response => {
+    axios
+      .post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
+      .then((response) => {
         console.log(response.data);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
     console.log(JSON.stringify(puskesmasReq, null, 2));
   };
@@ -249,7 +247,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             <input
               type={"text"}
               className="form-control"
-              placeholder="Alamat"
+              placeholder="alamat"
               name="alamat"
               value={alamat}
               onChange={(e) => onInputChange(e)}
@@ -257,63 +255,63 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             />
           </label>
 
-
-          <div className="address-section">
-
-            <div className="address-details">
-              <label htmlFor="jalan">
-                <span>Jalan*</span>
-                <input
-                  type="text"
-                  id="jalan"
-                  name="jalan"
-                  value={jalan}
-                  onChange={(e) => onInputChange(e)}
+          <div className="address-details">
+            <label htmlFor="jalan">
+              <span>Jalan*</span>
+              <input
+                type="text"
+                id="jalan"
+                name="jalan"
+                value={jalan}
+                onChange={(e) => onInputChange(e)}
                 // required
-                />
-                <div className={`error`}>{errors.jalan}</div>
-              </label>
+                onKeyPress={(e) => {
+                  if (e.key === ",") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </label>
 
-              <label htmlFor="rt">
-                <span>RT*</span>
-                <input
-                  type="text"
-                  id="rt"
-                  name="rt"
-                  value={rt}
-                  onChange={(e) => onInputChange(e)}
-                  // required
-                  pattern="0\d{1,}"
-                  title="Awali angka satuan dengan 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-                <div className={`error`}>{errors.rt}</div>
-              </label>
+            <label htmlFor="rt">
+              <span>RT*</span>
+              <input
+                type="text"
+                id="rt"
+                name="rt"
+                value={rt}
+                onChange={(e) => onInputChange(e)}
+                // required
+                pattern="\d{2,}"
+                title="Awali angka satuan dengan angka 0, misal 01"
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.rt}</div>
+            </label>
 
-              <label htmlFor="rw">
-                <span>RW*</span>
-                <input
-                  type="text"
-                  id="rw"
-                  name="rw"
-                  value={rw}
-                  onChange={(e) => onInputChange(e)}
-                  // required
-                  pattern="0\d{1,}"
-                  title="Awali angka satuan dengan 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-                <div className={`error`}>{errors.rw}</div>
-              </label>
-            </div>
+            <label htmlFor="rw">
+              <span>RW*</span>
+              <input
+                type="text"
+                id="rw"
+                name="rw"
+                value={rw}
+                onChange={(e) => onInputChange(e)}
+                // required
+                pattern="\d{2,}"
+                title="Awali angka satuan dengan angka 0, misal 01"
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.rw}</div>
+            </label>
           </div>
 
           <label htmlFor="longitude">
@@ -356,7 +354,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
           </label>
 
           <label htmlFor="kepala_puskesmas">
-            <span>Kepala  Puskesmas*</span>
+            <span>Kepala Puskesmas*</span>
             <input
               type="text"
               id="kepala_puskesmas"
@@ -406,7 +404,9 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             />
             <div className={`error`}>{errors.confirm_password}</div>
           </label>
-          <button type="submit" className="submit-button">Simpan</button>
+          <button type="submit" className="submit-button">
+            Simpan
+          </button>
         </form>
       </div>
     </main>

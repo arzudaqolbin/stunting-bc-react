@@ -12,11 +12,11 @@ function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
   const tomorrow = new Date();
   tomorrow.setDate(new Date().getDate() + 1);
-  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const tomorrowString = tomorrow.toISOString().split("T")[0];
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
 
-  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split("T")[0];
 
   const [errors, setErrors] = useState({
     nik: "",
@@ -81,8 +81,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -233,14 +234,14 @@ function AddBalita({ idPosyandu, apiAuth }) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
-      cancelButtonText: "Kembali"
+      cancelButtonText: "Kembali",
     }).then((result) => {
       if (result.isConfirmed) {
         // acc izin
-        onSubmit(e)
+        onSubmit(e);
       }
     });
-  }
+  };
 
   const showSuccessPostToast = async () => {
     return new Promise((resolve) => {
@@ -251,7 +252,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
         },
         onClose: async () => {
           // Menunggu 3 detik sebelum melakukan navigasi
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          await new Promise((resolve) => setTimeout(resolve, 3000));
           resolve();
         },
       });
@@ -265,7 +266,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
         text: "This is an error message",
       },
     });
-  }
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -274,7 +275,6 @@ function AddBalita({ idPosyandu, apiAuth }) {
         const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
         showSuccessPostToast();
         navigate(`/posyandu/detail-balita/${respon.data.id}`);
-
       } catch (error) {
         showFailedPostToast();
         if (error.response) {
@@ -290,8 +290,6 @@ function AddBalita({ idPosyandu, apiAuth }) {
         }
       }
     }
-
-
   };
 
   return (
@@ -310,7 +308,6 @@ function AddBalita({ idPosyandu, apiAuth }) {
               }
             }}
           >
-
             <label htmlFor="nik">
               <span>NIK*</span>
               <input
@@ -319,7 +316,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nik"
                 value={nik}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.nik}</div>
             </label>
@@ -332,7 +329,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama"
                 value={nama}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.nama}</div>
             </label>
@@ -345,7 +342,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 value={jenis_kelamin}
                 onChange={(e) => onInputChange(e)}
               >
-                <option value="" disabled selected>--Pilih--</option>
+                <option value="" disabled selected>
+                  --Pilih--
+                </option>
                 <option value="Laki-Laki">Laki-Laki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
@@ -360,7 +359,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="anak_ke"
                 value={anak_ke}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.anak_ke}</div>
             </label>
@@ -391,7 +390,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama_ortu"
                 value={nama_ortu}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.nama_ortu}</div>
             </label>
@@ -404,7 +403,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="pekerjaan_ortu"
                 value={pekerjaan_ortu}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.pekerjaan_ortu}</div>
             </label>
@@ -422,61 +421,63 @@ function AddBalita({ idPosyandu, apiAuth }) {
               />
             </label>
 
-            <div className="address-section">
-              <div className="address-details">
-                <label htmlFor="jalan">
-                  <span>Jalan*</span>
-                  <input
-                    type="text"
-                    id="jalan"
-                    name="jalan"
-                    value={jalan}
-                    onChange={(e) => onInputChange(e)}
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
+                <input
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
+                  onChange={(e) => onInputChange(e)}
                   // required
-                  />
-                  <div className={`error`}>{errors.jalan}</div>
-                </label>
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+              </label>
 
-                <label htmlFor="rt">
-                  <span>RT*</span>
-                  <input
-                    type="text"
-                    id="rt"
-                    name="rt"
-                    value={rt}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rt}</div>
-                </label>
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
 
-                <label htmlFor="rw">
-                  <span>RW*</span>
-                  <input
-                    type="text"
-                    id="rw"
-                    name="rw"
-                    value={rw}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rw}</div>
-                </label>
-              </div>
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
             </div>
 
             <label htmlFor="Tanggal Lahir" className="form-label">

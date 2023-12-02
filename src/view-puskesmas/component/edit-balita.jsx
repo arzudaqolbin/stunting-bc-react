@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-balita.css";
 import BASE_URL from "../../base/apiConfig";
-import Swal from "sweetalert2";
 
 function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
@@ -108,8 +107,9 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -245,42 +245,24 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     nama_posyandu: "",
   });
 
-  const confirmAlert = (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: "Apakah Anda yakin?",
-      text: "Mengedit data balita",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, yakin!",
-      cancelButtonText: "Kembali"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // acc izin
-        onSubmit(e)
-      }
-    });
-  }
-
-
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
-      navigate(`/puskesmas/detail-balita/${idBalita}`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()) {
+      try {
+        await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
+        navigate(`/puskesmas/detail-balita/${idBalita}`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
   };
@@ -324,7 +306,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 name="nama"
                 value={nama}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.nama}</div>
             </label>
@@ -390,7 +372,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 name="nama_ortu"
                 value={nama_ortu}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.nama_ortu}</div>
             </label>
@@ -403,7 +385,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 name="pekerjaan_ortu"
                 value={pekerjaan_ortu}
                 onChange={(e) => onInputChange(e)}
-              // required
+                // required
               />
               <div className={`error`}>{errors.pekerjaan_ortu}</div>
             </label>
@@ -421,65 +403,63 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
               />
             </label>
 
-            <div className="address-section">
-              <div className="address-details">
-                <label htmlFor="jalan">
-                  <span>Jalan*</span>
-                  <input
-                    type="text"
-                    id="jalan"
-                    name="jalan"
-                    value={jalan}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    onKeyPress={(e) => {
-                      if (e.key === ",") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                </label>
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
+                <input
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+              </label>
 
-                <label htmlFor="rt">
-                  <span>RT*</span>
-                  <input
-                    type="text"
-                    id="rt"
-                    name="rt"
-                    value={rt}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rt}</div>
-                </label>
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
 
-                <label htmlFor="rw">
-                  <span>RW*</span>
-                  <input
-                    type="text"
-                    id="rw"
-                    name="rw"
-                    value={rw}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rw}</div>
-                </label>
-              </div>
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
             </div>
             <label htmlFor="Tanggal Lahir" className="form-label">
               <span>Tanggal Lahir Balita*</span>
@@ -519,9 +499,9 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
               Simpan
             </button>
           </form>
-        </div >
-      </div >
-    </main >
+        </div>
+      </div>
+    </main>
   );
 }
 

@@ -65,7 +65,12 @@
     border: solid 1px red;
 }
 
-.address-details label {
+.address-details{
+    padding-left: 40px;
+    padding-right: 30px;
+}
+
+/* .address-details label {
     width: 100%;
     margin-bottom: 5px;
     margin-left: 45px;
@@ -79,7 +84,7 @@
     background-color:#E4F3EF;
     border: solid 1px red;
     margin-left: 129px;
-}
+} */
 
 .error {
     color: #ff3860;
