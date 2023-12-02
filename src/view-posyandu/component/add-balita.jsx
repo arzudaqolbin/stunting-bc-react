@@ -27,7 +27,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
     tgl_lahir: "",
     anak_ke: "",
     umur: "",
-    posyandu: "",
+    // posyandu: "",
   });
 
   const [balita, setBalita] = useState({
@@ -41,7 +41,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
     tgl_lahir: "",
     anak_ke: "",
     umur: "",
-    posyandu_id: "",
+    posyandu_id: idPosyandu,
     status_tbu: "Normal",
     status_bbu: "Normal",
     status_bbtb: "Normal",
@@ -58,22 +58,22 @@ function AddBalita({ idPosyandu, apiAuth }) {
     tgl_lahir,
     anak_ke,
     umur,
-    posyandu,
+    // posyandu,
   } = balita;
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
-  const [posyanduOptions, setPosyanduOptions] = useState([]);
+  // const [posyanduOptions, setPosyanduOptions] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/posyandu`, apiAuth)
-      .then((response) => {
-        setPosyanduOptions(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${BASE_URL}/posyandu`, apiAuth)
+  //     .then((response) => {
+  //       setPosyanduOptions(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     setBalita((prevBalita) => ({
@@ -428,7 +428,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
               />
             </label>
 
-            <label htmlFor="posyandu">
+            {/* <label htmlFor="posyandu">
               <span>Nama Posyandu*</span>
               <select
                 id="posyandu"
@@ -444,7 +444,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                     </option>
                   ))}
               </select>
-            </label>
+            </label> */}
             <button type="submit" className="submit-button">
               Simpan
             </button>

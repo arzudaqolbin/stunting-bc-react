@@ -299,6 +299,32 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             </div>
           </div>
 
+          <label htmlFor="longitude">
+            <span>Longitude*</span>
+            <input
+              type="text"
+              id="longitude"
+              name="longitude"
+              // required
+              value={puskesmasReq.longitude}
+              onChange={handleChange}
+            />
+            <div className={`error`}>{errors.longitude}</div>
+          </label>
+
+          <label htmlFor="latitude">
+            <span>Latitude*</span>
+            <input
+              type="text"
+              id="latitude"
+              name="latitude"
+              // required
+              value={puskesmasReq.latitude}
+              onChange={handleChange}
+            />
+            <div className={`error`}>{errors.latitude}</div>
+          </label>
+
           <label htmlFor="nomor_telepon">
             <span>Nomor Telepon*</span>
             <input

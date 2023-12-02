@@ -6,6 +6,7 @@ import { decodeToken } from "react-jwt";
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
 import BASE_URL from "../../base/apiConfig";
+import { ClipLoader } from "react-spinners";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -13,9 +14,13 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
+    setError("")
     console.log("submit login")
 
     try {
@@ -42,12 +47,14 @@ const Login = () => {
       }
       navigate(redirectUrl);
     } catch (error) {
+      setLoading(false)
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
           error.response.status,
           error.response.data
         );
+        setError("Username atau Password salah !!!");
       } else if (error.request) {
         console.error("Tidak ada respon dari server:", error.request);
       } else {
@@ -85,6 +92,7 @@ const Login = () => {
                   <h4 className="text-center">Silahkan melakukan login</h4>
 
                   <form onSubmit={onSubmit} className="">
+                  <div className="error">{error}</div>
                     <div className="text-center">
                       <input
                         type="text"
@@ -94,7 +102,6 @@ const Login = () => {
                         className="form control my-1 py-1 col-12 mt-3"
                         placeholder="Username"
                       />
-                      <div className="error">ghj</div>
                       <input
                         type={showPassword ? "text" : "password"}
                         name="password"
@@ -103,7 +110,6 @@ const Login = () => {
                         className="form control my-1 py-1 col-12"
                         placeholder="Password"
                       />
-                      <div className="error">ghj</div>
                     </div>
                     <div className="checkbox">
                       <input
@@ -116,9 +122,14 @@ const Login = () => {
                       <label htmlFor="remember">Tampilkan password</label>
                     </div>
                     <div className="text-end mt-3">
+                    {loading ? (
+                      <div className="text-center">
+                        <ClipLoader loading={loading} size={20} />
+                      </div>
+                      ) : (
                       <button type="submit" className="btn btn-primary">
                         Login
-                      </button>
+                      </button>)}
                     </div>
                   </form>
                 </div>

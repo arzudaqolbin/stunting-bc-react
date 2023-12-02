@@ -38,7 +38,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
   const getNamaPosyandu = async () => {
     try {
       const namaPos = await axios.get(
-        `${BASE_URL}/posyandu/${biodata.data.posyandu_id}`,
+        `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
         apiAuth
       );
       setNamaPosyandu(namaPos.data.data);

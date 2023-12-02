@@ -347,6 +347,32 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
             />
           </label>
 
+          <label htmlFor="longitude">
+            <span>Longitude*</span>
+            <input
+              type="text"
+              id="longitude"
+              name="longitude"
+              // required
+              value={posyanduData.longitude}
+              onChange={handleInputChange}
+            />
+            <div className={`error`}>{errors.longitude}</div>
+          </label>
+
+          <label htmlFor="latitude">
+            <span>Latitude*</span>
+            <input
+              type="text"
+              id="latitude"
+              name="latitude"
+              // required
+              value={posyanduData.latitude}
+              onChange={handleInputChange}
+            />
+            <div className={`error`}>{errors.latitude}</div>
+          </label>
+
           <label htmlFor="nomor_telepon">
             <span>Nomor Telepon Kepala*</span>
             <input

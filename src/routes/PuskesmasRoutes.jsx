@@ -14,6 +14,7 @@ import PageDaftarPosyanduPuskesmas from "../view-puskesmas/page/PageDaftarPosyan
 import PageDetailPosyanduPuskesmas from "../view-puskesmas/page/PageDetailPosyanduPuskesmas";
 import Login from "../view-publik/pages/Login";
 import PageEditPengukuranPuskesmas from "../view-puskesmas/page/PageEditPengukuranPuskesmas";
+import NonRoute from "../base/NonRoute";
 
 const RoutesPuskesmas = () => {
     return (
@@ -35,6 +36,8 @@ const RoutesPuskesmas = () => {
             <Route path="/edit-pengukuran/:idPengukuran" element={<PrivateRoute element={<PageEditPengukuranPuskesmas />} requiredRole="Puskesmas" />}/>
             {/* detail posyandu */}
             <Route path="/detail-posyandu/:idPosyandu" element={<PrivateRoute element={<PageDetailPosyanduPuskesmas />} requiredRole="Puskesmas" />}/>
+
+            <Route path='*' element={<NonRoute />} />
         </Routes>
     )
 }

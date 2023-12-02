@@ -229,7 +229,7 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
               {/* Mulai isi kontennya disini */}
               <h2 className="custom-judul">Daftar Balita Posyandu</h2>
 
-              <form className="d-flex align-items-center">
+              {/* <form className="d-flex align-items-center">
                 <input
                   className="form-control me-2"
                   type="text"
@@ -239,9 +239,9 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
                 <button className="btn btn-success btn-rounded btn-sm" type="submit">
                   Cari
                 </button>
-              </form>
+              </form> */}
 
-              <div className="p-3 mb-2 bg-light custom-border rounded">
+              <div className="table-responsive">
                 <table id="myTable" className="table custom-table">
                   <thead>
                     <tr>

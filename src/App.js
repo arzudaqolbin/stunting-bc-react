@@ -27,6 +27,7 @@ import CalculateStunting from "./CalculateStunting";
 import PageEditAkunPosyandu from "./view-kelurahan/pages/PageEditAkunPosyandu";
 import PageAddBalitaPosyandu from "./view-posyandu/pages/PageAddBalitaPosyandu";
 import Login from "./view-publik/pages/Login";
+import NonRoute from "./base/NonRoute";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Route path="/kelurahan/*" element={<RoutesKelurahan />} />
         <Route path="/posyandu/*" element={<RoutesPosyandu />} />
         <Route path="/puskesmas/*" element={<RoutesPuskesmas />} />
+        <Route path='*' element={<div>ga ada lurr</div>} />
       </Routes>
     </Router>
   );
