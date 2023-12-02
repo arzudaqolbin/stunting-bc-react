@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/profile-kelurahan.css";
 import logoJaktim from "../../aset/logo-jaktim.png";
 import BASE_URL from "../../base/apiConfig";
+import { Link } from "react-router-dom";
 import {
   MapContainer,
   TileLayer,
@@ -67,9 +68,11 @@ function ProfileKelurahan({ idKelurahan, apiAuth }) {
               )}
             </div>
             <div className="button-container">
-              <button type="submit" className="submit">
-                Ganti Password
-              </button>
+              <Link to="/kelurahan/edit-pw">
+                <button type="button" className="submit">
+                  Ganti Password
+                </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -102,16 +102,16 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                         </div>
                         <div
                             style={{
-                            textAlign: "right",
-                            marginTop: "20px",
-                            marginBottom: "20px",
+                                textAlign: "right",
+                                marginTop: "20px",
+                                marginBottom: "20px",
                             }}
                         >
                             <Link
-                            to="/kelurahan/tambah-posyandu"
-                            className="btn btn-success btn-rounded btn-sm"
+                                to="/kelurahan/tambah-puskesmas"
+                                className="btn btn-success btn-rounded btn-sm"
                             >
-                            + Tambah Posyandu
+                                + Tambah Puskesmas
                             </Link>
                         </div>
                     </main >)

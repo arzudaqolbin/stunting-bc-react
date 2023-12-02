@@ -141,7 +141,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
       try {
         if (posyandu.puskesmas_id) {
           const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}`, apiAuth);
-          setPuskesmas(result2.data);
+          setPuskesmas(result2.data.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -49,7 +49,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "jalan") {
       setJalan(value);
     } else if (name === "rt") {
@@ -185,18 +185,15 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     }
 
     // Validation for Password
-    if (!formData.password) {
-      isValid = false;
-      newErrors.password = "Password tidak boleh kosong";
-    } else {
-      newErrors.password = "";
-    }
+    // if (!formData.password) {
+    //   isValid = false;
+    //   newErrors.password = "Password tidak boleh kosong";
+    // } else {
+    //   newErrors.password = "";
+    // }
 
     // Validation for Confirm Password
-    if (!formData.confirm_password) {
-      isValid = false;
-      newErrors.confirm_password = "Silakan konfirmasi password";
-    } else if (formData.confirm_password !== formData.password) {
+    if (formData.confirm_password !== formData.password) {
       isValid = false;
       newErrors.confirm_password = "Password tidak cocok.";
     } else {
@@ -209,7 +206,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Mengedit akun puskesmas",
@@ -229,7 +226,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       console.log(formData);
       axios.put(`${BASE_URL}/puskesmas/${idPuskesmas}`, {
         nama: formData.nama,
@@ -257,14 +254,14 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           console.error("Error:", error);
         });
       console.log(formData);
-      }
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  
+
 
   return (
     <main className="container">
@@ -431,6 +428,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               />
             </label>
             <button type="submit" className="submit-button">Simpan</button>
+            <p>input password jika ingin membuat password baru</p>
           </form>
         </div>
       </div>

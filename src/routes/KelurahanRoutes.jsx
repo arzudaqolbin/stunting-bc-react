@@ -202,6 +202,15 @@ const RoutesKelurahan = () => {
         }
       />
       <Route
+        path="/tambah-kader"
+        element={
+          <PrivateRoute
+            element={<PageTambahKader />}
+            requiredRole="Kelurahan"
+          />
+        }
+      />
+      <Route
         path="/edit-berita/:idBerita"
         element={
           <PrivateRoute element={<PageEditBerita />} requiredRole="Kelurahan" />
