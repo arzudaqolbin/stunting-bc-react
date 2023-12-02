@@ -37,7 +37,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
         `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
         apiAuth
       );
-      setNamaPosyandu(namaPos.data.data);
+      setNamaPosyandu(namaPos.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);
     }
