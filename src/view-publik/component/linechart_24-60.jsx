@@ -4,11 +4,7 @@ import { useParams } from 'react-router-dom';
 import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
-// import { saveAs } from 'file-saver';
-// import * as htmlToImage from 'html-to-image';
-// import { toPng } from 'html-to-image';
-// import { useCurrentPng } from 'recharts-to-png';
-// import FileSaver from 'file-saver';
+import { useCurrentPng } from 'recharts-to-png';
 
 
 const dataLK = [
@@ -150,31 +146,6 @@ const LineChart_Umur_24_60 = ({idBalita, apiAuth}) => {
         // }
 
     }, [dataPatokan, dataTarget]);
-
-
-    // const downloadChart = useCallback(async() => {
-    //     try {
-    //         const chartNode = chartRef.current;
-    //         const dataUrl = await htmlToImage.toPng(chartNode);
-    //         saveAs(dataUrl, `${namaBalita}_statusTBU_0_24.png`);
-    //     } catch (error) {
-    //         console.error('Error downloading chart:', error);
-    //     }
-    // }, [namaBalita]);
-
-
-    // Can also pass in options for html2canvas
-    // const [getPng, { ref }] = useCurrentPng({ backgroundColor: '#000' });
-
-    // const handleDownload = useCallback(async () => {
-    //     const png = await getPng();
-
-    //     // Verify that png is not undefined
-    //     if (png) {
-    //         // Download with FileSaver
-    //         FileSaver.saveAs(png, `${namaBalita}_statusTB_24_60.png`);
-    //     }
-    // }, [getPng, namaBalita]);
 
     return (
         <>

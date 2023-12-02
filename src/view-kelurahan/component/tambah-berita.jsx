@@ -7,6 +7,10 @@ import BASE_URL from "../../base/apiConfig";
 
 const TambahBerita = ({ idKelurahan, apiAuth }) => {
   let navigate = useNavigate();
+  const today = new Date().toISOString().split('T')[0];
+  // const tomorrow = new Date();
+  // tomorrow.setDate(new Date().getDate() + 1);
+  // const tomorrowString = tomorrow.toISOString().split('T')[0];
 
   const [berita, setBerita] = useState({
     tgl_berita: "",
@@ -29,6 +33,62 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     } else {
       setBerita({ ...berita, [name]: value });
     }
+  };
+
+  const [errors, setErrors] = useState({
+    tgl_berita: "",
+    judul: "",
+    deskripsi: "",
+    isi: "",
+    gambar: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi Nama tanggal
+    if (!berita.tgl_berita) {
+      newErrors.tgl_berita = "Tanggal berita tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_berita = "";
+    }
+
+    // Validation for Username
+    if (!berita.judul) {
+      isValid = false;
+      newErrors.judul = "Judul tidak boleh kosong";
+    } else {
+      newErrors.judul = "";
+    }
+
+    // Validation for Password
+    if (!berita.deskripsi) {
+      isValid = false;
+      newErrors.deskripsi = "Beri deskripsi singkat";
+    } else {
+      newErrors.deskripsi = "";
+    }
+
+    // Validation for Password
+    if (!berita.isi) {
+      isValid = false;
+      newErrors.isi = "Isi berita tidak boleh kosong";
+    } else {
+      newErrors.isi = "";
+    }
+
+    if (!berita.gambar) {
+      isValid = false;
+      newErrors.gambar = "Pilih gambar";
+    } else {
+      newErrors.gambar = "";
+    }
+
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const onSubmit = async (e) => {
@@ -86,8 +146,9 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="date"
               id="tgl_berita"
               name="tgl_berita"
-              required
+              // required
               onChange={(e) => onInputChange(e)}
+              max={today}
             />
           </label> */}
 
@@ -97,9 +158,10 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="text"
               id="judul"
               name="judul"
-              required
+              // required
               onChange={(e) => onInputChange(e)}
             />
+            <div className={`error`}>{errors.judul}</div>
           </label>
 
           <label htmlFor="deskripsi">
@@ -107,10 +169,11 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
             <textarea
               id="deskripsi"
               name="deskripsi"
-              required
+              // required
               rows="5"
               onChange={(e) => onInputChange(e)}
             ></textarea>
+            <div className={`error`}>{errors.deskripsi}</div>
           </label>
 
           <label htmlFor="isi">
@@ -118,10 +181,11 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
             <textarea
               id="isi"
               name="isi"
-              required
+              // required
               rows="35"
               onChange={(e) => onInputChange(e)}
             ></textarea>
+            <div className={`error`}>{errors.isi}</div>
           </label>
 
           <label htmlFor="gambar">
@@ -130,15 +194,17 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
               type="file"
               id="gambar"
               name="gambar"
+              accept="image/*"
               onChange={(e) => onInputChange(e)}
             />
+            <div className={`error`}>{errors.gambar}</div>
           </label>
           <button type="submit" className="submit-button">
             Simpan
           </button>
         </form>
       </div>
-    </main>
+    </main >
   );
 };
 

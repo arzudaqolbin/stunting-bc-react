@@ -20,10 +20,6 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
         `${BASE_URL}/balitas/${idBalita}`,
         apiAuth
       );
-      const dataTambahanBalita = await axios.get(
-        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
-        apiAuth
-      );
       setBiodata(dataBalita.data);
     } catch (error) {
       console.error("Error fetching balita data:", error);

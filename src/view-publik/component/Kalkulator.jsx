@@ -8,6 +8,7 @@ import data_bbpb_lk from '../../data-patokan-pengukuran/data-bbpb-0_24-lk';
 import data_bbpb_pr from '../../data-patokan-pengukuran/data-bbpb-0_24-pr';
 import data_bbtb_lk from '../../data-patokan-pengukuran/data-bbtb-24_60-lk';
 import data_bbtb_pr from '../../data-patokan-pengukuran/data-bbtb-24_60-pr';
+import "../css/kalkulator.css";
 
 const Kalkulator = () => {
   const[openModal, setOpenModal] = useState(false);
@@ -20,11 +21,19 @@ const Kalkulator = () => {
     dataReff_bbtb: null
   });
   const[data, setData] = useState({
-    jk:"1",
+    // jk:"",
     umur:"",
     bb:"",
     tb:""
   });
+
+  const [errorMessages, setErrorMessages] = useState({
+    jk: '',
+    umur: '',
+    bb: '',
+    tb: '',
+  });
+  
 
 
   // handle input form
@@ -178,22 +187,106 @@ const Kalkulator = () => {
     }));
   }
 
-  const tampilkanPopUp = (e) => {
-    e.preventDefault();
-
+  const validateInput = () => {
     const jk = parseInt(data.jk);
     const umur = parseInt(data.umur);
-    const bb = parseFloat(data.bb);
-    const tb = parseFloat(data.tb);
+    const asi= data.asi;
 
-    generateStatus_bbtb(jk, umur, bb, tb);
-    generateStatus_tbu(jk, umur, tb);
-    generateStatus_bbu(jk, umur, bb);
+    let valid = true;
 
-    console.log(data);
-    console.log(result);
-    setOpenModal(true);
-  }
+    if (!asi){
+      setErrorMessages((prevErrors) => ({ ...prevErrors, asi: 'Pilih salah satu' }));
+      valid = false;
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, asi: '' }));
+    }
+
+    if (!jk){
+      setErrorMessages((prevErrors) => ({ ...prevErrors, jk: 'Pilih salah satu' }));
+      valid = false;
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, jk: '' }));
+    }
+
+    if (!umur) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur tidak boleh kosong' }));
+    //   valid = false;
+    // } else if (!/^[0-9]+$/.test(umur)) {
+    //   setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur tidak valid' }));
+    //   valid = false;
+    // } else if (umur.includes('.') || umur.includes(',')) {
+    //   setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus bilangan bulat' }));
+    //   valid = false;
+    } else if (umur <= 0 || umur > 60) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diantara 1-60 tahun' }));
+      valid = false;
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: '' }));
+    }
+
+    if (!data.bb) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan tidak boleh kosong' }));
+      valid = false;
+    } else if (!/^[0-9,.]+$/.test(data.bb)){
+        setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan tidak valid' }));
+        valid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(data.bb)) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Maksimal dua digit angka di belakang koma' }));
+      valid = false;
+    } else if (parseFloat(data.bb) <= 2 || parseFloat(data.bb)>30) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: 'Berat badan harus diantara 2-30' }));
+      valid = false;
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, bb: '' }));
+    }
+    
+
+    if (!data.tb) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan tidak boleh kosong' }));
+      valid = false;
+    } else if (!/^[0-9,.]+$/.test(data.tb)) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan tidak valid' }));
+      valid = false;
+    } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(data.tb)) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Maksimal dua digit angka di belakang koma' }));
+      valid = false;
+    } else if (parseFloat(data.tb) <= 30 || parseFloat(data.tb)>120) {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: 'Tinggi badan harus diantara 30-120' }));
+      valid = false;
+    } else {
+      setErrorMessages((prevErrors) => ({ ...prevErrors, tb: '' }));
+    }
+
+    // alert(data.bb);
+    // alert(data.tb);
+
+
+    return valid;
+  };
+
+  const tampilkanPopUp = (e) => {
+    e.preventDefault();
+    // Validasi input sebelum menampilkan popup
+    if (validateInput()) {
+      e.preventDefault();
+
+      const jk = parseInt(data.jk);
+      const umur = parseInt(data.umur);
+      const bb = parseFloat(data.bb);
+      const tb = parseFloat(data.tb);
+
+      generateStatus_bbtb(jk, umur, bb, tb);
+      generateStatus_tbu(jk, umur, tb);
+      generateStatus_bbu(jk, umur, bb);
+
+      alert(tb);
+      alert(bb);
+
+      console.log(data);
+      console.log(result);
+      setOpenModal(true);
+    }
+  };
 
   return (
 
@@ -206,26 +299,31 @@ const Kalkulator = () => {
             <div className="col-md-4 px-5 mb-3">
               <h5>Jenis Kelamin</h5>
               <select className="form-select" name="jk" id="" onChange={handleInputChange}>
+                <option value="" disabled selected>Pilih jenis kelamin</option>
                 <option value="1">Laki-laki</option>
                 <option value="2">Perempuan</option>
               </select>
+              <div className="error-message">{errorMessages.jk}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>Berat Badan (Kg)</h5>
               <input
                 className="form-control" name="bb"
                 placeholder="Contoh: 8.7"
-                type="number"
+                type="text"
                 onChange={handleInputChange}
               />
+              <div className="error-message">{errorMessages.bb}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>ASI Eksklusif</h5>
               <select className="form-select" name="asi" id="" onChange={handleInputChange}>
                 {/* <option value="-">---</option> */}
+                <option value="" disabled selected>Pilih asli eksklusif</option>
                 <option value="1">Ya</option>
                 <option value="0">Tidak</option>
               </select>
+              <div className="error-message">{errorMessages.asi}</div>
             </div>
           </div>
           <div className="row mb-5">
@@ -237,15 +335,17 @@ const Kalkulator = () => {
                 type="number"
                 onChange={handleInputChange}
               />
+              <div className="error-message">{errorMessages.umur}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>Tinggi Badan (cm)</h5>
               <input
                 className="form-control" name="tb"
                 placeholder="Contoh: 78.7"
-                type="number"
+                type="text"
                 onChange={handleInputChange}
               />
+              <div className="error-message">{errorMessages.tb}</div>
             </div>
             <div className="col-md-4 px-5 d-flex align-items-center text-center mb-3">
               <button type="submit" className="btn btn-primary">Hitung</button>

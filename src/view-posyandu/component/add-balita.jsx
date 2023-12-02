@@ -7,6 +7,28 @@ import BASE_URL from "../../base/apiConfig";
 
 function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
+  const tomorrow = new Date();
+  tomorrow.setDate(new Date().getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const fiveYearsAgo = new Date();
+  fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+
+  const [errors, setErrors] = useState({
+    nik: "",
+    nama: "",
+    jenis_kelamin: "",
+    nama_ortu: "",
+    pekerjaan_ortu: "",
+    alamat: "",
+    rt: "",
+    rw: "",
+    tgl_lahir: "",
+    anak_ke: "",
+    umur: "",
+    posyandu: "",
+  });
 
   const [balita, setBalita] = useState({
     nik: "",
@@ -75,25 +97,152 @@ function AddBalita({ idPosyandu, apiAuth }) {
     }
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi NIK
+    if (!balita.nik) {
+      isValid = false;
+      newErrors.nik = "NIK tidak boleh kosong";
+    } else if (!/^[0-9]+$/.test(balita.nik)) {
+      newErrors.nik = "NIK harus berisi angka tanpa huruf dan simbol";
+      isValid = false;
+    } else {
+      newErrors.nik = "";
+    }
+
+    // Validasi Nama
+    if (!balita.nama) {
+      isValid = false;
+      newErrors.nama = "Nama balita tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama)) {
+      newErrors.nama = "Nama tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama = "";
+    }
+
+    // Validasi Umur
+    if (!balita.umur) {
+      isValid = false;
+      newErrors.umur = "Umur tidak boleh kosong";
+    } else if (balita.umur <= 0 || balita.umur > 60) {
+      newErrors.umur = "Umur harus diantara 1-60 tahun";
+      isValid = false;
+    } else {
+      newErrors.umur = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!balita.nama_ortu) {
+      isValid = false;
+      newErrors.nama_ortu = "Nama orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(balita.nama_ortu)) {
+      newErrors.nama_ortu = "Nama orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.nama_ortu = "";
+    }
+
+    // Validasi jenis kelamin
+    if (!balita.jenis_kelamin) {
+      isValid = false;
+      newErrors.jenis_kelamin = "Pilih jenis kelamin.";
+    } else {
+      newErrors.jenis_kelamin = "";
+    }
+
+    // Validasi Pekerjaan Orang Tua
+    if (!balita.pekerjaan_ortu) {
+      isValid = false;
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(balita.pekerjaan_ortu)) {
+      newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.pekerjaan_ortu = "";
+    }
+
+    // Validasi Anak-ke
+    if (!balita.anak_ke) {
+      isValid = false;
+      newErrors.anak_ke = "Anak-ke tidak boleh kosong";
+    } else if (balita.anak_ke < 1 || balita.anak_ke > 25) {
+      newErrors.anak_ke = "Anak ke- tidak valid";
+      isValid = false;
+    } else {
+      newErrors.anak_ke = "";
+    }
+
+    if (!balita.tgl_lahir) {
+      newErrors.tgl_lahir = "Tanggal lahir tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tgl_lahir = "";
+    }
+
+    // Validasi RT dan RW
+
+    if (!jalan) {
+      isValid = false;
+      newErrors.jalan = "Jalan tidak boleh kosong";
+    } else {
+      newErrors.jalan = "";
+    }
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!balita.rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
+    } else {
+      newErrors.rw = "";
+    }
+    // alert(balita.posyandu_id);
+
+    // Validasi nama posyandu
+    if (!balita.posyandu_id) {
+      isValid = false;
+      newErrors.posyandu = "Pilih posyandu";
+    } else {
+      newErrors.posyandu = "";
+    }
+
+    // Set ulang state errors
+    setErrors(newErrors);
+
+    return isValid;
+  };
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
-      navigate(`/posyandu/detail-balita/${respon.data.id}`);
-    } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
+    if (validateForm()) {
+      try {
+        const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
+        navigate(`/posyandu/detail-balita/${respon.data.id}`);
+      } catch (error) {
+        if (error.response) {
+          console.error(
+            "Kesalahan dalam permintaan ke server:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          console.error("Tidak ada respon dari server:", error.request);
+        } else {
+          console.error("Terjadi kesalahan:", error.message);
+        }
       }
     }
+
+
   };
 
   return (
