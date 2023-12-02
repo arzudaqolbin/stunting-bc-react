@@ -87,9 +87,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
         </div>
       ) : (
         <main className="container">
-          <div className="container-fluid">
-            <div className="container">
-              <h2
+          <h2
                 style={{
                   textAlign: "center",
                   marginTop: "50px",
@@ -373,9 +371,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </main>
+        </main >
       )}
     </>
   );

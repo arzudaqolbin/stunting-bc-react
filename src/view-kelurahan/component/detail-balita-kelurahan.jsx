@@ -64,9 +64,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
           </div>) : (
 
           <main className="container">
-            <div className="container-fluid">
-              <div className="container">
-                <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
+            <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
                   Detail Balita
                 </h2>
                 <div
@@ -217,7 +215,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div className="accordion-body">
                       {/* Isi komponen accordion disini */}
-                      <TabelPengukuranBalitaStunting />
+                      <TabelPengukuranBalitaStunting apiAuth={apiAuth} idBalita={idBalita} />
                     </div>
                   </div>
                 </div>
@@ -235,8 +233,6 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
           </main>
         )
       }

@@ -53,19 +53,12 @@
     }
 
     .custom-table tbody tr td .tervalidasi {
-        background-color: #026670;
-        color: #fff;
-        border: none;
+        display: flex;
         padding: 5px 0px;
         font-size: 0.8rem;
         text-align: center;
         align-items: center;
         justify-content: center;
-    }
-
-    .custom-table tbody tr td button:hover {
-        color: #9fedd7;
-        background-color: #fff;
     }
 
     .custom-table {
