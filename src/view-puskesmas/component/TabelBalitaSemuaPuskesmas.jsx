@@ -87,6 +87,11 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
     }
   };
 
+  useEffect(() => {
+    loadDataBalita();
+    loadPosyandu();
+  }, []);
+
   const getStatusTBUClass = (status) => {
     if (status === "Sangat Pendek") {
       return "status rounded darkred";
@@ -146,30 +151,13 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
           <ClipLoader loading={loading} size={150} />
         </div>
       ) : (
-        <main className="container">
-          <div className="container-fluid">
+
+          <main className="container">
             {/* Mulai isi kontennya disini */}
-            <h2 className="custom-judul">
-              Daftar Balita di Kelurahan Bidara Cina
-            </h2>
+            <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
 
-            <form className="d-flex align-items-center">
-              <input
-                className="form-control me-2"
-                type="text"
-                placeholder="Cari nama balita..."
-                aria-label="Search"
-              />
-              <button
-                className="btn btn-success btn-rounded btn-sm"
-                type="submit"
-              >
-                Cari
-              </button>
-            </form>
-
-            <div className="p-3 mb-2 bg-light custom-border rounded">
-              <table className="table custom-table">
+            <div className="table-responsive">
+              <table id="myTable" className="table custom-table">
                 <thead>
                   <tr>
                     <th scope="col">No</th>
@@ -211,7 +199,6 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
               </table>
             </div>
             <Statistik />
-          </div>
         </main>
       )}
     </>

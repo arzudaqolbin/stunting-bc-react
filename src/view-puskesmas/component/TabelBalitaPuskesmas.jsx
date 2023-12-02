@@ -94,6 +94,11 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
     }
   };
 
+  useEffect(() => {
+    loadDataBalita();
+    loadPosyandu();
+  }, []);
+
   const getStatusTBUClass = (status) => {
     if (status === "Sangat Pendek") {
       return "status rounded darkred";

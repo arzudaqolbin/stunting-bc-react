@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
 import "../css/tabel-daftar-puskesmas-kelurahan.css";
 import { ClipLoader } from 'react-spinners';
-
 import $ from 'jquery';
 import 'datatables.net';
 // import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';

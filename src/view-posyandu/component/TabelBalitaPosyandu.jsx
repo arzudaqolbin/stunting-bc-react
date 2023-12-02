@@ -18,40 +18,6 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
       $('#myTable').DataTable({
         "aaSorting": [],
         "language": {
-          "lengthMenu": "Menampilkan _MENU_ data per halaman",
-          "zeroRecords": "Tidak ada izin masuk",
-          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-          "infoEmpty": "Tidak ada data tersedia",
-          "infoFiltered": "(Disaring dari _MAX_ data total)",
-          "decimal": "",
-          "emptyTable": "Tidak ada izin masuk",
-          "loadingRecords": "Memuat...",
-          "processing": "Memproses...",
-          "search": 'Pencarian <i class="bi bi-search"></i> ',
-          "searchPlaceholder": 'keyword...',
-          "paginate": {
-            "first": "Pertama",
-            "last": "Terakhir",
-            // "next": "Selanjutnya",
-            // "previous": "Sebelumnya"
-            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
-            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
-          },
-          "aria": {
-            "sortAscending": ": klik untuk mengurutkan A-Z",
-            "sortDescending": ": klik untuk mengurutkan Z-A"
-          }
-        }
-      });
-    }
-  }, [balita]);
-
-  useEffect(() => {
-    // Inisialisasi DataTable hanya pada mounting pertama
-    if (!$.fn.DataTable.isDataTable('#myTable')) {
-      $('#myTable').DataTable({
-        "aaSorting": [],
-        "language": {
           "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
           "zeroRecords": "Data tidak ditemukan",
           "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
@@ -61,15 +27,15 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
           "emptyTable": "Data tidak tersedia",
           "loadingRecords": "Memuat...",
           "processing": "Memproses...",
-          "search": 'Cari:  <i class="bi bi-search"></i> ',
-          "searchPlaceholder": 'Cari data balita...',
+          "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+          "searchPlaceholder": "cari data balita...",
           "paginate": {
             "first": "Pertama",
             "last": "Terakhir",
             // "next": "Selanjutnya",
             // "previous": "Sebelumnya"
-            "previous": 'Prev  <i class="bi bi-chevron-double-left"></i>',
-            "next": '<i class="bi bi-chevron-double-right"></i>  Next'
+            "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>     Next'
           },
           "aria": {
             "sortAscending": ": klik untuk mengurutkan A-Z",
@@ -225,21 +191,8 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
             />
           </div>) : (
           <main className="container">
-            <div className="container-fluid">
               {/* Mulai isi kontennya disini */}
               <h2 className="custom-judul">Daftar Balita Posyandu</h2>
-
-              {/* <form className="d-flex align-items-center">
-                <input
-                  className="form-control me-2"
-                  type="text"
-                  placeholder="Cari nama balita..."
-                  aria-label="Search"
-                />
-                <button className="btn btn-success btn-rounded btn-sm" type="submit">
-                  Cari
-                </button>
-              </form> */}
 
               <div className="table-responsive">
                 <table id="myTable" className="table custom-table">
@@ -311,7 +264,6 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
                   </tbody >
                 </table >
               </div >
-            </div >
           </main >)
       }
     </>

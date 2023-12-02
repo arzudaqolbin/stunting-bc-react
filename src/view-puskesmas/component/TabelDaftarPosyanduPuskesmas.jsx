@@ -57,7 +57,7 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                 }
             });
         }
-    }, [idPuskesmas]);
+    }, [posyanduList]);
 
     return (
         <>
@@ -79,7 +79,7 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nama Posyandu</th>
-                                        <th scope="col">Alamat</th>
+                                        <th scope="col" >Alamat</th>
                                         <th scope="col">Ketua Kader</th>
                                         <th scope="col">Nomor Telepon</th>
                                         <th scope="col">Lihat Detail</th>

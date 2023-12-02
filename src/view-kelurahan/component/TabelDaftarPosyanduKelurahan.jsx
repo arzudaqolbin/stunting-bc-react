@@ -53,9 +53,7 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
     axios
       .get(`${BASE_URL}/posyandu`, apiAuth)
       .then((response) => {
-        // setPosyanduList(response.data.data);
         setPosyanduList(response.data.data);
-        // console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching posyandu:", error);
@@ -70,6 +68,7 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
       .catch((error) => {
         console.error("Error fetching puskesmas:", error);
       });
+
     setLoading(false);
   }, []);
 
