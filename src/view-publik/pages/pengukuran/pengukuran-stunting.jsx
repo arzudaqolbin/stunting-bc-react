@@ -10,38 +10,36 @@ const PengukuranStunting = () => {
     <JudulTop />
     <Navbar />
     <div className="container mt-5 mb-3">
-      <div className="container">
         <h6 className="my-2">
           <a href="#" className="text-dark"><i className="fas fa-arrow-left fa-3x"></i></a>
         </h6>
-      </div>
       <div className="col-11" style={{ marginLeft: "50px", marginRight: "50px" }}>
         <h1 style={{ fontWeight: 700, textAlign: "justify", marginBottom: "30px" }}>
-          Mencegah Stunting
+          Deteksi Anak yang Mengalami Stunting
         </h1>
         <hr className="my-2" />
         <h5 className="text-end">Kamis, 30 November 2023</h5>
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img className="img-berita" src={stunting}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img className="img-berita" src={stunting}  alt="Gambar Berita" style={{ width: "60%" }} />
           </div>
         </div>
         <div className="text-isiberita mt-4">
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 1</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas porta vulputate. Donec elit neque, sodales sit amet erat in, faucibus tristique urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sodales augue, quis lacinia arcu. Vestibulum vel pulvinar orci, at feugiat erat. Cras efficitur dictum eros, at ullamcorper mauris accumsan vel. Sed id lorem a lectus faucibus tincidunt. Donec at diam fermentum, auctor orci non, auctor lectus. Sed et aliquam tellus.
+            Stunting atau perawakan pendek merupakan gangguan pertumbuhan yang sebagian besar disebabkan oleh masalah nutrisi kronis sejak bayo dalam kandungan hingga masa awal anak lahir yang biasanya tampak setelah ank berusia 2 tahun. Menurut Kemenkes RI, balita pendek atau stunting bisa diketahui bila seorang balita sudah diukur panjang atau tinggi badannya, lalu dibandingkan dengan standar, dan hasil pengukurannya ini berada pada kisaran di bawah normal.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 2</span> Morbi massa risus, tempus at purus suscipit, faucibus ornare dolor. Sed vel varius nunc. Pellentesque eu elit neque. Donec scelerisque malesuada purus, vitae semper felis consectetur ut. Morbi venenatis est eros, nec aliquam lectus gravida quis. Sed tincidunt euismod pharetra. Aenean sed commodo turpis, vel cursus ipsum. Donec iaculis mauris laoreet nunc bibendum, non commodo tellus vulputate. Aliquam erat volutpat. Praesent facilisis luctus est, ut luctus ipsum mattis nec. Duis condimentum lorem et porttitor pulvinar.
+            <span style={{ fontWeight: 700 }}>Bagaimana cara mendeteksi stunting?<br/></span> Pertumbuhan dan perkembangan merupakan hal yang seharusnya selalu dipantau pada setiap kunjungan ke dokter. Pemantauan pertumbuhan anak biasanya dilakukan dengan memplot berat badan dan tinggi badan ke dalam suatu kurva pertumbuhan. Seorang anak dikatakan pendek  jika tinggi badan atau panjang badan menurut usia lebih dari dua standar deviasi di bawah median kurve standar pertumbuhan anak WHO.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 3</span> Nullam mi augue, tincidunt ac accumsan non, semper vel nunc. Suspendisse sed gravida orci. Quisque ac pellentesque nunc. Fusce pulvinar est vel erat malesuada porta. Curabitur in ante gravida, tincidunt mi a, dignissim augue. Donec a orci a metus venenatis iaculis. Maecenas tincidunt nisl sit amet ultrices auctor.
+            <span style={{ fontWeight: 700 }}>Bagaimana cara mengetahui gangguan pertumbuhan (stunting) pada anak?<br/></span> Acuan yang digunakan untuk tiap kelompok usia dapat berbeda. Saat ini Indonesia menggunakan kurva pertumbuhan milik Badan Kesehatan Dunia (WHO) dan kurva dari Center for Disease Control Prevention (CDC,2000).Indikator yang umum digunakan di Indonesia adalah berat badan menurut tinggi badan (BB/TB), meski ada juga indicator lain seperti tinggi badan menurut usia (TB/U), dan berat badan menurut usia (BB/U). <br/>Indikator BB/TB menentukan status gizi anak dengan membandingkan berat dengan berat ideal menurut tinggi badannya, kemudian dapat diinterpretasikan sebagai obesitas, gizi lebih, gizi baik, gizi kurang, dan gizi buruk. Indikator TB/U membandingkan tinggi badan seorang anak dengan anak yang sama jenis kelamin seusianya. Interpretasinya adalah tinggi, normal, perawakan pendek, dan perawakan sangat pendek. Adapun indicator BB/U membagi anak menjadi berat badan normal, berat badan kurang, dan berat badan berlebih. Indicator ini membandingkan berat badan seorang anak dengan anak seusianya. <br/> Untuk memastikan pertumbuhan sesuai dengan acuan, bawalah anak secara teratur ke layanan kesehatan. Bila curiga ada kelainan pertumbuhan, segera bawa anak ke dokter. Pastikan setiap kali anak diukur berat, panjang/tinggi badan, dan lingkar kepalanya, data diplot di kurva pertumbuhan yang sesuai agar dapat dinilai keadaannya saat ini. Bisa saja anak memiliki pertumbuhan normal sampai usia tertentu, tetapi terjadi gangguan setelahnya. Misalnya, seorang anak usia satu tahun tergolong gizi baik dengan tinggi badan sesuai usia, tepai kemudian mengalami infeksi berat sehingga pertumbuhan setelah usia satu tahun terhambat.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 4</span> Ut et eros ac magna mattis consequat eu nec neque. Curabitur vulputate odio eget mi ornare sodales. Duis cursus dictum auctor. Aliquam vulputate pellentesque massa eget pharetra. Etiam laoreet ultricies libero eu sodales. In urna enim, efficitur ac hendrerit in, consectetur ut leo. Duis vel rhoncus purus. Nulla tempus ut sem vel dapibus. Curabitur faucibus, orci quis tristique pulvinar, nisl arcu pharetra orci, eget vestibulum felis lorem eu nibh. Praesent molestie libero eget nisi tempor hendrerit. Mauris nec erat non velit commodo aliquam nec a mauris. Nam et lacus turpis. Aliquam eu vulputate libero. Sed mollis auctor lacus, id facilisis diam volutpat convallis. Maecenas lacus neque, feugiat vel mauris sed, eleifend sagittis ex.
+            <span style={{ fontWeight: 700 }}>Apakah semua anak perawakan pendek disebut stunting?<br/></span> Seorang anak diklasifikasikan sebagai perawakan pendek jika panjang badan atau tinggi badan menurut umur berada dibawah Zscore –2 WHO Growth Standard. Perawakan sangat pendek jika panjang badan atau tinggi badan menurut umur berada dibawah Zscore –3 WHO Growth Standard. Stunting jika perawakan pendek tersebut disebabkan oleh kondisi kesehatan atau nutrisi yang suboptimal. Stunting harus dibedakan dengan perawakan pendek lainnya oleh dokter spesialis anak untuk menentukan tatalaksana selanjutnya. Terkadang perawakan pendeng yang bukan perawakan pendek memerlukan terapi pemanjangan tungkai, sulih hormone atau sulih enzim.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 5</span> Maecenas nec elit sed leo finibus luctus. Cras pharetra interdum est, sed pellentesque diam hendrerit quis. Sed blandit tincidunt nunc ac volutpat. Morbi eu egestas enim. Morbi id mi eu eros mollis condimentum ac id diam. Aliquam dictum tristique velit ac tincidunt. Aliquam massa augue, cursus eu augue nec, finibus auctor sem.
+            <span style={{ fontWeight: 700 }}>Referensi : <br/></span> https://rsudmangusada.badungkab.go.id/promosi/read/102/stunting
           </p>
         </div>
       </div>

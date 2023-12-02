@@ -10,11 +10,9 @@ const PengukuranWasting = () => {
     <JudulTop />
     <Navbar/>
     <div className="container mt-5 mb-3">
-      <div className="container">
         <h6 className="my-2">
           <a href="#" className="text-dark"><i className="fas fa-arrow-left fa-3x"></i></a>
         </h6>
-      </div>
       <div className="col-11" style={{ marginLeft: "50px", marginRight: "50px" }}>
         <h1 style={{ fontWeight: 700, textAlign: "justify", marginBottom: "30px" }}>
           Mencegah Wasting
@@ -24,24 +22,21 @@ const PengukuranWasting = () => {
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img className="img-berita" src={wasting}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img className="img-berita" src={wasting}  alt="Gambar Berita" style={{ width: "60%" }} />
           </div>
         </div>
         <div className="text-isiberita mt-4">
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 1</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas porta vulputate. Donec elit neque, sodales sit amet erat in, faucibus tristique urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sodales augue, quis lacinia arcu. Vestibulum vel pulvinar orci, at feugiat erat. Cras efficitur dictum eros, at ullamcorper mauris accumsan vel. Sed id lorem a lectus faucibus tincidunt. Donec at diam fermentum, auctor orci non, auctor lectus. Sed et aliquam tellus.
+            Wasting adalah kondisi ketika berat badan anak menurun, sangat kurang, atau bahkan berada di bawah rentang normal. Anak yang mengalami kondisi ini umumnya memiliki proporsi tubuh yang kurang ideal. Pasalnya, kondisi ini membuat berat badan tidak sepadan (kurus) dengan tinggi badan untuk anak di usia tertentu. WHO selaku badan kesehatan dunia, menyatakan bahwa wasting adalah salah satu masalah kesehatan utama. Sebab kondisi ini berhubungan langsung dengan angka kejadian suatu penyakit (morbiditas). Itulah mengapa wasting pada anak adalah hal yang tidak boleh disepelekan sehingga membutuhkan perhatian dan penanganan sesegera mungkin. Perlu diingat jika kondisi ini biasanya terjadi karena penurunan berat badan drastis akibat tidak tercukupinya kebutuhan zat gizi harian anak. Tidak hanya itu saja, memiliki satu atau beberapa penyakit bisa berujung pada turunnya berat badan. Sebagai contoh, gangguan pencernaan seperti diare, juga bisa mengakibatkan kondisi ini. Kejadian berat badan yang menurun pada anak juga dapat berdampak besar terhadap kondisi kesehatannya sekarang atau di kemudian hari. Umumnya, ia jadi lebih mudah terserang penyakit, bahkan berisiko sampai berakibat fatal. Selain dari segi kesehatan, kondisi ini juga turut memengaruhi kemampuan intelektual anak di masa pertumbuhannya.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 2</span> Morbi massa risus, tempus at purus suscipit, faucibus ornare dolor. Sed vel varius nunc. Pellentesque eu elit neque. Donec scelerisque malesuada purus, vitae semper felis consectetur ut. Morbi venenatis est eros, nec aliquam lectus gravida quis. Sed tincidunt euismod pharetra. Aenean sed commodo turpis, vel cursus ipsum. Donec iaculis mauris laoreet nunc bibendum, non commodo tellus vulputate. Aliquam erat volutpat. Praesent facilisis luctus est, ut luctus ipsum mattis nec. Duis condimentum lorem et porttitor pulvinar.
+            <span style={{ fontWeight: 700 }}>Kapan anak dikatakan mengalami wasting?<br/></span> Menurut WHO, indikator untuk menilai kemungkinan kondisi ini pada anak yakni berat badan menurun dengan cepat sedangkan tinggi badan (BB/TB) tetap bertambah. Anak dikatakan mengalami kondisi ini ketika hasil pengukuran indikator BB/TB berada di -3 sampai dengan di bawah -2 standar deviasi (SD). Lebih dari itu, anak juga bisa mengalami wasting akut (severe acute malnutrition) ketika indikator BB/TB menunjukkan angka di bawah -3 SD. Bisa dikatakan, wasting akut adalah kondisi penurunan berat badan yang sudah lebih parah ketimbang kondisi yang biasa. Wasting umumnya lebih banyak dialami oleh anak di kelompok usia balita. Setelah lewat dari usia tersebut, risiko kondisi ini pada anak berangsur-angsur akan menurun.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 3</span> Nullam mi augue, tincidunt ac accumsan non, semper vel nunc. Suspendisse sed gravida orci. Quisque ac pellentesque nunc. Fusce pulvinar est vel erat malesuada porta. Curabitur in ante gravida, tincidunt mi a, dignissim augue. Donec a orci a metus venenatis iaculis. Maecenas tincidunt nisl sit amet ultrices auctor.
+            <span style={{ fontWeight: 700 }}>Apa saja gejala wasting pada anak?<br/></span> Secara umum, kondisi ini ditandai dengan penurunan berat badan drastis sehingga membuat bobot tubuh anak tidak sebanding dengan tinggi badannya. Itulah mengapa kondisi ini, biasanya membuat tubuhnya tampak sangat kurus. Bahkan tak jarang, sampai membuat tulang-tulang di tubuh menonjol seperti hanya dibalut langsung oleh kulit. Anak yang mengalami kondisi ini juga kerap merasa sangat lemas, yang membuatnya sulit untuk beraktivitas normal seperti anak seusianya. Namun, ketika kondisi berat badan kurang pada anak ini tidak segera diobati, otomatis bisa berkembang lebih parah hingga mengakibatkan wasting akut. Jika tingkat keparahan wasting anak sudah mencapai akut, akan timbul beberapa gejala seperti indikator BB/TB menunjukkan angka kurang dari -3 SD, terdapat pembengkakan karena cairan (edema) di beberapa bagian tubuh, dan lingkar lengan atas (LILA) cenderung kecil yaitu biasanya kurang dari 12,5 cm Apabila tidak mendapatkan perawatan secepatnya, kondisi berat badan menurun pada tingkat yang parah ini bisa berkembang semakin buruk. Tidak menutup kemungkinan, nantinya akan mengakibatkan terjadi gizi buruk pada anak.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 4</span> Ut et eros ac magna mattis consequat eu nec neque. Curabitur vulputate odio eget mi ornare sodales. Duis cursus dictum auctor. Aliquam vulputate pellentesque massa eget pharetra. Etiam laoreet ultricies libero eu sodales. In urna enim, efficitur ac hendrerit in, consectetur ut leo. Duis vel rhoncus purus. Nulla tempus ut sem vel dapibus. Curabitur faucibus, orci quis tristique pulvinar, nisl arcu pharetra orci, eget vestibulum felis lorem eu nibh. Praesent molestie libero eget nisi tempor hendrerit. Mauris nec erat non velit commodo aliquam nec a mauris. Nam et lacus turpis. Aliquam eu vulputate libero. Sed mollis auctor lacus, id facilisis diam volutpat convallis. Maecenas lacus neque, feugiat vel mauris sed, eleifend sagittis ex.
-          </p>
-          <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 5</span> Maecenas nec elit sed leo finibus luctus. Cras pharetra interdum est, sed pellentesque diam hendrerit quis. Sed blandit tincidunt nunc ac volutpat. Morbi eu egestas enim. Morbi id mi eu eros mollis condimentum ac id diam. Aliquam dictum tristique velit ac tincidunt. Aliquam massa augue, cursus eu augue nec, finibus auctor sem.
+            <span style={{ fontWeight: 700 }}>Referensi : <br/></span> https://hellosehat.com/parenting/kesehatan-anak/wasting-adalah-masalah-gizi-anak/
           </p>
         </div>
       </div>

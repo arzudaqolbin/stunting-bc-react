@@ -10,38 +10,45 @@ const PencegahanStunting = () => {
     <JudulTop />
     <Navbar />
     <div className="container mt-5 mb-3">
-      <div className="container">
         <h6 className="my-2">
           <a href="#" className="text-dark"><i className="fas fa-arrow-left fa-3x"></i></a>
         </h6>
-      </div>
       <div className="col-11" style={{ marginLeft: "50px", marginRight: "50px" }}>
         <h1 style={{ fontWeight: 700, textAlign: "justify", marginBottom: "30px" }}>
-          Mencegah Stunting
+          Pencegahan Stunting Pada Anak
         </h1>
         <hr className="my-2" />
         <h5 className="text-end">Kamis, 30 November 2023</h5>
         <hr className="my-2" />
         <div className="container mt-5 mb-5">
           <div className="d-flex align-items-center justify-content-center">
-            <img className="img-berita" src={stunting}  alt="Gambar Berita" style={{ maxWidth: "100%" }} />
+            <img className="img-berita" src={stunting}  alt="Gambar Berita" style={{ width: "60%" }} />
           </div>
         </div>
         <div className="text-isiberita mt-4">
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 1</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas porta vulputate. Donec elit neque, sodales sit amet erat in, faucibus tristique urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sodales augue, quis lacinia arcu. Vestibulum vel pulvinar orci, at feugiat erat. Cras efficitur dictum eros, at ullamcorper mauris accumsan vel. Sed id lorem a lectus faucibus tincidunt. Donec at diam fermentum, auctor orci non, auctor lectus. Sed et aliquam tellus.
+            Belakangan stunting sedang hangat diperbincangkan banyak orang, khususnya para ibu. Berdasarkan WHO, stunting adalah gangguan tumbuh kembang anak yang disebabkan kekurangan asupan gizi, terserang infeksi, maupun stimulasi yang tak memadai. Oleh karena itu, langkah pencegahan stunting sangat perlu dilakukan, apa sajakah caranya? Simak selengkapnya berikut ini.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 2</span> Morbi massa risus, tempus at purus suscipit, faucibus ornare dolor. Sed vel varius nunc. Pellentesque eu elit neque. Donec scelerisque malesuada purus, vitae semper felis consectetur ut. Morbi venenatis est eros, nec aliquam lectus gravida quis. Sed tincidunt euismod pharetra. Aenean sed commodo turpis, vel cursus ipsum. Donec iaculis mauris laoreet nunc bibendum, non commodo tellus vulputate. Aliquam erat volutpat. Praesent facilisis luctus est, ut luctus ipsum mattis nec. Duis condimentum lorem et porttitor pulvinar.
+            <span style={{ fontWeight: 700 }}>1. Memenuhi kebutuhan gizi sejak hamil<br/></span> Tindakan yang relatif ampuh dilakukan untuk mencegah stunting pada anak adalah selalu memenuhi gizi sejak masa kehamilan. Lembaga kesehatan Millenium Challenge Account Indonesia menyarankan agar ibu yang sedang mengandung selalu mengonsumsi makanan sehat nan bergizi maupun suplemen atas anjuran dokter. Selain itu, perempuan yang sedang menjalani proses kehamilan juga sebaiknya rutin memeriksakan kesehatannya ke dokter atau bidan.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 3</span> Nullam mi augue, tincidunt ac accumsan non, semper vel nunc. Suspendisse sed gravida orci. Quisque ac pellentesque nunc. Fusce pulvinar est vel erat malesuada porta. Curabitur in ante gravida, tincidunt mi a, dignissim augue. Donec a orci a metus venenatis iaculis. Maecenas tincidunt nisl sit amet ultrices auctor.
+            <span style={{ fontWeight: 700 }}>2. Beri ASI Eksklusif sampai bayi berusia 6 bulan<br/></span> Veronika Scherbaum, ahli nutrisi dari Universitas Hohenheim, Jerman, menyatakan ASI ternyata berpotensi mengurangi peluang stunting pada anak berkat kandungan gizi mikro dan makro. Oleh karena itu, ibu disarankan untuk tetap memberikan ASI Eksklusif selama enam bulan kepada sang buah hati. Protein whey dan kolostrum yang terdapat pada susu ibu pun dinilai mampu meningkatkan sistem kekebalan tubuh bayi yang terbilang rentan.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 4</span> Ut et eros ac magna mattis consequat eu nec neque. Curabitur vulputate odio eget mi ornare sodales. Duis cursus dictum auctor. Aliquam vulputate pellentesque massa eget pharetra. Etiam laoreet ultricies libero eu sodales. In urna enim, efficitur ac hendrerit in, consectetur ut leo. Duis vel rhoncus purus. Nulla tempus ut sem vel dapibus. Curabitur faucibus, orci quis tristique pulvinar, nisl arcu pharetra orci, eget vestibulum felis lorem eu nibh. Praesent molestie libero eget nisi tempor hendrerit. Mauris nec erat non velit commodo aliquam nec a mauris. Nam et lacus turpis. Aliquam eu vulputate libero. Sed mollis auctor lacus, id facilisis diam volutpat convallis. Maecenas lacus neque, feugiat vel mauris sed, eleifend sagittis ex.
+            <span style={{ fontWeight: 700 }}>3. Dampingi ASI Eksklusif dengan MPASI sehat<br/></span> Ketika bayi menginjak usia 6 bulan ke atas, maka ibu sudah bisa memberikan makanan pendamping atau MPASI. Dalam hal ini pastikan makanan-makanan yang dipilih bisa memenuhi gizi mikro dan makro yang sebelumnya selalu berasal dari ASI untuk mencegah stunting. WHO pun merekomendasikan fortifikasi atau penambahan nutrisi ke dalam makanan. Di sisi lain, sebaiknya ibu berhati-hati saat akan menentukan produk tambahan tersebut. Konsultasikan dulu dengan dokter.
           </p>
           <p style={{ textAlign: "justify" }}>
-            <span style={{ fontWeight: 700 }}>Paragraf 5</span> Maecenas nec elit sed leo finibus luctus. Cras pharetra interdum est, sed pellentesque diam hendrerit quis. Sed blandit tincidunt nunc ac volutpat. Morbi eu egestas enim. Morbi id mi eu eros mollis condimentum ac id diam. Aliquam dictum tristique velit ac tincidunt. Aliquam massa augue, cursus eu augue nec, finibus auctor sem.
+            <span style={{ fontWeight: 700 }}>4. Terus memantau tumbuh kembang anak<br/></span> Orang tua perlu terus memantau tumbuh kembang anak mereka, terutama dari tinggi dan berat badan anak. Bawa si Kecil secara berkala ke Posyandu maupun klinik khusus anak. Dengan begitu, akan lebih mudah bagi ibu untuk mengetahui gejala awal gangguan dan penanganannya.
+          </p>
+          <p style={{ textAlign: "justify" }}>
+            <span style={{ fontWeight: 700 }}>5. Selalu jaga kebersihan lingkungan<br/></span> Seperti yang diketahui, anak-anak sangat rentan akan serangan penyakit, terutama kalau lingkungan sekitar mereka kotor. Faktor ini pula yang secara tak langsung meningkatkan peluang stunting. Studi yang dilakukan di Harvard Chan School menyebutkan diare adalah faktor ketiga yang menyebabkan gangguan kesehatan tersebut. Sementara salah satu pemicu diare datang dari paparan kotoran yang masuk ke dalam tubuh manusia.
+          </p>
+          <p style={{ textAlign: "justify" }}>
+            Semoga informasi ini membantu para ibu mencegah stunting dan meningkatkan kualitas kesehatan anak.<br/>
+          </p>
+          <p style={{ textAlign: "justify" }}>
+            <span style={{ fontWeight: 700 }}>Referensi : <br/></span> https://promkes.kemkes.go.id/pencegahan-stunting
           </p>
         </div>
       </div>

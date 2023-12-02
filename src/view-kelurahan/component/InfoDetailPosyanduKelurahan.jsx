@@ -126,7 +126,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
           axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth)
         ]);
 
-        setPosyandu(posyanduResult.data);
+        setPosyandu(posyanduResult.data.data);
         setKader(kaderResult.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import LineChart_Umur_24_60 from "../../view-publik/component/linechart_24-60";
-import LineChart_Umur_0_24 from "../../view-publik/component/linechart_0-24";
-import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
-import TabelPengukuranBalitaStunting from "./TabelDaftarPengukuranBalitaStunting";
-import { ClipLoader } from "react-spinners";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import LineChart_Umur_24_60 from '../../view-publik/component/linechart_24-60';
+import LineChart_Umur_0_24 from '../../view-publik/component/linechart_0-24';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
+import { ClipLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
+import "../css/detail-balita.css";
 
 const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   // nunggu setting router link
@@ -62,155 +63,34 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
 
   return (
     <>
-      {loading ? (
-        <div className="text-center">
-          <ClipLoader loading={loading} size={150} />
-        </div>
-      ) : (
-        <main className="container">
-          <div className="container-fluid">
-            <div className="container">
-              <h2
-                style={{
-                  textAlign: "center",
-                  marginTop: "50px",
-                  marginBottom: "50px",
-                }}
-              >
-                Detail Balita
-              </h2>
-              <div
-                id="collapseOne"
-                className="accordion-collapse collapse show"
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body">
-                  <table className="table table-hover custom-table">
-                    <tbody>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Nama
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.nama}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          NIK
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.nik}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Tanggal Lahir
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.tgl_lahir}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Umur (bulan)
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.umur}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Jenis Kelamin
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.jenis_kelamin}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Alamat
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.alamat}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Nama Orang Tua
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.nama_ortu}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Pekerjaan Orang Tua
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.pekerjaan_ortu}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Nama Posyandu
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{namaPosyandu.nama}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Status TB/U
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.status_tbu}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Status BB/TB
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.status_bbtb}
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>
-                          Status BB/U
-                        </th>
-                        <td style={{ textAlign: "left" }}>
-                          {" "}
-                          : &nbsp;{biodata.status_bbu}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+      {
+        loading ? (
+          <div className='text-center'>
+            <ClipLoader
+              loading={loading}
+              size={150}
+            />
+          </div>) : (
+
+          // <main className="container" style={{ padding: '10px 0' }}>
+          // <div className="container max-content" >
+          <div className="container" style={{ padding: "10px" }}>
+            <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}>
+              Detail Balita
+            </h2>
+            <div className="accordion mb-3" id="accordionExample">
               <div className="accordion-item">
                 <h2 className="accordion-header">
                   <button
-                    className="accordion-button collapsed"
+                    className="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo"
-                    aria-expanded="false"
-                    aria-controls="collapseTwo"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
                     style={{ fontWeight: "bold", fontSize: "20px" }}
                   >
-                    Riwayat Balita
+                    Biodata Balita
                   </button>
                 </h2>
                 <div
@@ -364,37 +244,46 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                     <TabelPengukuranBalitaStunting />
                   </div>
                 </div>
-              </div>
-              <div className="accordion-item">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseFour"
-                    aria-expanded="false"
-                    aria-controls="collapseFour"
-                    style={{ fontWeight: "bold", fontSize: "20px" }}
-                  >
-                    Grafik Stunting
-                  </button>
-                </h2>
-                <div
-                  id="collapseFour"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div className="accordion-body">
-                    {/* Isi komponen accordion disini */}
-                    <LineChart_Umur_0_24 />
-                    <LineChart_Umur_24_60 />
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      Data Pengukuran
+                    </button>
+                  </h2>
+                  <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div className="accordion-body" style={{ padding: '10px' }}>
+                      {/* Isi komponen accordion disini */}
+                      <TabelPengukuranBalitaStunting />
+                    </div>
+                  </div>
+                </div>
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      Grafik Stunting
+                    </button>
+                  </h2>
+                  <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div className="accordion-body">
+                      {/* Isi komponen accordion disini */}
+                      <LineChart_Umur_0_24
+                        apiAuth={apiAuth}
+                        idBalita={idBalita}
+                      />
+                      <LineChart_Umur_24_60
+                        apiAuth={apiAuth}
+                        idBalita={idBalita}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      )}
+          //   </div>
+          // </main>
+        )
+      }
     </>
   );
 };
