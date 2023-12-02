@@ -92,7 +92,7 @@ const Login = () => {
                   <h4 className="text-center">Silahkan melakukan login</h4>
 
                   <form onSubmit={onSubmit} className="">
-                  <div className="error">{error}</div>
+                    <div className="error">{error}</div>
                     <div className="text-center">
                       <input
                         type="text"
@@ -110,6 +110,7 @@ const Login = () => {
                         className="form control my-1 py-1 col-12"
                         placeholder="Password"
                       />
+                      <div className="error"> </div>
                     </div>
                     <div className="checkbox">
                       <input
@@ -122,14 +123,14 @@ const Login = () => {
                       <label htmlFor="remember">Tampilkan password</label>
                     </div>
                     <div className="text-end mt-3">
-                    {loading ? (
-                      <div className="text-center">
-                        <ClipLoader loading={loading} size={20} />
-                      </div>
+                      {loading ? (
+                        <div className="text-center">
+                          <ClipLoader loading={loading} size={20} />
+                        </div>
                       ) : (
-                      <button type="submit" className="btn btn-primary">
-                        Login
-                      </button>)}
+                        <button type="submit" className="btn btn-primary">
+                          Login
+                        </button>)}
                     </div>
                   </form>
                 </div>

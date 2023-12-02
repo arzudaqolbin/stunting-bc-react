@@ -1,4 +1,4 @@
-import {Routes, Route }  from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Beranda from "../view-publik/pages/Beranda";
 import Berita from "../view-publik/pages/Berita";
 import Jadwal from "../view-publik/pages/Jadwal";
@@ -11,9 +11,10 @@ import PengukuranStunting from "../view-publik/pages/pengukuran/pengukuran-stunt
 import PengukuranUnderweight from "../view-publik/pages/pengukuran/pengukuran-underweight";
 import PengukuranWasting from "../view-publik/pages/pengukuran/pengukuran-wasting";
 import NonRoute from "../base/NonRoute";
+import NotFound from "../view-publik/pages/NotFound";
 
 const RoutesPublik = () => {
-    return(
+    return (
         <Routes>
             <Route path="/" element={<Beranda />} />
             <Route path="/beranda" element={<Beranda />} />
@@ -32,9 +33,12 @@ const RoutesPublik = () => {
             {/* login */}
             <Route path="/login-admin" element={<Login />} />
 
-            <Route path='*' element={<NonRoute />} />
+            {/* Fallback jika route tidak ditemukan */}
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
 
-        </Routes>
+            {/* Halaman Not Found */}
+            <Route path="/not-found" element={<NotFound />} />
+        </Routes >
     )
 }
 

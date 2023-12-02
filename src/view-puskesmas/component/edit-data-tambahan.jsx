@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-data-tambahan.css";
 import BASE_URL from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
@@ -66,6 +67,25 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
     riwayat_sakit: "",
   });
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit data tambahan",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // acc izin
+        onSubmit(e)
+      }
+    });
+  }
+
   const validateForm = () => {
     let isValid = true;
     const newErrors = { ...errors };
@@ -86,28 +106,26 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()){
-      try {
-        if (idData) {
-          await axios.put(
-            `${BASE_URL}/dataTambahanBalitas/${idData}`,
-            dataTambahan,
-            apiAuth
-          );
-        }
-        navigate(`/posyandu/detail-balita/${idBalita}`);
-      } catch (error) {
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+    try {
+      if (idData) {
+        await axios.put(
+          `${BASE_URL}/dataTambahanBalitas/${idData}`,
+          dataTambahan,
+          apiAuth
+        );
+      }
+      navigate(`/posyandu/detail-balita/${idBalita}`);
+    } catch (error) {
+      if (error.response) {
+        console.error(
+          "Kesalahan dalam permintaan ke server:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("Tidak ada respon dari server:", error.request);
+      } else {
+        console.error("Terjadi kesalahan:", error.message);
       }
     }
   };
@@ -122,7 +140,11 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           <div className="table-responsive">
             <form
               onSubmit={(e) => {
-                onSubmit(e);
+                // Mencegah pengiriman formulir langsung
+                e.preventDefault();
+                if (validateForm()) {
+                  confirmAlert(e);
+                }
               }}
             >
               <label htmlFor="asi_eksklusif">

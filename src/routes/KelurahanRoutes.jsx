@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Coba from "../view-posyandu/pages/coba";
 import Login from "../view-publik/pages/Login";
@@ -23,6 +23,7 @@ import PageListBerita from "../view-kelurahan/pages/PageListBerita";
 import PageListJadwal from "../view-kelurahan/pages/PageListJadwal";
 import PageTambahKader from "../view-kelurahan/pages/PageTambahKader";
 import NonRoute from "../base/NonRoute";
+import NotFound from "../view-publik/pages/NotFound";
 
 
 const RoutesKelurahan = () => {
@@ -61,8 +62,12 @@ const RoutesKelurahan = () => {
             <Route path="/detail-berita/:idBerita" element={<PrivateRoute element={<Coba />} requiredRole="Kelurahan" />} />
             <Route path="/edit-berita/:idBerita" element={<PrivateRoute element={<PageEditBerita />} requiredRole="Kelurahan" />} />
 
-            <Route path='*' element={<NonRoute />} />
-        </Routes>
+            {/* Fallback jika route tidak ditemukan */}
+            <Route path="*" element={<Navigate to="/not-found" replace />} />
+
+            {/* Halaman Not Found */}
+            <Route path="/not-found" element={<NotFound />} />
+        </Routes >
     )
 }
 

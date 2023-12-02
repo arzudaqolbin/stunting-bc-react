@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/add-balita.css";
 import BASE_URL from "../../base/apiConfig";
+import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
@@ -220,14 +223,60 @@ function AddBalita({ idPosyandu, apiAuth }) {
     return isValid;
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Menambahkan balita baru",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // acc izin
+        onSubmit(e)
+      }
+    });
+  }
+
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil disimpan", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
         const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
+        showSuccessPostToast();
         navigate(`/posyandu/detail-balita/${respon.data.id}`);
+
       } catch (error) {
+        showFailedPostToast();
         if (error.response) {
           console.error(
             "Kesalahan dalam permintaan ke server:",
@@ -254,9 +303,14 @@ function AddBalita({ idPosyandu, apiAuth }) {
         <div className="table-responsive">
           <form
             onSubmit={(e) => {
-              onSubmit(e);
+              // Mencegah pengiriman formulir langsung
+              e.preventDefault();
+              if (validateForm()) {
+                confirmAlert(e);
+              }
             }}
           >
+
             <label htmlFor="nik">
               <span>NIK*</span>
               <input
@@ -265,8 +319,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nik"
                 value={nik}
                 onChange={(e) => onInputChange(e)}
-                required
+              // required
               />
+              <div className={`error`}>{errors.nik}</div>
             </label>
 
             <label htmlFor="nama">
@@ -277,8 +332,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama"
                 value={nama}
                 onChange={(e) => onInputChange(e)}
-                required
+              // required
               />
+              <div className={`error`}>{errors.nama}</div>
             </label>
 
             <label htmlFor="jenis_kelamin">
@@ -289,10 +345,11 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 value={jenis_kelamin}
                 onChange={(e) => onInputChange(e)}
               >
-                <option value="">--Pilih--</option>
+                <option value="" disabled selected>--Pilih--</option>
                 <option value="Laki-Laki">Laki-Laki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
+              <div className={`error`}>{errors.jenis_kelamin}</div>
             </label>
 
             <label htmlFor="anak_ke">
@@ -303,8 +360,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="anak_ke"
                 value={anak_ke}
                 onChange={(e) => onInputChange(e)}
-                required
+              // required
               />
+              <div className={`error`}>{errors.anak_ke}</div>
             </label>
 
             <label htmlFor="umur">
@@ -315,13 +373,14 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="umur"
                 value={umur}
                 onChange={(e) => onInputChange(e)}
-                required
+                // required
                 onKeyPress={(e) => {
                   if (e.key < "0" || e.key > "9") {
                     e.preventDefault();
                   }
                 }}
               />
+              <div className={`error`}>{errors.umur}</div>
             </label>
 
             <label htmlFor="nama_ortu">
@@ -332,8 +391,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama_ortu"
                 value={nama_ortu}
                 onChange={(e) => onInputChange(e)}
-                required
+              // required
               />
+              <div className={`error`}>{errors.nama_ortu}</div>
             </label>
 
             <label htmlFor="pekerjaan_ortu">
@@ -344,14 +404,13 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="pekerjaan_ortu"
                 value={pekerjaan_ortu}
                 onChange={(e) => onInputChange(e)}
-                required
+              // required
               />
+              <div className={`error`}>{errors.pekerjaan_ortu}</div>
             </label>
 
-            <div className="address-section">
-              <label htmlFor="alamat">
-                <span>Alamat</span>
-              </label>
+            <label htmlFor="alamat">
+              <span>Alamat</span>
               <input
                 type={"text"}
                 className="form-control"
@@ -361,7 +420,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 onChange={(e) => onInputChange(e)}
                 readOnly
               />
+            </label>
 
+            <div className="address-section">
               <div className="address-details">
                 <label htmlFor="jalan">
                   <span>Jalan*</span>
@@ -371,8 +432,9 @@ function AddBalita({ idPosyandu, apiAuth }) {
                     name="jalan"
                     value={jalan}
                     onChange={(e) => onInputChange(e)}
-                    required
+                  // required
                   />
+                  <div className={`error`}>{errors.jalan}</div>
                 </label>
 
                 <label htmlFor="rt">
@@ -383,7 +445,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                     name="rt"
                     value={rt}
                     onChange={(e) => onInputChange(e)}
-                    required
+                    // required
                     pattern="\d{2,}"
                     title="Awali angka satuan dengan angka 0, misal 01"
                     onKeyPress={(e) => {
@@ -392,6 +454,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                       }
                     }}
                   />
+                  <div className={`error`}>{errors.rt}</div>
                 </label>
 
                 <label htmlFor="rw">
@@ -402,7 +465,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                     name="rw"
                     value={rw}
                     onChange={(e) => onInputChange(e)}
-                    required
+                    // required
                     pattern="\d{2,}"
                     title="Awali angka satuan dengan angka 0, misal 01"
                     onKeyPress={(e) => {
@@ -411,6 +474,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                       }
                     }}
                   />
+                  <div className={`error`}>{errors.rw}</div>
                 </label>
               </div>
             </div>
@@ -424,8 +488,11 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="tgl_lahir"
                 value={tgl_lahir}
                 onChange={(e) => onInputChange(e)}
-                required
+                // required
+                min={fiveYearsAgoFormatted}
+                max={tomorrowString}
               />
+              <div className={`error`}>{errors.tgl_lahir}</div>
             </label>
 
             {/* <label htmlFor="posyandu">
@@ -436,7 +503,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 value={posyandu}
                 onChange={(e) => onInputChange(e)}
               >
-                <option value="">--Pilih--</option>
+                <option value="" disabled selected>--Pilih--</option>
                 {posyanduOptions &&
                   posyanduOptions.map((option) => (
                     <option key={option.id} value={option.id}>
