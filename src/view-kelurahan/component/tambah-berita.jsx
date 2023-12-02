@@ -13,7 +13,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
   // const tomorrowString = tomorrow.toISOString().split('T')[0];
 
   const [berita, setBerita] = useState({
-    // tgl_berita: "",
+    tgl_berita: "",
     judul: "",
     deskripsi: "",
     isi: "",

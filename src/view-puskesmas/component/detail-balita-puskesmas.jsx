@@ -28,19 +28,24 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
 
   const getDataTambahan = async () => {
     try {
-      const dataTambahanBalita = await axios.get(`${BASE_URL}/dataTambahanBalitas/${idBalita}`, apiAuth);
+      const dataTambahanBalita = await axios.get(
+        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
+        apiAuth
+      );
       setRiwayat(dataTambahanBalita.data);
     } catch (error) {
       console.error("Error fetching balita data:", error);
     }
-  }
+  };
 
   const getNamaPosyandu = async () => {
     try {
+      console.log(biodata.posyandu_id);
       const namaPos = await axios.get(
         `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
         apiAuth
       );
+      console.log(namaPos);
       setNamaPosyandu(namaPos.data.data);
     } catch (error) {
       console.error("Error fetching posyandu data:", error);

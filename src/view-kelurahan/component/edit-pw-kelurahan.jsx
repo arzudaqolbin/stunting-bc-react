@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwKelurahan(userId, idKelurahan, apiAuth) {
+function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -44,10 +44,15 @@ function EditPwKelurahan(userId, idKelurahan, apiAuth) {
     }
 
     axios
-      .put(`${BASE_URL}/user/${userId}`, {
-        username: formData.username,
-        password: formData.password_baru,
-      })
+      .put(
+        `${BASE_URL}/user/${userId}`,
+        {
+          username: formData.username,
+          password: formData.password_baru,
+          confirm_password: formData.konfirmasi_password,
+        },
+        apiAuth
+      )
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");

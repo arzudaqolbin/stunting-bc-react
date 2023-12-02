@@ -9,11 +9,11 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
   const tomorrow = new Date();
   tomorrow.setDate(new Date().getDate() + 1);
-  const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const tomorrowString = tomorrow.toISOString().split("T")[0];
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
 
-  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split("T")[0];
   const [balita, setBalita] = useState({
     nik: "",
     nama: "",
@@ -43,6 +43,9 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     anak_ke,
     umur,
     posyandu_id,
+    status_tbu,
+    status_bbu,
+    status_bbtb,
   } = balita;
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
@@ -132,7 +135,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     if (!balita.nik) {
       isValid = false;
       newErrors.nik = "NIK tidak boleh kosong";
-    } else if(!/^[0-9]+$/.test(balita.nik)) {
+    } else if (!/^[0-9]+$/.test(balita.nik)) {
       newErrors.nik = "NIK harus berisi angka tanpa huruf dan simbol";
       isValid = false;
     } else {
@@ -164,7 +167,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     // Validasi Nama Orang Tua
     if (!balita.jenis_kelamin) {
       isValid = false;
-      newErrors.jenis_kelamin= "Pilih jenis kelamin";
+      newErrors.jenis_kelamin = "Pilih jenis kelamin";
     } else {
       newErrors.jenis_kelamin = "";
     }
@@ -173,7 +176,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     if (!balita.pekerjaan_ortu) {
       isValid = false;
       newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak boleh kosong";
-    }else if ( !/^[a-zA-Z\s]+$/.test(balita.pekerjaan_ortu)) {
+    } else if (!/^[a-zA-Z\s]+$/.test(balita.pekerjaan_ortu)) {
       newErrors.pekerjaan_ortu = "Pekerjaan orang tua tidak valid";
       isValid = false;
     } else {
@@ -183,8 +186,8 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     // Validasi Anak-ke
     if (!balita.anak_ke) {
       isValid = false;
-      newErrors.anak_ke= "Anak-ke tidak boleh kosong";
-    } else if(!/^[0-9]+$/.test(balita.anak_ke)) {
+      newErrors.anak_ke = "Anak-ke tidak boleh kosong";
+    } else if (!/^[0-9]+$/.test(balita.anak_ke)) {
       newErrors.anak_ke = "Tulis hanya dalam angka";
       isValid = false;
     } else {
@@ -204,7 +207,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     if (!rt) {
       isValid = false;
       newErrors.rt = "RT tidak boleh kosong .";
-    }else if(!rtRwRegex.test(rt)) {
+    } else if (!rtRwRegex.test(rt)) {
       newErrors.rt = "RT harus berisi angka tanpa huruf dan simbol";
       isValid = false;
     } else {
@@ -214,7 +217,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     if (!balita.rw) {
       isValid = false;
       newErrors.rw = "RW tidak boleh kosong .";
-    }else if(!balita.rw || !rtRwRegex.test(balita.rw)) {
+    } else if (!balita.rw || !rtRwRegex.test(balita.rw)) {
       newErrors.rw = "RW harus berisi angka tanpa huruf dan simbol";
       isValid = false;
     } else {
@@ -234,17 +237,17 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     nama_ortu: "",
     pekerjaan_ortu: "",
     alamat: "",
-    rt:"",
+    rt: "",
     rw: "",
     tgl_lahir: "",
     anak_ke: "",
     umur: "",
     nama_posyandu: "",
   });
-  
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       try {
         await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
         navigate(`/puskesmas/detail-balita/${idBalita}`);
@@ -266,128 +269,139 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
 
   return (
     <main className="container">
-            <i class="fa-solid fa-arrow-left text-2x"></i>
+      <i class="fa-solid fa-arrow-left text-2x"></i>
       <h2 className="custom-judul">Form Edit Data Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-      <div className="table-responsive">
-        <form
-          onSubmit={(e) => {
-            onSubmit(e);
-          }}
-        >
-          <label htmlFor="nik">
-            <span>NIK*</span>
-            <input
-              type="text"
-              id="nik"
-              name="nik"
-              value={nik}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.nik}</div>
-          </label>
+        <div className="table-responsive">
+          <form
+            onSubmit={(e) => {
+              onSubmit(e);
+            }}
+          >
+            <label htmlFor="nik">
+              <span>NIK*</span>
+              <input
+                type="text"
+                id="nik"
+                name="nik"
+                value={nik}
+                onChange={(e) => onInputChange(e)}
+                // required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.nik}</div>
+            </label>
 
-          <label htmlFor="nama">
-            <span>Nama Balita*</span>
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              value={nama}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.nama}</div>
-          </label>
+            <label htmlFor="nama">
+              <span>Nama Balita*</span>
+              <input
+                type="text"
+                id="nama"
+                name="nama"
+                value={nama}
+                onChange={(e) => onInputChange(e)}
+                // required
+              />
+              <div className={`error`}>{errors.nama}</div>
+            </label>
 
-          <label htmlFor="jenis_kelamin">
-            <span>Jenis Kelamin*</span>
-            <select
-              id="jenis_kelamin"
-              name="jenis_kelamin"
-              value={jenis_kelamin}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="" disabled selected>Pilih jenis kelamin</option>
-              <option value="Laki-Laki">Laki-Laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
-            <div className={`error`}>{errors.jenis_kelamin}</div>
-          </label>
+            <label htmlFor="jenis_kelamin">
+              <span>Jenis Kelamin*</span>
+              <select
+                id="jenis_kelamin"
+                name="jenis_kelamin"
+                value={jenis_kelamin}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="" disabled selected>
+                  Pilih jenis kelamin
+                </option>
+                <option value="Laki-Laki">Laki-Laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+              <div className={`error`}>{errors.jenis_kelamin}</div>
+            </label>
 
-          <label htmlFor="anak_ke">
-            <span>Anak Ke-*</span>
-            <input
-              type="type"
-              id="anak_ke"
-              name="anak_ke"
-              value={anak_ke}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.anak_ke}</div>
-          </label>
+            <label htmlFor="anak_ke">
+              <span>Anak Ke-*</span>
+              <input
+                type="type"
+                id="anak_ke"
+                name="anak_ke"
+                value={anak_ke}
+                onChange={(e) => onInputChange(e)}
+                // required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.anak_ke}</div>
+            </label>
 
-          <label htmlFor="umur">
-            <span>Umur*</span>
-            <input
-              type="type"
-              id="umur"
-              name="umur"
-              value={umur}
-              onChange={(e) => onInputChange(e)}
-              // required
-              // onKeyPress={(e) => {
-              //   if (e.key < "0" || e.key > "9") {
-              //     e.preventDefault();
-              //   }
-              // }}
-            />
-            <div className={`error`}>{errors.umur}</div>
-          </label>
+            <label htmlFor="umur">
+              <span>Umur*</span>
+              <input
+                type="type"
+                id="umur"
+                name="umur"
+                value={umur}
+                onChange={(e) => onInputChange(e)}
+                // required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.umur}</div>
+            </label>
 
-          <label htmlFor="nama_ortu">
-            <span>Nama Orang Tua*</span>
-            <input
-              type="text"
-              id="nama_ortu"
-              name="nama_ortu"
-              value={nama_ortu}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.nama_ortu}</div>
-          </label>
+            <label htmlFor="nama_ortu">
+              <span>Nama Orang Tua*</span>
+              <input
+                type="text"
+                id="nama_ortu"
+                name="nama_ortu"
+                value={nama_ortu}
+                onChange={(e) => onInputChange(e)}
+                // required
+              />
+              <div className={`error`}>{errors.nama_ortu}</div>
+            </label>
 
-          <label htmlFor="pekerjaan_ortu">
-            <span>Pekerjaan Orang Tua*</span>
-            <input
-              type="text"
-              id="pekerjaan_ortu"
-              name="pekerjaan_ortu"
-              value={pekerjaan_ortu}
-              onChange={(e) => onInputChange(e)}
-              // required
-            />
-            <div className={`error`}>{errors.pekerjaan_ortu}</div>
-          </label>
+            <label htmlFor="pekerjaan_ortu">
+              <span>Pekerjaan Orang Tua*</span>
+              <input
+                type="text"
+                id="pekerjaan_ortu"
+                name="pekerjaan_ortu"
+                value={pekerjaan_ortu}
+                onChange={(e) => onInputChange(e)}
+                // required
+              />
+              <div className={`error`}>{errors.pekerjaan_ortu}</div>
+            </label>
 
-          <div className="address-section">
             <label htmlFor="alamat">
               <span>Alamat</span>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="alamat"
+                name="alamat"
+                value={alamat}
+                onChange={(e) => onInputChange(e)}
+                readOnly
+              />
             </label>
-            <input
-              type={"text"}
-              className="form-control"
-              placeholder="alamat"
-              name="alamat"
-              value={alamat}
-              onChange={(e) => onInputChange(e)}
-              readOnly
-            />
 
             <div className="address-details">
               <label htmlFor="jalan">
@@ -399,6 +413,11 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                   value={jalan}
                   onChange={(e) => onInputChange(e)}
                   // required
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </label>
 
@@ -442,46 +461,44 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 <div className={`error`}>{errors.rw}</div>
               </label>
             </div>
-          </div>
+            <label htmlFor="Tanggal Lahir" className="form-label">
+              <span>Tanggal Lahir Balita*</span>
+              <input
+                type="date"
+                className="form-control"
+                placeholder="Masukkan Tanggal Lahir"
+                name="tgl_lahir"
+                value={tgl_lahir}
+                onChange={(e) => onInputChange(e)}
+                // required
+                max={tomorrowString}
+                min={fiveYearsAgoFormatted}
+              />
+              <div className={`error`}>{errors.tgl_lahir}</div>
+            </label>
 
-          <label htmlFor="Tanggal Lahir" className="form-label">
-            <span>Tanggal Lahir Balita*</span>
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Masukkan Tanggal Lahir"
-              name="tgl_lahir"
-              value={tgl_lahir}
-              onChange={(e) => onInputChange(e)}
-              // required
-              max={tomorrowString}
-              min={fiveYearsAgoFormatted}
-            />
-            <div className={`error`}>{errors.tgl_lahir}</div>
-          </label>
-
-          <label htmlFor="posyandu">
-            <span>Nama Posyandu*</span>
-            <select
-              id="posyandu"
-              name="posyandu"
-              value={posyandu_id}
-              onChange={(e) => onInputChange(e)}
-            >
-              <option value="">--Pilih--</option>
-              {posyanduOptions &&
-                posyanduOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.nama}
-                  </option>
-                ))}
-            </select>
-            <div className={`error`}>{errors.nama_posyandu}</div>
-          </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
+            <label htmlFor="posyandu">
+              <span>Nama Posyandu*</span>
+              <select
+                id="posyandu"
+                name="posyandu"
+                value={posyandu_id}
+                onChange={(e) => onInputChange(e)}
+              >
+                <option value="">--Pilih--</option>
+                {posyanduOptions &&
+                  posyanduOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.nama}
+                    </option>
+                  ))}
+              </select>
+              <div className={`error`}>{errors.nama_posyandu}</div>
+            </label>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
         </div>
       </div>
     </main>

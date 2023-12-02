@@ -6,38 +6,36 @@ import BASE_URL from "../../base/apiConfig";
 
 function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
   const [Puskesmas, setPuskesmas] = useState({});
-
-  // const dt = dataAuth()
-  // console.log(dt.id)
+  const [koordinat, setKoordinat] = useState({ latitude: 0, longitut: 0 });
 
   useEffect(() => {
-    loadDataPuskesmas();
-  }, []);
+    axios
+      .get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth)
+      .then((response) => {
+        setPuskesmas(response.data.data);
+        axios
+          .get(
+            `${BASE_URL}/koordinat/${response.data.data.koordinat_id}`,
+            apiAuth
+          )
+          .then((koordinatResponse) => {
+            setKoordinat(koordinatResponse.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching koordinat:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching puskesmas:", error);
+      });
+  }, [idPuskesmas, apiAuth]);
 
-  const loadDataPuskesmas = async () => {
-    try {
-      const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth);
-      setPuskesmas(result.data.data);
-    } catch (error) {
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
-    }
-  };
+  const [mapUrl, setMapUrl] = useState("");
+
+  useEffect(() => {
+    const url = `https://www.openstreetmap.org/export/embed.html?bbox=${koordinat.longitut},${koordinat.latitude}&marker=${koordinat.latitude},${koordinat.longitut}`;
+    setMapUrl(url);
+  }, [koordinat.latitude, koordinat.longitut]);
 
   return (
     <main className="container">
@@ -51,7 +49,19 @@ function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
             <p>{Puskesmas?.alamat || "Loading..."}</p>
             <h1>NO. TELP</h1>
             <p>{Puskesmas?.nomor_telepon || "Loading..."}</p>
-            <img src="puskesmas.png" alt="Peta Lokasi" />
+            <h1>KOORDINAT</h1>
+            <div className="text-center">
+              {mapUrl && (
+                <iframe
+                  title="Open Street Map"
+                  width="50%"
+                  height="200px"
+                  loading="lazy"
+                  allowFullScreen
+                  src={mapUrl}
+                ></iframe>
+              )}
+            </div>
             <div className="button-container">
               <button type="submit" className="submit">
                 Ganti Password
