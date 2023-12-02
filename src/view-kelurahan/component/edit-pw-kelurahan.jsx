@@ -67,47 +67,47 @@ function EditPwKelurahan(userId, idKelurahan, apiAuth) {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT PASSWORD KELURAHAN</h2>
         <div className="table-responsive">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="username">
-            <span>USERNAME</span>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              required
-              value={formData.username}
-              readOnly // Membuat input tidak bisa diubah
-            />
-          </label>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="username">
+              <span>USERNAME</span>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                value={formData.username}
+                readOnly // Membuat input tidak bisa diubah
+              />
+            </label>
 
-          <label htmlFor="password_baru">
-            <span>PASSWORD BARU</span>
-            <input
-              type="password"
-              id="password_baru"
-              name="password_baru"
-              required
-              value={formData.password_baru}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="password_baru">
+              <span>PASSWORD BARU</span>
+              <input
+                type="password"
+                id="password_baru"
+                name="password_baru"
+                required
+                value={formData.password_baru}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="konfirmasi_password">
-            <span>KONFIRMASI PASSWORD</span>
-            <input
-              type="password"
-              id="konfirmasi_password"
-              name="konfirmasi_password"
-              required
-              value={formData.konfirmasi_password}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="konfirmasi_password">
+              <span>KONFIRMASI PASSWORD</span>
+              <input
+                type="password"
+                id="konfirmasi_password"
+                name="konfirmasi_password"
+                required
+                value={formData.konfirmasi_password}
+                onChange={handleChange}
+              />
+            </label>
 
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
         </div>
       </div>
     </main>

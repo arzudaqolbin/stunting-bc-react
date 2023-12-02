@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-const TambahBerita = ({ idKelurahan, apiAuth }) => {
+const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
   let navigate = useNavigate();
   const today = new Date().toISOString().split('T')[0];
   // const tomorrow = new Date();
@@ -20,9 +20,6 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     gambar: "",
   });
 
-  console.log(berita);
-
-  // const { tgl_berita, judul, deskripsi, isi, gambar } = berita;
   const { judul, deskripsi, isi, gambar } = berita;
 
   const onInputChange = (e) => {
@@ -48,12 +45,12 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     const newErrors = { ...errors };
 
     // Validasi Nama tanggal
-    if (!berita.tgl_berita) {
-      newErrors.tgl_berita = "Tanggal berita tidak boleh kosong";
-      isValid = false;
-    } else {
-      newErrors.tgl_berita = "";
-    }
+    // if (!berita.tgl_berita) {
+    //   newErrors.tgl_berita = "Tanggal berita tidak boleh kosong";
+    //   isValid = false;
+    // } else {
+    //   newErrors.tgl_berita = "";
+    // }
 
     // Validation for Username
     if (!berita.judul) {
@@ -95,15 +92,22 @@ const TambahBerita = ({ idKelurahan, apiAuth }) => {
     e.preventDefault();
     if (validateForm()) {
       const formData = new FormData();
-      formData.append("tgl_berita", tgl_berita);
+      // formData.append("tgl_berita", today);
       formData.append("judul", judul);
       formData.append("deskripsi", deskripsi);
       formData.append("isi", isi);
       formData.append("gambar", gambar); // Ini adalah file yang akan dikirim
+      console.log(gambar);
 
+      // console.log(berita.gambar);
       try {
-        await axios.post(`${BASE_URL}/beritas`, formData, apiAuth);
-        //   navigate("/"); // Redirect ke halaman lain setelah sukses
+        const response = await axios.post(`${BASE_URL}/beritas`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        console.log(response.data);
       } catch (error) {
         if (error.response) {
           console.error(
