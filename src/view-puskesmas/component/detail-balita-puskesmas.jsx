@@ -88,9 +88,12 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
         </div>
       ) : (
         <main className="container">
-          <div className="container-fluid">
-            <div className="container">
-              <h2 className="text-center m-10">Detail Balita</h2>
+          <h2 
+                style={{
+                  textAlign: "center",
+                  marginTop: "50px",
+                  marginBottom: "50px",
+                }} className="text-center m-10">Detail Balita</h2>
               <div className="accordion mb-3" id="accordionExample">
                 <div className="accordion-item">
                   <h2 className="accordion-header">
@@ -359,8 +362,6 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         </main>
       )}
     </>

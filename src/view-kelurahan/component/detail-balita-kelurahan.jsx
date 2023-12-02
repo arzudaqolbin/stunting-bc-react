@@ -361,7 +361,10 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                 >
                   <div className="accordion-body">
                     {/* Isi komponen accordion disini */}
-                    <TabelPengukuranBalitaStunting />
+                    <TabelPengukuranBalitaStunting
+                      idBalita={idBalita}
+                      apiAuth={apiAuth}
+                    />
                   </div>
                 </div>
               </div>
@@ -386,8 +389,14 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                 >
                   <div className="accordion-body">
                     {/* Isi komponen accordion disini */}
-                    <LineChart_Umur_0_24 />
-                    <LineChart_Umur_24_60 />
+                    <LineChart_Umur_0_24
+                      idBalita={idBalita}
+                      apiAuth={apiAuth}
+                    />
+                    <LineChart_Umur_24_60
+                      idBalita={idBalita}
+                      apiAuth={apiAuth}
+                    />
                   </div>
                 </div>
               </div>

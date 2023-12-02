@@ -6,6 +6,8 @@ import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
+import $ from 'jquery';
+import 'datatables.net';
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -152,7 +154,8 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
   const [namaBalita, setNamaBalita] = useState(null);
-
+  const [loadData, setLoadData ] = useState(false);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -165,13 +168,14 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
           : [result.data];
         pengukuranArray.sort((a, b) => a.umur - b.umur);
         setDataPengukuran(pengukuranArray);
+        setLoadData(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [dataPengukuran]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -280,13 +284,46 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
 
   const handleExport = () => { };
 
+  useEffect(() => {
+    // Inisialisasi DataTable hanya pada mounting pertama
+    if (loadData && !$.fn.DataTable.isDataTable('#myTable')) {
+      $('#myTable').DataTable({
+        "aaSorting": [],
+        "language": {
+          "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
+          "zeroRecords": "Data tidak ditemukan",
+          "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+          "infoEmpty": "Tidak ada data tersedia",
+          "infoFiltered": "(Disaring dari _MAX_ data total)",
+          "decimal": "",
+          "emptyTable": "Data tidak tersedia",
+          "loadingRecords": "Memuat...",
+          "processing": "Memproses...",
+          "search": 'Pencarian:   <i class="bi bi-search"></i> ',
+          "searchPlaceholder": "cari data pengukuran...",
+          "paginate": {
+            "first": "Pertama",
+            "last": "Terakhir",
+            "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
+            "next": '<i class="bi bi-chevron-double-right"></i>     Next'
+          },
+          "aria": {
+            "sortAscending": ": klik untuk mengurutkan A-Z",
+            "sortDescending": ": klik untuk mengurutkan Z-A"
+          }
+        }
+      });
+    }
+  }, [loadData]);
+
+  if (!loadData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <main className="container">
-      <div className="container-fluid">
-        {/* Mulai isi kontennya disini */}
-        <h2 className="custom-judul">Data Pengukuran</h2>
+      {/* Mulai isi kontennya disini */}
 
-        <div className="p-3 mb-2 bg-light custom-border rounded">
           <Link
             to={`/puskesmas/tambah-pengukuran/${idBalita}`}
             className="btn btn-primary"
@@ -294,9 +331,10 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
             Tambah Pengukuran
           </Link>
           <button className="btn btn-primary" onClick={exportToXLSX}>
-            Export
+            Export Table
           </button>
-          <table className="table custom-table">
+          <div className="table-responsive">
+          <table id="myTable" className="table custom-table">
             <thead>
               <tr>
                 <th scope="col">No</th>
@@ -377,7 +415,6 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
             </tbody>
           </table>
         </div>
-      </div>
     </main>
   );
 }
