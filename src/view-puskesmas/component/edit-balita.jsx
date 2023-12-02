@@ -289,6 +289,11 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 value={nik}
                 onChange={(e) => onInputChange(e)}
                 // required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
               />
               <div className={`error`}>{errors.nik}</div>
             </label>
@@ -332,6 +337,11 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 value={anak_ke}
                 onChange={(e) => onInputChange(e)}
                 // required
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
               />
               <div className={`error`}>{errors.anak_ke}</div>
             </label>
@@ -345,11 +355,11 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                 value={umur}
                 onChange={(e) => onInputChange(e)}
                 // required
-                // onKeyPress={(e) => {
-                //   if (e.key < "0" || e.key > "9") {
-                //     e.preventDefault();
-                //   }
-                // }}
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
               />
               <div className={`error`}>{errors.umur}</div>
             </label>
@@ -380,124 +390,76 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
               <div className={`error`}>{errors.pekerjaan_ortu}</div>
             </label>
 
-            <div className="address-section">
-              <label htmlFor="alamat">
-                <span>Alamat</span>
-              </label>
-              <div className="address-details">
-                <label htmlFor="jalan">
-                  <span>Jalan*</span>
-                  <input
-                    type="text"
-                    id="jalan"
-                    name="jalan"
-                    value={jalan}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                  />
-                </label>
+            <label htmlFor="alamat">
+              <span>Alamat</span>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="alamat"
+                name="alamat"
+                value={alamat}
+                onChange={(e) => onInputChange(e)}
+                readOnly
+              />
+            </label>
 
-                <label htmlFor="rt">
-                  <span>RT*</span>
-                  <input
-                    type="text"
-                    id="rt"
-                    name="rt"
-                    value={rt}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rt}</div>
-                </label>
-
-                <label htmlFor="rw">
-                  <span>RW*</span>
-                  <input
-                    type="text"
-                    id="rw"
-                    name="rw"
-                    value={rw}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="\d{2,}"
-                    title="Awali angka satuan dengan angka 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rw}</div>
-                </label>
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
                 <input
-                  type={"text"}
-                  className="form-control"
-                  placeholder="alamat"
-                  name="alamat"
-                  value={alamat}
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
                   onChange={(e) => onInputChange(e)}
-                  readOnly
+                  // required
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
+              </label>
 
-                <div className="address-details">
-                  <label htmlFor="jalan">
-                    <span>Jalan*</span>
-                    <input
-                      type="text"
-                      id="jalan"
-                      name="jalan"
-                      value={jalan}
-                      onChange={(e) => onInputChange(e)}
-                      required
-                    />
-                  </label>
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
 
-                  <label htmlFor="rt">
-                    <span>RT*</span>
-                    <input
-                      type="text"
-                      id="rt"
-                      name="rt"
-                      value={rt}
-                      onChange={(e) => onInputChange(e)}
-                      required
-                      pattern="\d{2,}"
-                      title="Awali angka satuan dengan angka 0, misal 01"
-                      onKeyPress={(e) => {
-                        if (e.key < "0" || e.key > "9") {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                  </label>
-
-                  <label htmlFor="rw">
-                    <span>RW*</span>
-                    <input
-                      type="text"
-                      id="rw"
-                      name="rw"
-                      value={rw}
-                      onChange={(e) => onInputChange(e)}
-                      required
-                      pattern="\d{2,}"
-                      title="Awali angka satuan dengan angka 0, misal 01"
-                      onKeyPress={(e) => {
-                        if (e.key < "0" || e.key > "9") {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                  </label>
-                </div>
-              </div>
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
             </div>
             <label htmlFor="Tanggal Lahir" className="form-label">
               <span>Tanggal Lahir Balita*</span>

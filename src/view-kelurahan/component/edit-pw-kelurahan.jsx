@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
 
-function EditPwKelurahan(userId, idKelurahan, apiAuth) {
+function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -44,10 +44,15 @@ function EditPwKelurahan(userId, idKelurahan, apiAuth) {
     }
 
     axios
-      .put(`${BASE_URL}/user/${userId}`, {
-        username: formData.username,
-        password: formData.password_baru,
-      })
+      .put(
+        `${BASE_URL}/user/${userId}`,
+        {
+          username: formData.username,
+          password: formData.password_baru,
+          confirm_password: formData.konfirmasi_password,
+        },
+        apiAuth
+      )
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");
@@ -67,47 +72,47 @@ function EditPwKelurahan(userId, idKelurahan, apiAuth) {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT PASSWORD KELURAHAN</h2>
         <div className="table-responsive">
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="username">
-            <span>USERNAME</span>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              required
-              value={formData.username}
-              readOnly // Membuat input tidak bisa diubah
-            />
-          </label>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="username">
+              <span>USERNAME</span>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                value={formData.username}
+                readOnly // Membuat input tidak bisa diubah
+              />
+            </label>
 
-          <label htmlFor="password_baru">
-            <span>PASSWORD BARU</span>
-            <input
-              type="password"
-              id="password_baru"
-              name="password_baru"
-              required
-              value={formData.password_baru}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="password_baru">
+              <span>PASSWORD BARU</span>
+              <input
+                type="password"
+                id="password_baru"
+                name="password_baru"
+                required
+                value={formData.password_baru}
+                onChange={handleChange}
+              />
+            </label>
 
-          <label htmlFor="konfirmasi_password">
-            <span>KONFIRMASI PASSWORD</span>
-            <input
-              type="password"
-              id="konfirmasi_password"
-              name="konfirmasi_password"
-              required
-              value={formData.konfirmasi_password}
-              onChange={handleChange}
-            />
-          </label>
+            <label htmlFor="konfirmasi_password">
+              <span>KONFIRMASI PASSWORD</span>
+              <input
+                type="password"
+                id="konfirmasi_password"
+                name="konfirmasi_password"
+                required
+                value={formData.konfirmasi_password}
+                onChange={handleChange}
+              />
+            </label>
 
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
         </div>
       </div>
     </main>
