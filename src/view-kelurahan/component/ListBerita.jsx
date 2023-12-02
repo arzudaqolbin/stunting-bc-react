@@ -2,8 +2,7 @@ import React from "react";
 import berita from "../../aset/berita.png";
 import logokelurahan from "../../aset/logokelurahan.png";
 import { Link } from "react-router-dom";
-import "../css/list-berita.css";
-import { useNavigate } from "react-router-dom";
+import "../../view-publik/css/list-berita.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL, { apiAuth } from "../../base/apiConfig";
@@ -47,9 +46,9 @@ const ListBerita = () => {
           </form>
         </div>
       </div>
-      {/* <div className="text-end mb-5">
-          <button className="btn btn-primary">Tambah Berita</button>
-      </div> */}
+      <div className="text-end mb-5">
+        <button className="btn btn-primary">Tambah Berita</button>
+      </div>
       <div className="row mt-3">
         {daftarBerita.map((berita, index) => (
           <div key={index} className="col-md-4 mb-5">
@@ -71,8 +70,20 @@ const ListBerita = () => {
                 >
                   {berita.isi}
                 </p>
-                <Link to={`/berita/${berita.id}`} className="btn btn-primary">
+                <Link
+                  to={`detail-berita/${berita.id}`}
+                  className="btn btn-primary"
+                >
                   Baca berita
+                </Link>
+                <button className="btn btn-danger float-end">
+                  <i className="fas fa-trash"></i>
+                </button>
+                <Link
+                  to={`/kelurahan/edit-berita/${berita.id}`}
+                  className="btn btn-primary float-end me-2"
+                >
+                  <i className="fas fa-edit"></i>
                 </Link>
               </div>
             </div>

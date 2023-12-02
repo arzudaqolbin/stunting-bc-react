@@ -189,8 +189,7 @@ const SidebarPuskesmas = ({ content }) => {
           </div>
         </nav>
 
-        {/* <div className="container">ini breadcrumb</div> */}
-
+        {/* Main content section */}
         {content}
       </div>
     </div>

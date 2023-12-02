@@ -153,7 +153,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
   const [namaBalita, setNamaBalita] = useState(null);
-  const [loadData, setLoadData ] = useState(false);
+  const [loadData, setLoadData] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {

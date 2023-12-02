@@ -45,7 +45,7 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
     //   })
 
     try {
-      // console.log(kader);
+      console.log(kader);
       const response = await axios.post(`${BASE_URL}/kader`, kader, apiAuth);
       navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
       console.log(response.data.data)

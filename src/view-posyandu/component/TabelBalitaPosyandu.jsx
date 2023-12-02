@@ -193,54 +193,54 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
           <main className="container">
             {/* Mulai isi kontennya disini */}
             <h2 className="custom-judul">Daftar Balita Posyandu</h2>
-              
-              <div className="table-responsive">
-                <table id="myTable" className="table custom-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">No</th>
-                      <th scope="col">Nama Balita</th>
-                      <th scope="col">Jenis Kelamin</th>
-                      <th scope="col">Nama Orang Tua</th>
-                      <th scope="col">Umur (Bulan)</th>
-                      <th scope="col">Status TB/U</th>
-                      <th scope="col">Status BB/TB</th>
-                      <th scope="col">Status BB/U</th>
-                      <th scope="col">Lihat Detail</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {balita.map((data, index) => (
-                      <tr key={data.id}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{data.nama}</td>
-                        <td>{data.jenis_kelamin}</td>
-                        <td>{data.nama_ortu}</td>
-                        <td>{data.umur}</td>
-                        <td data-status_tbu={data.status_tbu}>
-                          <div className={getStatusTBUClass(data.status_tbu)}>
-                            {data.status_tbu}
-                          </div>
-                        </td>
-                        <td data-status_bbtb={data.status_bbtb}>
-                          <div className={getStatusBBTBClass(data.status_bbtb)}>
-                            {data.status_bbtb}
-                          </div>
-                        </td>
-                        <td data-status_bbu={data.status_bbu}>
-                          <div className={getStatusBBUClass(data.status_bbu)}>
-                            {data.status_bbu}
-                          </div>
-                        </td>
-                        <td>
-                          <Link to={`/posyandu/detail-balita/${data.id}`} >
-                            <button className="btn btn-info">Info</button>
-                          </Link>
-                        </td>
-                      </tr >
-                    ))
-                    }
-                    {/* <tr key="12">
+
+            <div className="table-responsive">
+              <table id="myTable" className="table custom-table">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama Balita</th>
+                    <th scope="col">Jenis Kelamin</th>
+                    <th scope="col">Nama Orang Tua</th>
+                    <th scope="col">Umur (Bulan)</th>
+                    <th scope="col">Status TB/U</th>
+                    <th scope="col">Status BB/TB</th>
+                    <th scope="col">Status BB/U</th>
+                    <th scope="col">Lihat Detail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {balita.map((data, index) => (
+                    <tr key={data.id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{data.nama}</td>
+                      <td>{data.jenis_kelamin}</td>
+                      <td>{data.nama_ortu}</td>
+                      <td>{data.umur}</td>
+                      <td data-status_tbu={data.status_tbu}>
+                        <div className={getStatusTBUClass(data.status_tbu)}>
+                          {data.status_tbu}
+                        </div>
+                      </td>
+                      <td data-status_bbtb={data.status_bbtb}>
+                        <div className={getStatusBBTBClass(data.status_bbtb)}>
+                          {data.status_bbtb}
+                        </div>
+                      </td>
+                      <td data-status_bbu={data.status_bbu}>
+                        <div className={getStatusBBUClass(data.status_bbu)}>
+                          {data.status_bbu}
+                        </div>
+                      </td>
+                      <td>
+                        <Link to={`/posyandu/detail-balita/${data.id}`} >
+                          <button className="btn btn-info">Info</button>
+                        </Link>
+                      </td>
+                    </tr >
+                  ))
+                  }
+                  {/* <tr key="12">
                   <th scope="row">12</th>
                   <td>aaa</td>
                   <td>bbb</td>
@@ -261,9 +261,9 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
                     </Link>
                   </td>
                 </tr> */}
-                  </tbody >
-                </table >
-              </div >
+                </tbody >
+              </table >
+            </div >
           </main >)
       }
     </>

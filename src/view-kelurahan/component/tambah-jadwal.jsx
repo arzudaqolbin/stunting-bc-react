@@ -13,22 +13,71 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
 
   const { tanggal, waktu, judul, deskripsi } = jadwal;
 
+  const [errors, setErrors] = useState({
+    tanggal: '',
+    waktu: '',
+    judul: '',
+    deskripsi: '',
+  });
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setJadwal({ ...jadwal, [name]: value });
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validasi Nama tanggal
+    if (!jadwal.tanggal) {
+      newErrors.tanggal = "Tanggal jadwal tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tanggal = "";
+    }
+
+    // Validation for Username
+    if (!jadwal.waktu) {
+      isValid = false;
+      newErrors.waktu = "Judul tidak boleh kosong";
+    } else {
+      newErrors.waktu = "";
+    }
+
+    // Validation for Username
+    if (!jadwal.judul) {
+      isValid = false;
+      newErrors.judul = "Judul tidak boleh kosong";
+    } else {
+      newErrors.judul = "";
+    }
+
+    // Validation for Password
+    if (!jadwal.deskripsi) {
+      isValid = false;
+      newErrors.deskripsi = "Beri deskripsi singkat";
+    } else {
+      newErrors.deskripsi = "";
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    // console.log(jadwal)
-    try {
-      const response = await axios.post(`${BASE_URL}/jadwals`, jadwal, apiAuth);
-      // console.log(response.data);
-      // navi
-      console.log(response.data);
-    } catch (error) {
-      // Handle errors, e.g., show an error message
-      console.error('Error submitting data:', error);
+    if (validateForm()){
+      // console.log(jadwal)
+      try {
+        const response = await axios.post(`${BASE_URL}/jadwals`, jadwal, apiAuth);
+        // console.log(response.data);
+        // navi
+        console.log(response.data);
+      } catch (error) {
+        // Handle errors, e.g., show an error message
+        console.error('Error submitting data:', error);
+      }
     }
   };
 
@@ -52,6 +101,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
               onChange={onInputChange}
               required
             />
+            <div className={`error`}>{errors.tanggal}</div>
           </label>
 
           <label htmlFor="waktu">
@@ -64,6 +114,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
               onChange={onInputChange}
               required
             />
+            <div className={`error`}>{errors.waktu}</div>
           </label>
 
           <label htmlFor="judul">
@@ -77,6 +128,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
               required
               rows="2"
             />
+            <div className={`error`}>{errors.judul}</div>
           </label>
 
           <label htmlFor="deskripsi">
@@ -89,6 +141,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
               required
               rows="4"
             ></textarea>
+            <div className={`error`}>{errors.deskripsi}</div>
           </label>
 
           <button type="submit" className="submit-button">

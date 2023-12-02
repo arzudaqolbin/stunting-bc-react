@@ -3,7 +3,7 @@ import "../css/form-kelurahan.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BASE_URL from '../../base/apiConfig';
-
+import Swal from "sweetalert2";
 
 function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
@@ -45,6 +45,12 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
           nomor_telepon: data.nomor_telepon,
           user_id: data.user_id
         });
+
+        const parts = data.alamat.split(", ");
+        setJalan(parts[0] || "");
+        setRt(parts[1] ? parts[1].replace("RT ", "") : "");
+        setRw(parts[2] ? parts[2].replace("RW ", "") : "");
+
         console.log(data);
 
         axios.get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
@@ -71,37 +77,200 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const [errors, setErrors] = useState({
+    nama_posyandu: "",
+    nama_puskesmas: "", // Ini akan diisi dengan ID Puskesmas yang dipilih
+    alamat: "",
+    rt: "",
+    rw: "",
+    kepala: "",
+    nomor_telepon: "",
+    username: "",
+    password: "",
+    confirm_password: "",
+  });
+
+  const {
+    alamat,
+  } = formData;
+
+  const [jalan, setJalan] = useState("");
+  const [rt, setRt] = useState("");
+  const [rw, setRw] = useState("");
+
+  useEffect(() => {
+    setFormData((prevformData) => ({
+      ...formData,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+    }));
+  }, [jalan, rw, rt]);
+
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "jalan") {
+      setJalan(value);
+    } else if (name === "rt") {
+      setRt(value);
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validation for Nama Posyandu
+    if (!formData.nama_posyandu) {
+      isValid = false;
+      newErrors.nama_posyandu = "Nama Posyandu harus diisi";
+    } else if (!/^[a-zA-Z0-9 ]+$/.test(formData.nama_posyandu)) {
+      isValid = false;
+      newErrors.nama_posyandu = "Nama Posyandu tidak valid";
+    } else {
+      newErrors.nama_posyandu = "";
+    }
+
+    // Validation for Nama Posyandu
+    if (!formData.nama_puskesmas) {
+      isValid = false;
+      newErrors.nama_puskesmas = "Nama Puskesmas harus diisi";
+    } else {
+      newErrors.nama_puskesmas = "";
+    }
+
+    // Validasi RT dan RW
+    if (!jalan) {
+      isValid = false;
+      newErrors.jalan = "Jalan tidak boleh kosong";
+    } else {
+      newErrors.jalan = "";
+    }
+
+    if (!rt) {
+      isValid = false;
+      newErrors.rt = "RT tidak boleh kosong";
+    } else {
+      newErrors.rt = "";
+    }
+
+    if (!rw) {
+      isValid = false;
+      newErrors.rw = "RW tidak boleh kosong";
+    } else {
+      newErrors.rw = "";
+    }
+
+    // Validasi Nama Orang Tua
+    if (!formData.kepala) {
+      isValid = false;
+      newErrors.kepala = "Nama orang tua tidak boleh kosong";
+    } else if (!/^[a-zA-Z\s`.'-]+$/.test(formData.kepala)) {
+      newErrors.kepala = "Nama orang tua tidak valid";
+      isValid = false;
+    } else {
+      newErrors.kepala = "";
+    }
+
+    // Validation for Nomor Telepon
+    if (!formData.nomor_telepon) {
+      isValid = false;
+      newErrors.nomor_telepon = "Nomor Telepon harus diisi";
+    } else if (!/^[0-9]+$/.test(formData.nomor_telepon)) {
+      newErrors.nomor_telepon = "Nomor telepon harus berisi angka";
+      isValid = false;
+    } else if (!/^\d{10,15}$/.test(formData.nomor_telepon)) {
+      isValid = false;
+      newErrors.nomor_telepon = "Nomor telepon harus berisi 10-15 angka";
+    } else {
+      newErrors.nomor_telepon = "";
+    }
+
+    // Validation for Username
+    if (!formData.username) {
+      isValid = false;
+      newErrors.username = "Username tidak boleh kosong";
+    } else {
+      newErrors.username = "";
+    }
+
+    // Validation for Password
+    if (!formData.password) {
+      isValid = false;
+      newErrors.password = "Password tidak boleh kosong";
+    } else {
+      newErrors.password = "";
+    }
+
+    // Validation for Confirm Password
+    if (!formData.confirm_password) {
+      isValid = false;
+      newErrors.confirm_password = "Silakan konfirmasi password";
+    } else if (formData.confirm_password !== formData.password) {
+      isValid = false;
+      newErrors.confirm_password = "Password tidak cocok";
+    } else {
+      newErrors.confirm_password = "";
+    }
+    // alert(DOMPurify.sanitize(jalan));
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    if (validateForm()){
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Mengedit akun posyandu",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleSubmit(e)
+        }
+      });
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    axios.put(`${BASE_URL}/posyandu/${idPosyandu}`, {
-      nama: formData.nama_posyandu,
-      puskesmas_id: formData.nama_puskesmas,
-      alamat: formData.alamat,
-      rw: formData.rw,
-      kepala: formData.kepala,
-      nomor_telepon: formData.nomor_telepon
-    }, apiAuth)
-      .then((response) => {
-        console.log("Posyandu updated:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      console.log(formData);
+      axios.put(`${BASE_URL}/posyandu/${idPosyandu}`, {
+        nama: formData.nama_posyandu,
+        puskesmas_id: formData.nama_puskesmas,
+        alamat: formData.alamat,
+        rw: formData.rw,
+        kepala: formData.kepala,
+        nomor_telepon: formData.nomor_telepon
+      }, apiAuth)
+        .then((response) => {
+          console.log("Posyandu updated:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
 
-    axios.put(`${BASE_URL}/user/${formData.user_id}`, {
-      username: formData.username,
-      password: formData.password,
-      confirm_password: formData.confirm_password
-    }, apiAuth)
-      .then((response) => {
-        console.log("User updated:", response.data);
-        navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    console.log(formData);
+      axios.put(`${BASE_URL}/user/${formData.user_id}`, {
+        username: formData.username,
+        password: formData.password,
+        confirm_password: formData.confirm_password
+      }, apiAuth)
+        .then((response) => {
+          console.log("User updated:", response.data);
+          navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+      console.log(formData);
   };
 
 
@@ -116,7 +285,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         <h2 className="custom-judul">EDIT AKUN POSYANDU</h2>
 
         <div className="table-responsive">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={confirmAlert}>
             <label htmlFor="nama_posyandu">
               <span>Nama Puskesmas</span>
               <input
@@ -145,19 +314,80 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                   </option>
                 ))}
               </select>
+              <div className={`error`}>{errors.pos}</div>
             </label>
 
-            <label htmlFor="alamat">
+<label htmlFor="alamat">
               <span>Alamat</span>
-              <input
-                type="text"
-                id="alamat"
-                name="alamat"
-                required
-                value={formData.alamat}
-                onChange={handleChange}
-              />
-            </label>
+                <input
+                  type={"text"}
+                  className="form-control"
+                  placeholder="Alamat"
+                  name="alamat"
+                  value={alamat}
+                  onChange={(e) => onInputChange(e)}
+                  readOnly
+                />
+              </label>
+
+
+              <div className="address-section">
+
+                <div className="address-details">
+                  <label htmlFor="jalan">
+                    <span>Jalan*</span>
+                    <input
+                      type="text"
+                      id="jalan"
+                      name="jalan"
+                      value={jalan}
+                      onChange={(e) => onInputChange(e)}
+                    // required
+                    />
+                    <div className={`error`}>{errors.jalan}</div>
+                  </label>
+
+                  <label htmlFor="rt">
+                    <span>RT*</span>
+                    <input
+                      type="text"
+                      id="rt"
+                      name="rt"
+                      value={rt}
+                      onChange={(e) => onInputChange(e)}
+                      // required
+                      pattern="0\d{1,}"
+                      title="Awali angka satuan dengan 0, misal 01"
+                      onKeyPress={(e) => {
+                        if (e.key < "0" || e.key > "9") {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    <div className={`error`}>{errors.rt}</div>
+                  </label>
+
+                  <label htmlFor="rw">
+                    <span>RW*</span>
+                    <input
+                      type="text"
+                      id="rw"
+                      name="rw"
+                      value={rw}
+                      onChange={(e) => onInputChange(e)}
+                      // required
+                      pattern="0\d{1,}"
+                      title="Awali angka satuan dengan 0, misal 01"
+                      onKeyPress={(e) => {
+                        if (e.key < "0" || e.key > "9") {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    <div className={`error`}>{errors.rw}</div>
+                  </label>
+                </div>
+              </div>
 
             <label htmlFor="kepala">
               <span>Kepala Posyandu*</span>
@@ -169,6 +399,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 value={formData.kepala}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.kepala}</div>
             </label>
 
             <label htmlFor="nomor_telepon">
@@ -181,6 +412,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 value={formData.nomor_telepon}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.nomor_telepon}</div>
             </label>
 
             <label htmlFor="username">
@@ -193,6 +425,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 value={formData.username}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.username}</div>
             </label>
 
             <label htmlFor="password">
@@ -204,6 +437,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 value={formData.password}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.password}</div>
             </label>
             <label htmlFor="confirm_password">
               <span>Confirm Password*</span>
@@ -214,6 +448,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 value={formData.confirm_password}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.confirm_password}</div>
             </label>
             <button type="submit" className="submit-button">Simpan</button>
           </form>

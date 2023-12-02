@@ -2,7 +2,7 @@
 import { decodeToken } from "react-jwt";
 
 const BASE_URL = 'https://api-stunting.up.railway.app/api'; // Ganti dengan base URL Anda
-
+// const BASE_URL = 'http://127.0.0.1:8000/api';
 const token = localStorage.getItem("access_token")
 
 const apiAuth = () => {
@@ -34,6 +34,8 @@ const dataAuth = () => {
         };
     }
 };
+
+
 
 
 export default BASE_URL;

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import LineChart_Umur_24_60 from "../../view-publik/component/linechart_24-60";
-import LineChart_Umur_0_24 from "../../view-publik/component/linechart_0-24";
-import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
-import TabelPengukuranBalitaStunting from "./TabelDaftarPengukuranBalitaStunting";
-import { ClipLoader } from "react-spinners";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import LineChart_Umur_24_60 from '../../view-publik/component/linechart_24-60';
+import LineChart_Umur_0_24 from '../../view-publik/component/linechart_0-24';
+import axios from 'axios';
+import BASE_URL from '../../base/apiConfig';
+import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
+import { ClipLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
+import "../css/detail-balita.css";
 
 const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   // nunggu setting router link

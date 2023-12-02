@@ -11,6 +11,13 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
     deskripsi: '',
   });
 
+  const [errors, setErrors] = useState({
+    tanggal: '',
+    waktu: '',
+    judul: '',
+    deskripsi: '',
+  });
+
   useEffect(() => {
     // Fetch existing data for the specified idJadwal
     axios.get(`${BASE_URL}/jadwals/${idJadwal}`, apiAuth)
@@ -28,17 +35,58 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
     setJadwal({ ...jadwal, [name]: value });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
 
-    try {
-      const response = await axios.put(`${BASE_URL}/jadwals/${idJadwal}`, jadwal, apiAuth);
-      // Handle success, e.g., redirect or show a success message
-      console.log(response)
-    } catch (error) {
-      // Handle errors, e.g., show an error message
-      console.error('Error submitting data:', error);
+    // Validasi Nama tanggal
+    if (!jadwal.tanggal) {
+      newErrors.tanggal = "Tanggal jadwal tidak boleh kosong";
+      isValid = false;
+    } else {
+      newErrors.tanggal = "";
     }
+
+    // Validation for Username
+    if (!jadwal.waktu) {
+      isValid = false;
+      newErrors.waktu = "Judul tidak boleh kosong";
+    } else {
+      newErrors.waktu = "";
+    }
+
+    // Validation for Username
+    if (!jadwal.judul) {
+      isValid = false;
+      newErrors.judul = "Judul tidak boleh kosong";
+    } else {
+      newErrors.judul = "";
+    }
+
+    // Validation for Password
+    if (!jadwal.deskripsi) {
+      isValid = false;
+      newErrors.deskripsi = "Beri deskripsi singkat";
+    } else {
+      newErrors.deskripsi = "";
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const onSubmit = async (e) => {
+    if (validateForm()){
+      try {
+        const response = await axios.put(`${BASE_URL}/jadwals/${idJadwal}`, jadwal, apiAuth);
+        // Handle success, e.g., redirect or show a success message
+        console.log(response)
+      } catch (error) {
+        // Handle errors, e.g., show an error message
+        console.error('Error submitting data:', error);
+      }
+    }
+    e.preventDefault();
   };
 
   return (

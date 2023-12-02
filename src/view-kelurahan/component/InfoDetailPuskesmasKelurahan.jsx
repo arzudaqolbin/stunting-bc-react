@@ -67,10 +67,10 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
 
         const [puskesmasResult, posyanduResult] = await Promise.all([puskesmasPromise, posyanduPromise]);
 
-        setPuskesmas(puskesmasResult.data);
+        setPuskesmas(puskesmasResult.data.data);
         setPosyandu(posyanduResult.data.data);
 
-        const result3 = await axios.get(`${BASE_URL}/user/${puskesmasResult.data.user_id}`, apiAuth);
+        const result3 = await axios.get(`${BASE_URL}/user/${puskesmasResult.data.data.user_id}`, apiAuth);
         setUsername(result3.data);
 
         setLoading(false);
@@ -110,7 +110,7 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
                       </tr>
                       <tr>
                         <td>Kepala Puskesmas &nbsp;</td>
-                        <td>: <strong>Ini belum diupdate DB nya</strong></td>
+                        <td>: {puskesmas.kepala}</td>
                       </tr>
                       <tr>
                         <td>Alamat &nbsp;</td>

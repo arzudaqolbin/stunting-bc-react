@@ -100,6 +100,20 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                                 </tbody>
                             </table>
                         </div>
+                        <div
+                            style={{
+                            textAlign: "right",
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                            }}
+                        >
+                            <Link
+                            to="/kelurahan/tambah-posyandu"
+                            className="btn btn-success btn-rounded btn-sm"
+                            >
+                            + Tambah Posyandu
+                            </Link>
+                        </div>
                     </main >)
             }
         </>

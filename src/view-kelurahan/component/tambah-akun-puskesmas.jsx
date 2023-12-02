@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import "../css/form-kelurahan.css";
+import Swal from "sweetalert2";
 // import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
@@ -163,32 +164,48 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     return isValid;
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    if (validateForm()){
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Menambahkan akun puskesmas",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleSubmit(e)
+        }
+      });
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const puskesmasData = {
+      nama: puskesmasReq.nama,
+      alamat: puskesmasReq.alamat,
+      rw: 9,
+      nomor_telepon: puskesmasReq.nomor_telepon,
+      kepala: puskesmasReq.kepala,
+      username: puskesmasReq.username,
+      password: puskesmasReq.password,
+      confirm_password: puskesmasReq.confirm_password,
+      koordinat_id: 1
+    };
 
-    if (validateForm()) {
-      const puskesmasData = {
-        nama: puskesmasReq.nama,
-        alamat: puskesmasReq.alamat,
-        rw: 9,
-        nomor_telepon: puskesmasReq.nomor_telepon,
-        kepala: puskesmasReq.kepala,
-        username: puskesmasReq.username,
-        password: puskesmasReq.password,
-        confirm_password: puskesmasReq.confirm_password,
-        koordinat_id: 1
-      };
-
-      axios.post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-      console.log(JSON.stringify(puskesmasReq, null, 2));
-    }
+    axios.post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    console.log(JSON.stringify(puskesmasReq, null, 2));
   };
 
   return (
@@ -200,7 +217,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
 
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={confirmAlert}>
           <label htmlFor="nama_puskesmas">
             <span>Nama Puskesmas*</span>
             <input
@@ -298,6 +315,32 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
               </label>
             </div>
           </div>
+
+          <label htmlFor="longitude">
+            <span>Longitude*</span>
+            <input
+              type="text"
+              id="longitude"
+              name="longitude"
+              // required
+              value={puskesmasReq.longitude}
+              onChange={handleChange}
+            />
+            <div className={`error`}>{errors.longitude}</div>
+          </label>
+
+          <label htmlFor="latitude">
+            <span>Latitude*</span>
+            <input
+              type="text"
+              id="latitude"
+              name="latitude"
+              // required
+              value={puskesmasReq.latitude}
+              onChange={handleChange}
+            />
+            <div className={`error`}>{errors.latitude}</div>
+          </label>
 
           <label htmlFor="nomor_telepon">
             <span>Nomor Telepon*</span>

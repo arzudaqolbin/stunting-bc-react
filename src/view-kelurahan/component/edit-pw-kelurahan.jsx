@@ -3,6 +3,7 @@ import "../css/form-kelurahan.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/apiConfig";
+import Swal from "sweetalert2";
 
 function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
   let navigate = useNavigate();
@@ -30,29 +31,59 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
 
+  const [errors, setErrors] = useState({
+    username: "",
+    password_baru: "",
+    konfirmasi_password: "",
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Validasi bahwa password baru dan konfirmasi password sama
-    if (formData.password_baru !== formData.konfirmasi_password) {
-      console.error("Password baru dan konfirmasi password harus sama");
-      return;
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    // Validation for Username
+    if (!formData.username) {
+      isValid = false;
+      newErrors.username = "Username tidak boleh kosong";
+    } else {
+      newErrors.username = "";
     }
 
+    // Validation for Password
+    if (!formData.password_baru) {
+      isValid = false;
+      newErrors.password_baru = "Password tidak boleh kosong";
+    } else {
+      newErrors.password_baru = "";
+    }
+
+    // Validation for Confirm Password
+    if (!formData.konfirmasi_password) {
+      isValid = false;
+      newErrors.konfirmasi_password = "Silakan konfirmasi password";
+    } else if (formData.konfirmasi_password !== formData.password_baru) {
+      isValid = false;
+      newErrors.konfirmasi_password = "Password tidak cocok";
+    } else {
+      newErrors.konfirmasi_password = "";
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     axios
-      .put(
-        `${BASE_URL}/user/${userId}`,
-        {
-          username: formData.username,
-          password: formData.password_baru,
-          confirm_password: formData.konfirmasi_password,
-        },
-        apiAuth
-      )
+      .put(`${BASE_URL}/user/${userId}`, {
+        username: formData.username,
+        password: formData.password_baru,
+      })
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");
@@ -63,6 +94,26 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
       });
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Mengedit password akun",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleSubmit(e)
+        }
+      });
+    }
+  }
+
   return (
     <main className="container">
       {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}
@@ -72,17 +123,18 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT PASSWORD KELURAHAN</h2>
         <div className="table-responsive">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={confirmAlert}>
             <label htmlFor="username">
               <span>USERNAME</span>
               <input
                 type="text"
                 id="username"
                 name="username"
-                required
+                // required
                 value={formData.username}
                 readOnly // Membuat input tidak bisa diubah
               />
+              <div className={`error`}>{errors.username}</div>
             </label>
 
             <label htmlFor="password_baru">
@@ -91,10 +143,11 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
                 type="password"
                 id="password_baru"
                 name="password_baru"
-                required
+                // required
                 value={formData.password_baru}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.password_baru}</div>
             </label>
 
             <label htmlFor="konfirmasi_password">
@@ -103,10 +156,11 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
                 type="password"
                 id="konfirmasi_password"
                 name="konfirmasi_password"
-                required
+                // required
                 value={formData.konfirmasi_password}
                 onChange={handleChange}
               />
+              <div className={`error`}>{errors.konfirmasi_password}</div>
             </label>
 
             <button type="submit" className="submit-button">

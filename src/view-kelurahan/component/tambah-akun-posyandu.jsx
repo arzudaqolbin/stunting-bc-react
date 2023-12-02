@@ -3,7 +3,8 @@ import axios from 'axios';
 import "../css/form-kelurahan.css";
 import BASE_URL from '../../base/apiConfig';
 import { useParams } from 'react-router-dom';
-import DOMPurify from 'dompurify';
+import Swal from "sweetalert2";
+// import DOMPurify from 'dompurify';
 
 function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
   const { idPuskesmas } = useParams();
@@ -174,29 +175,47 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
     return isValid;
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    if (validateForm()){
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Menambahkan akun posyandu",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleSubmit(e)
+        }
+      });
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const posyanduDataToSubmit = {
-        nama: posyanduData.nama_posyandu,
-        alamat: posyanduData.alamat,
-        nomor_telepon: posyanduData.nomor_telepon,
-        puskesmas_id: posyanduData.nama_puskesmas, // ID Puskesmas yang dipilih
-        username: posyanduData.username,
-        password: posyanduData.password,
-      };
+    const posyanduDataToSubmit = {
+      nama: posyanduData.nama_posyandu,
+      alamat: posyanduData.alamat,
+      nomor_telepon: posyanduData.nomor_telepon,
+      puskesmas_id: posyanduData.nama_puskesmas, // ID Puskesmas yang dipilih
+      username: posyanduData.username,
+      password: posyanduData.password,
+    };
 
-      axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
-        .then(response => {
-          console.log(response.data);
-          // Reset form atau navigasi ke halaman lain jika diperlukan
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
+      .then(response => {
+        console.log(response.data);
+        // Reset form atau navigasi ke halaman lain jika diperlukan
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
 
-      console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
-    }
+    console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
   };
 
   useEffect(() => {
@@ -218,7 +237,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
 
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={confirmAlert}>
           <label htmlFor="nama_posyandu">
             <span>Nama Posyandu*</span>
             <input
@@ -345,6 +364,32 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
               value={posyanduData.kepala}
               onChange={handleInputChange}
             />
+          </label>
+
+          <label htmlFor="longitude">
+            <span>Longitude*</span>
+            <input
+              type="text"
+              id="longitude"
+              name="longitude"
+              // required
+              value={posyanduData.longitude}
+              onChange={handleInputChange}
+            />
+            <div className={`error`}>{errors.longitude}</div>
+          </label>
+
+          <label htmlFor="latitude">
+            <span>Latitude*</span>
+            <input
+              type="text"
+              id="latitude"
+              name="latitude"
+              // required
+              value={posyanduData.latitude}
+              onChange={handleInputChange}
+            />
+            <div className={`error`}>{errors.latitude}</div>
           </label>
 
           <label htmlFor="nomor_telepon">

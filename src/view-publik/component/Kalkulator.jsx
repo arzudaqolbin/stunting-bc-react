@@ -8,9 +8,16 @@ import data_bbpb_lk from '../../data-patokan-pengukuran/data-bbpb-0_24-lk';
 import data_bbpb_pr from '../../data-patokan-pengukuran/data-bbpb-0_24-pr';
 import data_bbtb_lk from '../../data-patokan-pengukuran/data-bbtb-24_60-lk';
 import data_bbtb_pr from '../../data-patokan-pengukuran/data-bbtb-24_60-pr';
-import "../css/kalkulator.css";
 
 const Kalkulator = () => {
+
+  const styles = {
+    errorMessage: {
+      color: 'red',
+      fontSize: '12px',
+    },
+  };
+
   const[openModal, setOpenModal] = useState(false);
   const[result, setResult] = useState({
     status_tbu:"",
@@ -218,7 +225,7 @@ const Kalkulator = () => {
     //   setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus bilangan bulat' }));
     //   valid = false;
     } else if (umur <= 0 || umur > 60) {
-      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diantara 1-60 tahun' }));
+      setErrorMessages((prevErrors) => ({ ...prevErrors, umur: 'Umur harus diantara 1-60 bulan' }));
       valid = false;
     } else {
       setErrorMessages((prevErrors) => ({ ...prevErrors, umur: '' }));
@@ -279,8 +286,8 @@ const Kalkulator = () => {
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
 
-      alert(tb);
-      alert(bb);
+      // alert(tb);
+      // alert(bb);
 
       console.log(data);
       console.log(result);
@@ -303,7 +310,7 @@ const Kalkulator = () => {
                 <option value="1">Laki-laki</option>
                 <option value="2">Perempuan</option>
               </select>
-              <div className="error-message">{errorMessages.jk}</div>
+              <div className="error-message" style={styles.errorMessage}>{errorMessages.jk}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>Berat Badan (Kg)</h5>
@@ -313,7 +320,7 @@ const Kalkulator = () => {
                 type="text"
                 onChange={handleInputChange}
               />
-              <div className="error-message">{errorMessages.bb}</div>
+              <div className="error-message" style={styles.errorMessage}>{errorMessages.bb}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>ASI Eksklusif</h5>
@@ -323,7 +330,7 @@ const Kalkulator = () => {
                 <option value="1">Ya</option>
                 <option value="0">Tidak</option>
               </select>
-              <div className="error-message">{errorMessages.asi}</div>
+              <div className="error-message" style={styles.errorMessage}>{errorMessages.asi}</div>
             </div>
           </div>
           <div className="row mb-5">
@@ -335,7 +342,7 @@ const Kalkulator = () => {
                 type="number"
                 onChange={handleInputChange}
               />
-              <div className="error-message">{errorMessages.umur}</div>
+              <div className="error-message" style={styles.errorMessage}>{errorMessages.umur}</div>
             </div>
             <div className="col-md-4 px-5 mb-3">
               <h5>Tinggi Badan (cm)</h5>
@@ -345,7 +352,7 @@ const Kalkulator = () => {
                 type="text"
                 onChange={handleInputChange}
               />
-              <div className="error-message">{errorMessages.tb}</div>
+              <div className="error-message" style={styles.errorMessage}>{errorMessages.tb}</div>
             </div>
             <div className="col-md-4 px-5 d-flex align-items-center text-center mb-3">
               <button type="submit" className="btn btn-primary">Hitung</button>
