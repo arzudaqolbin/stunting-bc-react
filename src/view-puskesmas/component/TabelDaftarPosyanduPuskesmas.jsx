@@ -94,7 +94,11 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                                             <td>{posyandu.ketua_kader}</td>
                                             <td>{posyandu.nomor_telepon}</td>
                                             <td>
-                                                <button className="btn btn-info">Info</button>
+                                                <Link
+                                                    to={`/puskesmas/detail-posyandu/${posyandu.id}`}>
+                                                    <button className="btn btn-info">Info</button>
+
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}
