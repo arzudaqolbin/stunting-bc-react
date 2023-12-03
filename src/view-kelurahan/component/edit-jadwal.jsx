@@ -28,7 +28,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, [idJadwal, apiAuth]);
+  }, []);
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,7 +76,8 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
   };
 
   const onSubmit = async (e) => {
-    if (validateForm()){
+    e.preventDefault();
+    // if (validateForm()){
       try {
         const response = await axios.put(`${BASE_URL}/jadwals/${idJadwal}`, jadwal, apiAuth);
         // Handle success, e.g., redirect or show a success message
@@ -85,8 +86,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
         // Handle errors, e.g., show an error message
         console.error('Error submitting data:', error);
       }
-    }
-    e.preventDefault();
+    // }
   };
 
   return (
@@ -99,7 +99,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <div className="table-responsive">
-          <form onSubmit={onsubmit}>
+          <form onSubmit={(e) => {onSubmit(e)}}>
             <label htmlFor="tanggal">
               <span>Tanggal*</span>
               <input

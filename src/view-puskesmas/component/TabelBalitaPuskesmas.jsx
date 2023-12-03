@@ -7,6 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 import "datatables.net";
+import Swal from "sweetalert2";
 // import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
 
 function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
@@ -14,13 +15,62 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
   const [posyandu, setPosyandu] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   // Inisialisasi DataTable hanya pada mounting pertama
+  //   if (!$.fn.DataTable.isDataTable("#myTable")) {
+  //     $("#myTable").DataTable({
+  //       aaSorting: [],
+  //       language: {
+  //         lengthMenu: "Menampilkan _MENU_ data tiap halaman",
+  //         zeroRecords: "Data tidak ditemukan",
+  //         info: "Menampilkan halaman _PAGE_ dari _PAGES_",
+  //         infoEmpty: "Tidak ada data tersedia",
+  //         infoFiltered: "(Disaring dari _MAX_ data total)",
+  //         decimal: "",
+  //         emptyTable: "Data tidak tersedia",
+  //         loadingRecords: "Memuat...",
+  //         processing: "Memproses...",
+  //         search: 'Cari:  <i class="bi bi-search"></i> ',
+  //         searchPlaceholder: "Cari data balita...",
+  //         paginate: {
+  //           first: "Pertama",
+  //           last: "Terakhir",
+  //           // "next": "Selanjutnya",
+  //           // "previous": "Sebelumnya"
+  //           previous: 'Prev  <i class="bi bi-chevron-double-left"></i>',
+  //           next: '<i class="bi bi-chevron-double-right"></i>  Next',
+  //         },
+  //         aria: {
+  //           sortAscending: ": klik untuk mengurutkan A-Z",
+  //           sortDescending: ": klik untuk mengurutkan Z-A",
+  //         },
+  //       },
+  //     });
+  //   }
+
+  //   loadDataBalita()
+  //   loadPosyandu()
+  // }, [balita]);
+
+  useEffect(() => {
+    loadDataBalita();
+    loadPosyandu();
+  }, []);
+
   useEffect(() => {
     // Inisialisasi DataTable hanya pada mounting pertama
+    if (balita.length > 0) {
+      initializeDataTable();
+    }
+  }, [balita]);
+
+  const initializeDataTable = () => {
+    // Inisialisasi DataTable
     if (!$.fn.DataTable.isDataTable("#myTable")) {
-      $("#myTable").DataTable({
-        aaSorting: [],
-        language: {
-          lengthMenu: "Menampilkan _MENU_ data tiap halaman",
+    const table = $("#myTable").DataTable({
+      aaSorting: [],
+      language: {
+        lengthMenu: "Menampilkan _MENU_ data tiap halaman",
           zeroRecords: "Data tidak ditemukan",
           info: "Menampilkan halaman _PAGE_ dari _PAGES_",
           infoEmpty: "Tidak ada data tersedia",
@@ -43,18 +93,19 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
             sortAscending: ": klik untuk mengurutkan A-Z",
             sortDescending: ": klik untuk mengurutkan Z-A",
           },
-        },
-      });
-    }
+        // ... Konfigurasi bahasa DataTable
+      },
+    });
 
-    loadDataBalita()
-    loadPosyandu()
-  }, [balita]);
+    // Hapus event listener sebelumnya untuk mencegah memory leak
+    table.off("draw");
 
-  useEffect(() => {
-    loadDataBalita();
-    loadPosyandu();
-  }, []);
+    // Tambahkan event listener untuk handle redrawing DataTable
+    table.on("draw", () => {
+      // ... Logika atau manipulasi setelah DataTable digambar ulang
+    });
+  }
+  };
 
   const loadDataBalita = async () => {
     try {
@@ -151,6 +202,48 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
     return posyanduData ? posyanduData.nama : "";
   };
 
+  const deleteBalita = (id_balita) => {
+    Swal.fire({
+      title: "Ketikkan 'saya yakin' untuk menghapus data balita",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Yakin",
+      showLoaderOnConfirm: true,
+      preConfirm: async (inputText) => {
+        // Validasi input
+        if (inputText.toLowerCase() !== "saya yakin") {
+          Swal.showValidationMessage("Ketikkan 'saya yakin'");
+        } else {
+          // Jika valid, lakukan aksi yang diinginkan
+          try {
+            await axios.delete(`${BASE_URL}/balitas/${id_balita}`, apiAuth);
+            // Tampilkan pesan berhasil jika berhasil
+            loadDataBalita();
+            Swal.fire({
+              title: "Berhasil",
+              text: "Hapus Balita berhasil",
+              icon: "success"
+            });
+          } catch (error) {
+            console.error("Error deleting balita data:", error);
+            // Tampilkan pesan kesalahan kepada pengguna
+            Swal.fire({
+              title: "Gagal",
+              text: "Hapus Balita gagal",
+              icon: "error"
+            });
+          }
+          
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    });
+    
+  }
+
   return (
     <>
       {loading ? (
@@ -200,13 +293,14 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
                         {data.status_bbu}
                       </div>
                     </td>
-                    <td>
+                    <td className="d-flex">
                       <Link
                         to={`/puskesmas/detail-balita/${data.id}`}
-                        className="btn btn-info"
+                        className="btn btn-info mr-2"
                       >
                         Info
                       </Link>
+                      <button className="btn btn-danger" onClick={ () => deleteBalita(data.id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

@@ -5,6 +5,7 @@ import BASE_URL from "../../base/apiConfig";
 import { ClipLoader } from "react-spinners";
 import $ from 'jquery';
 import 'datatables.net';
+import { Link } from "react-router-dom";
 
 function TabelDaftarBalitaStunting({ apiAuth }) {
   const [balita, setBalita] = useState([]);
@@ -177,7 +178,9 @@ function TabelDaftarBalitaStunting({ apiAuth }) {
                         </div>
                       </td>
                       <td>
+                        <Link to={`/kelurahan/detail-balita/${data.id}`}>
                         <button className="btn btn-info">Info</button>
+                        </Link>
                       </td>
                     </tr>
                   ))}
