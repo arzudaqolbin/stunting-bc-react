@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "../css/form-kelurahan.css";
-import BASE_URL from '../../base/apiConfig';
-import { useParams } from 'react-router-dom';
+import BASE_URL from "../../base/apiConfig";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 // import DOMPurify from 'dompurify';
 
@@ -11,7 +11,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
 
   const [puskesmasList, setPuskesmasList] = useState([]);
   // const [selectedPuskesmas, setSelectedPuskesmas] = useState('');
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem("access_token");
 
   const [posyanduData, setPosyanduData] = useState({
     nama_posyandu: "",
@@ -24,7 +24,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
     username: "",
     password: "",
     confirm_password: "",
-    koordinat_id: "1"
+    koordinat_id: "1",
   });
 
   const [errors, setErrors] = useState({
@@ -40,10 +40,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
     confirm_password: "",
   });
 
-  const {
-    rw,
-    alamat,
-  } = posyanduData;
+  const { rw, alamat } = posyanduData;
 
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
@@ -51,8 +48,9 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
   useEffect(() => {
     setPosyanduData((prevPosyanduData) => ({
       ...posyanduData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -177,7 +175,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Menambahkan akun posyandu",
@@ -186,14 +184,14 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya, yakin!",
-        cancelButtonText: "Kembali"
+        cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
-          handleSubmit(e)
+          handleSubmit(e);
         }
       });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -206,25 +204,27 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
       password: posyanduData.password,
     };
 
-    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
-      .then(response => {
+    axios
+      .post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
+      .then((response) => {
         console.log(response.data);
         // Reset form atau navigasi ke halaman lain jika diperlukan
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
 
     console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
   };
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/puskesmas`, apiAuth)
-      .then(response => {
+    axios
+      .get(`${BASE_URL}/puskesmas`, apiAuth)
+      .then((response) => {
         setPuskesmasList(response.data.data);
       })
-      .catch(error => {
-        console.error('Error fetching puskesmas:', error);
+      .catch((error) => {
+        console.error("Error fetching puskesmas:", error);
       });
   }, []);
 
@@ -287,7 +287,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
             <input
               type={"text"}
               className="form-control"
-              placeholder="Alamat"
+              placeholder="alamat"
               name="alamat"
               value={alamat}
               onChange={(e) => onInputChange(e)}
@@ -295,63 +295,63 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
             />
           </label>
 
-
-          <div className="address-section">
-
-            <div className="address-details">
-              <label htmlFor="jalan">
-                <span>Jalan*</span>
-                <input
-                  type="text"
-                  id="jalan"
-                  name="jalan"
-                  value={jalan}
-                  onChange={(e) => onInputChange(e)}
+          <div className="address-details">
+            <label htmlFor="jalan">
+              <span>Jalan*</span>
+              <input
+                type="text"
+                id="jalan"
+                name="jalan"
+                value={jalan}
+                onChange={(e) => onInputChange(e)}
                 // required
-                />
-                <div className={`error`}>{errors.jalan}</div>
-              </label>
+                onKeyPress={(e) => {
+                  if (e.key === ",") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+            </label>
 
-              <label htmlFor="rt">
-                <span>RT*</span>
-                <input
-                  type="text"
-                  id="rt"
-                  name="rt"
-                  value={rt}
-                  onChange={(e) => onInputChange(e)}
-                  // required
-                  pattern="0\d{1,}"
-                  title="Awali angka satuan dengan 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-                <div className={`error`}>{errors.rt}</div>
-              </label>
+            <label htmlFor="rt">
+              <span>RT*</span>
+              <input
+                type="text"
+                id="rt"
+                name="rt"
+                value={rt}
+                onChange={(e) => onInputChange(e)}
+                // required
+                pattern="\d{2,}"
+                title="Awali angka satuan dengan angka 0, misal 01"
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.rt}</div>
+            </label>
 
-              <label htmlFor="rw">
-                <span>RW*</span>
-                <input
-                  type="text"
-                  id="rw"
-                  name="rw"
-                  value={rw}
-                  onChange={(e) => onInputChange(e)}
-                  // required
-                  pattern="0\d{1,}"
-                  title="Awali angka satuan dengan 0, misal 01"
-                  onKeyPress={(e) => {
-                    if (e.key < "0" || e.key > "9") {
-                      e.preventDefault();
-                    }
-                  }}
-                />
-                <div className={`error`}>{errors.rw}</div>
-              </label>
-            </div>
+            <label htmlFor="rw">
+              <span>RW*</span>
+              <input
+                type="text"
+                id="rw"
+                name="rw"
+                value={rw}
+                onChange={(e) => onInputChange(e)}
+                // required
+                pattern="\d{2,}"
+                title="Awali angka satuan dengan angka 0, misal 01"
+                onKeyPress={(e) => {
+                  if (e.key < "0" || e.key > "9") {
+                    e.preventDefault();
+                  }
+                }}
+              />
+              <div className={`error`}>{errors.rw}</div>
+            </label>
           </div>
 
           <label htmlFor="kepala">
@@ -443,7 +443,9 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
             />
             <div className={`error`}>{errors.confirm_password}</div>
           </label>
-          <button type="submit" className="submit-button">Simpan</button>
+          <button type="submit" className="submit-button">
+            Simpan
+          </button>
         </form>
       </div>
     </main>

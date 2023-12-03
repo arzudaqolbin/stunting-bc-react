@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
-import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import axios from "axios";
+import BASE_URL from "../../base/apiConfig";
 import Swal from "sweetalert2";
 
 function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
-
   const [formData, setFormData] = useState({
     nama: "",
     alamat: "",
@@ -16,7 +15,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     koordinat_id: "",
     username: "",
     password: "",
-    confirm_password: ""
+    confirm_password: "",
   });
 
   const [errors, setErrors] = useState({
@@ -31,9 +30,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     confirm_password: "",
   });
 
-  const {
-    alamat,
-  } = formData;
+  const { alamat } = formData;
 
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
@@ -42,8 +39,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...formData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -59,7 +57,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
       // Update nilai pada bagian Alamat
       setFormData((prevFormData) => ({
         ...prevFormData,
-        alamat: `${jalan ? jalan : ""}${jalan && (rt || value) ? ", " : ""}${rt ? `RT ${rt}` : ""}${value && rt ? ", " : ""}${value ? `RW ${value}` : ""}`,
+        alamat: `${jalan ? jalan : ""}${jalan && (rt || value) ? ", " : ""}${
+          rt ? `RT ${rt}` : ""
+        }${value && rt ? ", " : ""}${value ? `RW ${value}` : ""}`,
       }));
     }
   };
@@ -67,7 +67,8 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   // Menggunakan useEffect untuk mengambil data dari API
   useEffect(() => {
     // Panggil API untuk mengambil data puskesmas
-    axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth)
+    axios
+      .get(`${BASE_URL}/puskesmas/${idPuskesmas}`, apiAuth)
       .then((response) => {
         const data = response.data.data;
         // Mengisi state formData dengan data dari API
@@ -77,7 +78,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           rw: data.rw,
           nomor_telepon: data.nomor_telepon,
           kepala: data.kepala,
-          user_id: data.user_id
+          user_id: data.user_id,
         });
 
         const parts = data.alamat.split(", ");
@@ -85,25 +86,24 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
         setRt(parts[1] ? parts[1].replace("RT ", "") : "");
         setRw(parts[2] ? parts[2].replace("RW ", "") : "");
 
-        console.log(data)
+        console.log(data);
 
-        axios.get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
+        axios
+          .get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
           .then((userResponse) => {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              username: userData.username
+              username: userData.username,
             }));
           })
           .catch((error) => {
             console.error("Error:", error);
           });
-
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-
   }, [idPuskesmas]);
 
   const validateForm = () => {
@@ -215,26 +215,31 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya, yakin!",
-        cancelButtonText: "Kembali"
+        cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
-          handleSubmit(e)
+          handleSubmit(e);
         }
       });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log(formData);
-      axios.put(`${BASE_URL}/puskesmas/${idPuskesmas}`, {
-        nama: formData.nama,
-        alamat: formData.alamat,
-        nomor_telepon: formData.nomor_telepon,
-        kepala: formData.kepala,
-        rw: formData.rw
-      }, apiAuth)
+      axios
+        .put(
+          `${BASE_URL}/puskesmas/${idPuskesmas}`,
+          {
+            nama: formData.nama,
+            alamat: formData.alamat,
+            nomor_telepon: formData.nomor_telepon,
+            kepala: formData.kepala,
+            rw: formData.rw,
+          },
+          apiAuth
+        )
         .then((response) => {
           console.log("Puskesmas updated:", response.data);
         })
@@ -242,11 +247,16 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           console.error("Error:", error);
         });
 
-      axios.put(`${BASE_URL}/user/${formData.user_id}`, {
-        username: formData.username,
-        password: formData.password,
-        confirm_password: formData.confirm_password
-      }, apiAuth)
+      axios
+        .put(
+          `${BASE_URL}/user/${formData.user_id}`,
+          {
+            username: formData.username,
+            password: formData.password,
+            confirm_password: formData.confirm_password,
+          },
+          apiAuth
+        )
         .then((response) => {
           console.log("User updated:", response.data);
         })
@@ -261,7 +271,6 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
 
   return (
     <main className="container">
@@ -303,7 +312,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               <input
                 type={"text"}
                 className="form-control"
-                placeholder="Alamat"
+                placeholder="alamat"
                 name="alamat"
                 value={alamat}
                 onChange={(e) => onInputChange(e)}
@@ -311,63 +320,63 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               />
             </label>
 
-
-            <div className="address-section">
-
-              <div className="address-details">
-                <label htmlFor="jalan">
-                  <span>Jalan*</span>
-                  <input
-                    type="text"
-                    id="jalan"
-                    name="jalan"
-                    value={jalan}
-                    onChange={(e) => onInputChange(e)}
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
+                <input
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
+                  onChange={(e) => onInputChange(e)}
                   // required
-                  />
-                  <div className={`error`}>{errors.jalan}</div>
-                </label>
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+              </label>
 
-                <label htmlFor="rt">
-                  <span>RT*</span>
-                  <input
-                    type="text"
-                    id="rt"
-                    name="rt"
-                    value={rt}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="0\d{1,}"
-                    title="Awali angka satuan dengan 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rt}</div>
-                </label>
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
 
-                <label htmlFor="rw">
-                  <span>RW*</span>
-                  <input
-                    type="text"
-                    id="rw"
-                    name="rw"
-                    value={rw}
-                    onChange={(e) => onInputChange(e)}
-                    // required
-                    pattern="0\d{1,}"
-                    title="Awali angka satuan dengan 0, misal 01"
-                    onKeyPress={(e) => {
-                      if (e.key < "0" || e.key > "9") {
-                        e.preventDefault();
-                      }
-                    }}
-                  />
-                  <div className={`error`}>{errors.rw}</div>
-                </label>
-              </div>
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
             </div>
 
             <label htmlFor="kepala">
@@ -382,6 +391,32 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               />
             </label>
 
+            <label htmlFor="longitude">
+              <span>Longitude*</span>
+              <input
+                type="text"
+                id="longitude"
+                name="longitude"
+                // required
+                // value={posyanduData.longitude}
+                // onChange={handleInputChange}
+              />
+              <div className={`error`}>{errors.longitude}</div>
+            </label>
+
+            <label htmlFor="latitude">
+              <span>Latitude*</span>
+              <input
+                type="text"
+                id="latitude"
+                name="latitude"
+                // required
+                // value={posyanduData.latitude}
+                // onChange={handleInputChange}
+              />
+              <div className={`error`}>{errors.latitude}</div>
+            </label>
+
             <label htmlFor="nomor_telepon">
               <span>Nomor Telepon</span>
               <input
@@ -393,7 +428,6 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 onChange={handleChange}
               />
             </label>
-
 
             <label htmlFor="username">
               <span>username</span>
@@ -427,7 +461,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 onChange={handleChange}
               />
             </label>
-            <button type="submit" className="submit-button">Simpan</button>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
             <p>input password jika ingin membuat password baru</p>
           </form>
         </div>

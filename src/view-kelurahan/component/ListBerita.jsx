@@ -7,21 +7,53 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL, { apiAuth } from "../../base/apiConfig";
 
-const ListBerita = () => {
+const ListBerita = ({ apiAuth }) => {
   const [daftarBerita, setDaftarBerita] = useState([]);
+  const [gambar, setGambar] = useState({});
 
   useEffect(() => {
-    // Lakukan fetch data saat komponen dimount
     async function fetchData() {
       try {
         const response = await axios.get(`${BASE_URL}/beritas`);
         setDaftarBerita(response.data); // Atur data berita ke state
+        response.data.forEach(async (item) => {
+          fetch(`${BASE_URL}/beritas/${item.id}/gambar`, apiAuth)
+            .then((response) => response.arrayBuffer())
+            .then((data) => {
+              const base64 = btoa(
+                new Uint8Array(data).reduce(
+                  (data, byte) => data + String.fromCharCode(byte),
+                  ""
+                )
+              );
+              setGambar((prevGambar) => ({
+                ...prevGambar,
+                [item.id]: `data:;base64,${base64}`,
+              }));
+            })
+            .catch((error) => {
+              console.error("Error fetching gambar awal:", error);
+            });
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
+
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/beritas/${id}`, apiAuth);
+      console.log("Berita berhasil dihapus:", response.data);
+
+      const updatedBerita = daftarBerita.filter((berita) => berita.id !== id);
+      setDaftarBerita(updatedBerita);
+    } catch (error) {
+      console.error("Error deleting berita:", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -47,14 +79,16 @@ const ListBerita = () => {
         </div>
       </div>
       <div className="text-end mb-5">
-        <button className="btn btn-primary">Tambah Berita</button>
+        <Link to={`/kelurahan/tambah-berita/`} className="btn btn-primary">
+          Tambah Berita
+        </Link>
       </div>
       <div className="row mt-3">
         {daftarBerita.map((berita, index) => (
           <div key={index} className="col-md-4 mb-5">
             <div className="card" style={{ width: "300px", height: "300px" }}>
               <img
-                src={berita.gambar} // Ganti dengan sumber gambar dari data berita
+                src={gambar[berita.id]}
                 className="card-img-top cover-image"
                 alt=""
               />
@@ -76,7 +110,10 @@ const ListBerita = () => {
                 >
                   Baca berita
                 </Link>
-                <button className="btn btn-danger float-end">
+                <button
+                  className="btn btn-danger float-end"
+                  onClick={() => handleDelete(berita.id)}
+                >
                   <i className="fas fa-trash"></i>
                 </button>
                 <Link

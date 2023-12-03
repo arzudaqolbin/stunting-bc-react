@@ -9,16 +9,36 @@ import BASE_URL from "../../base/apiConfig";
 
 const SliderBerita = () => {
   const [beritaList, setBeritaList] = useState([]);
+  const [gambar, setGambar] = useState({});
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        const response = await axios.get(`${BASE_URL}/beritas`); // Ganti dengan URL endpoint berita Anda
-        setBeritaList(response.data); // Set data berita dari respons API ke state
+        const response = await axios.get(`${BASE_URL}/beritas`);
+        setBeritaList(response.data); // Atur data berita ke state
+        response.data.forEach(async (item) => {
+          fetch(`${BASE_URL}/beritas/${item.id}/gambar`)
+            .then((response) => response.arrayBuffer())
+            .then((data) => {
+              const base64 = btoa(
+                new Uint8Array(data).reduce(
+                  (data, byte) => data + String.fromCharCode(byte),
+                  ""
+                )
+              );
+              setGambar((prevGambar) => ({
+                ...prevGambar,
+                [item.id]: `data:;base64,${base64}`,
+              }));
+            })
+            .catch((error) => {
+              console.error("Error fetching gambar awal:", error);
+            });
+        });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    };
+    }
 
     fetchData();
   }, []);
@@ -68,7 +88,7 @@ const SliderBerita = () => {
                     style={{ width: "400px", height: "350px" }}
                   >
                     <img
-                      src={item.gambar}
+                      src={gambar[item.id]}
                       className="card-img-top center-image"
                       alt="Gagal Memuat Gambar"
                       style={{ height: "60%", width: "100%" }}

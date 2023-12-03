@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import BASE_URL from '../../base/apiConfig';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import BASE_URL from "../../base/apiConfig";
 import Swal from "sweetalert2";
 
 function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
-
   const [formData, setFormData] = useState({
     nama_posyandu: "",
     nama_puskesmas: "",
@@ -23,7 +22,8 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
   const [puskesmasList, setPuskesmasList] = useState([]);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/puskesmas`, apiAuth)
+    axios
+      .get(`${BASE_URL}/puskesmas`, apiAuth)
       .then((response) => {
         // console.log(response.data);
         setPuskesmasList(response.data.data);
@@ -32,8 +32,8 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         console.error("Error:", error);
       });
 
-
-    axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth)
+    axios
+      .get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth)
       .then((response) => {
         const data = response.data.data;
         setFormData({
@@ -43,7 +43,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
           alamat: data.alamat,
           rw: data.rw,
           nomor_telepon: data.nomor_telepon,
-          user_id: data.user_id
+          user_id: data.user_id,
         });
 
         const parts = data.alamat.split(", ");
@@ -53,23 +53,22 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
         console.log(data);
 
-        axios.get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
+        axios
+          .get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
           .then((userResponse) => {
             const userData = userResponse.data;
             setFormData((prevFormData) => ({
               ...prevFormData,
-              username: userData.username
+              username: userData.username,
             }));
           })
           .catch((error) => {
             console.error("Error:", error);
           });
-
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-
   }, [idPosyandu]);
 
   const handleChange = (e) => {
@@ -90,9 +89,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     confirm_password: "",
   });
 
-  const {
-    alamat,
-  } = formData;
+  const { alamat } = formData;
 
   const [jalan, setJalan] = useState("");
   const [rt, setRt] = useState("");
@@ -101,8 +98,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
   useEffect(() => {
     setFormData((prevformData) => ({
       ...formData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
-        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
+        rt ? `RT ${rt}` : ""
+      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -222,7 +220,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Mengedit akun posyandu",
@@ -231,48 +229,57 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya, yakin!",
-        cancelButtonText: "Kembali"
+        cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
-          handleSubmit(e)
+          handleSubmit(e);
         }
       });
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      console.log(formData);
-      axios.put(`${BASE_URL}/posyandu/${idPosyandu}`, {
-        nama: formData.nama_posyandu,
-        puskesmas_id: formData.nama_puskesmas,
-        alamat: formData.alamat,
-        rw: formData.rw,
-        kepala: formData.kepala,
-        nomor_telepon: formData.nomor_telepon
-      }, apiAuth)
-        .then((response) => {
-          console.log("Posyandu updated:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+    console.log(formData);
+    axios
+      .put(
+        `${BASE_URL}/posyandu/${idPosyandu}`,
+        {
+          nama: formData.nama_posyandu,
+          puskesmas_id: formData.nama_puskesmas,
+          alamat: formData.alamat,
+          rw: formData.rw,
+          kepala: formData.kepala,
+          nomor_telepon: formData.nomor_telepon,
+        },
+        apiAuth
+      )
+      .then((response) => {
+        console.log("Posyandu updated:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
-      axios.put(`${BASE_URL}/user/${formData.user_id}`, {
-        username: formData.username,
-        password: formData.password,
-        confirm_password: formData.confirm_password
-      }, apiAuth)
-        .then((response) => {
-          console.log("User updated:", response.data);
-          navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-      console.log(formData);
+    axios
+      .put(
+        `${BASE_URL}/user/${formData.user_id}`,
+        {
+          username: formData.username,
+          password: formData.password,
+          confirm_password: formData.confirm_password,
+        },
+        apiAuth
+      )
+      .then((response) => {
+        console.log("User updated:", response.data);
+        navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    console.log(formData);
   };
-
 
   return (
     <main className="container">
@@ -280,7 +287,6 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
       <i class="fa-solid fa-arrow-left text-2x"></i>
 
       <div className="container-fluid">
-
         {/* Mulai isi kontennya disini */}
         <h2 className="custom-judul">EDIT AKUN POSYANDU</h2>
 
@@ -317,77 +323,77 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
               <div className={`error`}>{errors.pos}</div>
             </label>
 
-<label htmlFor="alamat">
+            <label htmlFor="alamat">
               <span>Alamat</span>
+              <input
+                type={"text"}
+                className="form-control"
+                placeholder="alamat"
+                name="alamat"
+                value={alamat}
+                onChange={(e) => onInputChange(e)}
+                readOnly
+              />
+            </label>
+
+            <div className="address-details">
+              <label htmlFor="jalan">
+                <span>Jalan*</span>
                 <input
-                  type={"text"}
-                  className="form-control"
-                  placeholder="Alamat"
-                  name="alamat"
-                  value={alamat}
+                  type="text"
+                  id="jalan"
+                  name="jalan"
+                  value={jalan}
                   onChange={(e) => onInputChange(e)}
-                  readOnly
+                  // required
+                  onKeyPress={(e) => {
+                    if (e.key === ",") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
               </label>
 
+              <label htmlFor="rt">
+                <span>RT*</span>
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  value={rt}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rt}</div>
+              </label>
 
-              <div className="address-section">
-
-                <div className="address-details">
-                  <label htmlFor="jalan">
-                    <span>Jalan*</span>
-                    <input
-                      type="text"
-                      id="jalan"
-                      name="jalan"
-                      value={jalan}
-                      onChange={(e) => onInputChange(e)}
-                    // required
-                    />
-                    <div className={`error`}>{errors.jalan}</div>
-                  </label>
-
-                  <label htmlFor="rt">
-                    <span>RT*</span>
-                    <input
-                      type="text"
-                      id="rt"
-                      name="rt"
-                      value={rt}
-                      onChange={(e) => onInputChange(e)}
-                      // required
-                      pattern="0\d{1,}"
-                      title="Awali angka satuan dengan 0, misal 01"
-                      onKeyPress={(e) => {
-                        if (e.key < "0" || e.key > "9") {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                    <div className={`error`}>{errors.rt}</div>
-                  </label>
-
-                  <label htmlFor="rw">
-                    <span>RW*</span>
-                    <input
-                      type="text"
-                      id="rw"
-                      name="rw"
-                      value={rw}
-                      onChange={(e) => onInputChange(e)}
-                      // required
-                      pattern="0\d{1,}"
-                      title="Awali angka satuan dengan 0, misal 01"
-                      onKeyPress={(e) => {
-                        if (e.key < "0" || e.key > "9") {
-                          e.preventDefault();
-                        }
-                      }}
-                    />
-                    <div className={`error`}>{errors.rw}</div>
-                  </label>
-                </div>
-              </div>
+              <label htmlFor="rw">
+                <span>RW*</span>
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  value={rw}
+                  onChange={(e) => onInputChange(e)}
+                  // required
+                  pattern="\d{2,}"
+                  title="Awali angka satuan dengan angka 0, misal 01"
+                  onKeyPress={(e) => {
+                    if (e.key < "0" || e.key > "9") {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <div className={`error`}>{errors.rw}</div>
+              </label>
+            </div>
 
             <label htmlFor="kepala">
               <span>Kepala Posyandu*</span>
@@ -400,6 +406,32 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 onChange={handleChange}
               />
               <div className={`error`}>{errors.kepala}</div>
+            </label>
+
+            <label htmlFor="longitude">
+              <span>Longitude*</span>
+              <input
+                type="text"
+                id="longitude"
+                name="longitude"
+                // required
+                // value={posyanduData.longitude}
+                // onChange={handleInputChange}
+              />
+              <div className={`error`}>{errors.longitude}</div>
+            </label>
+
+            <label htmlFor="latitude">
+              <span>Latitude*</span>
+              <input
+                type="text"
+                id="latitude"
+                name="latitude"
+                // required
+                // value={posyanduData.latitude}
+                // onChange={handleInputChange}
+              />
+              <div className={`error`}>{errors.latitude}</div>
             </label>
 
             <label htmlFor="nomor_telepon">
@@ -450,7 +482,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
               />
               <div className={`error`}>{errors.confirm_password}</div>
             </label>
-            <button type="submit" className="submit-button">Simpan</button>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
           </form>
         </div>
       </div>
