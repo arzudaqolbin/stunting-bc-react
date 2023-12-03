@@ -98,9 +98,8 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
   useEffect(() => {
     setFormData((prevformData) => ({
       ...formData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -195,18 +194,19 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     }
 
     // Validation for Password
-    if (!formData.password) {
-      isValid = false;
-      newErrors.password = "Password tidak boleh kosong";
-    } else {
-      newErrors.password = "";
-    }
+    // if (!formData.password) {
+    //   isValid = false;
+    //   newErrors.password = "Password tidak boleh kosong";
+    // } else {
+    //   newErrors.password = "";
+    // }
 
     // Validation for Confirm Password
-    if (!formData.confirm_password) {
-      isValid = false;
-      newErrors.confirm_password = "Silakan konfirmasi password";
-    } else if (formData.confirm_password !== formData.password) {
+    // if (!formData.confirm_password) {
+    //   isValid = false;
+    //   newErrors.confirm_password = "Silakan konfirmasi password";
+    // } else 
+    if (formData.confirm_password !== formData.password) {
       isValid = false;
       newErrors.confirm_password = "Password tidak cocok";
     } else {
@@ -414,9 +414,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 type="text"
                 id="longitude"
                 name="longitude"
-                // required
-                // value={posyanduData.longitude}
-                // onChange={handleInputChange}
+              // required
+              // value={posyanduData.longitude}
+              // onChange={handleInputChange}
               />
               <div className={`error`}>{errors.longitude}</div>
             </label>
@@ -427,9 +427,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 type="text"
                 id="latitude"
                 name="latitude"
-                // required
-                // value={posyanduData.latitude}
-                // onChange={handleInputChange}
+              // required
+              // value={posyanduData.latitude}
+              // onChange={handleInputChange}
               />
               <div className={`error`}>{errors.latitude}</div>
             </label>
