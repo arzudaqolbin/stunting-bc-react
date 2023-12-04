@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
+
 
 function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password_baru: "",
@@ -27,7 +30,7 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
         });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
 
@@ -86,11 +89,12 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
         confirm_password: formData.konfirmasi_password
       }, apiAuth)
       .then((response) => {
-        console.log("Password berhasil diubah:", response.data);
+        // console.log("Password berhasil diubah:", response.data);
         navigate("/kelurahan/profile");
       })
       .catch((error) => {
-        console.error("Error:", error);
+        setLoading(true);
+        errorHandling(error);
         // Tambahkan logika atau feedback sesuai kebutuhan
       });
   };
@@ -109,6 +113,7 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
         cancelButtonText: "Kembali"
       }).then((result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           handleSubmit(e)
         }
       });
@@ -164,9 +169,14 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
               <div className={`error`}>{errors.konfirmasi_password}</div>
             </label>
 
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

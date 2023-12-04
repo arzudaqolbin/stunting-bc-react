@@ -1,18 +1,54 @@
 import React, { useEffect, useState } from "react";
 import "../css/info-detail-posyandu-kelurahan.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from 'react-spinners';
+import Swal from "sweetalert2";
 import $ from 'jquery';
+// import { Navigate } from "react-router-dom";
 
 function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
-
+  let navigate = useNavigate();
   const [kader, setKader] = useState([]);
   const [posyandu, setPosyandu] = useState([]);
   const [puskesmas, setPuskesmas] = useState([]);
   const [username, setUsername] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
+  // const
+
+
+  const confirmAlert = (id) => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Menambahkan akun posyandu",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading2(true);
+        handleDelete(id);
+      }
+    });
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/kader/${id}`, apiAuth);
+      navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+      setLoading2(false);
+      // navigate
+    } catch (error) {
+      errorHandling(error);
+      setLoading2(false);
+    }
+  };
+
 
 
   useEffect(() => {
@@ -49,75 +85,6 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
     }
   }, [idPosyandu]);
 
-  // fetch data Posyandu
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //       try {
-  //         // nanti ganti api dengan getKader by idPosyandu
-  //           const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}`, apiAuth);
-  //           // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-  //           setPosyandu(result.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [idPosyandu]);
-
-  // // fetch data kader Posyandu
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // nanti ganti api dengan getKader by idPosyandu
-  //       const result = await axios.get(`${BASE_URL}/posyandu/${idPosyandu}/kader`, apiAuth);
-  //       // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-  //       setKader(result.data.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [idPosyandu]);
-
-  // // fetch data Puskesmas
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //       try {
-  //           const result2 = await axios.get(`${BASE_URL}/puskesmas/${posyandu.puskesmas_id}}`, apiAuth);
-  //           setPuskesmas(result2.data);
-
-  //           // const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`);
-  //           // setUsername(result3.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [posyandu.puskesmas_id]);
-
-  // // fetch data Username
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //       try {
-  //           const result3 = await axios.get(`${BASE_URL}/user/${posyandu.user_id}}`, apiAuth);
-  //           setUsername(result3.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [posyandu.user_id]);
-
-  // console.log(kader)
-  // console.log(posyandu)
-  // console.log(posyandu.user_id)
-  // console.log(puskesmas)
-  // console.log(username)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -129,7 +96,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
         setPosyandu(posyanduResult.data.data);
         setKader(kaderResult.data.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     };
 
@@ -144,7 +111,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
           setPuskesmas(result2.data.data);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     };
 
@@ -159,7 +126,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
           setUsername(result3.data);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       } finally {
         // Set loading to false after all data is loaded
         setLoading(false);
@@ -337,7 +304,12 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
                             <Link to={`/kelurahan/edit-kader/${anggota.id}`}>
                               <button className="fa-solid fa-pen-to-square"></button>
                             </Link>
-                            <button><i class="fa-solid fa-trash"></i></button>
+                            {loading2 ? (
+                              <div className="text-center">
+                                <ClipLoader loading={loading2} size={20} />
+                              </div>
+                            ) : (
+                              <button onClick={() => confirmAlert(anggota.id)}><i class="fa-solid fa-trash"></i></button>)}
                           </td>
                         </tr>
                       )))

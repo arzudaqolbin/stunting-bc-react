@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
 // import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
+  const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
   const [puskesmasReq, setpuskesmasReq] = useState({
     nama: "",
     alamat: "",
@@ -37,9 +41,8 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
   useEffect(() => {
     setpuskesmasReq((prevpuskesmasReq) => ({
       ...puskesmasReq,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -175,6 +178,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
         cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           handleSubmit(e);
         }
       });
@@ -198,12 +202,12 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     axios
       .post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
       .then((response) => {
-        console.log(response.data);
+        navigate('kelurahan/daftar-puskesmas');
       })
       .catch((error) => {
-        console.error("Error:", error);
+        setLoading(false);
+        errorHandling(error);
       });
-    console.log(JSON.stringify(puskesmasReq, null, 2));
   };
 
   return (
@@ -404,9 +408,14 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             />
             <div className={`error`}>{errors.confirm_password}</div>
           </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
+          {loading ? (
+            <div className="text-center">
+              <ClipLoader loading={loading} size={20} />
+            </div>
+          ) : (
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>)}
         </form>
       </div>
     </main>
