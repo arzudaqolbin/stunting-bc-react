@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
+import { useNavigate } from 'react-router-dom';
 
 function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
+  const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     nama: "",
     alamat: "",
@@ -39,9 +43,8 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...formData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -57,9 +60,8 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
       // Update nilai pada bagian Alamat
       setFormData((prevFormData) => ({
         ...prevFormData,
-        alamat: `${jalan ? jalan : ""}${jalan && (rt || value) ? ", " : ""}${
-          rt ? `RT ${rt}` : ""
-        }${value && rt ? ", " : ""}${value ? `RW ${value}` : ""}`,
+        alamat: `${jalan ? jalan : ""}${jalan && (rt || value) ? ", " : ""}${rt ? `RT ${rt}` : ""
+          }${value && rt ? ", " : ""}${value ? `RW ${value}` : ""}`,
       }));
     }
   };
@@ -86,8 +88,6 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
         setRt(parts[1] ? parts[1].replace("RT ", "") : "");
         setRw(parts[2] ? parts[2].replace("RW ", "") : "");
 
-        console.log(data);
-
         axios
           .get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
           .then((userResponse) => {
@@ -98,11 +98,11 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
             }));
           })
           .catch((error) => {
-            console.error("Error:", error);
+            errorHandling(error);
           });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
       });
   }, [idPuskesmas]);
 
@@ -218,6 +218,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
         cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           handleSubmit(e);
         }
       });
@@ -241,10 +242,10 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           apiAuth
         )
         .then((response) => {
-          console.log("Puskesmas updated:", response.data);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          setLoading(false);
+          errorHandling(error);
         });
 
       axios
@@ -258,12 +259,11 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           apiAuth
         )
         .then((response) => {
-          console.log("User updated:", response.data);
+          navigate(`/kelurahan/detail-posyandu/${idPuskesmas}`);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          errorHandling(error);
         });
-      console.log(formData);
     }
   };
 
@@ -397,9 +397,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 type="text"
                 id="longitude"
                 name="longitude"
-                // required
-                // value={posyanduData.longitude}
-                // onChange={handleInputChange}
+              // required
+              // value={posyanduData.longitude}
+              // onChange={handleInputChange}
               />
               <div className={`error`}>{errors.longitude}</div>
             </label>
@@ -410,9 +410,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 type="text"
                 id="latitude"
                 name="latitude"
-                // required
-                // value={posyanduData.latitude}
-                // onChange={handleInputChange}
+              // required
+              // value={posyanduData.latitude}
+              // onChange={handleInputChange}
               />
               <div className={`error`}>{errors.latitude}</div>
             </label>

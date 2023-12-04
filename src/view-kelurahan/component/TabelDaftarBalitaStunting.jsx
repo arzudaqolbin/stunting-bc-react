@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-daftar-balita-stunting.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { ClipLoader } from "react-spinners";
 import $ from 'jquery';
 import 'datatables.net';
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function TabelDaftarBalitaStunting({ apiAuth }) {
   const [balita, setBalita] = useState([]);
@@ -55,23 +56,7 @@ function TabelDaftarBalitaStunting({ apiAuth }) {
       setBalita(result.data.balitas);
       setLoading(false)
     } catch (error) {
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
+      errorHandling(error);
     }
   };
 
@@ -179,7 +164,7 @@ function TabelDaftarBalitaStunting({ apiAuth }) {
                       </td>
                       <td>
                         <Link to={`/kelurahan/detail-balita/${data.id}`}>
-                        <button className="btn btn-info">Info</button>
+                          <button className="btn btn-info">Info</button>
                         </Link>
                       </td>
                     </tr>

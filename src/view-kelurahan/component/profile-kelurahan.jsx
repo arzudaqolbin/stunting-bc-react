@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/profile-kelurahan.css";
 import logoJaktim from "../../aset/logo-jaktim.png";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 import {
   MapContainer,
@@ -27,11 +27,12 @@ function ProfileKelurahan({ idKelurahan, apiAuth }) {
             setKoordinat(koordinatResponse.data);
           })
           .catch((error) => {
-            console.error("Error fetching koordinat:", error);
+            errorHandling(error);
           });
       })
       .catch((error) => {
-        console.error("Error fetching kelurahan:", error);
+        errorHandling(error);
+        // console.error("Error fetching kelurahan:", error);
       });
   }, [idKelurahan, apiAuth]);
 

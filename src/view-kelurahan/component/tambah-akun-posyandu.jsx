@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/form-kelurahan.css";
-import BASE_URL from "../../base/apiConfig";
-import { useParams } from "react-router-dom";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
+// import { useNavigate } from "react-router-dom";
 // import DOMPurify from 'dompurify';
 
 function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
   const { idPuskesmas } = useParams();
-
+  const [loading, setLoading] = useState(false);
   const [puskesmasList, setPuskesmasList] = useState([]);
+  let navigate = useNavigate();
   // const [selectedPuskesmas, setSelectedPuskesmas] = useState('');
   const token = localStorage.getItem("access_token");
 
@@ -24,7 +27,9 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
     username: "",
     password: "",
     confirm_password: "",
-    koordinat_id: "1",
+    // koordinat_id: "1",
+    longitude: "",
+    latitude: "",
   });
 
   const [errors, setErrors] = useState({
@@ -48,9 +53,8 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
   useEffect(() => {
     setPosyanduData((prevPosyanduData) => ({
       ...posyanduData,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -141,7 +145,23 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
       newErrors.nomor_telepon = "";
     }
 
+    // Validation for latitude
+    if (!posyanduData.latitude) {
+      isValid = false;
+      newErrors.latitude = "latitude tidak boleh kosong";
+    } else {
+      newErrors.latitude = "";
+    }
+
+    // Validation for longitut
+    if (!posyanduData.longitude) {
+      isValid = false;
+      newErrors.longitude = "longitude tidak boleh kosong";
+    } else {
+      newErrors.longitude = "";
+    }
     // Validation for Username
+
     if (!posyanduData.username) {
       isValid = false;
       newErrors.username = "Username tidak boleh kosong";
@@ -187,6 +207,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
         cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           handleSubmit(e);
         }
       });
@@ -202,18 +223,23 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
       puskesmas_id: posyanduData.nama_puskesmas, // ID Puskesmas yang dipilih
       username: posyanduData.username,
       password: posyanduData.password,
+      confirm_password: posyanduData.confirm_password,
+      kepala: posyanduData.kepala,
+      longitut: posyanduData.longitude,
+      latitude: posyanduData.latitude,
+      rw: rw
     };
 
     axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit, apiAuth)
       .then(response => {
-        console.log(response.data);
+        navigate('/kelurahan/daftar-posyandu');
         // Reset form atau navigasi ke halaman lain jika diperlukan
       })
       .catch((error) => {
-        console.error("Error:", error);
+        setLoading(false);
+        errorHandling(error);
       });
 
-    console.log(JSON.stringify(posyanduDataToSubmit, null, 2));
   };
 
   useEffect(() => {
@@ -223,7 +249,7 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
         setPuskesmasList(response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching puskesmas:", error);
+        errorHandling(error);
       });
   }, []);
 
@@ -442,9 +468,14 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
             />
             <div className={`error`}>{errors.confirm_password}</div>
           </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
+          {loading ? (
+            <div className="text-center">
+              <ClipLoader loading={loading} size={20} />
+            </div>
+          ) : (
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>)}
         </form>
       </div>
     </main>

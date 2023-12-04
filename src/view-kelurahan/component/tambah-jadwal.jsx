@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import '../css/form-kelurahan.css';
+import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const TambahJadwal = ({ idKelurahan, apiAuth }) => {
+  let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [jadwal, setJadwal] = useState({
     tanggal: '',
     waktu: '',
@@ -65,18 +70,36 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
     return isValid;
   };
 
+  const showAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit kader",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        onSubmit(e);
+      }
+    });
+
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       // console.log(jadwal)
       try {
         const response = await axios.post(`${BASE_URL}/jadwals`, jadwal, apiAuth);
-        // console.log(response.data);
-        // navi
-        console.log(response.data);
+        navigate('/kelurahan/jadwal');
       } catch (error) {
-        // Handle errors, e.g., show an error message
-        console.error('Error submitting data:', error);
+        setLoading(false);
+        errorHandling(error);
       }
     }
   };
@@ -90,7 +113,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
       <div className="container-fluid">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={showAlert}>
           <label htmlFor="tanggal">
             <span>Tanggal*</span>
             <input
@@ -144,9 +167,14 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
             <div className={`error`}>{errors.deskripsi}</div>
           </label>
 
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
+          {loading ? (
+            <div className="text-center">
+              <ClipLoader loading={loading} size={20} />
+            </div>
+          ) : (
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>)}
         </form>
       </div>
     </main>
