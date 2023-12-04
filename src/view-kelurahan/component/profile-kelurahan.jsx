@@ -32,7 +32,6 @@ function ProfileKelurahan({ idKelurahan, apiAuth }) {
       })
       .catch((error) => {
         errorHandling(error);
-        // console.error("Error fetching kelurahan:", error);
       });
   }, [idKelurahan, apiAuth]);
 
