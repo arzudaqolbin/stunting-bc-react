@@ -156,25 +156,26 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   const [namaBalita, setNamaBalita] = useState(null);
   const [loadData, setLoadData ] = useState(false);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          `${BASE_URL}/pengukurans/balita/${idBalita}`,
-          apiAuth
-        );
-        const pengukuranArray = Array.isArray(result.data)
-          ? result.data
-          : [result.data];
-        pengukuranArray.sort((a, b) => a.umur - b.umur);
-        setDataPengukuran(pengukuranArray);
-        setLoadData(true);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchData();
+  const fetchDataPengukuran = async() => {
+    try {
+      const result = await axios.get(
+        `${BASE_URL}/pengukurans/balita/${idBalita}`,
+        apiAuth
+      );
+      const pengukuranArray = Array.isArray(result.data)
+        ? result.data
+        : [result.data];
+      pengukuranArray.sort((a, b) => a.umur - b.umur);
+      setDataPengukuran(pengukuranArray);
+      setLoadData(true);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchDataPengukuran();
   }, []);
 
   useEffect(() => {
@@ -273,10 +274,16 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
       cancelButtonText: "Kembali",
-    }).then((result) => {
+    }).then(async(result) => {
       if (result.isConfirmed) {
         // lakukan api validasiiii
-        axios.put(`${BASE_URL}/pengukurans/validasi/${id_Pengukuran}`, { validasi: validate }, apiAuth)
+        await axios.put(`${BASE_URL}/pengukurans/validasi/${id_Pengukuran}`, { validasi: validate }, apiAuth)
+        fetchDataPengukuran();
+        Swal.fire({
+          title: "Berhasil",
+          text: "Pengukuran tervalidasi",
+          icon: "success"
+        });
 
       }
     });

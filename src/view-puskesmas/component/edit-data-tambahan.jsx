@@ -114,7 +114,7 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           apiAuth
         );
       }
-      navigate(`/posyandu/detail-balita/${idBalita}`);
+      navigate(`/puskesmas/detail-balita/${idBalita}`);
     } catch (error) {
       if (error.response) {
         console.error(

@@ -10,6 +10,8 @@ import PageDataTambahanPosyandu from "../view-posyandu/pages/PageDataTambahanPos
 import Login from "../view-publik/pages/Login";
 import NonRoute from "../base/NonRoute";
 import NotFound from "../view-publik/pages/NotFound";
+import PageAddPengukuranPosyandu from "../view-posyandu/pages/PageAddPengukuranPosyandu";
+import PageAddPengukuranSelectedPosyandu from "../view-posyandu/pages/PageAddPengukuranSelectedPosyandu";
 
 const RoutesPosyandu = () => {
   return (
@@ -20,6 +22,8 @@ const RoutesPosyandu = () => {
       {/* tambah balita */}
       <Route path="/tambah-balita" element={<PrivateRoute element={<PageAddBalitaPosyandu />} requiredRole="Posyandu" />} />
       {/* tambah pengukuran */}
+      <Route path="/tambah-pengukuran" element={<PrivateRoute element={<PageAddPengukuranPosyandu />} requiredRole="Posyandu" />} />
+      <Route path="/tambah-pengukuran/:idBalita" element={<PrivateRoute element={<PageAddPengukuranSelectedPosyandu />} requiredRole="Posyandu" />} />
 
       {/* daftar tabel balita */}
       <Route path="/daftar-balita" element={<PrivateRoute element={<PageTabelBalitaPosyandu />} requiredRole="Posyandu" />} />

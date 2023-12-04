@@ -44,10 +44,13 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    console.log("kader = ", kader);
 
     try {
-      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth);
-      navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
+      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth).then((res) => {
+        console.log("status = ", res.status)
+      });
+      // navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
     } catch (error) {
       if (error.response) {
         console.error(

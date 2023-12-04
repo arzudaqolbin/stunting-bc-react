@@ -204,9 +204,8 @@ function TambahAkunPosyandu({ idKelurahan, apiAuth }) {
       password: posyanduData.password,
     };
 
-    axios
-      .post(`${BASE_URL}/posyandu`, posyanduDataToSubmit)
-      .then((response) => {
+    axios.post(`${BASE_URL}/posyandu`, posyanduDataToSubmit, apiAuth)
+      .then(response => {
         console.log(response.data);
         // Reset form atau navigasi ke halaman lain jika diperlukan
       })

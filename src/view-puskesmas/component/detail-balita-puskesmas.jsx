@@ -206,7 +206,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                     <div>
                       <div>Belum mengisikan data tambahan riwayat</div>
                       <Link
-                        to={`/puskesmas/tambah-data-tambahan/${idBalita}`}
+                        to={`/puskesmas/edit-data-tambahan-balita/${idBalita}`}
                         className="btn btn-primary"
                       >
                         Tambah Data Tambahan
@@ -272,7 +272,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                       </table>
                       <div className="d-flex justify-content-end">
                         <Link
-                          to={`/puskesmas/tambah-data-tambahan/${idBalita}`}
+                          to={`/puskesmas/edit-data-tambahan-balita/${idBalita}`}
                           className="btn btn-primary"
                         >
                           Edit Data Tambahan
