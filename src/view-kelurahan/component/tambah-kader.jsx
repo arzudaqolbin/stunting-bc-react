@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
+import { ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [kader, setKader] = useState({
     nama: "",
@@ -25,7 +28,7 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
         setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil data posyandu:", error);
+        errorHandling(error);
       });
   }, []);
 
@@ -35,23 +38,35 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
     setKader({ ...kader, [name]: value });
   };
 
+  const showAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit kader",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        onSubmit(e);
+      }
+    });
+
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    // axios.post(`${BASE_URL}/kader`, kader, apiAuth)
-    //   .then((response) => {
-    //     console.log(response.data)
-    //   }).catch((error) => {
-    //     console.log("Terjadi kesalahan saat mengambil data posyandu:", error)
-    //   })
-
     try {
-      console.log(kader);
       const response = await axios.post(`${BASE_URL}/kader`, kader, apiAuth);
       navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
-      console.log(response.data.data)
     } catch (error) {
       // Handle errors
-      console.error("Error submitting data:", error);
+      setLoading(false);
+      errorHandling(error);
     }
   };
 
@@ -60,7 +75,7 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
       <div className="container-fluid">
         <h2 className="custom-judul">TAMBAH KADER POSYANDU</h2>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={showAlert}>
           <label htmlFor="nama">
             <span>Nama Kader*</span>
             <input
@@ -109,9 +124,14 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
             </select>
           </label>
 
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
+          {loading ? (
+            <div className="text-center">
+              <ClipLoader loading={loading} size={20} />
+            </div>
+          ) : (
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>)}
         </form>
       </div>
     </main>

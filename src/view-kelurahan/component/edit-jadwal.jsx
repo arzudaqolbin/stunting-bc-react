@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import '../css/form-kelurahan.css';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
+
 
 function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
+  const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
   const [jadwal, setJadwal] = useState({
     tanggal: '',
     waktu: '',
@@ -26,7 +32,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
         setJadwal({ tanggal, waktu, judul, deskripsi });
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        errorHandling(error);
       });
   }, []);
 
@@ -75,17 +81,38 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
     return isValid;
   };
 
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Menambahkan akun posyandu",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setLoading(true);
+          onSubmit(e);
+        }
+      });
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     // if (validateForm()){
-      try {
-        const response = await axios.put(`${BASE_URL}/jadwals/${idJadwal}`, jadwal, apiAuth);
-        // Handle success, e.g., redirect or show a success message
-        console.log(response)
-      } catch (error) {
-        // Handle errors, e.g., show an error message
-        console.error('Error submitting data:', error);
-      }
+    try {
+      const response = await axios.put(`${BASE_URL}/jadwals/${idJadwal}`, jadwal, apiAuth);
+      navigate('/kelurahan/jadwal');
+    } catch (error) {
+      // Handle errors, e.g., show an error message
+      setLoading(false);
+      errorHandling(error);
+    }
     // }
   };
 
@@ -99,7 +126,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
       <div className="container-fluid">
         {/* Mulai isi kontennya disini */}
         <div className="table-responsive">
-          <form onSubmit={(e) => {onSubmit(e)}}>
+          <form onSubmit={(e) => { confirmAlert(e) }}>
             <label htmlFor="tanggal">
               <span>Tanggal*</span>
               <input
@@ -147,9 +174,15 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
               ></textarea>
             </label>
 
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
+
           </form>
         </div>
       </div>
