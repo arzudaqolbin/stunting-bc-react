@@ -79,7 +79,8 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                                     <tr>
                                         <th scope="col">ID</th>
                                         <th scope="col">Nama Posyandu</th>
-                                        <th scope="col" >Alamat</th>
+                                        <th scope="col" className='text-center' >Alamat</th>
+                                        <th scope="col" >RW</th>
                                         <th scope="col">Ketua Kader</th>
                                         <th scope="col">Nomor Telepon</th>
                                         <th scope="col">Lihat Detail</th>
@@ -91,12 +92,13 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                                             <th scope="row">{posyandu.id}</th>
                                             <td>{posyandu.nama}</td>
                                             <td>{posyandu.alamat}</td>
-                                            <td>{posyandu.ketua_kader}</td>
+                                            <td>{posyandu.rw}</td>
+                                            <td>{posyandu.kepala}</td>
                                             <td>{posyandu.nomor_telepon}</td>
                                             <td>
                                                 <Link
                                                     to={`/puskesmas/detail-posyandu/${posyandu.id}`}>
-                                                    <button className="btn btn-info">Info</button>
+                                                    <button className="btn btn-info d-flex align-items-center"><i class="fa-solid fa-circle-info"></i> Info</button>
 
                                                 </Link>
                                             </td>

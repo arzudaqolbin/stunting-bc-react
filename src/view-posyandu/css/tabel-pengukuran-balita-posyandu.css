@@ -43,14 +43,14 @@
         text-align: center;
     }
 
-    .custom-table tbody tr td button {
+    /* .custom-table tbody tr td button {
         background-color: #fff;
         color: #026670;
         border: none;
         padding: 5px 10px;
         cursor: pointer;
         font-size: 18px;
-    }
+    } */
 
     .custom-table tbody tr td .tervalidasi {
         display: flex;

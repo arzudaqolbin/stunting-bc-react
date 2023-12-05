@@ -118,37 +118,6 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
   }, [pengukuran]);
 
 
-
-  // const onInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   if (name === "balita_id") {
-
-  //   } else if (name === "tgl_input") {
-  //     // setPengukuran({ ...pengukuran, [name]: value });
-  //     pengukuran.tgl_input = value;
-  //     // setPengukuran({ ...initialPengukuran, name: new Date(value) });
-  //     console.log("mau lihat value tgl_input bro");
-  //     console.log(typeof value, value);
-  //     // pengukuran.tgl_input: value;
-  //     calculateUmur(value, dataPatokan.tanggalLahir);
-  //   } else if (name === "posisi_balita") {
-  //     setPengukuran({ ...pengukuran, [name]: value });
-  //   } else {
-  //     setPengukuran({ ...pengukuran, [name]: parseFloat(value) });
-
-  //   }
-  // };
-
-  // const calculateUmur = (tglPengukuran, tglLahir) => {
-  //   const tglLahirTimestamp = new Date(tglLahir).getTime();
-  //   const tglPengukuranTimestamp = new Date(tglPengukuran).getTime();
-  //   const diffMonths = Math.floor(
-  //     (tglPengukuranTimestamp - tglLahirTimestamp) / (1000 * 60 * 60 * 24 * 30.44)
-  //   );
-
-  //   setPengukuran({ ...pengukuran, umur: diffMonths });
-  // };
-
   const onInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "balita_id") {
@@ -367,29 +336,34 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
       pengukuran.rambu_gizi = "B";
     } else {
       try {
-        // const prevUmur = umur - 1;
-        // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1/${prevUmur}`);
-        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
-        const differ = bb - prevPengukuran.data.bb;
-
-        let status = "";
-        if (differ < kbm) {
-          status = 'T';
-        } else {
-          status = 'N';
+        const prevUmur = umur - 1;
+        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${pengukuran.balita_id}/${prevUmur}`, apiAuth);
+        console.log("kbm = ", kbm)
+        // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
+        if(prevPengukuran.data.length === 0){
+          console.log("gada pengukuran sebelumnya");
+          pengukuran.rambu_gizi = "O";
         }
+        else{
+          const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
+          console.log("differ bb = ", differ)
 
-        setPengukuran((prevResult) => ({
-          ...prevResult,
-          rambu_gizi: status
-        }));
+          let status = "";
+          if (differ < kbm) {
+            status = 'T';
+          } else {
+            status = 'N';
+          }
+
+          pengukuran.rambu_gizi = status;
+        }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Handle 404 Not Found: set a default status
-          setPengukuran((prevResult) => ({
-            ...prevResult,
-            rambu_gizi: 'O'
-          }));
+          // setPengukuran((prevResult) => ({
+          //   ...prevResult,
+          //   rambu_gizi: 'O'
+          // }));
         } else {
           console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
         }
@@ -468,11 +442,6 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
   // nanti atur statusnya disini broo
   const onSubmit = async (e, pengukuran) => {
     e.preventDefault();
-    // console.log("balita")
-    // console.log(balita)
-
-    // console.log("pengukuran")
-    // console.log(pengukuran)
 
     const jk = dataPatokan.jk;
     // const idBalita = parseInt(balita.id)
@@ -484,7 +453,7 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
     generateStatus_tbu(jk, umur, tb);
     generateStatus_bbu(jk, umur, bb);
     generateKms(jk, umur, bb);
-    generateRambuGizi(jk, umur, bb, dataPatokan.idBalita);
+    await generateRambuGizi(jk, umur, bb, dataPatokan.idBalita);
 
     try {
 
@@ -495,7 +464,6 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
         console.log(response.status)
       });
       showSuccessPostToast(pengukuran.balita_id)
-      // navigate(`/posyandu/${idPosyandu}/detail-balita/${pengukuran.balita_id}`);
 
 
     } catch (error) {

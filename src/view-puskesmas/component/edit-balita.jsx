@@ -4,9 +4,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-balita.css";
 import BASE_URL from "../../base/apiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(true)
   const tomorrow = new Date();
   tomorrow.setDate(new Date().getDate() + 1);
   const tomorrowString = tomorrow.toISOString().split("T")[0];
@@ -88,6 +93,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
         });
         setJalan(jalan);
         setRt(rt);
+        setLoading(false)
       })
       .catch((error) => {
         console.error("Terjadi kesalahan saat mengambil data balita:", error);
@@ -250,8 +256,9 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     if (validateForm()) {
       try {
         await axios.put(`${BASE_URL}/balitas/${idBalita}`, balita, apiAuth);
-        navigate(`/puskesmas/detail-balita/${idBalita}`);
+        showSuccessPostToast(idBalita)
       } catch (error) {
+        showFailedPostToast()
         if (error.response) {
           console.error(
             "Kesalahan dalam permintaan ke server:",
@@ -267,8 +274,67 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
     }
   };
 
+  const showSuccessPostToast = async (idBalita) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil diubah",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/puskesmas/detail-balita/${idBalita}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
+
+  const confirmAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Mengubah data balita",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // acc izin
+        onSubmit(e)
+      }
+    });
+
+  }
+
+
   return (
-    <main className="container">
+    <>
+    {loading ? 
+    (
+      <div className='text-center'>
+        <ClipLoader
+          loading={loading}
+          size={150}
+        />
+      </div>)
+    :
+    (<main className="container">
       <i class="fa-solid fa-arrow-left text-2x"></i>
       <h2 className="custom-judul">Form Edit Data Balita</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
@@ -277,7 +343,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
         <div className="table-responsive">
           <form
             onSubmit={(e) => {
-              onSubmit(e);
+              confirmAlert(e);
             }}
           >
             <label htmlFor="nik">
@@ -501,7 +567,10 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
+    )}
+    </>
   );
 }
 

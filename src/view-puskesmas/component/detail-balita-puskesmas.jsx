@@ -159,15 +159,15 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                         <td style={{ textAlign: "left" }}> : &nbsp;{namaPosyandu.nama}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status TB/U</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status TB/U terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_tbu}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/TB</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status BB/TB terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbtb}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/U</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status BB/U terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbu}</td>
                       </tr>
                     </tbody>

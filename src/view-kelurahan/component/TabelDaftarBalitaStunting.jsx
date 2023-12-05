@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 import $ from 'jquery';
 import 'datatables.net';
 import { Link } from "react-router-dom";
+import Statistik from "../../view-publik/component/Statistik";
 
 function TabelDaftarBalitaStunting({ apiAuth }) {
   const [balita, setBalita] = useState([]);
@@ -160,7 +161,7 @@ function TabelDaftarBalitaStunting({ apiAuth }) {
                       <th scope="row">{index + 1}</th>
                       <td>{data.nama}</td>
                       <td>{data.jenis_kelamin}</td>
-                      <td>{data.nama_ortu}</td>
+                      <td>{data.rw}</td>
                       <td>{data.umur}</td>
                       <td data-status_tbu={data.status_tbu}>
                         <div className={getStatusTBUClass(data.status_tbu)}>
@@ -187,6 +188,7 @@ function TabelDaftarBalitaStunting({ apiAuth }) {
                 </tbody>
               </table>
             </div>
+            <Statistik />
           </main>)
       }
     </>

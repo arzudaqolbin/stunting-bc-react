@@ -33,14 +33,14 @@
     width: 5px;
 }
 
-.custom-table tbody tr td button {
+/* .custom-table tbody tr td button {
     background-color: #fff;
     color: #026670;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     font-size: 18px;
-}
+} */
 
 .table-cell {
     display: inline-flex;
@@ -48,22 +48,22 @@
     justify-content: space-between;
 }
 
-.table-cell button.btn-success {
+/* .table-cell button.btn-success {
     background-color: #026670;
     color: #fff;
     border: none;
-    padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+    padding: 5px 10px; 
     font-size: 0.8rem;
-}
+} */
 
-.custom-table tbody tr td button:hover {
+/* .custom-table tbody tr td button:hover {
     color: #9fedd7;
 }
 
 .custom-table tbody tr td button.btn-success:hover {
     background-color: #9fedd7;
     color: #000;
-}
+} */
 
 .custom-table {
     border-collapse: separate;
