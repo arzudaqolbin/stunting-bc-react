@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../css/tabel-pengukuran-balita-posyandu.css";
 // import * as XLSX from "xlsx";
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import 'datatables.net';
-import logoCentang from '../../aset/centang.png';
+import Swal from "sweetalert2";
 
 function applyStatusStyle(statusValue) {
   switch (statusValue) {
@@ -18,6 +18,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "Pendek":
       return {
@@ -26,6 +27,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "Normal":
       return {
@@ -50,6 +52,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "Gizi Kurang":
       return {
@@ -58,6 +61,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "Resiko Lebih":
       return {
@@ -82,6 +86,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "BB Sangat Kurang":
       return {
@@ -90,6 +95,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "BB Kurang":
       return {
@@ -98,6 +104,7 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     case "Resiko BB Lebih":
       return {
@@ -138,10 +145,11 @@ function applyStatusStyle(statusValue) {
         borderRadius: "10px",
         padding: "1px",
         margin: "1px",
+        fontWeight: 'bold'
       };
     default:
       return {
-        backgroundColor: "black",
+        backgroundColor: "white",
         color: "white",
         borderRadius: "10px",
         padding: "1px",
@@ -155,61 +163,27 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
   const [tanggalLahir, setTanggalLahir] = useState(null);
   const [loadData, setLoadData ] = useState(false)
 
-  // useEffect(() => {
-  //   // Inisialisasi DataTable hanya pada mounting pertama
-  //   const myTable = $('.custom-table');
-  
-  //   if ($.fn.DataTable.isDataTable(myTable)) {
-  //     myTable.DataTable().destroy(); // Hapus DataTable sebelum inisialisasi ulang
-  //   }
-  
-  //   myTable.DataTable({
-  //     "aaSorting": [],
-  //     "language": {
-  //       "lengthMenu": "Menampilkan _MENU_ data tiap halaman",
-  //       "zeroRecords": "Data tidak ditemukan",
-  //       "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-  //       "infoEmpty": "Tidak ada data tersedia",
-  //       "infoFiltered": "(Disaring dari _MAX_ data total)",
-  //       "decimal": "",
-  //       "emptyTable": "Data tidak tersedia",
-  //       "loadingRecords": "Memuat...",
-  //       "processing": "Memproses...",
-  //       "search": 'Pencarian:   <i class="bi bi-search"></i> ',
-  //       "searchPlaceholder": "cari data pengukuran...",
-  //       "paginate": {
-  //         "first": "Pertama",
-  //         "last": "Terakhir",
-  //         "previous": 'Prev     <i class="bi bi-chevron-double-left"></i>',
-  //         "next": '<i class="bi bi-chevron-double-right"></i>     Next'
-  //       },
-  //       "aria": {
-  //         "sortAscending": ": klik untuk mengurutkan A-Z",
-  //         "sortDescending": ": klik untuk mengurutkan Z-A"
-  //       }
-  //     }
-  //   });
-  // }, [dataPengukuran]);
+
+  const fetchDataPengukuran = async () => {
+    try {
+      const result = await axios.get(
+        `${BASE_URL}/pengukurans/balita/${idBalita}`,
+        apiAuth
+      );
+      const pengukuranArray = Array.isArray(result.data)
+        ? result.data
+        : [result.data];
+      pengukuranArray.sort((a, b) => a.umur - b.umur);
+      setDataPengukuran(pengukuranArray);
+      setLoadData(true);
+    } catch (error) {
+      errorHandling(error)
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          `${BASE_URL}/pengukurans/balita/${idBalita}`,
-          apiAuth
-        );
-        const pengukuranArray = Array.isArray(result.data)
-          ? result.data
-          : [result.data];
-        pengukuranArray.sort((a, b) => a.umur - b.umur);
-        setDataPengukuran(pengukuranArray);
-        setLoadData(true);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
+    fetchDataPengukuran();
   }, []);
 
   useEffect(() => {
@@ -264,11 +238,36 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
     return <div>Loading...</div>;
   }
 
+  const hapusPengukuran = async (id_Pengukuran) => {
+    await Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Menghapus data pengukuran",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        // lakukan api validasiiii
+        await axios.delete(`${BASE_URL}/pengukurans/${id_Pengukuran}`, apiAuth)
+        fetchDataPengukuran();
+        Swal.fire({
+          title: "Berhasil",
+          text: "Pengukuran tervalidasi",
+          icon: "success"
+        });
+
+      }
+    });
+  };
+
   return (
     <main className="container">
       {/* Mulai isi kontennya disini */}
 
-      <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary'>Tambah Pengukuran</Link>
+      <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary mb-2'>Tambah Pengukuran</Link>
           <div className='table-responsive'>
             <table id='myTable' className="table custom-table">
               <thead>
@@ -333,16 +332,19 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
                         {pengukuran.kms}
                       </div>
                     </td>
+                    {pengukuran.validasi == true ? (
                     <td>
-                      {pengukuran.validasi == true ? (
-                        <div className="tervalidasi rounded">Tervalidasi</div>)
+                        <button className="btn btn-success" disabled>Valid <i class="fa-solid fa-square-check"></i></button>
+                      </td>)
                         :
                         (
+                      <td className="d-flex">
                           <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
-                            <button className="fa-solid fa-pen-to-square"></button>
+                            <button className="btn btn-warning d-flex"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
                           </Link>
+                          <button className="btn btn-danger d-flex" onClick={() => {hapusPengukuran(pengukuran.id)}}><i class="fa-solid fa-trash"></i> Hapus</button>
+                      </td>
                         )}
-                    </td>
                   </tr>
                 ))}
                 {/* <tr>

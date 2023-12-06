@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LineChart_Umur_24_60 from "../../view-publik/component/linechart_24-60";
 import LineChart_Umur_0_24 from "../../view-publik/component/linechart_0-24";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import TabelPengukuranBalitaPuskesmas from "./TabelPengukuranBalitaPuskesmas";
 import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom";
@@ -23,6 +23,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
       );
       setBiodata(dataBalita.data);
     } catch (error) {
+      errorHandling(error)
       console.error("Error fetching balita data:", error);
     }
   };
@@ -159,15 +160,15 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                         <td style={{ textAlign: "left" }}> : &nbsp;{namaPosyandu.nama}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status TB/U</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status TB/U terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_tbu}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/TB</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status BB/TB terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbtb}</td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/U</th>
+                        <th scope="row" style={{ textAlign: "left" }}>Status BB/U terakhir</th>
                         <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbu}</td>
                       </tr>
                     </tbody>

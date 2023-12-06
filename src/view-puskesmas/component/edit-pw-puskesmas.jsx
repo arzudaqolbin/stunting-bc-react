@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../css/edit-pw-puskesmas.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
   let navigate = useNavigate();
@@ -33,6 +35,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
         });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
@@ -103,16 +106,43 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
     .put(`${BASE_URL}/user/${userId}`, {
       username: formData.username,
       password: formData.password_baru,
-    })
+    }, apiAuth)
     .then((response) => {
       console.log("Password berhasil diubah:", response.data);
-      navigate(`/puskesmas/profile`);
+      showSuccessPostToast()
     })
     .catch((error) => {
       console.error("Error:", error);
+      showFailedPostToast()
       // Tambahkan logika atau feedback sesuai kebutuhan
     });
     
+  };
+
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Password berhasil diganti", {
+        data: {
+          title: "Success",
+          text: "Password berhasil diganti",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          navigate(`/puskesmas/profile`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Mengganti Password", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
   };
 
   return (
@@ -175,6 +205,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
           </div>
         </div>
       </main>
+      <ToastContainer />
     </div>
   );
 }

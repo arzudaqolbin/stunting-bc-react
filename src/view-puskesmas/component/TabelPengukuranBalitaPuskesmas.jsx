@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/tabel-pengukuran-balita-puskesmas.css";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -170,6 +170,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
       setDataPengukuran(pengukuranArray);
       setLoadData(true);
     } catch (error) {
+      errorHandling(error)
       console.error("Error fetching data:", error);
     }
   };
@@ -263,7 +264,6 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   };
 
   const handleValidate = async (id_Pengukuran) => {
-    console.log("ini id pengukuranann = ", id_Pengukuran);
     let validate = true;
     await Swal.fire({
       title: "Apakah kamu yakin?",
@@ -289,7 +289,31 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
     });
   };
 
-  const handleExport = () => { };
+  const hapusPengukuran = async (id_Pengukuran) => {
+    await Swal.fire({
+      title: "Apakah kamu yakin?",
+      text: "Menghapus data pengukuran",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        // lakukan api validasiiii
+        await axios.delete(`${BASE_URL}/pengukurans/${id_Pengukuran}`, apiAuth)
+        fetchDataPengukuran();
+        Swal.fire({
+          title: "Berhasil",
+          text: "Menghapus data pengukuran",
+          icon: "success"
+        });
+
+      }
+    });
+  };
+
 
   useEffect(() => {
     // Inisialisasi DataTable hanya pada mounting pertama
@@ -330,16 +354,18 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   return (
     <main className="container">
       {/* Mulai isi kontennya disini */}
-
+        <div className="d-flex justify-content-between mb-3">
           <Link
             to={`/puskesmas/tambah-pengukuran/${idBalita}`}
             className="btn btn-primary"
           >
             Tambah Pengukuran
           </Link>
-          <button className="btn btn-primary" onClick={exportToXLSX}>
+          <button className="btn btn-info" onClick={exportToXLSX}>
             Export Table
           </button>
+        </div>
+
           <div className="table-responsive">
           <table id="myTable" className="table custom-table">
             <thead>
@@ -404,17 +430,24 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
                       {pengukuran.kms}
                     </div>
                   </td>
-                  <td>
+                  <td className="d-flex">
                     <Link to={`/puskesmas/edit-pengukuran/${pengukuran.id}`}>
-                      <i class="fa-solid fa-pen-to-square"></i>
+                      <button className="btn btn-warning d-flex align-items-center">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
                     </Link>
+                    <button className="btn btn-danger d-flex align-items-center" onClick={() => {hapusPengukuran(pengukuran.id)}}>
+                      <i class="fa-solid fa-trash"></i> Hapus
+                    </button>
                     {pengukuran.validasi == true ? (
-                      <div className="tervalidasi rounded">Tervalidasi</div>)
+                      <button className="btn btn-success d-flex align-items-center" disabled>
+                        Valid <i class="fa-solid fa-square-check"></i>
+                      </button>)
                       :
-                      <span role='button' onClick={() => handleValidate(pengukuran.id)}>
+                      <button className="btn" onClick={() => handleValidate(pengukuran.id)}>
                         {/* <button className="fa-solid fa-pen-to-square"></button> */}
                         <i class="fa-solid fa-circle-check mx-2" style={{ color: "#408d30" }}></i>
-                      </span>
+                      </button>
                     }
                   </td>
                 </tr>

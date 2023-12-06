@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
@@ -113,9 +113,11 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
             setLoading(false);
           })
           .catch((error) => {
+            errorHandling(error)
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
+        errorHandling(error)
         if (error.response) {
           // Respon dari server dengan kode status tertentu
           console.error(
@@ -414,15 +416,15 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       try {
         const prevUmur = umur - 1;
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
-        console.log("wkjebfiwefbwkevfiwyevfbwbefljwqbfuoqw fhqw fwqufvwqufvwdqqqqqqqqqq")
-        console.log("pengukuran sbelumnya = ", prevPengukuran.data)
+        console.log("kbm = ", kbm)
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
         if(prevPengukuran.data.length === 0){
           console.log("gada pengukuran sebelumnya");
           pengukuran.rambu_gizi = "O";
         }
         else{
-          const differ = bb - prevPengukuran.data.berat_badan;
+          const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
+          console.log("differ bb = ", differ)
 
           let status = "";
           if (differ < kbm) {
@@ -430,11 +432,6 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
           } else {
             status = 'N';
           }
-
-          // setPengukuran((prevResult) => ({
-          //   ...prevResult,
-          //   rambu_gizi: status
-          // }));
 
           pengukuran.rambu_gizi = status;
         }
@@ -445,7 +442,6 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
           //   ...prevResult,
           //   rambu_gizi: 'O'
           // }));
-          pengukuran.rambu_gizi = "O";
         } else {
           console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
         }
@@ -534,11 +530,6 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("balita")
-      console.log(balita)
-
-      // console.log("pengukuran")
-      // console.log(pengukuran)
 
       const jk = balita.jenis_kelamin;
       const idBalita = parseInt(balita_id)
@@ -550,7 +541,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
       generateKms(jk, umur, bb);
-      generateRambuGizi(jk, umur, bb, idBalita);
+      await generateRambuGizi(jk, umur, bb, idBalita);
 
       try {
 

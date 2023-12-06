@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import BASE_URL, { dataAuth } from "../../base/apiConfig";
+import BASE_URL, { dataAuth, errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import { ClipLoader } from 'react-spinners';
@@ -39,7 +39,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     umur: 0,
     tinggi_badan: "",
     berat_badan: "",
-    rambu_gizi: "N",
+    rambu_gizi: "",
     kms: "",
     status_tbu: "",
     status_bbu: "",
@@ -72,9 +72,11 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
             setLoading(false)
           })
           .catch((error) => {
+            errorHandling(error)
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
+        errorHandling(error)
         if (error.response) {
           // Respon dari server dengan kode status tertentu
           console.error(
@@ -220,6 +222,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
+    console.log("cek bb untuk bbtb = ", bb)
+    console.log("cek tb untuk bbtb = ", tbAdj)
 
     let patokanData = [];
     if (jk == "Laki-Laki") {
@@ -311,15 +315,15 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       try {
         const prevUmur = umur - 1;
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
-        console.log("wkjebfiwefbwkevfiwyevfbwbefljwqbfuoqw fhqw fwqufvwqufvwdqqqqqqqqqq")
-        console.log("pengukuran sbelumnya = ", prevPengukuran.data)
+        console.log("kbm = ", kbm)
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
         if(prevPengukuran.data.length === 0){
           console.log("gada pengukuran sebelumnya");
           pengukuran.rambu_gizi = "O";
         }
         else{
-          const differ = bb - prevPengukuran.data.berat_badan;
+          const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
+          console.log("differ bb = ", differ)
 
           let status = "";
           if (differ < kbm) {
@@ -327,11 +331,6 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
           } else {
             status = 'N';
           }
-
-          // setPengukuran((prevResult) => ({
-          //   ...prevResult,
-          //   rambu_gizi: status
-          // }));
 
           pengukuran.rambu_gizi = status;
         }
@@ -420,11 +419,6 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("balita")
-      console.log(balita)
-
-      // console.log("pengukuran")
-      // console.log(pengukuran)
 
       const jk = balita.jenis_kelamin;
       const idBalita = parseInt(balita.id)
@@ -436,12 +430,9 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
       generateKms(jk, umur, bb);
-      generateRambuGizi(jk, umur, bb, idBalita);
+      await generateRambuGizi(jk, umur, bb, idBalita);
 
       try {
-
-        console.log("pengukuran terbaru");
-        console.log(pengukuran);
 
         console.log("pengukuran terbaru");
         console.log(pengukuran);

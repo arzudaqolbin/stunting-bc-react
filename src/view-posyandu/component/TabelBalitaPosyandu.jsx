@@ -1,12 +1,160 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-balita-posyandu.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 import $ from 'jquery';
 import 'datatables.net';
 import { ClipLoader } from 'react-spinners';
-// import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
+
+function applyStatusStyle(statusValue) {
+  switch (statusValue) {
+    case "Sangat Pendek":
+      return {
+        backgroundColor: "darkred",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "Pendek":
+      return {
+        backgroundColor: "red",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "Normal":
+      return {
+        backgroundColor: "limegreen",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Tinggi":
+      return {
+        backgroundColor: "darkblue",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Gizi Buruk":
+      return {
+        backgroundColor: "darkred",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "Gizi Kurang":
+      return {
+        backgroundColor: "red",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "Resiko Lebih":
+      return {
+        backgroundColor: "dodgerblue",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Gizi Lebih":
+      return {
+        backgroundColor: "mediumblue",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Obesitas":
+      return {
+        backgroundColor: "darkblue",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "BB Sangat Kurang":
+      return {
+        backgroundColor: "darkred",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "BB Kurang":
+      return {
+        backgroundColor: "red",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    case "Resiko BB Lebih":
+      return {
+        backgroundColor: "darkblue",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Hijau Atas":
+      return {
+        backgroundColor: "green",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Hijau":
+      return {
+        backgroundColor: "limegreen",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Kuning":
+      return {
+        backgroundColor: "gold",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+    case "Merah":
+      return {
+        backgroundColor: "red",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+        fontWeight: 'bold'
+      };
+    default:
+      return {
+        backgroundColor: "white",
+        color: "white",
+        borderRadius: "10px",
+        padding: "1px",
+        margin: "1px",
+      };
+  }
+}
 
 function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
   const [balita, setBalita] = useState([]);
@@ -54,6 +202,7 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
       setBalita(result.data.balitas);
       setLoading(false);
     } catch (error) {
+      errorHandling(error)
       if (error.response) {
         // Respon dari server dengan kode status tertentu
         console.error(
@@ -79,106 +228,106 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
   }, []);
 
   // Fungsi applyStatusStyle untuk mengatur status gaya CSS
-  function applyStatusStyle(element) {
-    element.style.color = "white";
-    element.style.borderRadius = "10px";
-    element.style.padding = "1px";
-    element.style.margin = "1px";
+  // function applyStatusStyle(element) {
+  //   element.style.color = "white";
+  //   element.style.borderRadius = "10px";
+  //   element.style.padding = "1px";
+  //   element.style.margin = "1px";
 
-    var statusValue = element.textContent;
+  //   var statusValue = element.textContent;
 
-    switch (statusValue) {
-      // status TB/U
-      case "Sangat Pendek":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "Pendek":
-        element.style.backgroundColor = "red";
-        break;
-      case "Normal":
-        element.style.backgroundColor = "limegreen";
-        break;
-      case "Tinggi":
-        element.style.backgroundColor = "darkblue";
-        break;
-      // status BB/TB
-      case "Gizi Buruk":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "Gizi Kurang":
-        element.style.backgroundColor = "red";
-        break;
-      case "Risiko Lebih":
-        element.style.backgroundColor = "dodgerblue";
-        break;
-      case "Gizi Lebih":
-        element.style.backgroundColor = "mediumblue";
-        break;
-      case "Obesitas":
-        element.style.backgroundColor = "darkblue";
-        break;
-      // status BB/U
-      case "BB Sangat Kurang":
-        element.style.backgroundColor = "darkred";
-        break;
-      case "BB Kurang":
-        element.style.backgroundColor = "red";
-        break;
-      case "Risiko BB Lebih":
-        element.style.backgroundColor = "darkblue";
-        break;
-      default:
-        // Default background color for unknown status
-        element.style.backgroundColor = "black";
-    }
-  };
+  //   switch (statusValue) {
+  //     // status TB/U
+  //     case "Sangat Pendek":
+  //       element.style.backgroundColor = "darkred";
+  //       break;
+  //     case "Pendek":
+  //       element.style.backgroundColor = "red";
+  //       break;
+  //     case "Normal":
+  //       element.style.backgroundColor = "limegreen";
+  //       break;
+  //     case "Tinggi":
+  //       element.style.backgroundColor = "blue";
+  //       break;
+  //     // status BB/TB
+  //     case "Gizi Buruk":
+  //       element.style.backgroundColor = "darkred";
+  //       break;
+  //     case "Gizi Kurang":
+  //       element.style.backgroundColor = "red";
+  //       break;
+  //     case "Risiko Lebih":
+  //       element.style.backgroundColor = "dodgerblue";
+  //       break;
+  //     case "Gizi Lebih":
+  //       element.style.backgroundColor = "mediumblue";
+  //       break;
+  //     case "Obesitas":
+  //       element.style.backgroundColor = "darkblue";
+  //       break;
+  //     // status BB/U
+  //     case "BB Sangat Kurang":
+  //       element.style.backgroundColor = "darkred";
+  //       break;
+  //     case "BB Kurang":
+  //       element.style.backgroundColor = "red";
+  //       break;
+  //     case "Risiko BB Lebih":
+  //       element.style.backgroundColor = "darkblue";
+  //       break;
+  //     default:
+  //       // Default background color for unknown status
+  //       element.style.backgroundColor = "black";
+  //   }
+  // };
 
-  const getStatusBBUClass = (status) => {
-    if (status === "BB Sangat Kurang") {
-      return "status rounded darkred";
-    } else if (status === "BB Kurang") {
-      return "status rounded red";
-    } else if (status === "Normal") {
-      return "status rounded limegreen";
-    } else if (status === "Risiko BB Lebih") {
-      return "status rounded darkblue";
-    } else {
-      return "status rounded black";
-    }
-  };
+  // const getStatusBBUClass = (status) => {
+  //   if (status === "BB Sangat Kurang") {
+  //     return "status rounded darkred";
+  //   } else if (status === "BB Kurang") {
+  //     return "status rounded red";
+  //   } else if (status === "Normal") {
+  //     return "status rounded limegreen";
+  //   } else if (status === "Risiko BB Lebih") {
+  //     return "status rounded darkblue";
+  //   } else {
+  //     return "status rounded black";
+  //   }
+  // };
 
-  // perbaiki ini pak
-  const getStatusTBUClass = (status) => {
-    if (status === "BB Sangat Kurang") {
-      return "status rounded darkred";
-    } else if (status === "BB Kurang") {
-      return "status rounded red";
-    } else if (status === "Normal") {
-      return "status rounded limegreen";
-    } else if (status === "Risiko BB Lebih") {
-      return "status rounded darkblue";
-    } else {
-      return "status rounded black";
-    }
-  };
+  // // perbaiki ini pak
+  // const getStatusTBUClass = (status) => {
+  //   if (status === "BB Sangat Kurang") {
+  //     return "status rounded darkred";
+  //   } else if (status === "BB Kurang") {
+  //     return "status rounded red";
+  //   } else if (status === "Normal") {
+  //     return "status rounded limegreen";
+  //   } else if (status === "Risiko BB Lebih") {
+  //     return "status rounded darkblue";
+  //   } else {
+  //     return "status rounded black";
+  //   }
+  // };
 
-  const getStatusBBTBClass = (status) => {
-    if (status === "Gizi Buruk") {
-      return "status rounded darkred";
-    } else if (status === "Gizi Kurang") {
-      return "status rounded red";
-    } else if (status === "Normal") {
-      return "status rounded limegreen";
-    } else if (status === "Risiko Lebih") {
-      return "status rounded dodgerblue";
-    } else if (status === "Gizi Lebih") {
-      return "status rounded mediumblue";
-    } else if (status === "Obesitas") {
-      return "status rounded darkblue";
-    } else {
-      return "status rounded black";
-    }
-  };
+  // const getStatusBBTBClass = (status) => {
+  //   if (status === "Gizi Buruk") {
+  //     return "status rounded darkred";
+  //   } else if (status === "Gizi Kurang") {
+  //     return "status rounded red";
+  //   } else if (status === "Normal") {
+  //     return "status rounded limegreen";
+  //   } else if (status === "Risiko Lebih") {
+  //     return "status rounded dodgerblue";
+  //   } else if (status === "Gizi Lebih") {
+  //     return "status rounded mediumblue";
+  //   } else if (status === "Obesitas") {
+  //     return "status rounded darkblue";
+  //   } else {
+  //     return "status rounded black";
+  //   }
+  // };
 
   return (
     <>
@@ -218,23 +367,23 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
                       <td>{data.nama_ortu}</td>
                       <td>{data.umur}</td>
                       <td data-status_tbu={data.status_tbu}>
-                        <div className={getStatusTBUClass(data.status_tbu)}>
+                        <div className="validasi rounded" style={applyStatusStyle(data.status_tbu)}>
                           {data.status_tbu}
                         </div>
                       </td>
                       <td data-status_bbtb={data.status_bbtb}>
-                        <div className={getStatusBBTBClass(data.status_bbtb)}>
+                        <div className="validasi rounded" style={applyStatusStyle(data.status_bbtb)}>
                           {data.status_bbtb}
                         </div>
                       </td>
                       <td data-status_bbu={data.status_bbu}>
-                        <div className={getStatusBBUClass(data.status_bbu)}>
+                        <div className="validasi rounded" style={applyStatusStyle(data.status_bbu)}>
                           {data.status_bbu}
                         </div>
                       </td>
                       <td>
                         <Link to={`/posyandu/detail-balita/${data.id}`} >
-                          <button className="btn btn-info">Info</button>
+                          <button className="btn btn-info"><i class="fa-solid fa-circle-info"></i> Info</button>
                         </Link>
                       </td>
                     </tr >

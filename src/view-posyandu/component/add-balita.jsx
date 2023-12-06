@@ -243,7 +243,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
     });
   };
 
-  const showSuccessPostToast = async () => {
+  const showSuccessPostToast = async (id_balita) => {
     return new Promise((resolve) => {
       toast.success("Data berhasil disimpan", {
         data: {
@@ -253,6 +253,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
         onClose: async () => {
           // Menunggu 3 detik sebelum melakukan navigasi
           await new Promise((resolve) => setTimeout(resolve, 3000));
+          navigate(`/posyandu/detail-balita/${id_balita}`);
           resolve();
         },
       });
@@ -272,9 +273,11 @@ function AddBalita({ idPosyandu, apiAuth }) {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const respon = await axios.post(`${BASE_URL}/balitas`, balita, apiAuth);
-        showSuccessPostToast();
-        navigate(`/posyandu/detail-balita/${respon.data.id}`);
+        await axios.post(`${BASE_URL}/balitas`, balita, apiAuth).then((respons) => {
+          const id_balita = respons.data.id;
+          showSuccessPostToast(id_balita);
+        });
+        
       } catch (error) {
         showFailedPostToast();
         if (error.response) {
@@ -519,6 +522,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

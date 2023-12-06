@@ -5,11 +5,11 @@
     }
 
     /* button */
-    button.btn {
+    /* button.btn {
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 8px 8px; /* Atur padding sesuai kebutuhan */
+        padding: 8px 8px;
         cursor: pointer;
         text-align: right;
         font-size: 0.875rem;
@@ -17,7 +17,7 @@
 
     button.btn:hover {
         background-color: #9fedd7;
-    }
+    } */
 
     /* custom table */
     .custom-border{
@@ -50,19 +50,19 @@
         text-align: center; /* Mengatur kolom "Lihat Detail" menjadi di tengah */
     }
 
-    .custom-table tbody tr td button {
+    /* .custom-table tbody tr td button {
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        padding: 5px 10px; 
         cursor: pointer;
         font-size: 0.875rem;
-    }
+    } */
 
-    .custom-table tbody tr td button.info {
-        margin-right: 5px; /* Jarak antara tombol "Info" dan "Edit" */
+    /* .custom-table tbody tr td button.info {
+        margin-right: 5px; 
     }
 
     .custom-table tbody tr td button:hover {
         background-color: #9fedd7;
-    }
+    } */

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../css/edit-pw-posyandu.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   let navigate = useNavigate();
@@ -33,6 +35,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
         });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
@@ -99,7 +102,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log("isi form data = ",formData);
     // ... (tambahkan logika sesuai kebutuhan)
     axios
       .put(
@@ -112,19 +115,46 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
       )
       .then((response) => {
         console.log("Password berhasil diubah:", response.data);
-        navigate(`/posyandu/profile`);
+        showSuccessPostToast();
       })
       .catch((error) => {
+        showFailedPostToast();
         console.error("Error:", error);
         // Tambahkan logika atau feedback sesuai kebutuhan
       });
   };
 
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Password berhasil diganti", {
+        data: {
+          title: "Success",
+          text: "Password berhasil diganti",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          navigate(`/posyandu/profile`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Mengganti Password", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  };
+
   return (
     <main className="container">
-      <a href="">
+      {/* <a href="">
         <img src="back.png" alt="Back" className="logo-back" />
-      </a>
+      </a> */}
 
       <div className="container-fluid">
       <div className="table-responsive">
@@ -176,6 +206,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
         </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

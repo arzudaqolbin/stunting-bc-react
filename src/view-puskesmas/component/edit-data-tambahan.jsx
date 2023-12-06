@@ -3,12 +3,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-data-tambahan.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
+  const [loading, setLoading] = useState(true)
 
   const [dataTambahan, setDataTambahan] = useState({
     balita_id: idBalita,
@@ -49,8 +53,10 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           setIdData(existingDataTambahan.id);
           setDataTambahan(existingDataTambahan);
         }
+        setLoading(false)
       })
       .catch((error) => {
+        errorHandling(error)
         console.error(
           "Terjadi kesalahan saat mengambil data tambahan balita:",
           error
@@ -114,8 +120,9 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           apiAuth
         );
       }
-      navigate(`/puskesmas/detail-balita/${idBalita}`);
+      showSuccessPostToast(idBalita)
     } catch (error) {
+      showFailedPostToast()
       if (error.response) {
         console.error(
           "Kesalahan dalam permintaan ke server:",
@@ -130,7 +137,43 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
     }
   };
 
+  const showSuccessPostToast = async (idBalita) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil diubah",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/puskesmas/detail-balita/${idBalita}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
+
   return (
+    <>
+    { loading ? (
+    <div className='text-center'>
+      <ClipLoader
+        loading={loading}
+        size={150}
+      />
+    </div>) : (
     <div className="main d-flex flex-column min-vh-100" style={{ backgroundColor: '#E4F3EF' }}>
       <main className="container">
         <i class="fa-solid fa-arrow-left text-2x"></i>
@@ -307,9 +350,11 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
             </form>
           </div>
         </div>
-        <button type="submit" className="submit-button">Simpan</button>
       </main>
+      <ToastContainer />
     </div>
+    )}
+    </>
   );
 }
 
