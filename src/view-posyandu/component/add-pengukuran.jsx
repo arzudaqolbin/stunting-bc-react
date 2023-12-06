@@ -113,11 +113,11 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
             setLoading(false);
           })
           .catch((error) => {
-            errorHandling(error)
+            // errorHandling(error)
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
-        errorHandling(error)
+        // errorHandling(error)
         if (error.response) {
           // Respon dari server dengan kode status tertentu
           console.error(

@@ -247,7 +247,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                   aria-controls="collapseTwo"
                   style={{ fontWeight: "bold", fontSize: "20px" }}
                 >
-                  Riwayat Balita
+                  Riwayat Balita {biodata.status_tbu === "Pendek" || biodata.status_tbu === "Sangat Pendek" ? "(sebaiknya dilengkapi)" : ""}
                 </button>
               </h2>
               <div

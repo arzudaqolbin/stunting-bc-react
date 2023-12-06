@@ -254,7 +254,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                   aria-expanded="false"
                   aria-controls="collapseTwo"
                 >
-                  Riwayat Balita
+                  Riwayat Balita {biodata.status_tbu === "Pendek" || biodata.status_tbu === "Sangat Pendek" ? "(sebaiknya dilengkapi)" : ""}
                 </button>
               </h2>
               <div
@@ -265,7 +265,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                 <div className="accordion-body">
                   {riwayat.length === 0 ? (
                     <div>
-                      <div>Belum mengisikan data tambahan riwayat</div>
+                      <div className="text-center">Belum mengisikan data tambahan riwayat</div>
                       <Link
                         to={`/puskesmas/edit-data-tambahan-balita/${idBalita}`}
                         className="btn btn-primary"

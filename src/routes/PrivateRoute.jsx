@@ -22,7 +22,7 @@ const PrivateRoute = ({ element, requiredRole }) => {
     // console.log(decodedToken)
 
     if(decodedToken.exp < (Date.now()/1000)){
-      Swal.queue({
+      Swal.fire({
           title: "Waktu Anda Habis",
           text: "Silahkan login kembali"
         }).then((result) => {
