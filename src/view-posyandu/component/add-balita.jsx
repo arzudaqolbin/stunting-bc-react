@@ -273,11 +273,12 @@ function AddBalita({ idPosyandu, apiAuth }) {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await axios.post(`${BASE_URL}/balitas`, balita, apiAuth).then((respons) => {
-          const id_balita = respons.data.id;
-          showSuccessPostToast(id_balita);
-        });
-        
+        await axios
+          .post(`${BASE_URL}/balitas`, balita, apiAuth)
+          .then((respons) => {
+            const id_balita = respons.data.id;
+            showSuccessPostToast(id_balita);
+          });
       } catch (error) {
         showFailedPostToast();
         if (error.response) {
@@ -498,24 +499,6 @@ function AddBalita({ idPosyandu, apiAuth }) {
               />
               <div className={`error`}>{errors.tgl_lahir}</div>
             </label>
-
-            {/* <label htmlFor="posyandu">
-              <span>Nama Posyandu*</span>
-              <select
-                id="posyandu"
-                name="posyandu"
-                value={posyandu}
-                onChange={(e) => onInputChange(e)}
-              >
-                <option value="" disabled selected>--Pilih--</option>
-                {posyanduOptions &&
-                  posyanduOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.nama}
-                    </option>
-                  ))}
-              </select>
-            </label> */}
             <button type="submit" className="submit-button">
               Simpan
             </button>
