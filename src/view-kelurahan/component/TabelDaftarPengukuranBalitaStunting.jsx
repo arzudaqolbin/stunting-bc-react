@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/tabel-daftar-pengukuran-balita-stunting.css";
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
@@ -169,7 +169,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
         setDataPengukuran(pengukuranArray);
         setLoadData(true);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     };
 
@@ -186,7 +186,7 @@ function TabelPengukuranBalitaStunting({ apiAuth, idBalita }) {
         setTanggalLahir(result.data.tgl_lahir);
         setNamaBalita(result.data.nama);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     };
 

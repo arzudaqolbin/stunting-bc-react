@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "../css/detail-posyandu-puskesmas.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import axios from "axios";
 import { ClipLoader } from 'react-spinners';
 
@@ -124,6 +124,7 @@ function InfoDetailPosyanduPuskesmas({ idPuskesmas, apiAuth, idPosyandu, userId 
         // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
         setPosyandu(result.data);
       } catch (error) {
+        errorHandling(error)
         console.error("Error fetching data:", error);
       }
     };

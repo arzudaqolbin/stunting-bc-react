@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 import "../../view-publik/css/list-berita.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL, { apiAuth } from "../../base/apiConfig";
+import BASE_URL, { apiAuth, errorHandling } from "../../base/apiConfig";
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 const ListBerita = ({ apiAuth }) => {
   const [daftarBerita, setDaftarBerita] = useState([]);
   const [gambar, setGambar] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -32,11 +35,11 @@ const ListBerita = ({ apiAuth }) => {
               }));
             })
             .catch((error) => {
-              console.error("Error fetching gambar awal:", error);
+              errorHandling(error);
             });
         });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     }
 
@@ -46,13 +49,33 @@ const ListBerita = ({ apiAuth }) => {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(`${BASE_URL}/beritas/${id}`, apiAuth);
-      console.log("Berita berhasil dihapus:", response.data);
+      setLoading(false);
 
       const updatedBerita = daftarBerita.filter((berita) => berita.id !== id);
       setDaftarBerita(updatedBerita);
     } catch (error) {
-      console.error("Error deleting berita:", error);
+      errorHandling(error);
+      setLoading(false);
     }
+  };
+
+  const confirmAlert = (id) => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Menambahkan akun posyandu",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        handleDelete(id);
+      }
+    });
+
   };
 
   return (
@@ -110,12 +133,17 @@ const ListBerita = ({ apiAuth }) => {
                 >
                   Baca berita
                 </Link>
-                <button
-                  className="btn btn-danger float-end"
-                  onClick={() => handleDelete(berita.id)}
-                >
-                  <i className="fas fa-trash"></i>
-                </button>
+                {loading ? (
+                  <div className="text-center">
+                    <ClipLoader loading={loading} size={20} />
+                  </div>
+                ) : (
+                  <button
+                    className="btn btn-danger float-end"
+                    onClick={() => confirmAlert(berita.id)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </button>)}
                 <Link
                   to={`/kelurahan/edit-berita/${berita.id}`}
                   className="btn btn-primary float-end me-2"

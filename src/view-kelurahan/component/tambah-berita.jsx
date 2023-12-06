@@ -3,10 +3,13 @@ import "../css/form-kelurahan.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import { ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const today = new Date().toISOString().split('T')[0];
   // const tomorrow = new Date();
   // tomorrow.setDate(new Date().getDate() + 1);
@@ -88,6 +91,26 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
     return isValid;
   };
 
+  const showAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit kader",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        onSubmit(e);
+      }
+    });
+
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -107,19 +130,11 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
             'Authorization': `Bearer ${token}`
           },
         });
-        console.log(response.data);
+        // console.log(response.data);
+        navigate('/kelurahan/berita');
       } catch (error) {
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        setLoading(false);
+        errorHandling(error);
       }
     }
   };
@@ -135,7 +150,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
         {/* Mulai isi kontennya disini */}
         <form
           onSubmit={(e) => {
-            onSubmit(e);
+            showAlert(e);
           }}
         >
           {/* <label htmlFor="tgl_berita">
@@ -197,9 +212,14 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
             />
             <div className={`error`}>{errors.gambar}</div>
           </label>
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
+          {loading ? (
+            <div className="text-center">
+              <ClipLoader loading={loading} size={20} />
+            </div>
+          ) : (
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>)}
         </form>
       </div>
     </main >

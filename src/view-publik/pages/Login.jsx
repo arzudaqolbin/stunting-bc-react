@@ -5,8 +5,9 @@ import { decodeToken } from "react-jwt";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const Login = () => {
   let navigate = useNavigate();
@@ -21,7 +22,6 @@ const Login = () => {
     e.preventDefault();
     setLoading(true)
     setError("")
-    console.log("submit login")
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
@@ -35,9 +35,7 @@ const Login = () => {
       const decodedToken = decodeToken(token);
 
       const roleName = decodedToken.role;
-      // localStorage.setItem('role', roleName);
       const id = decodedToken.instansi_id;
-      console.log(id)
       let redirectUrl = "/";
 
       if (roleName === "POSYANDU" || roleName === "PUSKESMAS") {
@@ -47,19 +45,21 @@ const Login = () => {
       }
       navigate(redirectUrl);
     } catch (error) {
+      errorHandling(error);
       setLoading(false)
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        setError("Username atau Password salah !!!");
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
-      }
+      // if (error.response) {
+      //   // console.log(error.response.data);
+      //   Swal.fire({
+      //     title: "Terjadi kesalahan",
+      //     text: error.response.data.error,
+      //     icon: "warning"
+      //   })
+      //   return Promise.resolve();
+      // } else if (error.request) {
+      //   // console.error("Tidak ada respon dari server:", error.request);
+      // } else {
+      //   // console.error("Terjadi kesalahan:", error.message);
+      // }
     }
   };
 

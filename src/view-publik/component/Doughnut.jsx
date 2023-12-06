@@ -55,7 +55,7 @@ const DoughnutChart = () => {
   }, []);
 
   return (
-    <div className="p-2 flex-fill border border-primary" style={{ width: "15%" }}>
+    <div className='p-3'>
       {loading ? (
        <div className='text-center'>
        <ClipLoader
@@ -65,8 +65,8 @@ const DoughnutChart = () => {
      </div>
       ) : (
         <>
-          <button type="button" onClick={downloadChart}>
-            download
+          <button className="float-right" type="button" onClick={downloadChart}>
+          <i class="fa-solid fa-download"></i>
           </button>
           <Doughnut ref={reff} data={dataChart} options={optionsChart}></Doughnut>
         </>

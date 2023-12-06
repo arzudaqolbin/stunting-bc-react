@@ -23,14 +23,14 @@ const BayiStat= () => {
     const persen = parseFloat(((dataReal.totalStunting/dataReal.total_balita)*100).toFixed(2));
 
     return(
-        <div className="p-2 flex-fill border border-primary">
-            <div className="row align-items-center">
-                <div className="col-auto">
-                <div className="square-div">
-                    <img src={balita} alt="" style={{width: "100px"}} />
+        // <div className="p-2 flex-fill border border-primary">
+        <div className='p-3'>
+            <div className="d-flex align-items-center">
+                {/* <div className="col-auto"> */}
+                <div className="col-8">
+                    <img src={balita} alt="" className='img-fluid' />
                 </div>
-                </div>
-                <div className="col">
+                <div className="col-4">
                     <h4>{persen}%</h4>
                     <p>Dari {dataReal.total_balita} balita, terdapat {dataReal.totalStunting} kasus</p>
                 </div>

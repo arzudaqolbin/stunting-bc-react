@@ -1,15 +1,17 @@
 import React from "react";
 import "../css/form-kelurahan.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
   const today = new Date().toISOString().split("T")[0];
-  // const tomorrow = new Date();
-  // tomorrow.setDate(new Date().getDate() + 1);
-  // const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const [loading, setLoading] = useState(false);
+  let navigate = useNavigate();
 
   const [berita, setBerita] = useState({
     tgl_berita: "",
@@ -88,7 +90,7 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
         setBerita(dataBerita);
       })
       .catch((error) => {
-        console.error("Error fetching berita:", error);
+        errorHandling(error);
       });
 
     // Mendapatkan gambar awal dari API
@@ -141,18 +143,41 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
     // }
   };
 
-  const handleSubmit = (e) => {
+  const confirmAlert = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      axios
-        .put(`${BASE_URL}/beritas/${idBerita}`, berita, apiAuth)
-        .then((response) => {
-          console.log("Berita berhasil diperbarui:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error updating berita:", error);
-        });
+      Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Menambahkan akun posyandu",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, yakin!",
+        cancelButtonText: "Kembali",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setLoading(true);
+          handleSubmit(e);
+        }
+      });
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .put(`${BASE_URL}/beritas/${idBerita}`, berita, apiAuth)
+      .then((response) => {
+        // console.log("Berita berhasil diperbarui:", response.data);
+        navigate('/kelurahan/berita');
+      })
+      .catch((error) => {
+        setLoading(false);
+        errorHandling(error);
+      });
+
   };
 
   // const handleFileChange = (e) => {
@@ -179,7 +204,7 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
 
       <div className="container-fluid">
         <div className="table-responsive">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={confirmAlert}>
             <label htmlFor="tgl_berita">
               <span>Tanggal*</span>
               <input
@@ -248,9 +273,14 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
               <div className={`error`}>{errors.gambar}</div>
             </label> */}
 
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

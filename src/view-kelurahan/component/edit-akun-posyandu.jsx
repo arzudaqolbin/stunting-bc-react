@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import "../css/form-kelurahan.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
+import { error } from "jquery";
+// import { errorHandling } from "../../base/apiConfig";
 
 function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
+
+  // let errorHandling = errorHandling();
+
   const [formData, setFormData] = useState({
     nama_posyandu: "",
     nama_puskesmas: "",
@@ -18,8 +24,14 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     confirm_password: "",
     user_id: "",
   });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [puskesmasList, setPuskesmasList] = useState([]);
+
+  const [koordinat, setKoordinat] = useState({
+    longitut: "",
+    latiude: "",
+  })
 
   useEffect(() => {
     axios
@@ -29,7 +41,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         setPuskesmasList(response.data.data);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
       });
 
     axios
@@ -51,7 +63,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         setRt(parts[1] ? parts[1].replace("RT ", "") : "");
         setRw(parts[2] ? parts[2].replace("RW ", "") : "");
 
-        console.log(data);
+        // console.log(data);
 
         axios
           .get(`${BASE_URL}/user/${data.user_id}`, apiAuth)
@@ -63,17 +75,30 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
             }));
           })
           .catch((error) => {
-            console.error("Error:", error);
+            errorHandling(error);
+          });
+
+        axios.get(`${BASE_URL}/koordinat/${data.koordinat_id}`, apiAuth)
+          .then((koorResp) => {
+            // console.log(koorResp.data);
+            setKoordinat({
+              longitut: koorResp.data.longitut,
+              latitude: koorResp.data.latitude,
+            })
+          })
+          .catch((error) => {
+            errorHandling(error);
           });
       })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
       });
   }, [idPosyandu]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setKoordinat({ ...koordinat, [name]: value });
   };
 
   const [errors, setErrors] = useState({
@@ -232,6 +257,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         cancelButtonText: "Kembali",
       }).then((result) => {
         if (result.isConfirmed) {
+          setLoading(true);
           handleSubmit(e);
         }
       });
@@ -240,7 +266,6 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     axios
       .put(
         `${BASE_URL}/posyandu/${idPosyandu}`,
@@ -254,11 +279,8 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         },
         apiAuth
       )
-      .then((response) => {
-        console.log("Posyandu updated:", response.data);
-      })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
       });
 
     axios
@@ -272,13 +294,13 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         apiAuth
       )
       .then((response) => {
-        console.log("User updated:", response.data);
         navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        errorHandling(error);
+        setLoading(false);
       });
-    console.log(formData);
+    // console.log(formData);
   };
 
   return (
@@ -408,15 +430,15 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
               <div className={`error`}>{errors.kepala}</div>
             </label>
 
-            <label htmlFor="longitude">
+            <label htmlFor="longitut">
               <span>Longitude*</span>
               <input
                 type="text"
-                id="longitude"
-                name="longitude"
-              // required
-              // value={posyanduData.longitude}
-              // onChange={handleInputChange}
+                id="longitut"
+                name="longitut"
+                required
+                value={koordinat.longitut}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.longitude}</div>
             </label>
@@ -427,9 +449,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
                 type="text"
                 id="latitude"
                 name="latitude"
-              // required
-              // value={posyanduData.latitude}
-              // onChange={handleInputChange}
+                required
+                value={koordinat.latitude}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.latitude}</div>
             </label>
@@ -482,9 +504,14 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
               />
               <div className={`error`}>{errors.confirm_password}</div>
             </label>
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

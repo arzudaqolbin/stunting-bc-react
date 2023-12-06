@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../css/info-detail-puskesmas-kelurahan.css";
 import { Link } from 'react-router-dom';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import axios from 'axios';
 import { ClipLoader } from 'react-spinners';
 // import $ from 'jquery';
@@ -14,50 +14,6 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
   const [username, setUsername] = useState([]);
   const [loading, setLoading] = useState(true)
 
-  // fetch data Puskesmas
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //       try {
-  //         // nanti ganti api dengan getKader by idPosyandu
-  //           const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}`,apiAuth);
-  //           // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-  //           setPuskesmas(result.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [idPuskesmas]);
-
-  // // fetch data Posyandu
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.get(`${BASE_URL}/puskesmas/${idPuskesmas}/posyandu`, apiAuth);
-  //       // const result = await axios.get(`${BASE_URL}/kader/posyandu/${idPosyandu}`);
-  //       setPosyandu(result.data.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [idPuskesmas]);
-
-  // // fetch data Username
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //       try {
-  //           const result3 = await axios.get(`${BASE_URL}/user/${puskesmas.user_id}}`, apiAuth);
-  //           setUsername(result3.data);
-  //         } catch (error) {
-  //           console.error("Error fetching data:", error);
-  //         }
-  //       };
-
-  //   fetchData();
-  // }, [puskesmas.user_id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +31,7 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        errorHandling(error);
       }
     };
 

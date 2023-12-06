@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 function EditKader({ idKelurahan, apiAuth, idKader }) {
   let navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [kader, setKader] = useState({
     nama: "",
     jabatan: "",
@@ -24,7 +26,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
         setKader(kaderData);
       })
       .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil data kader:", error);
+        errorHandling(error);
       });
 
     axios
@@ -33,7 +35,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
         setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil data posyandu:", error);
+        errorHandling(error);
       });
   }, [idKader, apiAuth]);
 
@@ -42,24 +44,37 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
     setKader({ ...kader, [name]: value });
   };
 
+  const showAlert = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Mengedit kader",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        onSubmit(e);
+      }
+    });
+
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth);
-      navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
+      await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth).then((res) => {
+        navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
+      });
+      // navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
     } catch (error) {
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
-      }
+      setLoading(false);
+      errorHandling(error);
     }
   };
 
@@ -71,7 +86,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
         <div className="table-responsive">
           <form
             onSubmit={(e) => {
-              onSubmit(e);
+              showAlert(e);
             }}
           >
             <label htmlFor="nama">
@@ -119,10 +134,14 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
                 ))}
               </select>
             </label>
-
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

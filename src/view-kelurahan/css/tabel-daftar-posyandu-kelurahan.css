@@ -5,18 +5,18 @@
         }
 
     /* searching */
-    button.btn-success{
+    /* button.btn-success{
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        padding: 5px 10px; 
         cursor: pointer;
     }
 
     button.btn-success:hover {
         background-color: #9fedd7;
         color: #000;
-    }
+    } */
 
 
     /* custom table */
@@ -49,20 +49,20 @@
         text-align: center; /* Mengatur kolom "Lihat Detail" menjadi di tengah */
     }
 
-    .custom-table tbody tr td button {
+    /* .custom-table tbody tr td button {
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        padding: 5px 10px; 
         cursor: pointer;
         font-size: 0.875rem;
-        margin-right: 5px; /* Jarak antara tombol "Info" dan "Edit" */
+        margin-right: 5px; 
     }
 
     .custom-table tbody tr td button.info {
-        margin-right: 5px; /* Jarak antara tombol "Info" dan "Edit" */
+        margin-right: 5px; 
     }
 
     .custom-table tbody tr td button:hover {
         background-color: #9fedd7;
-    }
+    } */

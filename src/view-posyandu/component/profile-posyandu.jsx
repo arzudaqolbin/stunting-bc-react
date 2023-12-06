@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import { Link } from "react-router-dom";
 
 function ProfilePosyandu({ idPosyandu, apiAuth }) {
   const [Posyandu, setPosyandu] = useState({});
@@ -39,6 +40,7 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
           });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error fetching puskesmas:", error);
       });
   }, [idPosyandu, apiAuth]);
@@ -119,9 +121,11 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
               </tbody>
             </table>
             <div className="button-container">
+              <Link to={"/posyandu/edit-pw"}>
               <button type="submit" className="submit">
-                Ganti Password
+              <i class="fa-solid fa-lock"></i> Ganti Password
               </button>
+              </Link>
             </div>
           </div>
         </div>

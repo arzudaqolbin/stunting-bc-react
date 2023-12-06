@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import "../css/tabel-daftar-puskesmas-kelurahan.css";
 import { ClipLoader } from 'react-spinners';
 import $ from 'jquery';
@@ -54,7 +54,7 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                 setLoading(false)
             })
             .catch(error => {
-                console.error('Error fetching puskesmas:', error);
+                errorHandling(error);
             });
         $('.custom-table').DataTable();
     }, []);

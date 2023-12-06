@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../css/edit-pw-posyandu.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   let navigate = useNavigate();
@@ -15,7 +17,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
 
   const [errors, setErrors] = useState({
     username: "",
-    password_baru:"",
+    password_baru: "",
     konfirmasi_password: "",
   });
 
@@ -33,6 +35,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
         });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
@@ -44,7 +47,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Mengedit password akun",
@@ -99,7 +102,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log("isi form data = ", formData);
     // ... (tambahkan logika sesuai kebutuhan)
     axios
       .put(
@@ -107,75 +110,104 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
         {
           username: formData.username,
           password: formData.password_baru,
+          confirm_password: formData.konfirmasi_password
         },
         apiAuth
       )
       .then((response) => {
-        console.log("Password berhasil diubah:", response.data);
-        navigate(`/posyandu/profile`);
+        // console.log("Password berhasil diubah:", response.data);
+        showSuccessPostToast();
       })
       .catch((error) => {
+        showFailedPostToast();
         console.error("Error:", error);
         // Tambahkan logika atau feedback sesuai kebutuhan
       });
   };
 
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Password berhasil diganti", {
+        data: {
+          title: "Success",
+          text: "Password berhasil diganti",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          navigate(`/posyandu/profile`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Mengganti Password", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  };
+
   return (
     <main className="container">
-      <a href="">
+      {/* <a href="">
         <img src="back.png" alt="Back" className="logo-back" />
-      </a>
+      </a> */}
 
       <div className="container-fluid">
-      <div className="table-responsive">
-        <h2 className="custom-judul">EDIT PASSWORD POSYANDU</h2>
+        <div className="table-responsive">
+          <h2 className="custom-judul">EDIT PASSWORD POSYANDU</h2>
 
-        <form onSubmit={confirmAlert}>
-          <label htmlFor="username">
-            <span>USERNAME</span>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              // required
-              value={formData.username}
-              readOnly // Membuat input tidak bisa diubah
-            />
-            <div className={`error`}>{errors.username}</div>
-          </label>
+          <form onSubmit={confirmAlert}>
+            <label htmlFor="username">
+              <span>USERNAME</span>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                // required
+                value={formData.username}
+                readOnly // Membuat input tidak bisa diubah
+              />
+              <div className={`error`}>{errors.username}</div>
+            </label>
 
-          <label htmlFor="password_baru">
-            <span>PASSWORD BARU</span>
-            <input
-              type="password"
-              id="password_baru"
-              name="password_baru"
-              // required
-              value={formData.password_baru}
-              onChange={handleChange}
-            />
-            <div className={`error`}>{errors.password_baru}</div>
-          </label>
+            <label htmlFor="password_baru">
+              <span>PASSWORD BARU</span>
+              <input
+                type="password"
+                id="password_baru"
+                name="password_baru"
+                // required
+                value={formData.password_baru}
+                onChange={handleChange}
+              />
+              <div className={`error`}>{errors.password_baru}</div>
+            </label>
 
-          <label htmlFor="konfirmasi_password">
-            <span>KONFIRMASI PASSWORD</span>
-            <input
-              type="password"
-              id="konfirmasi_password"
-              name="konfirmasi_password"
-              // required
-              value={formData.konfirmasi_password}
-              onChange={handleChange}
-            />
-            <div className={`error`}>{errors.konfirmasi_password}</div>
-          </label>
+            <label htmlFor="konfirmasi_password">
+              <span>KONFIRMASI PASSWORD</span>
+              <input
+                type="password"
+                id="konfirmasi_password"
+                name="konfirmasi_password"
+                // required
+                value={formData.konfirmasi_password}
+                onChange={handleChange}
+              />
+              <div className={`error`}>{errors.konfirmasi_password}</div>
+            </label>
 
-          <button type="submit" className="submit-button">
-            Simpan
-          </button>
-        </form>
+            <button type="submit" className="submit-button">
+              Simpan
+            </button>
+          </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

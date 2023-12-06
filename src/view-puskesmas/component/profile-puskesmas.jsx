@@ -3,6 +3,7 @@ import axios from "axios";
 import "../css/profile-puskesmas.css";
 import logoPuskesmas from "../../aset/logo-puskesmas.png";
 import BASE_URL from "../../base/apiConfig";
+import { Link } from "react-router-dom";
 
 function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
   const [Puskesmas, setPuskesmas] = useState({});
@@ -63,9 +64,11 @@ function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
               )}
             </div>
             <div className="button-container">
+            <Link to={"/puskesmas/edit-pw"}>
               <button type="submit" className="submit">
-                Ganti Password
+              <i class="fa-solid fa-lock"></i> Ganti Password
               </button>
+            </Link>
             </div>
           </div>
         </div>

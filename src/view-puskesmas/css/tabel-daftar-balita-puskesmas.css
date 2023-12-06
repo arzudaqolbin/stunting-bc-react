@@ -9,18 +9,18 @@
     }
 
     /* searching */
-    button.btn-success{
+    /* button.btn-success{
         background-color: #026670;
         color: #fff;
         border: none;
-        padding: 5px 10px; /* Atur padding sesuai kebutuhan */
+        padding: 5px 10px; 
         cursor: pointer;
     }
 
     button.btn-success:hover {
         background-color: #9fedd7;
         color: #000;
-    }
+    } */
 
 
     /* custom table */
@@ -51,7 +51,7 @@
         width: 8rem;
     }
 
-    .custom-table tbody tr td button.btn {
+    /* .custom-table tbody tr td button.btn {
         background-color: #026670;
         color: #fff;
         border: none;
@@ -63,7 +63,7 @@
     .custom-table tbody tr td button.btn:hover {
         background-color: #9fedd7;
         color: #000;
-    }
+    } */
 
     .custom-table {
         border-collapse: separate;

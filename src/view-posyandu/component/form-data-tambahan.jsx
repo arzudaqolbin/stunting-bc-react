@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/form-posyandu.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { ClipLoader } from 'react-spinners';
 
@@ -54,6 +54,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
         setLoading(false)
       })
       .catch((error) => {
+        errorHandling(error)
         console.error(
           "Terjadi kesalahan saat mengambil data tambahan balita:",
           error

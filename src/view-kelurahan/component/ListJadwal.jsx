@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 import "../../view-publik/css/list-jadwal.css";
+import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 const ListJadwal = ({ apiAuth }) => {
   const [jadwals, setJadwals] = useState([]);
   const currentDate = new Date();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch data from the server when the component mounts
@@ -16,7 +19,7 @@ const ListJadwal = ({ apiAuth }) => {
         setJadwals(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching jadwal data:", error);
+        errorHandling(error);
       });
   }, []); // Empty dependency array ensures the effect runs once when the component mounts
 
@@ -36,15 +39,35 @@ const ListJadwal = ({ apiAuth }) => {
     return daysDiff === closestEventDaysDiff;
   };
 
+  const confirmAlert = (id) => {
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Menambahkan akun posyandu",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, yakin!",
+      cancelButtonText: "Kembali",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        handleDelete(id);
+      }
+    });
+
+  };
+
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(`${BASE_URL}/jadwals/${id}`, apiAuth);
-      console.log("Jadwal berhasil dihapus:", response.data);
+      setLoading(false);
 
       const updatedJadwal = jadwals.filter((jadwal) => jadwal.id !== id);
       setJadwals(updatedJadwal);
     } catch (error) {
-      console.error("Error deleting jadwal:", error);
+      errorHandling(error);
+      setLoading(false);
     }
   };
 
@@ -68,11 +91,10 @@ const ListJadwal = ({ apiAuth }) => {
               </div>
               <h5 className="m-2">
                 <span
-                  className={`badge rounded-circle ${
-                    isEventFuture(jadwal.tanggal)
-                      ? "bg-custom border-custom"
-                      : "bg-light border"
-                  }`}
+                  className={`badge rounded-circle ${isEventFuture(jadwal.tanggal)
+                    ? "bg-custom border-custom"
+                    : "bg-light border"
+                    }`}
                 >
                   &nbsp;
                 </span>
@@ -95,12 +117,17 @@ const ListJadwal = ({ apiAuth }) => {
                   </div>
                   <h4 className="card-title text-muted">{jadwal.judul}</h4>
                   <p className="card-text text-muted">{jadwal.deskripsi}</p>
-                  <button
-                    className="btn btn-danger float-end"
-                    onClick={() => handleDelete(jadwal.id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </button>
+                  {loading ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading} size={20} />
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn-danger float-end"
+                      onClick={() => confirmAlert(jadwal.id)}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>)}
                   <Link
                     to={`/kelurahan/edit-jadwal/${jadwal.id}`}
                     className="btn btn-primary float-end me-2"
