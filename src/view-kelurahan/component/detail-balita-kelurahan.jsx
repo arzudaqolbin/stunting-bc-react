@@ -13,7 +13,6 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   const [biodata, setBiodata] = useState([]);
   const [riwayat, setRiwayat] = useState([]);
   const [namaPosyandu, setNamaPosyandu] = useState([]);
-  const [idPosyandu, setIdPosyandu] = useState();
   const [loading, setLoading] = useState(true);
 
   const getDataBalita = async () => {
@@ -24,7 +23,6 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
       );
 
       setBiodata(dataBalita.data);
-      setIdPosyandu(dataBalita.data.posyandu_id);
     } catch (error) {
       errorHandling(error);
     }
@@ -33,7 +31,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   const getNamaPosyandu = async () => {
     try {
       const namaPos = await axios.get(
-        `${BASE_URL}/posyandu/${idPosyandu}`,
+        `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
         apiAuth
       );
       setNamaPosyandu(namaPos.data.data);
@@ -57,7 +55,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
-      if (idPosyandu != null) {
+      if (biodata.length != 0) {
         await getNamaPosyandu();
       }
       await getDataTambahan();
@@ -65,7 +63,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
     };
 
     fetchData();
-  }, []);
+  }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
@@ -179,7 +177,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                         </th>
                         <td style={{ textAlign: "left" }}>
                           {" "}
-                          : &nbsp;{namaPosyandu.nama}
+                          : &nbsp;{namaPosyandu?.nama || "Loading..."}
                         </td>
                       </tr>
                       <tr>
