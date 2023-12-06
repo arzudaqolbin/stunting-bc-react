@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import LineChart_Umur_24_60 from '../../view-publik/component/linechart_24-60';
-import LineChart_Umur_0_24 from '../../view-publik/component/linechart_0-24';
-import axios from 'axios';
-import BASE_URL, { errorHandling } from '../../base/apiConfig';
-import TabelPengukuranBalitaStunting from './TabelDaftarPengukuranBalitaStunting';
-import { ClipLoader } from 'react-spinners';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import LineChart_Umur_24_60 from "../../view-publik/component/linechart_24-60";
+import LineChart_Umur_0_24 from "../../view-publik/component/linechart_0-24";
+import axios from "axios";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import TabelPengukuranBalitaStunting from "./TabelDaftarPengukuranBalitaStunting";
+import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 import "../css/detail-balita.css";
 
 const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
@@ -13,6 +13,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   const [biodata, setBiodata] = useState([]);
   const [riwayat, setRiwayat] = useState([]);
   const [namaPosyandu, setNamaPosyandu] = useState([]);
+  const [idPosyandu, setIdPosyandu] = useState();
   const [loading, setLoading] = useState(true);
 
   const getDataBalita = async () => {
@@ -21,12 +22,9 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
         `${BASE_URL}/balitas/${idBalita}`,
         apiAuth
       );
-      const dataTambahanBalita = await axios.get(
-        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
-        apiAuth
-      );
+
       setBiodata(dataBalita.data);
-      setRiwayat(dataTambahanBalita.data);
+      setIdPosyandu(dataBalita.data.posyandu_id);
     } catch (error) {
       errorHandling(error);
     }
@@ -35,19 +33,34 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   const getNamaPosyandu = async () => {
     try {
       const namaPos = await axios.get(
-        `${BASE_URL}/posyandu/${biodata.posyandu_id}`,
+        `${BASE_URL}/posyandu/${idPosyandu}`,
         apiAuth
       );
-      setNamaPosyandu(namaPos.data);
+      setNamaPosyandu(namaPos.data.data);
     } catch (error) {
       errorHandling(error);
+    }
+  };
+
+  const getDataTambahan = async () => {
+    try {
+      const dataTambahanBalita = await axios.get(
+        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
+        apiAuth
+      );
+      setRiwayat(dataTambahanBalita.data);
+    } catch (error) {
+      console.error("Error fetching balita data:", error);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
-      await getNamaPosyandu();
+      if (idPosyandu != null) {
+        await getNamaPosyandu();
+      }
+      await getDataTambahan();
       setLoading(false);
     };
 
@@ -220,124 +233,133 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                   data-bs-parent="#accordionExample"
                 >
                   <div className="accordion-body">
-                    <table className="table table-hover custom-table">
-                      <tbody>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Asi Eksklusif
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{convertStr(riwayat.asi_eksklusif)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            IMD
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.imd}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Penyakit Penyerta
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.penyakit_penyerta}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Riwayat Sakit
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.riwayat_sakit}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Riwayat Imunisasi
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.riwayat_imunisasi}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Riwayat Ibu Hamil KEK
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.riwayat_ibu_hamil_kek}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Riwayat Ibu Anemia
-                          </th>
-                          <td style={{ textAlign: "left" }}> : &nbsp;Tidak</td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Kepemilikan Jamban Sehat
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.kepemilikan_jamban_sehat}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Akses Air Minum
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;Air isi ulang
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            KTP
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.ktp}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Kepemilikan BPJS/KIS/JKN/KAJ
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.jaminan_kesehatan}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Akses Terhadap Makanan Sehat
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.akses_makanan_sehat}
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row" style={{ textAlign: "left" }}>
-                            Sudah Konfirmasi ke DSA
-                          </th>
-                          <td style={{ textAlign: "left" }}>
-                            {" "}
-                            : &nbsp;{riwayat.konfirmasi_dsa}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    {riwayat.length === 0 ? (
+                      <div className="text-center">
+                        Belum mengisikan data tambahan riwayat
+                      </div>
+                    ) : (
+                      <table className="table table-hover custom-table">
+                        <tbody>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Asi Eksklusif
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{convertStr(riwayat.asi_eksklusif)}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              IMD
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.imd}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Penyakit Penyerta
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.penyakit_penyerta}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Sakit
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_sakit}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Imunisasi
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_imunisasi}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Ibu Hamil KEK
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_ibu_hamil_kek}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Ibu Anemia
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;Tidak
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Kepemilikan Jamban Sehat
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.kepemilikan_jamban_sehat}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Akses Air Minum
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;Air isi ulang
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              KTP
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.ktp}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Kepemilikan BPJS/KIS/JKN/KAJ
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.jaminan_kesehatan}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Akses Terhadap Makanan Sehat
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.akses_makanan_sehat}
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Sudah Konfirmasi ke DSA
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.konfirmasi_dsa}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    )}
                   </div>
                 </div>
               </div>
