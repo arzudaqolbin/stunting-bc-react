@@ -158,13 +158,13 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
                         to={`/kelurahan/detail-posyandu/${posyandu.id}`}
                         className="btn btn-info"
                       >
-                        Info
+                        <i class="fa-solid fa-circle-info"></i> Info
                       </Link>
                       <Link
                         to={`/kelurahan/edit-posyandu/${posyandu.id}`}
                         className="btn btn-warning"
                       >
-                        Edit
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
                       </Link>
                     </td>
                   </tr>

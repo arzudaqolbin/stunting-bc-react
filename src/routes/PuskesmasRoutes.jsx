@@ -34,7 +34,7 @@ const RoutesPuskesmas = () => {
             <Route path="/edit-data-balita/:idBalita" element={<PrivateRoute element={<PageEditBalitaPuskesmas />} requiredRole="Puskesmas" />} />
             <Route path="/edit-data-tambahan-balita/:idBalita" element={<PrivateRoute element={<PageEditDataTambahanPuskesmas />} requiredRole="Puskesmas" />} />
             <Route path="/edit-pengukuran/:idPengukuran" element={<PrivateRoute element={<PageEditPengukuranPuskesmas />} requiredRole="Puskesmas" />} />
-            <Route path="/tambah-pengukuran/:idPengukuran" element={<PrivateRoute element={<PageAddPengukuranSelectedPuskesmas />} requiredRole="Puskesmas" />} />
+            <Route path="/tambah-pengukuran/:idBalita" element={<PrivateRoute element={<PageAddPengukuranSelectedPuskesmas />} requiredRole="Puskesmas" />} />
             {/* detail posyandu */}
             <Route path="/detail-posyandu/:idPosyandu" element={<PrivateRoute element={<PageDetailPosyanduPuskesmas />} requiredRole="Puskesmas" />} />
 
