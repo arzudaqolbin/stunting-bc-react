@@ -17,7 +17,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
 
   const [errors, setErrors] = useState({
     username: "",
-    password_baru:"",
+    password_baru: "",
     konfirmasi_password: "",
   });
 
@@ -47,7 +47,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
 
   const confirmAlert = (e) => {
     e.preventDefault();
-    if (validateForm()){
+    if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
         text: "Mengedit password akun",
@@ -103,20 +103,21 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-    .put(`${BASE_URL}/user/${userId}`, {
-      username: formData.username,
-      password: formData.password_baru,
-    }, apiAuth)
-    .then((response) => {
-      console.log("Password berhasil diubah:", response.data);
-      showSuccessPostToast()
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      showFailedPostToast()
-      // Tambahkan logika atau feedback sesuai kebutuhan
-    });
-    
+      .put(`${BASE_URL}/user/${userId}`, {
+        username: formData.username,
+        password: formData.password_baru,
+        confirm_password: formData.konfirmasi_password
+      }, apiAuth)
+      .then((response) => {
+        // console.log("Password berhasil diubah:", response.data);
+        showSuccessPostToast()
+      })
+      .catch((error) => {
+        // console.error("Error:", error);
+        showFailedPostToast()
+        // Tambahkan logika atau feedback sesuai kebutuhan
+      });
+
   };
 
   const showSuccessPostToast = async () => {
@@ -152,56 +153,56 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
     >
       {/* Main content */}
       <main className="container">
-      <i class="fa-solid fa-arrow-left text-2x"></i>
+        <i class="fa-solid fa-arrow-left text-2x"></i>
 
         <div className="container-fluid">
           {/* Edit Password Form */}
           <h2 className="custom-judul">EDIT PASSWORD PUSKESMAS</h2>
           <div className="table-responsive">
-          <form onSubmit={confirmAlert}>
-            <label htmlFor="username">
-              <span>USERNAME</span>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                // required
-                value={formData.username}
-                readOnly // Membuat input tidak bisa diubah
-              />
-              <div className={`error`}>{errors.username}</div>
-            </label>
+            <form onSubmit={confirmAlert}>
+              <label htmlFor="username">
+                <span>USERNAME</span>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  // required
+                  value={formData.username}
+                  readOnly // Membuat input tidak bisa diubah
+                />
+                <div className={`error`}>{errors.username}</div>
+              </label>
 
-            <label htmlFor="password_baru">
-              <span>PASSWORD BARU</span>
-              <input
-                type="password"
-                id="password_baru"
-                name="password_baru"
-                // required
-                value={formData.password_baru}
-                onChange={handleChange}
-              />
-              <div className={`error`}>{errors.password_baru}</div>
-            </label>
+              <label htmlFor="password_baru">
+                <span>PASSWORD BARU</span>
+                <input
+                  type="password"
+                  id="password_baru"
+                  name="password_baru"
+                  // required
+                  value={formData.password_baru}
+                  onChange={handleChange}
+                />
+                <div className={`error`}>{errors.password_baru}</div>
+              </label>
 
-            <label htmlFor="konfirmasi_password">
-              <span>KONFIRMASI PASSWORD</span>
-              <input
-                type="password"
-                id="konfirmasi_password"
-                name="konfirmasi_password"
-                // required
-                value={formData.konfirmasi_password}
-                onChange={handleChange}
-              />
-              <div className={`error`}>{errors.konfirmasi_password}</div>
-            </label>
+              <label htmlFor="konfirmasi_password">
+                <span>KONFIRMASI PASSWORD</span>
+                <input
+                  type="password"
+                  id="konfirmasi_password"
+                  name="konfirmasi_password"
+                  // required
+                  value={formData.konfirmasi_password}
+                  onChange={handleChange}
+                />
+                <div className={`error`}>{errors.konfirmasi_password}</div>
+              </label>
 
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
-          </form>
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>
+            </form>
           </div>
         </div>
       </main>
