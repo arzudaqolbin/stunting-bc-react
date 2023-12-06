@@ -86,7 +86,7 @@ const Login = () => {
         </div>
         <div className="container mt-3 pt-5 col-sm-5">
           <div className="row">
-            <div className="col-sm-4 m-auto">
+            <div className="col-sm-8 m-auto">
               <div className="card border-0 shadow">
                 <div className="card-body">
                   <h4 className="text-center">Silahkan melakukan login</h4>
