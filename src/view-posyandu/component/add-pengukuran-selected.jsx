@@ -6,29 +6,27 @@ import React from "react";
 import BASE_URL, { dataAuth, errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
-import { ClipLoader } from 'react-spinners';
+import { ClipLoader } from "react-spinners";
 // import 'react-datepicker/dist/react-datepicker.css';
 
-
-import data_tbu_lk from '../../data-patokan-pengukuran/data-tbu-lk';
-import data_tbu_pr from '../../data-patokan-pengukuran/data-tbu-pr';
-import data_bbu_lk from '../../data-patokan-pengukuran/data-bbu-lk';
-import data_bbu_pr from '../../data-patokan-pengukuran/data-bbu-pr';
-import data_bbpb_lk from '../../data-patokan-pengukuran/data-bbpb-0_24-lk';
-import data_bbpb_pr from '../../data-patokan-pengukuran/data-bbpb-0_24-pr';
-import data_bbtb_lk from '../../data-patokan-pengukuran/data-bbtb-24_60-lk';
-import data_bbtb_pr from '../../data-patokan-pengukuran/data-bbtb-24_60-pr';
+import data_tbu_lk from "../../data-patokan-pengukuran/data-tbu-lk";
+import data_tbu_pr from "../../data-patokan-pengukuran/data-tbu-pr";
+import data_bbu_lk from "../../data-patokan-pengukuran/data-bbu-lk";
+import data_bbu_pr from "../../data-patokan-pengukuran/data-bbu-pr";
+import data_bbpb_lk from "../../data-patokan-pengukuran/data-bbpb-0_24-lk";
+import data_bbpb_pr from "../../data-patokan-pengukuran/data-bbpb-0_24-pr";
+import data_bbtb_lk from "../../data-patokan-pengukuran/data-bbtb-24_60-lk";
+import data_bbtb_pr from "../../data-patokan-pengukuran/data-bbtb-24_60-pr";
 import data_kbm_lk from "../../data-patokan-pengukuran/data-kbm-lk";
 import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
-
 
 function AddPengukuranSelected({ apiAuth, idBalita }) {
   let navigate = useNavigate();
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
+  const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split("T")[0];
 
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -45,19 +43,11 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     status_bbu: "",
     status_bbtb: "",
     posisi_balita: "",
-    validasi: false
+    validasi: false,
   });
-  console.log("chi");
-  console.log(pengukuran);
 
-
-  const {
-    tgl_input,
-    tinggi_badan,
-    berat_badan,
-    umur,
-    posisi_balita,
-  } = pengukuran;
+  const { tgl_input, tinggi_badan, berat_badan, umur, posisi_balita } =
+    pengukuran;
 
   // untuk mendapatkan list balita diposyandu tersebut
   useEffect(() => {
@@ -69,14 +59,17 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
           .then((response) => {
             pengukuran.balita_id = response.data.id;
             setBalita(response.data);
-            setLoading(false)
+            setLoading(false);
           })
           .catch((error) => {
-            errorHandling(error)
-            console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
+            errorHandling(error);
+            console.error(
+              "Terjadi kesalahan saat mengambil opsi Balita:",
+              error
+            );
           });
       } catch (error) {
-        errorHandling(error)
+        errorHandling(error);
         if (error.response) {
           // Respon dari server dengan kode status tertentu
           console.error(
@@ -103,7 +96,6 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
   const onInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "balita_id") {
-
     } else if (name === "tgl_input") {
       // setPengukuran({ ...pengukuran, [name]: value });
       pengukuran.tgl_input = value;
@@ -116,7 +108,6 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       setPengukuran({ ...pengukuran, [name]: value });
     } else {
       setPengukuran({ ...pengukuran, [name]: parseFloat(value) });
-
     }
   };
 
@@ -124,7 +115,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     const tglLahirTimestamp = new Date(tglLahir).getTime();
     const tglPengukuranTimestamp = new Date(tglPengukuran).getTime();
     const diffMonths = Math.floor(
-      (tglPengukuranTimestamp - tglLahirTimestamp) / (1000 * 60 * 60 * 24 * 30.44)
+      (tglPengukuranTimestamp - tglLahirTimestamp) /
+        (1000 * 60 * 60 * 24 * 30.44)
     );
 
     setPengukuran({ ...pengukuran, umur: diffMonths });
@@ -150,7 +142,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     }
 
     return tinggiAdj;
-  }
+  };
 
   const generateStatus_tbu = (jk, umur, tb) => {
     let status = "";
@@ -158,11 +150,11 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     let patokanData = jk == "Laki-Laki" ? data_tbu_lk : data_tbu_pr;
     const dataReff = patokanData.find((data) => data.umur === umur);
 
-    console.log("reff tbu")
-    console.log(dataReff)
+    console.log("reff tbu");
+    console.log(dataReff);
 
     if (dataReff != null) {
-      console.log("ini berarti masuk if")
+      console.log("ini berarti masuk if");
       switch (true) {
         case tb < dataReff.sd_3:
           status = "Sangat Pendek";
@@ -184,10 +176,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       console.log(status);
     }
 
-
     pengukuran.status_tbu = status;
-
-  }
+  };
 
   const generateStatus_bbu = (jk, umur, bb) => {
     let status = "";
@@ -216,20 +206,18 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     }
 
     pengukuran.status_bbu = status;
-
-  }
+  };
 
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
-    console.log("cek bb untuk bbtb = ", bb)
-    console.log("cek tb untuk bbtb = ", tbAdj)
+    console.log("cek bb untuk bbtb = ", bb);
+    console.log("cek tb untuk bbtb = ", tbAdj);
 
     let patokanData = [];
     if (jk == "Laki-Laki") {
       patokanData = umur <= 24 ? data_bbpb_lk : data_bbtb_lk;
-    }
-    else {
+    } else {
       patokanData = umur <= 24 ? data_bbpb_pr : data_bbtb_pr;
     }
 
@@ -267,7 +255,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     // }));
 
     pengukuran.status_bbtb = status;
-  }
+  };
 
   const generateKms = (jk, umur, bb) => {
     let status = "";
@@ -302,8 +290,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     }
 
     pengukuran.kms = status;
-
-  }
+  };
 
   const generateRambuGizi = async (jk, umur, bb) => {
     const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
@@ -314,22 +301,25 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     } else {
       try {
         const prevUmur = umur - 1;
-        const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
-        console.log("kbm = ", kbm)
+        const prevPengukuran = await axios.get(
+          `${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`,
+          apiAuth
+        );
+        console.log("kbm = ", kbm);
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
-        if(prevPengukuran.data.length === 0){
+        if (prevPengukuran.data.length === 0) {
           console.log("gada pengukuran sebelumnya");
           pengukuran.rambu_gizi = "O";
-        }
-        else{
-          const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
-          console.log("differ bb = ", differ)
+        } else {
+          const differ =
+            Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
+          console.log("differ bb = ", differ);
 
           let status = "";
           if (differ < kbm) {
-            status = 'T';
+            status = "T";
           } else {
-            status = 'N';
+            status = "N";
           }
 
           pengukuran.rambu_gizi = status;
@@ -369,13 +359,15 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.berat_badan)) {
       newErrors.berat_badan = "Maksimal dua digit angka di belakang koma";
       isValid = false;
-    } else if (parseFloat(pengukuran.berat_badan) <= 2 || parseFloat(pengukuran.berat_badan) > 30) {
+    } else if (
+      parseFloat(pengukuran.berat_badan) <= 2 ||
+      parseFloat(pengukuran.berat_badan) > 30
+    ) {
       newErrors.berat_badan = "Berat badan harus diantara 2-30";
       isValid = false;
     } else {
       newErrors.berat_badan = "";
     }
-
 
     if (!pengukuran.tinggi_badan) {
       newErrors.tinggi_badan = "Tinggi badan tidak boleh kosong";
@@ -386,7 +378,10 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     } else if (!/^[0-9]+([,.][0-9]{1,2})?$/.test(pengukuran.tinggi_badan)) {
       newErrors.tinggi_badan = "Maksimal dua digit angka di belakang koma";
       isValid = false;
-    } else if (parseFloat(pengukuran.tinggi_badan) <= 30 || parseFloat(pengukuran.tinggi_badan) > 120) {
+    } else if (
+      parseFloat(pengukuran.tinggi_badan) <= 30 ||
+      parseFloat(pengukuran.tinggi_badan) > 120
+    ) {
       newErrors.tinggi_badan = "Tinggi badan harus diantara 30-120";
       isValid = false;
     } else {
@@ -419,9 +414,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
   const onSubmit = async (e, balita, pengukuran) => {
     e.preventDefault();
     if (validateForm()) {
-
       const jk = balita.jenis_kelamin;
-      const idBalita = parseInt(balita.id)
+      const idBalita = parseInt(balita.id);
       const umur = parseInt(pengukuran.umur);
       const bb = parseFloat(pengukuran.berat_badan);
       const tb = parseFloat(pengukuran.tinggi_badan);
@@ -433,25 +427,28 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       await generateRambuGizi(jk, umur, bb, idBalita);
 
       try {
-
         console.log("pengukuran terbaru");
         console.log(pengukuran);
 
-        await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
-          console.log(hasil.status)
-        })
-        await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, {
-          umur: pengukuran.umur,
-          status_tbu: pengukuran.status_tbu,
-          status_bbu: pengukuran.status_bbu,
-          status_bbtb: pengukuran.status_bbtb
-        }, apiAuth)
+        await axios
+          .post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth)
+          .then((hasil) => {
+            console.log(hasil.status);
+          });
+        await axios.put(
+          `${BASE_URL}/balitas/status/${idBalita}`,
+          {
+            umur: pengukuran.umur,
+            status_tbu: pengukuran.status_tbu,
+            status_bbu: pengukuran.status_bbu,
+            status_bbtb: pengukuran.status_bbtb,
+          },
+          apiAuth
+        );
         showSuccessPostToast(idBalita);
         // navigate(`/puskesmas/${idPosyandu}/detail-balita/${idBalita}`);
-
-
       } catch (error) {
-        showFailedPostToast()
+        showFailedPostToast();
         if (error.response) {
           console.error(
             "Kesalahan dalam permintaan ke server:",
@@ -459,17 +456,17 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
             error.response.data
           );
         } else if (error.request) {
-          showFailedPostToast()
+          showFailedPostToast();
           console.error("Tidak ada respon dari server:", error.request);
         } else {
-          showFailedPostToast()
+          showFailedPostToast();
           console.error("Terjadi kesalahan:", error.message);
         }
       }
     }
   };
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const showSuccessPostToast = async (idBalita) => {
     return new Promise((resolve) => {
@@ -480,15 +477,12 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
         },
         onClose: async () => {
           // Menunggu 3 detik sebelum melakukan navigasi
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          await new Promise((resolve) => setTimeout(resolve, 3000));
 
           // Mengakhiri janji saat Toast ditutup
           if (dataAuth().role === "PUSKESMAS") {
-
             navigate(`/puskesmas/detail-balita/${idBalita}`);
-          }
-          else {
-
+          } else {
             navigate(`/posyandu/detail-balita/${idBalita}`);
           }
           resolve();
@@ -504,7 +498,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
         text: "This is an error message",
       },
     });
-  }
+  };
 
   const confirmAlert = (e, balita, pengukuran) => {
     e.preventDefault();
@@ -516,138 +510,137 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
-      cancelButtonText: "Kembali"
+      cancelButtonText: "Kembali",
     }).then((result) => {
       if (result.isConfirmed) {
         // acc izin
-        onSubmit(e, balita, pengukuran)
+        onSubmit(e, balita, pengukuran);
       }
     });
-
-  }
+  };
 
   return (
     <>
-      {
-        loading ? (
-          <div className='text-center'>
-            <ClipLoader
-              loading={loading}
-              size={150}
-            />
-          </div>) : (
-          <main className="container">
-            <h2 className="custom-judul">Form Pengukuran Balita</h2>
-            <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
+      {loading ? (
+        <div className="text-center">
+          <ClipLoader loading={loading} size={150} />
+        </div>
+      ) : (
+        <main className="container">
+          <h2 className="custom-judul">Form Pengukuran Balita</h2>
+          <h3 className="requirement">
+            *Menunjukkan pertanyaan yang wajib diisi
+          </h3>
 
-            <div className="container-fluid">
-              <div className="table-responsive">
-                <form
-                  onSubmit={(e) => {
-                    // onSubmit(e, balita, pengukuran);
-                    confirmAlert(e, balita, pengukuran);
-                  }}
-                >
-                  <label htmlFor="nama_balita">
-                    <span>Nama Balita</span>
-                    <input
-                      type="text"
-                      id="nama_balita"
-                      name="nama_bali"
-                      value={balita.nama}
-                      readOnly
+          <div className="container-fluid">
+            <div className="table-responsive">
+              <form
+                onSubmit={(e) => {
+                  // onSubmit(e, balita, pengukuran);
+                  confirmAlert(e, balita, pengukuran);
+                }}
+              >
+                <label htmlFor="nama_balita">
+                  <span>Nama Balita</span>
+                  <input
+                    type="text"
+                    id="nama_balita"
+                    name="nama_bali"
+                    value={balita.nama}
+                    readOnly
                     // onChange={(e) => onInputChange(e)}
-                    />
-                  </label>
-                  <label>
-                    <span>Tanggal Lahir*</span>
-                    <input
-                      type="date"
-                      id="tgl_lahir"
-                      name="tgl_lahir"
-                      value={balita.tgl_lahir}
-                      disabled
-                    />
-                  </label>
-                  <label htmlFor="tgl_input">
-                    <span>Tanggal Pengukuran*</span>
-                    <input
-                      type="date"
-                      className="form-control"
-                      id="tgl_input"
-                      name="tgl_input"
-                      value={tgl_input}
-                      onChange={(e) => onInputChange(e)}
-                      // required
-                      max={today}
-                      min={fiveYearsAgoFormatted}
-                    />
-                    <div className={`error`}>{errors.tgl_input}</div>
-                  </label>
-
-
-                  <label htmlFor="umur">
-                    <span>Umur dalam Bulan*</span>
-                    <input
-                      type="text"
-                      id="umur"
-                      name="umur"
-                      value={umur}
-                      onChange={(e) => onInputChange(e)}
-                      readOnly
-                      placeholder="auto system dari tanggal pengukuran"
-                    />
-                  </label>
-
-                  <label htmlFor="berat_badan">
-                    <span>Berat (kg)*</span>
-                    <input
-                      type="number"
-                      id="berat_badan"
-                      name="berat_badan"
-                      value={berat_badan}
-                      onChange={(e) => onInputChange(e)}
+                  />
+                </label>
+                <label>
+                  <span>Tanggal Lahir*</span>
+                  <input
+                    type="date"
+                    id="tgl_lahir"
+                    name="tgl_lahir"
+                    value={balita.tgl_lahir}
+                    disabled
+                  />
+                </label>
+                <label htmlFor="tgl_input">
+                  <span>Tanggal Pengukuran*</span>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="tgl_input"
+                    name="tgl_input"
+                    value={tgl_input}
+                    onChange={(e) => onInputChange(e)}
                     // required
-                    />
-                    <div className={`error`}>{errors.berat_badan}</div>
-                  </label>
+                    max={today}
+                    min={fiveYearsAgoFormatted}
+                  />
+                  <div className={`error`}>{errors.tgl_input}</div>
+                </label>
 
-                  <label htmlFor="tinggi_badan">
-                    <span>Tinggi Badan (cm)*</span>
-                    <input
-                      type="number"
-                      id="tinggi_badan"
-                      name="tinggi_badan"
-                      value={tinggi_badan}
-                      onChange={(e) => onInputChange(e)}
+                <label htmlFor="umur">
+                  <span>Umur dalam Bulan*</span>
+                  <input
+                    type="text"
+                    id="umur"
+                    name="umur"
+                    value={umur}
+                    onChange={(e) => onInputChange(e)}
+                    readOnly
+                    placeholder="auto system dari tanggal pengukuran"
+                  />
+                </label>
+
+                <label htmlFor="berat_badan">
+                  <span>Berat (kg)*</span>
+                  <input
+                    type="number"
+                    id="berat_badan"
+                    name="berat_badan"
+                    value={berat_badan}
+                    onChange={(e) => onInputChange(e)}
                     // required
-                    />
-                    <div className={`error`}>{errors.tinggi_badan}</div>
-                  </label>
+                  />
+                  <div className={`error`}>{errors.berat_badan}</div>
+                </label>
 
-                  <label htmlFor="posisi_balita">
-                    <span>Posisi Pengukuran</span>
-                    <select
-                      id="posisi_balita"
-                      name="posisi_balita"
-                      value={posisi_balita}
-                      onChange={(e) => onInputChange(e)}
-                    >
-                      <option value="" disabled selected>Pilih posisi balita</option>
-                      <option value="Berdiri">Berdiri</option>
-                      <option value="Tidur">Tidur</option>
-                    </select>
-                    <div className={`error`}>{errors.posisi_balita}</div>
-                  </label>
-                  <button type="submit" className="submit-button">
-                    Simpan
-                  </button>
-                </form>
-              </div>
+                <label htmlFor="tinggi_badan">
+                  <span>Tinggi Badan (cm)*</span>
+                  <input
+                    type="number"
+                    id="tinggi_badan"
+                    name="tinggi_badan"
+                    value={tinggi_badan}
+                    onChange={(e) => onInputChange(e)}
+                    // required
+                  />
+                  <div className={`error`}>{errors.tinggi_badan}</div>
+                </label>
+
+                <label htmlFor="posisi_balita">
+                  <span>Posisi Pengukuran</span>
+                  <select
+                    id="posisi_balita"
+                    name="posisi_balita"
+                    value={posisi_balita}
+                    onChange={(e) => onInputChange(e)}
+                  >
+                    <option value="" disabled selected>
+                      Pilih posisi balita
+                    </option>
+                    <option value="Berdiri">Berdiri</option>
+                    <option value="Tidur">Tidur</option>
+                  </select>
+                  <div className={`error`}>{errors.posisi_balita}</div>
+                </label>
+                <button type="submit" className="submit-button">
+                  Simpan
+                </button>
+              </form>
             </div>
-            <ToastContainer />
-          </main>)
-      }
+          </div>
+          <ToastContainer />
+        </main>
+      )}
     </>
   );
 }
