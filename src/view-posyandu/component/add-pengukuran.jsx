@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
@@ -113,9 +113,11 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
             setLoading(false);
           })
           .catch((error) => {
+            errorHandling(error)
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
+        errorHandling(error)
         if (error.response) {
           // Respon dari server dengan kode status tertentu
           console.error(

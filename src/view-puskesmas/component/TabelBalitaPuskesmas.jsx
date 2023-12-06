@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/tabel-daftar-balita-puskesmas.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Statistik from "../../view-publik/component/Statistik";
 import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom";
@@ -264,6 +264,7 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
       setBalita(result.data.balitas);
       setLoading(false);
     } catch (error) {
+      errorHandling(error)
       if (error.response) {
         // Respon dari server dengan kode status tertentu
         console.error(

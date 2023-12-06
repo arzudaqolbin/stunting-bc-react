@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../css/tabel-pengukuran-balita-posyandu.css";
 // import * as XLSX from "xlsx";
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
@@ -177,6 +177,7 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
       setDataPengukuran(pengukuranArray);
       setLoadData(true);
     } catch (error) {
+      errorHandling(error)
       console.error("Error fetching data:", error);
     }
   };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import BASE_URL from '../../base/apiConfig';
+import BASE_URL, { errorHandling } from '../../base/apiConfig';
 import "../css/tabel-daftar-posyandu-puskesmas.css";
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
@@ -21,6 +21,7 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
                 setLoading(false)
             })
             .catch(error => {
+                errorHandling(error)
                 console.error('Error fetching posyandu:', error);
             });
     }, [idPuskesmas]);

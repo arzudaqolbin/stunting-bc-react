@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LineChart_Umur_24_60 from "../../view-publik/component/linechart_24-60";
 import LineChart_Umur_0_24 from "../../view-publik/component/linechart_0-24";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import TabelPengukuranBalitaPosyandu from "./TabelPengukuranBalitaPosyandu";
 import { ClipLoader } from "react-spinners";
 import { Link, useNavigate } from "react-router-dom";
@@ -34,6 +34,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
       //       return;
       //     }
       // });
+      errorHandling(error)
       console.error("Error fetching balita data:", error);
     }
   };

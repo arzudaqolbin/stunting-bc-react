@@ -108,7 +108,7 @@
 
 // export default StackedBarGender;
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Bar } from "react-chartjs-2";
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
@@ -134,6 +134,7 @@ ChartJS.register(
 const StackedBarGender = () => {
     const [dataReal, setDataReal] = useState([]);
     const [loading, setLoading] = useState(true);
+    let reff = useRef(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -206,8 +207,15 @@ const StackedBarGender = () => {
         plugins: [topLabels]
     }
 
+    const downloadChart = useCallback(() => {
+        const link = document.createElement("a");
+        link.download = "doughnut_status_tb_u.png";
+        link.href = reff.current.toBase64Image();
+        link.click();
+      }, []);
+
     return (
-        <div className="p-2 flex-fill border border-primary" style={{ width: "15vw", position: 'relative' }}>
+        <div className='p-3'>
             {loading ? (
                 // <div class style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                 //     <ClipLoader size={150} color={"#123abc"} loading={loading} />
@@ -219,10 +227,16 @@ const StackedBarGender = () => {
                     />
                 </div>
             ) : (
+                <>
+                <button className="float-right" type="button" onClick={downloadChart}>
+                <i class="fa-solid fa-download"></i>
+                </button>
                 <Bar
+                    ref={reff}
                     data={dataBar}
                     options={optionBar}
                 />
+                </>
             )}
         </div>
     )

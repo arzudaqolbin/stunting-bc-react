@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/edit-balita.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
@@ -96,6 +96,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
         setLoading(false)
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Terjadi kesalahan saat mengambil data balita:", error);
       });
   }, []);

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import BASE_URL, {dataAuth} from "../../base/apiConfig";
+import BASE_URL, {dataAuth, errorHandling} from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -79,6 +79,7 @@ function EditPengukuran({ apiAuth, idPengukuran}) {
           ...response.data
         }));
       } catch (error) {
+        errorHandling(error)
         console.error("Error fetching data:", error);
       }
     };

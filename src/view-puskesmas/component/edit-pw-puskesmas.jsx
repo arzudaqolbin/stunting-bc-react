@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../css/edit-pw-puskesmas.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,6 +35,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
         });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama

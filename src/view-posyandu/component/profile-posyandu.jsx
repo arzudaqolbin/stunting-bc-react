@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/profile-posyandu.css";
 import logoPosyandu from "../../aset/logo-posyandu.png";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import { Link } from "react-router-dom";
 
 function ProfilePosyandu({ idPosyandu, apiAuth }) {
@@ -40,6 +40,7 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
           });
       })
       .catch((error) => {
+        errorHandling(error)
         console.error("Error fetching puskesmas:", error);
       });
   }, [idPosyandu, apiAuth]);
