@@ -93,8 +93,8 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading2(true);
     if (validateForm()) {
+      setLoading2(true);
       try {
         // alert("as");
         if (idData) {
