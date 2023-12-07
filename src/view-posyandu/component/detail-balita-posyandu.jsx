@@ -34,13 +34,8 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
       //       return;
       //     }
       // });
-<<<<<<< HEAD
       errorHandling(error)
       // console.error("Error fetching balita data:", error);
-=======
-      errorHandling(error);
-      console.error("Error fetching balita data:", error);
->>>>>>> 7f14fe368f4116f80aca0fbd34c3b13e207d9fc9
     }
   };
 
@@ -238,17 +233,6 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                       </tr>
                     </tbody>
                   </table>
-<<<<<<< HEAD
-                  {/* <div className="d-flex justify-content-end">
-                    <Link
-                      to={`/posyandu/edit-data-balita/${idBalita}`}
-                      className="btn btn-primary"
-                    >
-                      Edit Data Balita
-                    </Link>
-                  </div> */}
-=======
->>>>>>> 7f14fe368f4116f80aca0fbd34c3b13e207d9fc9
                 </div>
               </div>
             </div>
