@@ -25,7 +25,7 @@ import data_kbm_pr from "../../data-patokan-pengukuran/data-kbm-pr";
 
 function AddPengukuran({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
-  console.log("id posyandu = ", idPosyandu);
+  // console.log("id posyandu = ", idPosyandu);
 
   const tomorrow = new Date();
   tomorrow.setDate(new Date().getDate() + 1);
@@ -37,6 +37,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balitaOptions, setBalitaOptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const [tglLahir, setTglLahir] = useState("");
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
@@ -52,8 +53,8 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
     posisi_balita: "",
     validasi: false
   });
-  console.log("pengukuran");
-  console.log(pengukuran);
+  // console.log("pengukuran");
+  // console.log(pengukuran);
 
   const [balita, setBalita] = useState({
     nik: "",
@@ -117,24 +118,25 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
-        // errorHandling(error)
-        if (error.response) {
-          // Respon dari server dengan kode status tertentu
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-        } else if (error.request) {
-          // Tidak ada respon dari server
-          console.error("Tidak ada respon dari server:", error.request);
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-        } else {
-          // Kesalahan lainnya
-          console.error("Terjadi kesalahan:", error.message);
-          // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-        }
+
+        // // errorHandling(error)
+        // if (error.response) {
+        //   // Respon dari server dengan kode status tertentu
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+        // } else if (error.request) {
+        //   // Tidak ada respon dari server
+        //   console.error("Tidak ada respon dari server:", error.request);
+        //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+        // } else {
+        //   // Kesalahan lainnya
+        //   console.error("Terjadi kesalahan:", error.message);
+        //   // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+        // }
       }
       setHasRunEffect(true);
     }
@@ -197,15 +199,15 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       });
 
 
-      console.log("ini pilihan balitanya");
-      console.log(balita);
+      // console.log("ini pilihan balitanya");
+      // console.log(balita);
 
     } else if (name === "tgl_input") {
       // setPengukuran({ ...pengukuran, [name]: value });
       pengukuran.tgl_input = value;
       // setPengukuran({ ...initialPengukuran, name: new Date(value) });
-      console.log("mau lihat value tgl_input bro");
-      console.log(typeof value, value);
+      // console.log("mau lihat value tgl_input bro");
+      // console.log(typeof value, value);
       // pengukuran.tgl_input: value;
       calculateUmur(value, tglLahir);
     } else if (name === "posisi_balita") {
@@ -255,11 +257,11 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
     let patokanData = jk == "Laki-Laki" ? data_tbu_lk : data_tbu_pr;
     const dataReff = patokanData.find((data) => data.umur === umur);
 
-    console.log("reff tbu")
-    console.log(dataReff)
+    // console.log("reff tbu")
+    // console.log(dataReff)
 
     if (dataReff != null) {
-      console.log("ini berarti masuk if")
+      // console.log("ini berarti masuk if")
       switch (true) {
         case tb < dataReff.sd_3:
           status = "Sangat Pendek";
@@ -277,8 +279,8 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
           status = "---";
           break;
       }
-      console.log("case pertama ? ", tb, " < ", dataReff.sd_3);
-      console.log(status);
+      // console.log("case pertama ? ", tb, " < ", dataReff.sd_3);
+      // console.log(status);
     }
 
 
@@ -320,7 +322,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
     let status = "";
     let tbAdj = adjustTinggi(tb);
 
-    console.log("jk = ", jk, "umur = ", umur, "bb = ", bb, "tb = ", tb, "tbAdj = ", tbAdj)
+    // console.log("jk = ", jk, "umur = ", umur, "bb = ", bb, "tb = ", tb, "tbAdj = ", tbAdj)
 
     let patokanData = [];
     if (jk == "Laki-Laki") {
@@ -358,7 +360,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       }
     }
 
-    console.log("statusbbtb : ", status)
+    // console.log("statusbbtb : ", status)
 
     // setPengukuran((prevResult) => ({
     //   ...prevResult,
@@ -408,7 +410,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
   const generateRambuGizi = async (jk, umur, bb, idBalita) => {
     const patokanData = jk === 1 ? data_kbm_lk : data_kbm_pr;
     const kbm = patokanData.find((data) => data.umur === umur).kbm;
-    console.log("melbu rambu gizi")
+    // console.log("melbu rambu gizi")
 
     if (umur === 0) {
       pengukuran.rambu_gizi = "B";
@@ -416,15 +418,15 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       try {
         const prevUmur = umur - 1;
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
-        console.log("kbm = ", kbm)
+        // console.log("kbm = ", kbm)
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
-        if(prevPengukuran.data.length === 0){
-          console.log("gada pengukuran sebelumnya");
+        if (prevPengukuran.data.length === 0) {
+          // console.log("gada pengukuran sebelumnya");
           pengukuran.rambu_gizi = "O";
         }
-        else{
+        else {
           const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
-          console.log("differ bb = ", differ)
+          // console.log("differ bb = ", differ)
 
           let status = "";
           if (differ < kbm) {
@@ -443,7 +445,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
           //   rambu_gizi: 'O'
           // }));
         } else {
-          console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
+          // console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
         }
       }
     }
@@ -528,6 +530,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
+    setLoading2(true);
     e.preventDefault();
     if (validateForm()) {
 
@@ -536,7 +539,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
       const umur = parseInt(pengukuran.umur);
       const bb = parseFloat(pengukuran.berat_badan);
       const tb = parseFloat(pengukuran.tinggi_badan);
-      console.log("jk = ", jk, "umur = ", umur);
+      // console.log("jk = ", jk, "umur = ", umur);
       generateStatus_bbtb(jk, umur, bb, tb);
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
@@ -545,11 +548,11 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
 
       try {
 
-        console.log("pengukuran terbaru");
-        console.log(pengukuran);
+        // console.log("pengukuran terbaru");
+        // console.log(pengukuran);
 
         await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((fetch) => {
-          console.log(fetch.status);
+          // console.log(fetch.status);
         })
         await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, {
           umur: pengukuran.umur,
@@ -562,20 +565,22 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
 
 
       } catch (error) {
-        showFailedPostToast()
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          showFailedPostToast()
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          showFailedPostToast()
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        showFailedPostToast();
+        errorHandling(error);
+        setLoading2(false);
+        // if (error.response) {
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        // } else if (error.request) {
+        //   showFailedPostToast()
+        //   console.error("Tidak ada respon dari server:", error.request);
+        // } else {
+        //   showFailedPostToast()
+        //   console.error("Terjadi kesalahan:", error.message);
+        // }
       }
     }
 
@@ -754,9 +759,14 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
                     </select>
                     <div className={`error`}>{errors.posisi_balita}</div>
                   </label>
-                  <button type="submit" className="submit-button">
-                    Simpan
-                  </button>
+                  {loading2 ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading2} size={20} />
+                    </div>
+                  ) : (
+                    <button type="submit" className="submit-button">
+                      Simpan
+                    </button>)}
                 </form>
               </div>
             </div>

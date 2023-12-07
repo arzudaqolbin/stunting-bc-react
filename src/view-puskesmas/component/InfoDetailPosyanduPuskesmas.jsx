@@ -125,7 +125,7 @@ function InfoDetailPosyanduPuskesmas({ idPuskesmas, apiAuth, idPosyandu, userId 
         setPosyandu(result.data);
       } catch (error) {
         errorHandling(error)
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -155,7 +155,7 @@ function InfoDetailPosyanduPuskesmas({ idPuskesmas, apiAuth, idPosyandu, userId 
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
@@ -164,7 +164,7 @@ function InfoDetailPosyanduPuskesmas({ idPuskesmas, apiAuth, idPosyandu, userId 
     // }, [idPuskesmas, idPosyandu, userId, apiAuth]);
   }, []);
 
-  console.log(puskesmas)
+  // console.log(puskesmas)
 
   return (
     <>

@@ -22,7 +22,7 @@ function TabelDaftarPosyanduPuskesmas({ idPuskesmas, apiAuth }) {
             })
             .catch(error => {
                 errorHandling(error)
-                console.error('Error fetching posyandu:', error);
+                // console.error('Error fetching posyandu:', error);
             });
     }, [idPuskesmas]);
 

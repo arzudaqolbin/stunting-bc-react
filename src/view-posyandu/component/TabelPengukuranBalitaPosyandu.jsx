@@ -161,7 +161,7 @@ function applyStatusStyle(statusValue) {
 function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
-  const [loadData, setLoadData ] = useState(false)
+  const [loadData, setLoadData] = useState(false)
 
 
   const fetchDataPengukuran = async () => {
@@ -178,7 +178,7 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
       setLoadData(true);
     } catch (error) {
       errorHandling(error)
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
     }
   };
 
@@ -195,7 +195,7 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
         );
         setTanggalLahir(result.data.tgl_lahir);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -248,7 +248,7 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
       cancelButtonText: "Kembali",
-    }).then(async(result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         // lakukan api validasiiii
         await axios.delete(`${BASE_URL}/pengukurans/${id_Pengukuran}`, apiAuth)
@@ -268,86 +268,86 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
       {/* Mulai isi kontennya disini */}
 
       <Link to={`/posyandu/tambah-pengukuran/${idBalita}`} className='btn btn-primary mb-2'>Tambah Pengukuran</Link>
-          <div className='table-responsive'>
-            <table id='myTable' className="table custom-table">
-              <thead>
-                <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Tanggal Lahir</th>
-                  <th scope="col">Tanggal Pengukuran</th>
-                  <th scope="col">Umur (Bulan)</th>
-                  <th scope="col">Posisi Pengukuran</th>
-                  <th scope="col">BB (Kg)</th>
-                  <th scope="col">TB (Cm)</th>
-                  <th scope="col">Status TB/U</th>
-                  <th scope="col">Status BB/TB</th>
-                  <th scope="col">Status BB/U</th>
-                  <th scope="col">Rambu Gizi</th>
-                  <th scope="col">KMS</th>
-                  <th scope="col">Ubah Pengukuran</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataPengukuran.map((pengukuran, index) => (
-                  <tr key={pengukuran.id}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
-                    <td>
-                      {format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}
+      <div className='table-responsive'>
+        <table id='myTable' className="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Tanggal Lahir</th>
+              <th scope="col">Tanggal Pengukuran</th>
+              <th scope="col">Umur (Bulan)</th>
+              <th scope="col">Posisi Pengukuran</th>
+              <th scope="col">BB (Kg)</th>
+              <th scope="col">TB (Cm)</th>
+              <th scope="col">Status TB/U</th>
+              <th scope="col">Status BB/TB</th>
+              <th scope="col">Status BB/U</th>
+              <th scope="col">Rambu Gizi</th>
+              <th scope="col">KMS</th>
+              <th scope="col">Ubah Pengukuran</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataPengukuran.map((pengukuran, index) => (
+              <tr key={pengukuran.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
+                <td>
+                  {format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}
+                </td>
+                <td>{pengukuran.umur}</td>
+                <td>{pengukuran.posisi_balita}</td>
+                <td>{pengukuran.berat_badan}</td>
+                <td>{pengukuran.tinggi_badan}</td>
+                <td data-status_tbu="Sangat Pendek">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_tbu)}
+                  >
+                    {pengukuran.status_tbu}
+                  </div>
+                </td>
+                <td data-status_bbtb="Gizi Buruk">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_bbtb)}
+                  >
+                    {pengukuran.status_bbtb}
+                  </div>
+                </td>
+                <td data-status_bbu="BB Sangat Kurang">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_bbu)}
+                  >
+                    {pengukuran.status_bbu}
+                  </div>
+                </td>
+                <td>{pengukuran.rambu_gizi}</td>
+                <td data-status_kms="Hijau Atas">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.kms)}
+                  >
+                    {pengukuran.kms}
+                  </div>
+                </td>
+                {pengukuran.validasi == true ? (
+                  <td>
+                    <button className="btn btn-success" disabled>Valid <i class="fa-solid fa-square-check"></i></button>
+                  </td>)
+                  :
+                  (
+                    <td className="d-flex">
+                      <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
+                        <button className="btn btn-warning d-flex"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                      </Link>
+                      <button className="btn btn-danger d-flex" onClick={() => { hapusPengukuran(pengukuran.id) }}><i class="fa-solid fa-trash"></i> Hapus</button>
                     </td>
-                    <td>{pengukuran.umur}</td>
-                    <td>{pengukuran.posisi_balita}</td>
-                    <td>{pengukuran.berat_badan}</td>
-                    <td>{pengukuran.tinggi_badan}</td>
-                    <td data-status_tbu="Sangat Pendek">
-                      <div
-                        className="validasi rounded"
-                        style={applyStatusStyle(pengukuran.status_tbu)}
-                      >
-                        {pengukuran.status_tbu}
-                      </div>
-                    </td>
-                    <td data-status_bbtb="Gizi Buruk">
-                      <div
-                        className="validasi rounded"
-                        style={applyStatusStyle(pengukuran.status_bbtb)}
-                      >
-                        {pengukuran.status_bbtb}
-                      </div>
-                    </td>
-                    <td data-status_bbu="BB Sangat Kurang">
-                      <div
-                        className="validasi rounded"
-                        style={applyStatusStyle(pengukuran.status_bbu)}
-                      >
-                        {pengukuran.status_bbu}
-                      </div>
-                    </td>
-                    <td>{pengukuran.rambu_gizi}</td>
-                    <td data-status_kms="Hijau Atas">
-                      <div
-                        className="validasi rounded"
-                        style={applyStatusStyle(pengukuran.kms)}
-                      >
-                        {pengukuran.kms}
-                      </div>
-                    </td>
-                    {pengukuran.validasi == true ? (
-                    <td>
-                        <button className="btn btn-success" disabled>Valid <i class="fa-solid fa-square-check"></i></button>
-                      </td>)
-                        :
-                        (
-                      <td className="d-flex">
-                          <Link to={`/posyandu/edit-pengukuran/${pengukuran.id}`}>
-                            <button className="btn btn-warning d-flex"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                          </Link>
-                          <button className="btn btn-danger d-flex" onClick={() => {hapusPengukuran(pengukuran.id)}}><i class="fa-solid fa-trash"></i> Hapus</button>
-                      </td>
-                        )}
-                  </tr>
-                ))}
-                {/* <tr>
+                  )}
+              </tr>
+            ))}
+            {/* <tr>
                   <th scope="row">2</th>
                   <td></td>
                   <td></td>
@@ -487,11 +487,11 @@ function TabelPengukuranBalitaPosyandu({ idPosyandu, apiAuth, idBalita }) {
                   <button className="fa-solid fa-pen-to-square"></button>
                 </td> 
               </tr>*/}
-            </tbody>
-          </table>
-        </div>
+          </tbody>
+        </table>
+      </div>
 
-        {/* <script>
+      {/* <script>
         $(document).ready(function () {
         $('#myTable').DataTable({
           // DataTable options...

@@ -24,7 +24,7 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
             setKoordinat(koordinatResponse.data);
           })
           .catch((error) => {
-            console.error("Error fetching koordinat:", error);
+            // console.error("Error fetching koordinat:", error);
           });
 
         axios
@@ -33,15 +33,15 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
             setKader(response.data.data);
           })
           .catch((error) => {
-            console.error(
-              "Terjadi kesalahan saat mengambil opsi Posyandu:",
-              error
-            );
+            // console.error(
+            //   "Terjadi kesalahan saat mengambil opsi Posyandu:",
+            //   error
+            // );
           });
       })
       .catch((error) => {
         errorHandling(error)
-        console.error("Error fetching puskesmas:", error);
+        // console.error("Error fetching puskesmas:", error);
       });
   }, [idPosyandu, apiAuth]);
 
@@ -122,9 +122,9 @@ function ProfilePosyandu({ idPosyandu, apiAuth }) {
             </table>
             <div className="button-container">
               <Link to={"/posyandu/edit-pw"}>
-              <button type="submit" className="submit">
-              <i class="fa-solid fa-lock"></i> Ganti Password
-              </button>
+                <button type="submit" className="submit">
+                  <i class="fa-solid fa-lock"></i> Ganti Password
+                </button>
               </Link>
             </div>
           </div>

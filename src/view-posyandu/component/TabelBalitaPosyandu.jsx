@@ -203,23 +203,23 @@ function TabelBalitaPosyandu({ idPosyandu, apiAuth }) {
       setLoading(false);
     } catch (error) {
       errorHandling(error)
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
+      // if (error.response) {
+      //   // Respon dari server dengan kode status tertentu
+      //   console.error(
+      //     "Kesalahan dalam permintaan ke server:",
+      //     error.response.status,
+      //     error.response.data
+      //   );
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+      // } else if (error.request) {
+      //   // Tidak ada respon dari server
+      //   console.error("Tidak ada respon dari server:", error.request);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+      // } else {
+      //   // Kesalahan lainnya
+      //   console.error("Terjadi kesalahan:", error.message);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+      // }
     }
   };
 

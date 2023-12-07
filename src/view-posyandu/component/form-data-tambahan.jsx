@@ -11,6 +11,7 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
 
   const [dataTambahan, setDataTambahan] = useState({
     balita_id: idBalita,
@@ -55,10 +56,11 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
       })
       .catch((error) => {
         errorHandling(error)
-        console.error(
-          "Terjadi kesalahan saat mengambil data tambahan balita:",
-          error
-        );
+        // console.error(
+        //   "Terjadi kesalahan saat mengambil data tambahan balita:",
+        //   error
+        // );
+        setLoading(false);
       });
   }, [idData]);
 
@@ -78,9 +80,9 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
     // Validasi riwayat penyakit
     if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
       isValid = false;
-      newErrors.riwayat_sakit= "Riwayat penyakit tidak valid.";
+      newErrors.riwayat_sakit = "Riwayat penyakit tidak valid.";
     } else {
-      newErrors.riwayat_sakit= "";
+      newErrors.riwayat_sakit = "";
     }
 
     // Set ulang state errors
@@ -91,9 +93,10 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()){
+    setLoading2(true);
+    if (validateForm()) {
       try {
-        alert("as");
+        // alert("as");
         if (idData) {
           await axios.put(
             `${BASE_URL}/dataTambahanBalitas/${idData}`,
@@ -103,22 +106,25 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
           await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
         }
         navigate(`/posyandu/detail-balita/${idBalita}`);
+        setLoading2(false);
       } catch (error) {
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        errorHandling(error);
+        setLoading2(false);
+        // if (error.response) {
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        // } else if (error.request) {
+        //   console.error("Tidak ada respon dari server:", error.request);
+        // } else {
+        //   console.error("Terjadi kesalahan:", error.message);
+        // }
       }
     }
 
-    
+
   };
 
   const confirmAlert = (e) => {
@@ -315,9 +321,14 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
                     <option value="0">Tidak</option>
                   </select>
                 </label>
-                <button type="submit" className="submit-button">
-                  Simpan
-                </button>
+                {loading2 ? (
+                  <div className="text-center">
+                    <ClipLoader loading={loading2} size={20} />
+                  </div>
+                ) : (
+                  <button type="submit" className="submit-button">
+                    Simpan
+                  </button>)}
               </form>
             </div>
           </main>)

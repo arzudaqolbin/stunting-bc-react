@@ -228,7 +228,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
+      // console.log(formData);
       axios
         .put(
           `${BASE_URL}/puskesmas/${idPuskesmas}`,
@@ -461,9 +461,14 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 onChange={handleChange}
               />
             </label>
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
             <p>input password jika ingin membuat password baru</p>
           </form>
         </div>

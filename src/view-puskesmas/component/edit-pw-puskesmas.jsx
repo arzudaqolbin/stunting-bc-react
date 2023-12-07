@@ -35,8 +35,8 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
         });
       })
       .catch((error) => {
-        errorHandling(error)
-        console.error("Error:", error);
+        errorHandling(error);
+        // console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
 
@@ -113,6 +113,7 @@ function EditPwPuskesmas({ idPuskesmas, userId, apiAuth }) {
         showSuccessPostToast()
       })
       .catch((error) => {
+        errorHandling(error);
         // console.error("Error:", error);
         showFailedPostToast()
         // Tambahkan logika atau feedback sesuai kebutuhan

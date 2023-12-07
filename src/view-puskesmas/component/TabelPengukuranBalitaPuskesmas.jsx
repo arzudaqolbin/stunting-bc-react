@@ -154,10 +154,10 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   const [dataPengukuran, setDataPengukuran] = useState([]);
   const [tanggalLahir, setTanggalLahir] = useState(null);
   const [namaBalita, setNamaBalita] = useState(null);
-  const [loadData, setLoadData ] = useState(false);
-  
+  const [loadData, setLoadData] = useState(false);
 
-  const fetchDataPengukuran = async() => {
+
+  const fetchDataPengukuran = async () => {
     try {
       const result = await axios.get(
         `${BASE_URL}/pengukurans/balita/${idBalita}`,
@@ -171,10 +171,10 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
       setLoadData(true);
     } catch (error) {
       errorHandling(error)
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
     }
   };
-  
+
   useEffect(() => {
     fetchDataPengukuran();
   }, []);
@@ -189,7 +189,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
         setTanggalLahir(result.data.tgl_lahir);
         setNamaBalita(result.data.nama);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -274,7 +274,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
       cancelButtonText: "Kembali",
-    }).then(async(result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         // lakukan api validasiiii
         await axios.put(`${BASE_URL}/pengukurans/validasi/${id_Pengukuran}`, { validasi: validate }, apiAuth)
@@ -299,7 +299,7 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, yakin!",
       cancelButtonText: "Kembali",
-    }).then(async(result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         // lakukan api validasiiii
         await axios.delete(`${BASE_URL}/pengukurans/${id_Pengukuran}`, apiAuth)
@@ -354,107 +354,107 @@ function TabelPengukuranBalitaPuskesmas({ apiAuth, idBalita }) {
   return (
     <main className="container">
       {/* Mulai isi kontennya disini */}
-        <div className="d-flex justify-content-between mb-3">
-          <Link
-            to={`/puskesmas/tambah-pengukuran/${idBalita}`}
-            className="btn btn-primary"
-          >
-            Tambah Pengukuran
-          </Link>
-          <button className="btn btn-info" onClick={exportToXLSX}>
-            Export Table
-          </button>
-        </div>
+      <div className="d-flex justify-content-between mb-3">
+        <Link
+          to={`/puskesmas/tambah-pengukuran/${idBalita}`}
+          className="btn btn-primary"
+        >
+          Tambah Pengukuran
+        </Link>
+        <button className="btn btn-info" onClick={exportToXLSX}>
+          Export Table
+        </button>
+      </div>
 
-          <div className="table-responsive">
-          <table id="myTable" className="table custom-table">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Tanggal Lahir</th>
-                <th scope="col">Tanggal Pengukuran</th>
-                <th scope="col">Umur (Bulan)</th>
-                <th scope="col">Posisi Pengukuran</th>
-                <th scope="col">BB (Kg)</th>
-                <th scope="col">TB (Cm)</th>
-                <th scope="col">Status TB/U</th>
-                <th scope="col">Status BB/TB</th>
-                <th scope="col">Status BB/U</th>
-                <th scope="col">Rambu Gizi</th>
-                <th scope="col">KMS</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataPengukuran.map((pengukuran, index) => (
-                <tr key={pengukuran.id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
-                  <td>
-                    {format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}
-                  </td>
-                  <td>{pengukuran.umur}</td>
-                  <td>{pengukuran.posisi_balita}</td>
-                  <td>{pengukuran.berat_badan}</td>
-                  <td>{pengukuran.tinggi_badan}</td>
-                  <td data-status_tbu="Sangat Pendek">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_tbu)}
-                    >
-                      {pengukuran.status_tbu}
-                    </div>
-                  </td>
-                  <td data-status_bbtb="Gizi Buruk">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_bbtb)}
-                    >
-                      {pengukuran.status_bbtb}
-                    </div>
-                  </td>
-                  <td data-status_bbu="BB Sangat Kurang">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.status_bbu)}
-                    >
-                      {pengukuran.status_bbu}
-                    </div>
-                  </td>
-                  <td>{pengukuran.rambu_gizi}</td>
-                  <td data-status_kms="Hijau Atas">
-                    <div
-                      className="validasi rounded"
-                      style={applyStatusStyle(pengukuran.kms)}
-                    >
-                      {pengukuran.kms}
-                    </div>
-                  </td>
-                  <td className="d-flex">
-                    <Link to={`/puskesmas/edit-pengukuran/${pengukuran.id}`}>
-                      <button className="btn btn-warning d-flex align-items-center">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit
-                      </button>
-                    </Link>
-                    <button className="btn btn-danger d-flex align-items-center" onClick={() => {hapusPengukuran(pengukuran.id)}}>
-                      <i class="fa-solid fa-trash"></i> Hapus
+      <div className="table-responsive">
+        <table id="myTable" className="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Tanggal Lahir</th>
+              <th scope="col">Tanggal Pengukuran</th>
+              <th scope="col">Umur (Bulan)</th>
+              <th scope="col">Posisi Pengukuran</th>
+              <th scope="col">BB (Kg)</th>
+              <th scope="col">TB (Cm)</th>
+              <th scope="col">Status TB/U</th>
+              <th scope="col">Status BB/TB</th>
+              <th scope="col">Status BB/U</th>
+              <th scope="col">Rambu Gizi</th>
+              <th scope="col">KMS</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataPengukuran.map((pengukuran, index) => (
+              <tr key={pengukuran.id}>
+                <th scope="row">{index + 1}</th>
+                <td>{format(new Date(tanggalLahir), "dd-MM-yyyy")}</td>
+                <td>
+                  {format(new Date(pengukuran.tgl_input), "dd-MM-yyyy")}
+                </td>
+                <td>{pengukuran.umur}</td>
+                <td>{pengukuran.posisi_balita}</td>
+                <td>{pengukuran.berat_badan}</td>
+                <td>{pengukuran.tinggi_badan}</td>
+                <td data-status_tbu="Sangat Pendek">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_tbu)}
+                  >
+                    {pengukuran.status_tbu}
+                  </div>
+                </td>
+                <td data-status_bbtb="Gizi Buruk">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_bbtb)}
+                  >
+                    {pengukuran.status_bbtb}
+                  </div>
+                </td>
+                <td data-status_bbu="BB Sangat Kurang">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.status_bbu)}
+                  >
+                    {pengukuran.status_bbu}
+                  </div>
+                </td>
+                <td>{pengukuran.rambu_gizi}</td>
+                <td data-status_kms="Hijau Atas">
+                  <div
+                    className="validasi rounded"
+                    style={applyStatusStyle(pengukuran.kms)}
+                  >
+                    {pengukuran.kms}
+                  </div>
+                </td>
+                <td className="d-flex">
+                  <Link to={`/puskesmas/edit-pengukuran/${pengukuran.id}`}>
+                    <button className="btn btn-warning d-flex align-items-center">
+                      <i class="fa-solid fa-pen-to-square"></i> Edit
                     </button>
-                    {pengukuran.validasi == true ? (
-                      <button className="btn btn-success d-flex align-items-center" disabled>
-                        Valid <i class="fa-solid fa-square-check"></i>
-                      </button>)
-                      :
-                      <button className="btn" onClick={() => handleValidate(pengukuran.id)}>
-                        {/* <button className="fa-solid fa-pen-to-square"></button> */}
-                        <i class="fa-solid fa-circle-check mx-2" style={{ color: "#408d30" }}></i>
-                      </button>
-                    }
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </Link>
+                  <button className="btn btn-danger d-flex align-items-center" onClick={() => { hapusPengukuran(pengukuran.id) }}>
+                    <i class="fa-solid fa-trash"></i> Hapus
+                  </button>
+                  {pengukuran.validasi == true ? (
+                    <button className="btn btn-success d-flex align-items-center" disabled>
+                      Valid <i class="fa-solid fa-square-check"></i>
+                    </button>)
+                    :
+                    <button className="btn" onClick={() => handleValidate(pengukuran.id)}>
+                      {/* <button className="fa-solid fa-pen-to-square"></button> */}
+                      <i class="fa-solid fa-circle-check mx-2" style={{ color: "#408d30" }}></i>
+                    </button>
+                  }
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }

@@ -23,7 +23,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
     gambar: "",
   });
 
-  const { judul, deskripsi, isi, gambar } = berita;
+  const { judul, deskripsi, isi, gambar, tgl_berita } = berita;
 
   const onInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -86,6 +86,10 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
       newErrors.gambar = "";
     }
 
+    if (!berita.tgl_berita) {
+      tgl_berita = today;
+    }
+
 
     setErrors(newErrors);
     return isValid;
@@ -115,7 +119,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
     e.preventDefault();
     if (validateForm()) {
       const formData = new FormData();
-      // formData.append("tgl_berita", today);
+      formData.append("tgl_berita", tgl_berita);
       formData.append("judul", judul);
       formData.append("deskripsi", deskripsi);
       formData.append("isi", isi);
@@ -153,7 +157,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
             showAlert(e);
           }}
         >
-          {/* <label htmlFor="tgl_berita">
+          <label htmlFor="tgl_berita">
             <span>Tanggal*</span>
             <input
               type="date"
@@ -161,9 +165,9 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
               name="tgl_berita"
               // required
               onChange={(e) => onInputChange(e)}
-              max={today}
+            // max={today}
             />
-          </label> */}
+          </label>
 
           <label htmlFor="judul">
             <span>Judul*</span>

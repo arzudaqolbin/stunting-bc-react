@@ -207,23 +207,23 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
       setLoading(false);
     } catch (error) {
       errorHandling(error)
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
+      // if (error.response) {
+      //   // Respon dari server dengan kode status tertentu
+      //   console.error(
+      //     "Kesalahan dalam permintaan ke server:",
+      //     error.response.status,
+      //     error.response.data
+      //   );
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+      // } else if (error.request) {
+      //   // Tidak ada respon dari server
+      //   console.error("Tidak ada respon dari server:", error.request);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+      // } else {
+      //   // Kesalahan lainnya
+      //   console.error("Terjadi kesalahan:", error.message);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+      // }
     }
   };
 
@@ -232,7 +232,7 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
       const response = await axios.get(`${BASE_URL}/posyandu`, apiAuth);
       setPosyandu(response.data.data);
     } catch (error) {
-      console.error("Error fetching posyandu data:", error);
+      // console.error("Error fetching posyandu data:", error);
     }
   };
 
@@ -301,55 +301,55 @@ function TabelBalitaSemuaPuskesmas({ idPuskesmas, apiAuth, idBalita }) {
         </div>
       ) : (
 
-          <main className="container">
-            {/* Mulai isi kontennya disini */}
-            <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
+        <main className="container">
+          {/* Mulai isi kontennya disini */}
+          <h2 className="custom-judul">Daftar Balita di Kelurahan Bidara Cina</h2>
 
-            <div className="table-responsive">
-              <table id="myTable" className="table custom-table">
-                <thead>
-                  <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama Balita</th>
-                    <th scope="col">Jenis Kelamin</th>
-                    <th scope="col">Nama Posyandu</th>
-                    <th scope="col">RW</th>
-                    <th scope="col">Umur (Bulan)</th>
-                    <th scope="col">Status TB/U</th>
-                    <th scope="col">Status BB/TB</th>
-                    <th scope="col">Status BB/U</th>
+          <div className="table-responsive">
+            <table id="myTable" className="table custom-table">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama Balita</th>
+                  <th scope="col">Jenis Kelamin</th>
+                  <th scope="col">Nama Posyandu</th>
+                  <th scope="col">RW</th>
+                  <th scope="col">Umur (Bulan)</th>
+                  <th scope="col">Status TB/U</th>
+                  <th scope="col">Status BB/TB</th>
+                  <th scope="col">Status BB/U</th>
+                </tr>
+              </thead>
+              <tbody>
+                {balita.map((data, index) => (
+                  <tr key={data.id}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{data.nama}</td>
+                    <td>{data.jenis_kelamin}</td>
+                    <td>{getPosyanduName(data.posyandu_id)}</td>
+                    <td>{data.rw}</td>
+                    <td>{data.umur}</td>
+                    <td data-status_tbu={data.status_tbu}>
+                      <div className="validasi rounded" style={applyStatusStyle(data.status_tbu)}>
+                        {data.status_tbu}
+                      </div>
+                    </td>
+                    <td data-status_bbtb={data.status_bbtb}>
+                      <div className="validasi rounded" style={applyStatusStyle(data.status_bbtb)}>
+                        {data.status_bbtb}
+                      </div>
+                    </td>
+                    <td data-status_bbu={data.status_bbu}>
+                      <div className="validasi rounded" style={applyStatusStyle(data.status_bbu)}>
+                        {data.status_bbu}
+                      </div>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {balita.map((data, index) => (
-                    <tr key={data.id}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{data.nama}</td>
-                      <td>{data.jenis_kelamin}</td>
-                      <td>{getPosyanduName(data.posyandu_id)}</td>
-                      <td>{data.rw}</td>
-                      <td>{data.umur}</td>
-                      <td data-status_tbu={data.status_tbu}>
-                        <div className="validasi rounded" style={applyStatusStyle(data.status_tbu)}>
-                          {data.status_tbu}
-                        </div>
-                      </td>
-                      <td data-status_bbtb={data.status_bbtb}>
-                        <div className="validasi rounded" style={applyStatusStyle(data.status_bbtb)}>  
-                          {data.status_bbtb}
-                        </div>
-                      </td>
-                      <td data-status_bbu={data.status_bbu}>
-                        <div className="validasi rounded" style={applyStatusStyle(data.status_bbu)}>
-                          {data.status_bbu}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <Statistik />
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Statistik />
         </main>
       )}
     </>

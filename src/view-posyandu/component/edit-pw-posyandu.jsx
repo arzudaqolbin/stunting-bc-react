@@ -6,9 +6,11 @@ import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ClipLoader } from "react-spinners";
 
 function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password_baru: "",
@@ -36,7 +38,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
       })
       .catch((error) => {
         errorHandling(error)
-        console.error("Error:", error);
+        // console.error("Error:", error);
       });
   }, []); // useEffect hanya dijalankan sekali setelah render pertama
 
@@ -101,6 +103,7 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     // console.log("isi form data = ", formData);
     // ... (tambahkan logika sesuai kebutuhan)
@@ -119,8 +122,10 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
         showSuccessPostToast();
       })
       .catch((error) => {
+        setLoading(false);
+        errorHandling(error);
         showFailedPostToast();
-        console.error("Error:", error);
+        // console.error("Error:", error);
         // Tambahkan logika atau feedback sesuai kebutuhan
       });
   };
@@ -201,9 +206,14 @@ function EditPwPosyandu({ idPosyandu, userId, apiAuth }) {
               <div className={`error`}>{errors.konfirmasi_password}</div>
             </label>
 
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

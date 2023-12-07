@@ -202,7 +202,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     axios
       .post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
       .then((response) => {
-        navigate('kelurahan/daftar-puskesmas');
+        navigate('/kelurahan/daftar-puskesmas');
       })
       .catch((error) => {
         setLoading(false);
