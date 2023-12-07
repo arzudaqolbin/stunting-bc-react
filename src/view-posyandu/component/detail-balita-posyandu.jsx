@@ -34,7 +34,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
       //       return;
       //     }
       // });
-      // errorHandling(error);
+      errorHandling(error)
       // console.error("Error fetching balita data:", error);
     }
   };
@@ -66,8 +66,18 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
-      await getDataTambahan();
+      // await getDataTambahan();
       await getNamaPosyandu();
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      // await getDataBalita();
+      await getDataTambahan();
+      // await getNamaPosyandu();
       setLoading(false);
     };
 
