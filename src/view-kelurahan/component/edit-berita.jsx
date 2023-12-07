@@ -148,7 +148,7 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
     if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
-        text: "Menambahkan akun posyandu",
+        text: "Mengedit berita",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

@@ -86,7 +86,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
     if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
-        text: "Menambahkan akun posyandu",
+        text: "Mengedit jadwal kegiatan",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

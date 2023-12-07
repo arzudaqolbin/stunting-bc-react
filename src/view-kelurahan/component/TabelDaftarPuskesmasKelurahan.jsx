@@ -92,8 +92,12 @@ function TabelDaftarPuskesmasKelurahan({ idKelurahan, apiAuth }) {
                                             <td>{puskesmas.alamat}</td>
                                             <td>{puskesmas.nomor_telepon}</td>
                                             <td>
-                                                <Link to={`/kelurahan/detail-puskesmas/${puskesmas.id}`} className="btn btn-info">Info</Link>
-                                                <Link to={`/kelurahan/edit-puskesmas/${puskesmas.id}`} className="btn btn-warning">Edit</Link>
+                                                <Link to={`/kelurahan/detail-puskesmas/${puskesmas.id}`} className="btn btn-info">
+                                                    <i class="fa-solid fa-circle-info"></i> Info
+                                                </Link>
+                                                <Link to={`/kelurahan/edit-puskesmas/${puskesmas.id}`} className="btn btn-warning">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}

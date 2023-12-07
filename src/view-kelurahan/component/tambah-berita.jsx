@@ -95,7 +95,7 @@ const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
     e.preventDefault();
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Mengedit kader",
+      text: "Menambahkan berita",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

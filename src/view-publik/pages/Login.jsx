@@ -20,8 +20,8 @@ const Login = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     try {
       const response = await axios.post(`${BASE_URL}/login`, {
@@ -30,7 +30,7 @@ const Login = () => {
       });
       const { data } = response;
       const token = data.access_token;
-      localStorage.setItem('access_token', token);
+      localStorage.setItem("access_token", token);
 
       const decodedToken = decodeToken(token);
 
@@ -46,7 +46,7 @@ const Login = () => {
       navigate(redirectUrl);
     } catch (error) {
       errorHandling(error);
-      setLoading(false)
+      setLoading(false);
       // if (error.response) {
       //   // console.log(error.response.data);
       //   Swal.fire({
@@ -79,8 +79,10 @@ const Login = () => {
           />
         </div>
         <div className="title-login mt-5">
-          <h4 style={{ color: "white", textAlign: 'center' }}>Single Sign On</h4>
-          <h4 style={{ color: "orange", textAlign: 'center' }}>
+          <h4 style={{ color: "white", textAlign: "center" }}>
+            Single Sign On
+          </h4>
+          <h4 style={{ color: "orange", textAlign: "center" }}>
             Dashboard Monitoring Stunting Kelurahan Bidara Cina
           </h4>
         </div>
@@ -130,16 +132,17 @@ const Login = () => {
                       ) : (
                         <button type="submit" className="btn btn-primary">
                           Login
-                        </button>)}
+                        </button>
+                      )}
                     </div>
                   </form>
                 </div>
-              </div >
-            </div >
-          </div >
-        </div >
-      </section >
-    </div >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

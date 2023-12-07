@@ -74,7 +74,7 @@ const TambahJadwal = ({ idKelurahan, apiAuth }) => {
     e.preventDefault();
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Mengedit kader",
+      text: "Menambah jadwal kegiatan",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
