@@ -164,7 +164,7 @@ function InfoDetailPosyanduPuskesmas({ idPuskesmas, apiAuth, idPosyandu, userId 
     // }, [idPuskesmas, idPosyandu, userId, apiAuth]);
   }, []);
 
-  console.log(puskesmas)
+  // console.log(puskesmas)
 
   return (
     <>

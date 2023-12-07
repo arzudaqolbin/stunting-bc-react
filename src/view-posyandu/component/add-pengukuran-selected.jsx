@@ -47,8 +47,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     posisi_balita: "",
     validasi: false
   });
-  console.log("chi");
-  console.log(pengukuran);
+  // console.log("chi");
+  // console.log(pengukuran);
 
 
   const {
@@ -108,8 +108,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       // setPengukuran({ ...pengukuran, [name]: value });
       pengukuran.tgl_input = value;
       // setPengukuran({ ...initialPengukuran, name: new Date(value) });
-      console.log("mau lihat value tgl_input bro");
-      console.log(typeof value, value);
+      // console.log("mau lihat value tgl_input bro");
+      // console.log(typeof value, value);
       // pengukuran.tgl_input: value;
       calculateUmur(value, balita.tgl_lahir);
     } else if (name === "posisi_balita") {
@@ -158,11 +158,11 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
     let patokanData = jk == "Laki-Laki" ? data_tbu_lk : data_tbu_pr;
     const dataReff = patokanData.find((data) => data.umur === umur);
 
-    console.log("reff tbu")
-    console.log(dataReff)
+    // console.log("reff tbu")
+    // console.log(dataReff)
 
     if (dataReff != null) {
-      console.log("ini berarti masuk if")
+      // console.log("ini berarti masuk if")
       switch (true) {
         case tb < dataReff.sd_3:
           status = "Sangat Pendek";
@@ -180,8 +180,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
           status = "---";
           break;
       }
-      console.log("case pertama ? ", tb, " < ", dataReff.sd_3);
-      console.log(status);
+      // console.log("case pertama ? ", tb, " < ", dataReff.sd_3);
+      // console.log(status);
     }
 
 
@@ -222,8 +222,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
-    console.log("cek bb untuk bbtb = ", bb)
-    console.log("cek tb untuk bbtb = ", tbAdj)
+    // console.log("cek bb untuk bbtb = ", bb)
+    // console.log("cek tb untuk bbtb = ", tbAdj)
 
     let patokanData = [];
     if (jk == "Laki-Laki") {
@@ -315,15 +315,15 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       try {
         const prevUmur = umur - 1;
         const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/umur/${idBalita}/${prevUmur}`, apiAuth);
-        console.log("kbm = ", kbm)
+        // console.log("kbm = ", kbm)
         // const prevPengukuran = await axios.get(`${BASE_URL}/pengukurans/1`, apiAuth);
-        if(prevPengukuran.data.length === 0){
-          console.log("gada pengukuran sebelumnya");
+        if (prevPengukuran.data.length === 0) {
+          // console.log("gada pengukuran sebelumnya");
           pengukuran.rambu_gizi = "O";
         }
-        else{
+        else {
           const differ = Math.ceil((bb - prevPengukuran.data[0].berat_badan) * 10) / 10;
-          console.log("differ bb = ", differ)
+          // console.log("differ bb = ", differ)
 
           let status = "";
           if (differ < kbm) {
@@ -342,7 +342,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
           //   rambu_gizi: 'O'
           // }));
         } else {
-          console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
+          // console.log("Terjadi kesalahan dalam generateRambuGizi:", error);
         }
       }
     }
@@ -425,7 +425,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
       const umur = parseInt(pengukuran.umur);
       const bb = parseFloat(pengukuran.berat_badan);
       const tb = parseFloat(pengukuran.tinggi_badan);
-      console.log("jk = ", jk, "umur = ", umur);
+      // console.log("jk = ", jk, "umur = ", umur);
       generateStatus_bbtb(jk, umur, bb, tb);
       generateStatus_tbu(jk, umur, tb);
       generateStatus_bbu(jk, umur, bb);
@@ -434,11 +434,11 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
 
       try {
 
-        console.log("pengukuran terbaru");
-        console.log(pengukuran);
+        // console.log("pengukuran terbaru");
+        // console.log(pengukuran);
 
         await axios.post(`${BASE_URL}/pengukurans`, pengukuran, apiAuth).then((hasil) => {
-          console.log(hasil.status)
+          // console.log(hasil.status)
         })
         await axios.put(`${BASE_URL}/balitas/status/${idBalita}`, {
           umur: pengukuran.umur,

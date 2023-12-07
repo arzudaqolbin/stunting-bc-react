@@ -39,6 +39,7 @@ const dataAuth = () => {
 
 const errorHandling = (error) => {
     let errorMessageString = "";
+    // console.log(error.response.data.message);
     if (error.response.status === 422) {
         const errorData = error.response.data.message;
         const errorMessages = [];

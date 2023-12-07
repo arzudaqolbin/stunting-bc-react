@@ -12,7 +12,8 @@ import { ClipLoader } from "react-spinners";
 function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
   let navigate = useNavigate();
   const [idData, setIdData] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
 
   const [dataTambahan, setDataTambahan] = useState({
     balita_id: idBalita,
@@ -56,11 +57,12 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
         setLoading(false)
       })
       .catch((error) => {
-        errorHandling(error)
-        console.error(
-          "Terjadi kesalahan saat mengambil data tambahan balita:",
-          error
-        );
+        errorHandling(error);
+        setLoading(false);
+        // console.error(
+        //   "Terjadi kesalahan saat mengambil data tambahan balita:",
+        //   error
+        // );
       });
   }, [idData]);
 
@@ -99,9 +101,9 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
     // Validasi riwayat penyakit
     if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
       isValid = false;
-      newErrors.riwayat_sakit= "Riwayat penyakit tidak valid.";
+      newErrors.riwayat_sakit = "Riwayat penyakit tidak valid.";
     } else {
-      newErrors.riwayat_sakit= "";
+      newErrors.riwayat_sakit = "";
     }
 
     // Set ulang state errors
@@ -112,6 +114,7 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading2(true);
     try {
       if (idData) {
         await axios.put(
@@ -120,20 +123,22 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           apiAuth
         );
       }
-      showSuccessPostToast(idBalita)
+      showSuccessPostToast(idBalita);
+      setLoading2(false);
     } catch (error) {
       showFailedPostToast()
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        console.error("Terjadi kesalahan:", error.message);
-      }
+      setLoading2(false);
+      // if (error.response) {
+      //   console.error(
+      //     "Kesalahan dalam permintaan ke server:",
+      //     error.response.status,
+      //     error.response.data
+      //   );
+      // } else if (error.request) {
+      //   console.error("Tidak ada respon dari server:", error.request);
+      // } else {
+      //   console.error("Terjadi kesalahan:", error.message);
+      // }
     }
   };
 
@@ -167,193 +172,198 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
 
   return (
     <>
-    { loading ? (
-    <div className='text-center'>
-      <ClipLoader
-        loading={loading}
-        size={150}
-      />
-    </div>) : (
-    <div className="main d-flex flex-column min-vh-100" style={{ backgroundColor: '#E4F3EF' }}>
-      <main className="container">
-        <i class="fa-solid fa-arrow-left text-2x"></i>
-        <h2 className="custom-judul">Ubah Data Tambahan Balita Stunting</h2>
-        <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
-        <div className="container-fluid">
-          <div className="table-responsive">
-            <form
-              onSubmit={(e) => {
-                // Mencegah pengiriman formulir langsung
-                e.preventDefault();
-                if (validateForm()) {
-                  confirmAlert(e);
-                }
-              }}
-            >
-              <label htmlFor="asi_eksklusif">
-                <span>Asi Eksklusif</span>
-                <select
-                  id="asi_eksklusif"
-                  name="asi_eksklusif"
-                  value={asi_eksklusif}
-                  onChange={(e) => onInputChange(e)}
+      {loading ? (
+        <div className='text-center'>
+          <ClipLoader
+            loading={loading}
+            size={150}
+          />
+        </div>) : (
+        <div className="main d-flex flex-column min-vh-100" style={{ backgroundColor: '#E4F3EF' }}>
+          <main className="container">
+            <i class="fa-solid fa-arrow-left text-2x"></i>
+            <h2 className="custom-judul">Ubah Data Tambahan Balita Stunting</h2>
+            <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
+            <div className="container-fluid">
+              <div className="table-responsive">
+                <form
+                  onSubmit={(e) => {
+                    // Mencegah pengiriman formulir langsung
+                    e.preventDefault();
+                    if (validateForm()) {
+                      confirmAlert(e);
+                    }
+                  }}
                 >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="asi_eksklusif">
+                    <span>Asi Eksklusif</span>
+                    <select
+                      id="asi_eksklusif"
+                      name="asi_eksklusif"
+                      value={asi_eksklusif}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="imd">
-                <span>IMD</span>
-                <select
-                  id="imd"
-                  name="imd"
-                  value={imd}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="imd">
+                    <span>IMD</span>
+                    <select
+                      id="imd"
+                      name="imd"
+                      value={imd}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="penyakit_penyerta">
-                <span>Penyakit Penyerta</span>
-                <select
-                  id="penyakit_penyerta"
-                  name="penyakit_penyerta"
-                  value={penyakit_penyerta}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="penyakit_penyerta">
+                    <span>Penyakit Penyerta</span>
+                    <select
+                      id="penyakit_penyerta"
+                      name="penyakit_penyerta"
+                      value={penyakit_penyerta}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="riwayat_sakit">
-                <span>Riwayat Sakit</span>
-                <input
-                  type="text"
-                  id="riwayat_sakit"
-                  name="riwayat_sakit"
-                  value={riwayat_sakit}
-                  onChange={(e) => onInputChange(e)}
-                />
-                <div className={`error`}>{errors.riwayat_sakit}</div>
-              </label>
+                  <label htmlFor="riwayat_sakit">
+                    <span>Riwayat Sakit</span>
+                    <input
+                      type="text"
+                      id="riwayat_sakit"
+                      name="riwayat_sakit"
+                      value={riwayat_sakit}
+                      onChange={(e) => onInputChange(e)}
+                    />
+                    <div className={`error`}>{errors.riwayat_sakit}</div>
+                  </label>
 
-              <label htmlFor="riwayat_imunisasi">
-                <span>Riwayat Imunisasi</span>
-                <select
-                  id="riwayat_imunisasi"
-                  name="riwayat_imunisasi"
-                  value={riwayat_imunisasi}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="riwayat_imunisasi">
+                    <span>Riwayat Imunisasi</span>
+                    <select
+                      id="riwayat_imunisasi"
+                      name="riwayat_imunisasi"
+                      value={riwayat_imunisasi}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="riwayat_ibu_hamil_kek">
-                <span>Riwayat Ibu Hamil KEK</span>
-                <select
-                  id="riwayat_ibu_hamil_kek"
-                  name="riwayat_ibu_hamil_kek"
-                  value={riwayat_ibu_hamil_kek}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="riwayat_ibu_hamil_kek">
+                    <span>Riwayat Ibu Hamil KEK</span>
+                    <select
+                      id="riwayat_ibu_hamil_kek"
+                      name="riwayat_ibu_hamil_kek"
+                      value={riwayat_ibu_hamil_kek}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="kepemilikan_jamban_sehat">
-                <span>Kepemilikan Jamban Sehat</span>
-                <select
-                  id="kepemilikan_jamban_sehat"
-                  name="kepemilikan_jamban_sehat"
-                  value={kepemilikan_jamban_sehat}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="kepemilikan_jamban_sehat">
+                    <span>Kepemilikan Jamban Sehat</span>
+                    <select
+                      id="kepemilikan_jamban_sehat"
+                      name="kepemilikan_jamban_sehat"
+                      value={kepemilikan_jamban_sehat}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="ktp">
-                <span>KTP</span>
-                <select
-                  id="ktp"
-                  name="ktp"
-                  value={ktp}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="DKI">DKI</option>
-                  <option value="Non DKI">Non DKI</option>
-                </select>
-              </label>
+                  <label htmlFor="ktp">
+                    <span>KTP</span>
+                    <select
+                      id="ktp"
+                      name="ktp"
+                      value={ktp}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="DKI">DKI</option>
+                      <option value="Non DKI">Non DKI</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="jaminan_kesehatan">
-                <span>Kepemilikan BPJS/KIS/JKN/KAJ</span>
-                <select
-                  id="jaminan_kesehatan"
-                  name="jaminan_kesehatan"
-                  value={jaminan_kesehatan}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="BPJS">BPJS</option>
-                  <option value="KIS">KIS</option>
-                  <option value="JKn">JKn</option>
-                  <option value="KAJ">KAJ</option>
-                  <option value="Tidak Ada">Tidak Ada</option>
-                </select>
-              </label>
+                  <label htmlFor="jaminan_kesehatan">
+                    <span>Kepemilikan BPJS/KIS/JKN/KAJ</span>
+                    <select
+                      id="jaminan_kesehatan"
+                      name="jaminan_kesehatan"
+                      value={jaminan_kesehatan}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="BPJS">BPJS</option>
+                      <option value="KIS">KIS</option>
+                      <option value="JKn">JKn</option>
+                      <option value="KAJ">KAJ</option>
+                      <option value="Tidak Ada">Tidak Ada</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="akses_makanan_sehat">
-                <span>Akses terhadap Makanan Sehat</span>
-                <select
-                  id="akses_makanan_sehat"
-                  name="akses_makanan_sehat"
-                  value={akses_makanan_sehat}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
+                  <label htmlFor="akses_makanan_sehat">
+                    <span>Akses terhadap Makanan Sehat</span>
+                    <select
+                      id="akses_makanan_sehat"
+                      name="akses_makanan_sehat"
+                      value={akses_makanan_sehat}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
 
-              <label htmlFor="konfirmasi_dsa">
-                <span>Sudah Konfirmasi ke DSA</span>
-                <select
-                  id="konfirmasi_dsa"
-                  name="konfirmasi_dsa"
-                  value={konfirmasi_dsa}
-                  onChange={(e) => onInputChange(e)}
-                >
-                  <option value="">--pilih--</option>
-                  <option value="1">Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
-              </label>
-              <button type="submit" className="submit-button">
-                Simpan
-              </button>
-            </form>
-          </div>
+                  <label htmlFor="konfirmasi_dsa">
+                    <span>Sudah Konfirmasi ke DSA</span>
+                    <select
+                      id="konfirmasi_dsa"
+                      name="konfirmasi_dsa"
+                      value={konfirmasi_dsa}
+                      onChange={(e) => onInputChange(e)}
+                    >
+                      <option value="">--pilih--</option>
+                      <option value="1">Ya</option>
+                      <option value="0">Tidak</option>
+                    </select>
+                  </label>
+                  {loading2 ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading2} size={20} />
+                    </div>
+                  ) : (
+                    <button type="submit" className="submit-button">
+                      Simpan
+                    </button>)}
+                </form>
+              </div>
+            </div>
+          </main>
+          <ToastContainer />
         </div>
-      </main>
-      <ToastContainer />
-    </div>
-    )}
+      )}
     </>
   );
 }

@@ -35,19 +35,19 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
       //     }
       // });
       errorHandling(error)
-      console.error("Error fetching balita data:", error);
+      // console.error("Error fetching balita data:", error);
     }
   };
 
   const getDataTambahan = async () => {
     try {
       const dataTambahanBalita = await axios.get(
-        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
+        `${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`,
         apiAuth
       );
       setRiwayat(dataTambahanBalita.data);
     } catch (error) {
-      console.error("Error fetching balita data:", error);
+      // console.error("Error fetching balita data:", error);
     }
   };
 
@@ -59,7 +59,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
       );
       setNamaPosyandu(namaPos.data.data);
     } catch (error) {
-      console.error("Error fetching posyandu data:", error);
+      // console.error("Error fetching posyandu data:", error);
     }
   };
 
@@ -173,14 +173,14 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                       </tr>
                     </tbody>
                   </table>
-                  <div className="d-flex justify-content-end">
+                  {/* <div className="d-flex justify-content-end">
                     <Link
                       to={`/posyandu/edit-data-balita/${idBalita}`}
                       className="btn btn-primary"
                     >
                       Edit Data Balita
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
