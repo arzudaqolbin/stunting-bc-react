@@ -5,6 +5,8 @@ import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
+import { toast, ToastContainer } from "react-toastify";
+
 
 function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
   let navigate = useNavigate();
@@ -28,6 +30,7 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
         setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
+        showFailedPostToast()
         errorHandling(error);
       });
   }, []);
@@ -62,13 +65,42 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
     e.preventDefault();
     try {
       const response = await axios.post(`${BASE_URL}/kader`, kader, apiAuth);
-      navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
+      showSuccessPostToast(posyandu_id)
     } catch (error) {
+      showFailedPostToast()
       // Handle errors
       setLoading(false);
       errorHandling(error);
     }
   };
+
+  const showSuccessPostToast = async (posyandu_id) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil disimpan", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/kelurahan/detail-posyandu/${posyandu_id}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -134,6 +166,7 @@ function TambahKader({ idKelurahan, apiAuth, idPosyandu, jabatans }) {
             </button>)}
         </form>
       </div>
+      <ToastContainer />
     </main>
   );
 }

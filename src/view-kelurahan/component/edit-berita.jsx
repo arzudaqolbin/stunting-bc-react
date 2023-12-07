@@ -198,7 +198,6 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
 
   return (
     <main className="container">
-      <i className="fa-solid fa-arrow-left"></i>
       <h2 className="custom-judul">FORM EDIT BERITA</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 
@@ -251,7 +250,7 @@ function EditBerita({ idKelurahan, apiAuth, idBerita, token }) {
                 id="isi"
                 name="isi"
                 required
-                rows="35"
+                rows="5"
                 value={isi}
                 onChange={handleChange}
               ></textarea>

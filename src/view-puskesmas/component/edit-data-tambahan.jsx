@@ -122,9 +122,11 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           dataTambahan,
           apiAuth
         );
+      } else {
+        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
       }
       showSuccessPostToast(idBalita);
-      setLoading2(false);
+      // setLoading2(false);
     } catch (error) {
       showFailedPostToast()
       setLoading2(false);
@@ -155,6 +157,7 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
 
           // Mengakhiri janji saat Toast ditutup
           navigate(`/puskesmas/detail-balita/${idBalita}`);
+          setLoading2(false);
           resolve();
         },
       });

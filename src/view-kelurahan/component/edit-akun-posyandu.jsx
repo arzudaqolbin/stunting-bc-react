@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
 import { error } from "jquery";
 // import { errorHandling } from "../../base/apiConfig";
 
@@ -294,14 +295,43 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
         apiAuth
       )
       .then((response) => {
-        navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+        showSuccessPostToast(idPosyandu)
       })
       .catch((error) => {
+        showFailedPostToast()
         errorHandling(error);
         setLoading(false);
       });
     // console.log(formData);
   };
+
+  const showSuccessPostToast = async (idPosyandu) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -515,6 +545,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

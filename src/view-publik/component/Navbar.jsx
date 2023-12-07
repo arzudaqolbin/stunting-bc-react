@@ -10,7 +10,7 @@ const Navbar = () => {
       // </div>
       <nav className="navbar navbar-expand-lg p-0" style={{ backgroundColor: "#026670" }}>
         <div className="container p-0">
-          <a className="navbar-brand p-0" href="#">
+          <a className="navbar-brand p-0" href="/">
             <div className="sidebar-logo p-3">
               <img src={logoDki} className="img-fluid" style={{ width: "40px" }} alt="" />
               <img src={logoJaktim} className="img-fluid" style={{ width: "45px" }} alt="" />
@@ -30,7 +30,7 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active mx-3 text-light" aria-current="page" href="#">
+                <a className="nav-link active mx-3 text-light" aria-current="page" href="/">
                   Beranda
                 </a>
               </li>
@@ -55,12 +55,12 @@ const Navbar = () => {
                 </ul>
               </li>
               <li className="nav-item">
-                <a className="nav-link mx-3 text-light" href="#">
+                <a className="nav-link mx-3 text-light" href="/berita">
                   Berita
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link mx-3 text-light" href="#">
+                <a className="nav-link mx-3 text-light" href="/jadwal">
                   Jadwal
                 </a>
               </li>
