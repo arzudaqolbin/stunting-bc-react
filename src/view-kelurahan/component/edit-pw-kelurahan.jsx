@@ -5,6 +5,7 @@ import axios from "axios";
 import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
 
 
 function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
@@ -90,9 +91,10 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
       }, apiAuth)
       .then((response) => {
         // console.log("Password berhasil diubah:", response.data);
-        navigate("/kelurahan/profile");
+        showSuccessPostToast()
       })
       .catch((error) => {
+        showFailedPostToast()
         setLoading(true);
         errorHandling(error);
         // Tambahkan logika atau feedback sesuai kebutuhan
@@ -118,6 +120,34 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
         }
       });
     }
+  }
+
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate("/kelurahan/profile");
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
   }
 
   return (
@@ -180,6 +210,7 @@ function EditPwKelurahan({ apiAuth, idKelurahan, userId }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

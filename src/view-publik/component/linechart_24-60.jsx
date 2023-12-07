@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 // import { Line } from 'react-chartjs-2';
-import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
+import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 import { useCurrentPng } from 'recharts-to-png';
@@ -148,24 +148,22 @@ const LineChart_Umur_24_60 = ({idBalita, apiAuth}) => {
     }, [dataPatokan, dataTarget]);
 
     return (
-        <>
-            {/* <button onClick={handleDownload}>
-                {isLoading ? 'Downloading...' : 'Download Chart'}
-            </button> */}
-            <LineChart width={1000} height={500} data={dataCombine}>
-                <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
-                <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
-                <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false} />
-                <Line type="monotone" dataKey="med" stroke="green" strokeWidth={1} dot={false} />
-                <Line type="monotone" dataKey="sd2" stroke="red" strokeWidth={1} dot={false} />
-                <Line type="monotone" dataKey="sd3" stroke="black" strokeWidth={1} dot={false} />
-                <CartesianGrid stroke='#ccc' strokeDasharray="5 5" />
-                <XAxis dataKey="umur" label="Umur (bulan)" height={100} tickCount={10} />
-                <YAxis type="number" domain={['dataMin', 'dataMax']} label={{ value: "Tinggi Badan (cm)", angle: -90 }} width={120} />
+        <ResponsiveContainer width="100%" height={500}>
+            <h3 className='text-center m-3'>Pengukuran TBU Umur 24-60 bulan</h3>
+        <LineChart data={dataCombine}>
+            <Line type="monotone" dataKey="TB" stroke="blue" strokeWidth={3} fill='blue' />
+            <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
+            <Line type="monotone" dataKey="sd_2" stroke="red" strokeWidth={1} dot={false} />
+            <Line type="monotone" dataKey="med" stroke="green" strokeWidth={1} dot={false} />
+            <Line type="monotone" dataKey="sd2" stroke="red" strokeWidth={1} dot={false} />
+            <Line type="monotone" dataKey="sd3" stroke="black" strokeWidth={1} dot={false} />
+            <CartesianGrid stroke='#ccc' strokeDasharray="5 5" />
+            <XAxis dataKey="umur" label="Umur (bulan)" height={100} tickCount={10} />
+            <YAxis type="number" domain={['dataMin', 'dataMax']} label={{ value: "Tinggi Badan (cm)", angle: -90 }} width={120} />
 
-                <Tooltip />
-            </LineChart>
-        </>
+            <Tooltip />
+        </LineChart>
+        </ResponsiveContainer>
     )
 }
 

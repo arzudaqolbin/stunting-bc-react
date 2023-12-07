@@ -86,7 +86,8 @@ const Login = () => {
             Dashboard Monitoring Stunting Kelurahan Bidara Cina
           </h4>
         </div>
-        <div className="container mt-3 pt-5 col-sm-5">
+        {/* <div className="container mt-3 pt-5 col-sm-5"> */}
+        <div className="container mt-3 pt-5 col-lg-6 md-8 sm-10">
           <div className="row">
             <div className="col-sm-8 m-auto">
               <div className="card border-0 shadow">

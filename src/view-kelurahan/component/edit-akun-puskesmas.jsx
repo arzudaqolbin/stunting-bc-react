@@ -5,6 +5,7 @@ import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
 
 function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   const [loading, setLoading] = useState(false);
@@ -259,9 +260,10 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           apiAuth
         )
         .then((response) => {
-          navigate(`/kelurahan/detail-posyandu/${idPuskesmas}`);
+          showSuccessPostToast(idPuskesmas)
         })
         .catch((error) => {
+          showFailedPostToast()
           errorHandling(error);
         });
     }
@@ -271,6 +273,34 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const showSuccessPostToast = async (idPuskesmas) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/kelurahan/detail-puskesmas/${idPuskesmas}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -473,6 +503,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

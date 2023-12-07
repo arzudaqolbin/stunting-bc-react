@@ -118,8 +118,6 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
 
   return (
     <main className="container">
-      {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}
-      <i class="fa-solid fa-arrow-left"></i>
       <h2 className="text-center p-4">FORM EDIT JADWAL KEGIATAN</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 

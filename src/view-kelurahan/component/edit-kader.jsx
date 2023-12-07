@@ -5,6 +5,7 @@ import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import "../css/form-kelurahan.css";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
 
 function EditKader({ idKelurahan, apiAuth, idKader }) {
   let navigate = useNavigate();
@@ -69,14 +70,43 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
 
     try {
       await axios.put(`${BASE_URL}/kader/${idKader}`, kader, apiAuth).then((res) => {
-        navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
+        showSuccessPostToast(kader.posyandu_id)
       });
       // navigate(`/kelurahan/detail-posyandu/${kader.posyandu_id}`);
     } catch (error) {
+      showFailedPostToast()
       setLoading(false);
       errorHandling(error);
     }
   };
+
+  const showSuccessPostToast = async (idPosyandu) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/kelurahan/detail-posyandu/${idPosyandu}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -145,6 +175,7 @@ function EditKader({ idKelurahan, apiAuth, idKader }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }
