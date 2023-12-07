@@ -78,11 +78,11 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
     const newErrors = { ...errors };
 
     // Validasi riwayat penyakit
-    if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
+    if (dataTambahan.riwayat_sakit && !/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
       isValid = false;
       newErrors.riwayat_sakit = "Riwayat penyakit tidak valid.";
     } else {
-      newErrors.riwayat_sakit = "";
+      newErrors.riwayat_sakit = "";
     }
 
     // Set ulang state errors
@@ -108,8 +108,8 @@ function FormDataTambahan({ idPosyandu, apiAuth, idBalita }) {
         navigate(`/posyandu/detail-balita/${idBalita}`);
         setLoading2(false);
       } catch (error) {
-        errorHandling(error);
         setLoading2(false);
+        errorHandling(error);
         // if (error.response) {
         //   console.error(
         //     "Kesalahan dalam permintaan ke server:",
