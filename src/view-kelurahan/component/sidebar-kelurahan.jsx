@@ -87,7 +87,7 @@ const SidebarKelurahan = ({content}) =>  {
                     </li>
                     <li class="sidebar-item">
                         <Link to={"/kelurahan/daftar-posyandu"} class="sidebar-link border-top">
-                              <i class="fa-solid fa-hands-holding-child pe-2"></i>Kader Posyandu
+                              <i class="fa-solid fa-hands-holding-child pe-2"></i> Posyandu
                         </Link>
                     </li>
                     <li class="sidebar-item">

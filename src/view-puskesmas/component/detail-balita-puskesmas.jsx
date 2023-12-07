@@ -23,7 +23,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
       );
       setBiodata(dataBalita.data);
     } catch (error) {
-      errorHandling(error)
+      errorHandling(error);
       console.error("Error fetching balita data:", error);
     }
   };
@@ -124,52 +124,112 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                   <table className="table table-hover custom-table">
                     <tbody>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Nama</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.nama}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Nama
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.nama}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>NIK</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.nik}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          NIK
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.nik}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Tanggal Lahir</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.tgl_lahir}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Tanggal Lahir
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.tgl_lahir}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Umur (bulan)</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.umur}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Umur (bulan)
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.umur}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Jenis Kelamin</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.jenis_kelamin}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Jenis Kelamin
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.jenis_kelamin}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Alamat</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.alamat}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Alamat
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.alamat}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Nama Orang Tua</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.nama_ortu}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Nama Orang Tua
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.nama_ortu}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Pekerjaan Orang Tua</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.pekerjaan_ortu}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Pekerjaan Orang Tua
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.pekerjaan_ortu}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Nama Posyandu</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{namaPosyandu.nama}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Nama Posyandu
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{namaPosyandu?.nama || "Loading"}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status TB/U terakhir</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_tbu}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Status TB/U terakhir
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.status_tbu}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/TB terakhir</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbtb}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Status BB/TB terakhir
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.status_bbtb}
+                        </td>
                       </tr>
                       <tr>
-                        <th scope="row" style={{ textAlign: "left" }}>Status BB/U terakhir</th>
-                        <td style={{ textAlign: "left" }}> : &nbsp;{biodata.status_bbu}</td>
+                        <th scope="row" style={{ textAlign: "left" }}>
+                          Status BB/U terakhir
+                        </th>
+                        <td style={{ textAlign: "left" }}>
+                          {" "}
+                          : &nbsp;{biodata.status_bbu}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -194,7 +254,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                   aria-expanded="false"
                   aria-controls="collapseTwo"
                 >
-                  Riwayat Balita
+                  Riwayat Balita {biodata.status_tbu === "Pendek" || biodata.status_tbu === "Sangat Pendek" ? "(sebaiknya dilengkapi)" : ""}
                 </button>
               </h2>
               <div
@@ -205,7 +265,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                 <div className="accordion-body">
                   {riwayat.length === 0 ? (
                     <div>
-                      <div>Belum mengisikan data tambahan riwayat</div>
+                      <div className="text-center">Belum mengisikan data tambahan riwayat</div>
                       <Link
                         to={`/puskesmas/edit-data-tambahan-balita/${idBalita}`}
                         className="btn btn-primary"
@@ -218,56 +278,121 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
                       <table className="table table-hover custom-table">
                         <tbody>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Asi Eksklusif</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{convertStr(riwayat.asi_eksklusif)}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Asi Eksklusif
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{convertStr(riwayat.asi_eksklusif)}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>IMD</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.imd}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              IMD
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.imd}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Penyakit Penyerta</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.penyakit_penyerta}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Penyakit Penyerta
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.penyakit_penyerta}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Sakit</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_sakit}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Sakit
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_sakit}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Imunisasi</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_imunisasi}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Imunisasi
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_imunisasi}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Ibu Hamil KEK</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_ibu_hamil_kek}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Ibu Hamil KEK
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.riwayat_ibu_hamil_kek}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Ibu Anemia</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;Tidak</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Riwayat Ibu Anemia
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;Tidak
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Kepemilikan Jamban Sehat</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.kepemilikan_jamban_sehat}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Kepemilikan Jamban Sehat
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.kepemilikan_jamban_sehat}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Akses Air Minum</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;Air isi ulang</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Akses Air Minum
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;Air isi ulang
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>KTP</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.ktp}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              KTP
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.ktp}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Kepemilikan BPJS/KIS/JKN/KAJ</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.jaminan_kesehatan}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Kepemilikan BPJS/KIS/JKN/KAJ
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.jaminan_kesehatan}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Akses Terhadap Makanan Sehat</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.akses_makanan_sehat}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Akses Terhadap Makanan Sehat
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.akses_makanan_sehat}
+                            </td>
                           </tr>
                           <tr>
-                            <th scope="row" style={{ textAlign: "left" }}>Sudah Konfirmasi ke DSA</th>
-                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.konfirmasi_dsa}</td>
+                            <th scope="row" style={{ textAlign: "left" }}>
+                              Sudah Konfirmasi ke DSA
+                            </th>
+                            <td style={{ textAlign: "left" }}>
+                              {" "}
+                              : &nbsp;{riwayat.konfirmasi_dsa}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -331,14 +456,8 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
               >
                 <div className="accordion-body">
                   {/* Isi komponen accordion disini */}
-                  <LineChart_Umur_0_24
-                    apiAuth={apiAuth}
-                    idBalita={idBalita}
-                  />
-                  <LineChart_Umur_24_60
-                    apiAuth={apiAuth}
-                    idBalita={idBalita}
-                  />
+                  <LineChart_Umur_0_24 apiAuth={apiAuth} idBalita={idBalita} />
+                  <LineChart_Umur_24_60 apiAuth={apiAuth} idBalita={idBalita} />
                 </div>
               </div>
             </div>

@@ -12,7 +12,7 @@ import { ClipLoader } from "react-spinners";
 const ListBerita = ({ apiAuth }) => {
   const [daftarBerita, setDaftarBerita] = useState([]);
   const [gambar, setGambar] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +38,7 @@ const ListBerita = ({ apiAuth }) => {
               errorHandling(error);
             });
         });
+        setLoading(false)
       } catch (error) {
         errorHandling(error);
       }
@@ -79,6 +80,17 @@ const ListBerita = ({ apiAuth }) => {
   };
 
   return (
+    <>
+    {loading ? (
+      <div className='text-center'>
+          <ClipLoader
+              loading={loading}
+              size={150}
+          />
+      </div>
+    ) 
+    : 
+    (
     <div className="container">
       <div className="row mt-5 mb-5">
         <div className="col-md-6 offset-md-2">
@@ -156,6 +168,8 @@ const ListBerita = ({ apiAuth }) => {
         ))}
       </div>
     </div>
+    )}
+    </>
   );
 };
 

@@ -9,7 +9,7 @@ import { ClipLoader } from "react-spinners";
 const ListJadwal = ({ apiAuth }) => {
   const [jadwals, setJadwals] = useState([]);
   const currentDate = new Date();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch data from the server when the component mounts
@@ -17,6 +17,7 @@ const ListJadwal = ({ apiAuth }) => {
       .get(`${BASE_URL}/jadwals`)
       .then((response) => {
         setJadwals(response.data);
+        setLoading(false)
       })
       .catch((error) => {
         errorHandling(error);
@@ -72,6 +73,17 @@ const ListJadwal = ({ apiAuth }) => {
   };
 
   return (
+    <>
+    {loading  ? (
+      <div className='text-center'>
+          <ClipLoader
+              loading={loading}
+              size={150}
+          />
+      </div>
+    )
+    :
+    (
     <main className="container">
       <div className="container">
         <h2 className="text-center mt-5 mb-5">
@@ -141,6 +153,8 @@ const ListJadwal = ({ apiAuth }) => {
         ))}
       </div>
     </main>
+    )}
+    </>
   );
 };
 
