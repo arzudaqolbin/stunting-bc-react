@@ -63,7 +63,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
         setPosyanduOptions(response.data.data);
       })
       .catch((error) => {
-        console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
+        // console.error("Terjadi kesalahan saat mengambil opsi Posyandu:", error);
       });
   }, []);
 
@@ -97,7 +97,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
       })
       .catch((error) => {
         errorHandling(error);
-        console.error("Terjadi kesalahan saat mengambil data balita:", error);
+        // console.error("Terjadi kesalahan saat mengambil data balita:", error);
       });
   }, []);
 
@@ -114,9 +114,8 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -260,17 +259,18 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
         showSuccessPostToast(idBalita);
       } catch (error) {
         showFailedPostToast();
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        errorHandling(error);
+        // if (error.response) {
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        // } else if (error.request) {
+        //   console.error("Tidak ada respon dari server:", error.request);
+        // } else {
+        //   console.error("Terjadi kesalahan:", error.message);
+        // }
       }
     }
   };
@@ -369,7 +369,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                     name="nama"
                     value={nama}
                     onChange={(e) => onInputChange(e)}
-                    // required
+                  // required
                   />
                   <div className={`error`}>{errors.nama}</div>
                 </label>
@@ -435,7 +435,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                     name="nama_ortu"
                     value={nama_ortu}
                     onChange={(e) => onInputChange(e)}
-                    // required
+                  // required
                   />
                   <div className={`error`}>{errors.nama_ortu}</div>
                 </label>
@@ -448,7 +448,7 @@ function EditBalita({ idPuskesmas, apiAuth, idBalita }) {
                     name="pekerjaan_ortu"
                     value={pekerjaan_ortu}
                     onChange={(e) => onInputChange(e)}
-                    // required
+                  // required
                   />
                   <div className={`error`}>{errors.pekerjaan_ortu}</div>
                 </label>

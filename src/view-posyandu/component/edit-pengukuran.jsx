@@ -33,6 +33,7 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
   const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split('T')[0];
 
   const [loading, setloading] = useState(true);
+  const [loading2, setloading2] = useState(false);
   const [hasRunEffect, setHasRunEffect] = useState(false);
   // const [balita, setBalita] = useState([]);
   const [dataPatokan, setDataPatokan] = useState({
@@ -80,7 +81,7 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
         }));
       } catch (error) {
         errorHandling(error)
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -103,11 +104,11 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
           jk: response.data.jenis_kelamin,
           idBalita: response.data.id,
         }));
-        setloading(false)
+        setloading(false);
         // console.log("hasil fetch data balita");
         // console.log(response.data[0])
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
 
@@ -442,6 +443,7 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, pengukuran) => {
+    setloading2(true);
     e.preventDefault();
 
     const jk = dataPatokan.jk;
@@ -464,24 +466,26 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
       await axios.put(`${BASE_URL}/pengukurans/${pengukuran.id}`, pengukuran, apiAuth).then((response) => {
         // console.log(response.status)
       });
-      showSuccessPostToast(pengukuran.balita_id)
+      showSuccessPostToast(pengukuran.balita_id);
+      setloading2(false);
 
 
     } catch (error) {
-      showFailedPostToast()
-      if (error.response) {
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        showFailedPostToast()
-        console.error("Tidak ada respon dari server:", error.request);
-      } else {
-        showFailedPostToast()
-        console.error("Terjadi kesalahan:", error.message);
-      }
+      showFailedPostToast();
+      setloading2(false);
+      // if (error.response) {
+      //   console.error(
+      //     "Kesalahan dalam permintaan ke server:",
+      //     error.response.status,
+      //     error.response.data
+      //   );
+      // } else if (error.request) {
+      //   showFailedPostToast()
+      //   console.error("Tidak ada respon dari server:", error.request);
+      // } else {
+      //   showFailedPostToast()
+      //   console.error("Terjadi kesalahan:", error.message);
+      // }
     }
 
 
@@ -661,9 +665,14 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
                     </select>
                     <div className={`error`}>{errors.posisi_balita}</div>
                   </label>
-                  <button type="submit" className="submit-button">
-                    Simpan
-                  </button>
+                  {loading2 ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading2} size={20} />
+                    </div>
+                  ) : (
+                    <button type="submit" className="submit-button">
+                      Simpan
+                    </button>)}
                 </form>
               </div>
             </div>

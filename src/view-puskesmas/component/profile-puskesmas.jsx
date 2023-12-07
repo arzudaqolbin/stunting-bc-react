@@ -23,11 +23,11 @@ function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
             setKoordinat(koordinatResponse.data);
           })
           .catch((error) => {
-            console.error("Error fetching koordinat:", error);
+            // console.error("Error fetching koordinat:", error);
           });
       })
       .catch((error) => {
-        console.error("Error fetching puskesmas:", error);
+        // console.error("Error fetching puskesmas:", error);
       });
   }, [idPuskesmas, apiAuth]);
 
@@ -64,11 +64,11 @@ function ProfilePuskesmas({ idPuskesmas, apiAuth }) {
               )}
             </div>
             <div className="button-container">
-            <Link to={"/puskesmas/edit-pw"}>
-              <button type="submit" className="submit">
-              <i class="fa-solid fa-lock"></i> Ganti Password
-              </button>
-            </Link>
+              <Link to={"/puskesmas/edit-pw"}>
+                <button type="submit" className="submit">
+                  <i class="fa-solid fa-lock"></i> Ganti Password
+                </button>
+              </Link>
             </div>
           </div>
         </div>

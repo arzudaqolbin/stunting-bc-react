@@ -24,7 +24,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
       setBiodata(dataBalita.data);
     } catch (error) {
       errorHandling(error);
-      console.error("Error fetching balita data:", error);
+      // console.error("Error fetching balita data:", error);
     }
   };
 

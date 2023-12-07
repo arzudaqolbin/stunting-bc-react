@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/add-balita.css";
-import BASE_URL from "../../base/apiConfig";
+import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ClipLoader } from "react-spinners";
 
 function AddBalita({ idPosyandu, apiAuth }) {
   let navigate = useNavigate();
@@ -15,6 +16,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
   const tomorrowString = tomorrow.toISOString().split("T")[0];
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+  const [loading, setLoading] = useState(false);
 
   const fiveYearsAgoFormatted = fiveYearsAgo.toISOString().split("T")[0];
 
@@ -81,9 +83,8 @@ function AddBalita({ idPosyandu, apiAuth }) {
   useEffect(() => {
     setBalita((prevBalita) => ({
       ...prevBalita,
-      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${
-        rt ? `RT ${rt}` : ""
-      }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
+      alamat: `${jalan ? jalan : ""}${jalan && (rt || rw) ? ", " : ""}${rt ? `RT ${rt}` : ""
+        }${rw && rt ? ", " : ""}${rw ? `RW ${rw}` : ""}`,
     }));
   }, [jalan, rw, rt]);
 
@@ -270,6 +271,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
   };
 
   const onSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (validateForm()) {
       try {
@@ -278,20 +280,12 @@ function AddBalita({ idPosyandu, apiAuth }) {
           .then((respons) => {
             const id_balita = respons.data.id;
             showSuccessPostToast(id_balita);
+            setLoading(false);
           });
       } catch (error) {
         showFailedPostToast();
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        errorHandling(error);
+        setLoading(false);
       }
     }
   };
@@ -320,7 +314,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nik"
                 value={nik}
                 onChange={(e) => onInputChange(e)}
-                // required
+              // required
               />
               <div className={`error`}>{errors.nik}</div>
             </label>
@@ -333,7 +327,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama"
                 value={nama}
                 onChange={(e) => onInputChange(e)}
-                // required
+              // required
               />
               <div className={`error`}>{errors.nama}</div>
             </label>
@@ -363,7 +357,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="anak_ke"
                 value={anak_ke}
                 onChange={(e) => onInputChange(e)}
-                // required
+              // required
               />
               <div className={`error`}>{errors.anak_ke}</div>
             </label>
@@ -394,7 +388,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="nama_ortu"
                 value={nama_ortu}
                 onChange={(e) => onInputChange(e)}
-                // required
+              // required
               />
               <div className={`error`}>{errors.nama_ortu}</div>
             </label>
@@ -407,7 +401,7 @@ function AddBalita({ idPosyandu, apiAuth }) {
                 name="pekerjaan_ortu"
                 value={pekerjaan_ortu}
                 onChange={(e) => onInputChange(e)}
-                // required
+              // required
               />
               <div className={`error`}>{errors.pekerjaan_ortu}</div>
             </label>
@@ -499,9 +493,14 @@ function AddBalita({ idPosyandu, apiAuth }) {
               />
               <div className={`error`}>{errors.tgl_lahir}</div>
             </label>
-            <button type="submit" className="submit-button">
-              Simpan
-            </button>
+            {loading ? (
+              <div className="text-center">
+                <ClipLoader loading={loading} size={20} />
+              </div>
+            ) : (
+              <button type="submit" className="submit-button">
+                Simpan
+              </button>)}
           </form>
         </div>
       </div>

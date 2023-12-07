@@ -32,6 +32,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
 
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const [balita, setBalita] = useState([]);
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
@@ -76,24 +77,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
             // console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
-        errorHandling(error)
-        if (error.response) {
-          // Respon dari server dengan kode status tertentu
-          // console.error(
-          //   "Kesalahan dalam permintaan ke server:",
-          //   error.response.status,
-          //   error.response.data
-          // );
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-        } else if (error.request) {
-          // Tidak ada respon dari server
-          // console.error("Tidak ada respon dari server:", error.request);
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-        } else {
-          // Kesalahan lainnya
-          // console.error("Terjadi kesalahan:", error.message);
-          // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-        }
+        errorHandling(error);
       }
 
       setHasRunEffect(true);
@@ -417,6 +401,7 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
+    setLoading2(true);
     e.preventDefault();
     if (validateForm()) {
 
@@ -451,6 +436,8 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
 
 
       } catch (error) {
+        setLoading2(false);
+        errorHandling(error);
         showFailedPostToast()
         // if (error.response) {
         //   console.error(
@@ -639,9 +626,14 @@ function AddPengukuranSelected({ apiAuth, idBalita }) {
                     </select>
                     <div className={`error`}>{errors.posisi_balita}</div>
                   </label>
-                  <button type="submit" className="submit-button">
-                    Simpan
-                  </button>
+                  {loading2 ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading2} size={20} />
+                    </div>
+                  ) : (
+                    <button type="submit" className="submit-button">
+                      Simpan
+                    </button>)}
                 </form>
               </div>
             </div>

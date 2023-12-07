@@ -37,6 +37,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
   const [hasRunEffect, setHasRunEffect] = useState(false);
   const [balitaOptions, setBalitaOptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loading2, setLoading2] = useState(false);
   const [tglLahir, setTglLahir] = useState("");
   const [pengukuran, setPengukuran] = useState({
     balita_id: "",
@@ -117,24 +118,25 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
             console.error("Terjadi kesalahan saat mengambil opsi Balita:", error);
           });
       } catch (error) {
-        // errorHandling(error)
-        if (error.response) {
-          // Respon dari server dengan kode status tertentu
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-        } else if (error.request) {
-          // Tidak ada respon dari server
-          console.error("Tidak ada respon dari server:", error.request);
-          // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-        } else {
-          // Kesalahan lainnya
-          console.error("Terjadi kesalahan:", error.message);
-          // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-        }
+
+        // // errorHandling(error)
+        // if (error.response) {
+        //   // Respon dari server dengan kode status tertentu
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+        // } else if (error.request) {
+        //   // Tidak ada respon dari server
+        //   console.error("Tidak ada respon dari server:", error.request);
+        //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+        // } else {
+        //   // Kesalahan lainnya
+        //   console.error("Terjadi kesalahan:", error.message);
+        //   // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+        // }
       }
       setHasRunEffect(true);
     }
@@ -528,6 +530,7 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
 
   // nanti atur statusnya disini broo
   const onSubmit = async (e, balita, pengukuran) => {
+    setLoading2(true);
     e.preventDefault();
     if (validateForm()) {
 
@@ -562,20 +565,22 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
 
 
       } catch (error) {
-        showFailedPostToast()
-        if (error.response) {
-          console.error(
-            "Kesalahan dalam permintaan ke server:",
-            error.response.status,
-            error.response.data
-          );
-        } else if (error.request) {
-          showFailedPostToast()
-          console.error("Tidak ada respon dari server:", error.request);
-        } else {
-          showFailedPostToast()
-          console.error("Terjadi kesalahan:", error.message);
-        }
+        showFailedPostToast();
+        errorHandling(error);
+        setLoading2(false);
+        // if (error.response) {
+        //   console.error(
+        //     "Kesalahan dalam permintaan ke server:",
+        //     error.response.status,
+        //     error.response.data
+        //   );
+        // } else if (error.request) {
+        //   showFailedPostToast()
+        //   console.error("Tidak ada respon dari server:", error.request);
+        // } else {
+        //   showFailedPostToast()
+        //   console.error("Terjadi kesalahan:", error.message);
+        // }
       }
     }
 
@@ -754,9 +759,14 @@ function AddPengukuran({ idPosyandu, apiAuth }) {
                     </select>
                     <div className={`error`}>{errors.posisi_balita}</div>
                   </label>
-                  <button type="submit" className="submit-button">
-                    Simpan
-                  </button>
+                  {loading2 ? (
+                    <div className="text-center">
+                      <ClipLoader loading={loading2} size={20} />
+                    </div>
+                  ) : (
+                    <button type="submit" className="submit-button">
+                      Simpan
+                    </button>)}
                 </form>
               </div>
             </div>

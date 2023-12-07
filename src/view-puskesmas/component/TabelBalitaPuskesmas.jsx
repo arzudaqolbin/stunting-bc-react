@@ -215,10 +215,10 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
   const initializeDataTable = () => {
     // Inisialisasi DataTable
     if (!$.fn.DataTable.isDataTable("#myTable")) {
-    const table = $("#myTable").DataTable({
-      aaSorting: [],
-      language: {
-        lengthMenu: "Menampilkan _MENU_ data tiap halaman",
+      const table = $("#myTable").DataTable({
+        aaSorting: [],
+        language: {
+          lengthMenu: "Menampilkan _MENU_ data tiap halaman",
           zeroRecords: "Data tidak ditemukan",
           info: "Menampilkan halaman _PAGE_ dari _PAGES_",
           infoEmpty: "Tidak ada data tersedia",
@@ -241,18 +241,18 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
             sortAscending: ": klik untuk mengurutkan A-Z",
             sortDescending: ": klik untuk mengurutkan Z-A",
           },
-        // ... Konfigurasi bahasa DataTable
-      },
-    });
+          // ... Konfigurasi bahasa DataTable
+        },
+      });
 
-    // Hapus event listener sebelumnya untuk mencegah memory leak
-    table.off("draw");
+      // Hapus event listener sebelumnya untuk mencegah memory leak
+      table.off("draw");
 
-    // Tambahkan event listener untuk handle redrawing DataTable
-    table.on("draw", () => {
-      // ... Logika atau manipulasi setelah DataTable digambar ulang
-    });
-  }
+      // Tambahkan event listener untuk handle redrawing DataTable
+      table.on("draw", () => {
+        // ... Logika atau manipulasi setelah DataTable digambar ulang
+      });
+    }
   };
 
   const loadDataBalita = async () => {
@@ -264,24 +264,24 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
       setBalita(result.data.balitas);
       setLoading(false);
     } catch (error) {
-      errorHandling(error)
-      if (error.response) {
-        // Respon dari server dengan kode status tertentu
-        console.error(
-          "Kesalahan dalam permintaan ke server:",
-          error.response.status,
-          error.response.data
-        );
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
-      } else if (error.request) {
-        // Tidak ada respon dari server
-        console.error("Tidak ada respon dari server:", error.request);
-        // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
-      } else {
-        // Kesalahan lainnya
-        console.error("Terjadi kesalahan:", error.message);
-        // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
-      }
+      errorHandling(error);
+      // if (error.response) {
+      //   // Respon dari server dengan kode status tertentu
+      //   console.error(
+      //     "Kesalahan dalam permintaan ke server:",
+      //     error.response.status,
+      //     error.response.data
+      //   );
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai dengan respon dari server
+      // } else if (error.request) {
+      //   // Tidak ada respon dari server
+      //   console.error("Tidak ada respon dari server:", error.request);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan yang sesuai untuk kasus ini
+      // } else {
+      //   // Kesalahan lainnya
+      //   console.error("Terjadi kesalahan:", error.message);
+      //   // Di sini Anda dapat menampilkan pesan kesalahan umum atau menangani dengan cara yang sesuai
+      // }
     }
   };
 
@@ -290,7 +290,7 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
       const response = await axios.get(`${BASE_URL}/posyandu`, apiAuth);
       setPosyandu(response.data.data);
     } catch (error) {
-      console.error("Error fetching posyandu data:", error);
+      // console.error("Error fetching posyandu data:", error);
     }
   };
 
@@ -377,20 +377,21 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
               icon: "success"
             });
           } catch (error) {
-            console.error("Error deleting balita data:", error);
-            // Tampilkan pesan kesalahan kepada pengguna
-            Swal.fire({
-              title: "Gagal",
-              text: "Hapus Balita gagal",
-              icon: "error"
-            });
+            errorHandling(error);
+            // console.error("Error deleting balita data:", error);
+            // // Tampilkan pesan kesalahan kepada pengguna
+            // Swal.fire({
+            //   title: "Gagal",
+            //   text: "Hapus Balita gagal",
+            //   icon: "error"
+            // });
           }
-          
+
         }
       },
       allowOutsideClick: () => !Swal.isLoading()
     });
-    
+
   }
 
   return (
@@ -451,7 +452,7 @@ function TabelBalitaPuskesmas({ idPuskesmas, apiAuth }) {
                       >
                         <i class="fa-solid fa-circle-info"></i> Info
                       </Link>
-                      <button className="btn btn-danger ml-2 d-flex align-items-center" onClick={ () => deleteBalita(data.id)}><i class="fa-solid fa-trash"></i> Hapus</button>
+                      <button className="btn btn-danger ml-2 d-flex align-items-center" onClick={() => deleteBalita(data.id)}><i class="fa-solid fa-trash"></i> Hapus</button>
                     </td>
                   </tr>
                 ))}
