@@ -38,6 +38,7 @@ const BayiStat= () => {
         :
         (
         <div className='p-3'>
+            <h4>Presentase balita stunting</h4>
             <div className="d-flex align-items-center">
                 {/* <div className="col-auto"> */}
                 <div className="col-8">

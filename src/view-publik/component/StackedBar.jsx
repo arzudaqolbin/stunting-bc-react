@@ -228,6 +228,7 @@ const StackedBarGender = () => {
                 </div>
             ) : (
                 <>
+                <h4>Stunting berdasarkan Kelompok Umur dan Jenis Kelamin</h4>
                 <button className="float-right" type="button" onClick={downloadChart}>
                 <i class="fa-solid fa-download"></i>
                 </button>

@@ -249,6 +249,8 @@ function EditPengukuran({ apiAuth, idPengukuran }) {
   const generateStatus_bbtb = (jk, umur, bb, tb) => {
     let status = "";
     let tbAdj = adjustTinggi(tb);
+    console.log("cek bb untuk bbtb = ", bb)
+    console.log("cek tb untuk bbtb = ", tb)
 
     let patokanData = [];
     if (jk == "Laki-Laki") {

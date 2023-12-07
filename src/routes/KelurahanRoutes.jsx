@@ -25,6 +25,7 @@ import PageTambahKader from "../view-kelurahan/pages/PageTambahKader";
 import NonRoute from "../base/NonRoute";
 import NotFound from "../view-publik/pages/NotFound";
 import DetailBerita from "../view-publik/component/detail-berita";
+import PageDetailBeritaKelurahan from "../view-kelurahan/pages/PageDetailBeritaKelurahan";
 
 const RoutesKelurahan = () => {
     return (
@@ -198,7 +199,7 @@ const RoutesKelurahan = () => {
             <Route
                 path="berita/detail-berita/:idBerita"
                 element={
-                    <PrivateRoute element={<DetailBerita />} requiredRole="Kelurahan" />
+                    <PrivateRoute element={<PageDetailBeritaKelurahan />} requiredRole="Kelurahan" />
                 }
             />
             <Route

@@ -454,8 +454,16 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
               >
                 <div className="accordion-body">
                   {/* Isi komponen accordion disini */}
-                  <LineChart_Umur_0_24 apiAuth={apiAuth} idBalita={idBalita} />
-                  <LineChart_Umur_24_60 apiAuth={apiAuth} idBalita={idBalita} />
+                  <div className="container">
+                  <LineChart_Umur_0_24
+                    apiAuth={apiAuth}
+                    idBalita={idBalita}
+                  />
+                  <LineChart_Umur_24_60
+                    apiAuth={apiAuth}
+                    idBalita={idBalita}
+                  />
+                  </div>
                 </div>
               </div>
             </div>

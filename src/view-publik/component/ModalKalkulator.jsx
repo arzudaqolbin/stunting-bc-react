@@ -18,7 +18,7 @@ const ModalKalkulator = ({open, onClose, result}) => {
             <div className="container content">
                 {/* Ini nanti buat 3 flex yang sejajar */}
                 <div className="d-flex flex-wrap flex-md-row justify-content-between align-self-stretch">
-                    <div className="border col-sm-12 col-lg-4 col-md-4 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
+                    <div className="border col-lg-4 sm-12 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
                         <img
                             src={result.status_tbu === "Normal" || result.status_tbu === "Tinggi" ? smileFace : badFace}
                             alt=""
@@ -37,7 +37,7 @@ const ModalKalkulator = ({open, onClose, result}) => {
                             </p>
                         </div>
                     </div>
-                    <div className="border col-sm-12 col-lg-4 col-md-4 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
+                    <div className="border col-lg-4 sm-12 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
                         <img
                             src={result.status_bbtb === "Normal"? smileFace : badFace}
                             alt=""
@@ -55,7 +55,7 @@ const ModalKalkulator = ({open, onClose, result}) => {
                             </p>
                         </div>
                     </div>
-                    <div className="border col-sm-12 col-lg-4 col-md-4 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
+                    <div className="border col-lg-4 sm-12 d-flex flex-wrap p-3" style={{backgroundColor: "#fefefe"}}>
                         <img
                             src={result.status_bbu === "Normal" ? smileFace : badFace}
                             alt=""
@@ -73,20 +73,11 @@ const ModalKalkulator = ({open, onClose, result}) => {
                             </p>
                         </div>
                     </div>
-                    {/* <div className="border col-sm-12 col-lg-4 col-md-4">
-                        <p>Status BB/U</p>
-                        <p>Tinggi anak anda: {result.status_bbu}</p>
-
-                    </div>
-                    <div className="border col-sm-12 col-lg-4 col-md-4">
-                        <p>Status BB/TB</p>
-                        <p>Tinggi anak anda: {result.status_bbtb}</p>
-                    </div> */}
                 </div>
             </div>
 
             {/* Ini buat tombol close */}
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end p-3">
                 <button className='btn btn-primary' onClick={onClose}>
                 <span className='bold'>Kembali</span>
                 </button>
