@@ -3,9 +3,9 @@ import { decodeToken } from "react-jwt";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
 
-const BASE_URL = 'https://api-stunting.up.railway.app/api'; // Ganti dengan base URL Anda
+// const BASE_URL = 'https://api-stunting.up.railway.app/api'; // Ganti dengan base URL Anda
 // const BASE_URL = 'http://127.0.0.1:8000/api';
-// const BASE_URL = 'https://stuntingbc.kencang.id/api';
+const BASE_URL = 'https://stuntingbc.kencang.id/api';
 const token = localStorage.getItem("access_token")
 
 const apiAuth = () => {
