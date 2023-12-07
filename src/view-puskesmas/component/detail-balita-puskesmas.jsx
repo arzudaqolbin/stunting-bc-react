@@ -31,7 +31,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
   const getDataTambahan = async () => {
     try {
       const dataTambahanBalita = await axios.get(
-        `${BASE_URL}/dataTambahanBalitas/${idBalita}`,
+        `${BASE_URL}/dataTambahanBalitas/byBalitaId/${idBalita}`,
         apiAuth
       );
       setRiwayat(dataTambahanBalita.data);
