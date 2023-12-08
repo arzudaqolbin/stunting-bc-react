@@ -23,6 +23,11 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     confirm_password: "",
   });
 
+  const [koordinat, setKoordinat] = useState({
+    longitut: "",
+    latiude: "",
+  })
+
   const [errors, setErrors] = useState({
     nama: "",
     alamat: "",
@@ -82,6 +87,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           nomor_telepon: data.nomor_telepon,
           kepala: data.kepala,
           user_id: data.user_id,
+          koordinat_id: data.koordinat_id
         });
 
         const parts = data.alamat.split(", ");
@@ -97,6 +103,18 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               ...prevFormData,
               username: userData.username,
             }));
+          })
+          .catch((error) => {
+            errorHandling(error);
+          });
+
+        axios.get(`${BASE_URL}/koordinat/${data.koordinat_id}`, apiAuth)
+          .then((koorResp) => {
+            // console.log(koorResp.data);
+            setKoordinat({
+              longitut: koorResp.data.longitut,
+              latitude: koorResp.data.latitude,
+            })
           })
           .catch((error) => {
             errorHandling(error);
@@ -260,11 +278,29 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           apiAuth
         )
         .then((response) => {
-          showSuccessPostToast(idPuskesmas)
+          // showSuccessPostToast(idPuskesmas)
         })
         .catch((error) => {
           showFailedPostToast()
           errorHandling(error);
+        });
+
+      axios
+        .put(
+          `${BASE_URL}/koordinat/${formData.koordinat_id}`,
+          {
+            longitut: koordinat.longitut,
+            latitude: koordinat.latitude,
+          },
+          apiAuth
+        )
+        .then((response) => {
+          showSuccessPostToast(idPuskesmas);
+        })
+        .catch((error) => {
+          showFailedPostToast()
+          errorHandling(error);
+          setLoading(false);
         });
     }
   };
@@ -272,6 +308,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setKoordinat({ ...koordinat, [name]: value });
   };
 
   const showSuccessPostToast = async (idPuskesmas) => {
@@ -421,15 +458,15 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               />
             </label>
 
-            <label htmlFor="longitude">
+            <label htmlFor="longitut">
               <span>Longitude*</span>
               <input
                 type="text"
-                id="longitude"
-                name="longitude"
-              // required
-              // value={posyanduData.longitude}
-              // onChange={handleInputChange}
+                id="longitut"
+                name="longitut"
+                required
+                value={koordinat.longitut}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.longitude}</div>
             </label>
@@ -440,9 +477,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 type="text"
                 id="latitude"
                 name="latitude"
-              // required
-              // value={posyanduData.latitude}
-              // onChange={handleInputChange}
+                required
+                value={koordinat.latitude}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.latitude}</div>
             </label>

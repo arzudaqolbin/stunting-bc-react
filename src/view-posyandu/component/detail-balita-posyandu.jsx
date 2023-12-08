@@ -66,23 +66,23 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
-      // await getDataTambahan();
+      await getDataTambahan();
       await getNamaPosyandu();
       setLoading(false);
     };
 
     fetchData();
   }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      // await getDataBalita();
-      await getDataTambahan();
-      // await getNamaPosyandu();
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // await getDataBalita();
+  //     await getDataTambahan();
+  //     // await getNamaPosyandu();
+  //     setLoading(false);
+  //   };
 
-    fetchData();
-  }, [biodata]);
+  //   fetchData();
+  // }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
@@ -295,7 +295,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.imd}
+                              : &nbsp;{convertStr(riwayat.imd)}
                             </td>
                           </tr>
                           <tr>
@@ -304,7 +304,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.penyakit_penyerta}
+                              : &nbsp;{convertStr(riwayat.penyakit_penyerta)}
                             </td>
                           </tr>
                           <tr>
@@ -322,7 +322,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.riwayat_imunisasi}
+                              : &nbsp;{convertStr(riwayat.riwayat_imunisasi)}
                             </td>
                           </tr>
                           <tr>
@@ -331,10 +331,10 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.riwayat_ibu_hamil_kek}
+                              : &nbsp;{convertStr(riwayat.riwayat_ibu_hamil_kek)}
                             </td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Riwayat Ibu Anemia
                             </th>
@@ -342,17 +342,17 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                               {" "}
                               : &nbsp;Tidak
                             </td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Kepemilikan Jamban Sehat
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.kepemilikan_jamban_sehat}
+                              : &nbsp;{convertStr(riwayat.kepemilikan_jamban_sehat)}
                             </td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Akses Air Minum
                             </th>
@@ -360,7 +360,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                               {" "}
                               : &nbsp;Air isi ulang
                             </td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               KTP
@@ -385,7 +385,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.akses_makanan_sehat}
+                              : &nbsp;{convertStr(riwayat.akses_makanan_sehat)}
                             </td>
                           </tr>
                           <tr>
@@ -394,7 +394,7 @@ const DetailBalitaPosyandu = ({ idPosyandu, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.konfirmasi_dsa}
+                              : &nbsp;{convertStr(riwayat.konfirmasi_dsa)}
                             </td>
                           </tr>
                         </tbody>

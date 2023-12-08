@@ -24,6 +24,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     password: "",
     confirm_password: "",
     user_id: "",
+    koordinat_id: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
           rw: data.rw,
           nomor_telepon: data.nomor_telepon,
           user_id: data.user_id,
+          koordinat_id: data.koordinat_id,
         });
 
         const parts = data.alamat.split(", ");
@@ -189,9 +191,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     // Validasi Nama Orang Tua
     if (!formData.kepala) {
       isValid = false;
-      newErrors.kepala = "Nama kepala tidak boleh kosong";
+      newErrors.kepala = "Nama orang tua tidak boleh kosong";
     } else if (!/^[a-zA-Z\s`.'-]+$/.test(formData.kepala)) {
-      newErrors.kepala = "Nama kepala tidak valid";
+      newErrors.kepala = "Nama orang tua tidak valid";
       isValid = false;
     } else {
       newErrors.kepala = "";
@@ -267,6 +269,7 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(koordinat);
     axios
       .put(
         `${BASE_URL}/posyandu/${idPosyandu}`,
@@ -291,6 +294,24 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
           username: formData.username,
           password: formData.password,
           confirm_password: formData.confirm_password,
+        },
+        apiAuth
+      )
+      .then((response) => {
+        // showSuccessPostToast(idPosyandu)
+      })
+      .catch((error) => {
+        showFailedPostToast()
+        errorHandling(error);
+        setLoading(false);
+      });
+
+    axios
+      .put(
+        `${BASE_URL}/koordinat/${formData.koordinat_id}`,
+        {
+          longitut: koordinat.longitut,
+          latitude: koordinat.latitude,
         },
         apiAuth
       )

@@ -14,39 +14,39 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
   // const [selectedPuskesmas, setSelectedPuskesmas] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Inisialisasi DataTable hanya pada mounting pertama
-    if (!$.fn.DataTable.isDataTable("#myTable")) {
-      $("#myTable").DataTable({
-        aaSorting: [],
-        language: {
-          lengthMenu: "Menampilkan _MENU_ data tiap halaman",
-          zeroRecords: "Data tidak ditemukan",
-          info: "Menampilkan halaman _PAGE_ dari _PAGES_",
-          infoEmpty: "Tidak ada data tersedia",
-          infoFiltered: "(Disaring dari _MAX_ data total)",
-          decimal: "",
-          emptyTable: "Data tidak tersedia",
-          loadingRecords: "Memuat...",
-          processing: "Memproses...",
-          search: 'Cari:  <i class="bi bi-search"></i> ',
-          searchPlaceholder: "Cari data balita...",
-          paginate: {
-            first: "Pertama",
-            last: "Terakhir",
-            // "next": "Selanjutnya",
-            // "previous": "Sebelumnya"
-            previous: 'Prev  <i class="bi bi-chevron-double-left"></i>',
-            next: '<i class="bi bi-chevron-double-right"></i>  Next',
-          },
-          aria: {
-            sortAscending: ": klik untuk mengurutkan A-Z",
-            sortDescending: ": klik untuk mengurutkan Z-A",
-          },
-        },
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Inisialisasi DataTable hanya pada mounting pertama
+  //   if (!$.fn.DataTable.isDataTable("#myTable")) {
+  //     $("#myTable").DataTable({
+  //       aaSorting: [],
+  //       language: {
+  //         lengthMenu: "Menampilkan _MENU_ data tiap halaman",
+  //         zeroRecords: "Data tidak ditemukan",
+  //         info: "Menampilkan halaman _PAGE_ dari _PAGES_",
+  //         infoEmpty: "Tidak ada data tersedia",
+  //         infoFiltered: "(Disaring dari _MAX_ data total)",
+  //         decimal: "",
+  //         emptyTable: "Data tidak tersedia",
+  //         loadingRecords: "Memuat...",
+  //         processing: "Memproses...",
+  //         search: 'Cari:  <i class="bi bi-search"></i> ',
+  //         searchPlaceholder: "Cari data balita...",
+  //         paginate: {
+  //           first: "Pertama",
+  //           last: "Terakhir",
+  //           // "next": "Selanjutnya",
+  //           // "previous": "Sebelumnya"
+  //           previous: 'Prev  <i class="bi bi-chevron-double-left"></i>',
+  //           next: '<i class="bi bi-chevron-double-right"></i>  Next',
+  //         },
+  //         aria: {
+  //           sortAscending: ": klik untuk mengurutkan A-Z",
+  //           sortDescending: ": klik untuk mengurutkan Z-A",
+  //         },
+  //       },
+  //     });
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   // Panggil API untuk mendapatkan daftar posyandu
