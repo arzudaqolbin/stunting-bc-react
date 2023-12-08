@@ -166,9 +166,6 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     if (!formData.kepala) {
       isValid = false;
       newErrors.kepala = "Kepala Puskesmas harus diisi.";
-    } else if (!/^[a-zA-Z0-9]+$/.test(formData.kepala)) {
-      isValid = false;
-      newErrors.kepala = "kepala Puskesmas tidak valid.";
     } else {
       newErrors.kepala = "";
     }
