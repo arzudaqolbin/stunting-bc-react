@@ -105,9 +105,6 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     if (!puskesmasReq.kepala) {
       isValid = false;
       newErrors.kepala = "Kepala Puskesmas harus diisi.";
-    } else if (!/^[a-zA-Z0-9]+$/.test(puskesmasReq.kepala)) {
-      isValid = false;
-      newErrors.kepala = "kepala Puskesmas tidak valid.";
     } else {
       newErrors.kepala = "";
     }
