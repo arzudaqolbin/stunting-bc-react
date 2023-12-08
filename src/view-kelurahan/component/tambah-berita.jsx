@@ -8,7 +8,8 @@ import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { toast, ToastContainer } from "react-toastify";
 
-const TambahBerita = ({ idKelurahan, apiAuth, token }) => {
+const TambahBerita = ({ idKelurahan, apiAuth }) => {
+  const token = localStorage.getItem("access_token")
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const today = new Date().toISOString().split('T')[0];

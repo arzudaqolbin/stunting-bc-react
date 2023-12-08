@@ -39,21 +39,21 @@ const dataAuth = () => {
 };
 
 const errorHandling = (error) => {
-    let errorMessageString = "";
-    console.log(error);
-    console.log(error.response.data.message);
-    if (error.response.status === 422) {
-        const errorData = error.response.data.message;
-        const errorMessages = [];
-        for (const key in errorData) {
-            if (errorData.hasOwnProperty(key)) {
-                errorMessages.push(`${key}: ${errorData[key]}`);
-            }
-        }
-        errorMessageString = errorMessages.join('\n');
-    } else {
-        errorMessageString = error.response.data.message;
-    }
+    let errorMessageString = error;
+    // console.log(error);
+    // console.log(error.response.data.message);
+    // if (error.response.status === 422) {
+    //     const errorData = error.response.data.message;
+    //     const errorMessages = [];
+    //     for (const key in errorData) {
+    //         if (errorData.hasOwnProperty(key)) {
+    //             errorMessages.push(`${key}: ${errorData[key]}`);
+    //         }
+    //     }
+    //     errorMessageString = errorMessages.join('\n');
+    // } else {
+    //     errorMessageString = "error";
+    // }
     Swal.fire({
         title: "Terjadi kesalahan",
         // text: error.response.data.message,

@@ -209,7 +209,7 @@ const StackedBarGender = () => {
 
     const downloadChart = useCallback(() => {
         const link = document.createElement("a");
-        link.download = "doughnut_status_tb_u.png";
+        link.download = "stunting_per_umur.png";
         link.href = reff.current.toBase64Image();
         link.click();
       }, []);
