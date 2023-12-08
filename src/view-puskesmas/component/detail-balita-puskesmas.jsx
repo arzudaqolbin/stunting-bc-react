@@ -68,12 +68,20 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
     const fetchData = async () => {
       await getDataBalita();
       await getDataTambahan();
-      await getNamaPosyandu();
       setLoading(false);
     };
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getNamaPosyandu();
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [biodata]);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
