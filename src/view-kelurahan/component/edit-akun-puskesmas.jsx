@@ -5,6 +5,7 @@ import BASE_URL, { errorHandling } from "../../base/apiConfig";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
 
 function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,11 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     password: "",
     confirm_password: "",
   });
+
+  const [koordinat, setKoordinat] = useState({
+    longitut: "",
+    latiude: "",
+  })
 
   const [errors, setErrors] = useState({
     nama: "",
@@ -81,6 +87,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           nomor_telepon: data.nomor_telepon,
           kepala: data.kepala,
           user_id: data.user_id,
+          koordinat_id: data.koordinat_id
         });
 
         const parts = data.alamat.split(", ");
@@ -96,6 +103,18 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               ...prevFormData,
               username: userData.username,
             }));
+          })
+          .catch((error) => {
+            errorHandling(error);
+          });
+
+        axios.get(`${BASE_URL}/koordinat/${data.koordinat_id}`, apiAuth)
+          .then((koorResp) => {
+            // console.log(koorResp.data);
+            setKoordinat({
+              longitut: koorResp.data.longitut,
+              latitude: koorResp.data.latitude,
+            })
           })
           .catch((error) => {
             errorHandling(error);
@@ -147,9 +166,6 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
     if (!formData.kepala) {
       isValid = false;
       newErrors.kepala = "Kepala Puskesmas harus diisi.";
-    } else if (!/^[a-zA-Z0-9]+$/.test(formData.kepala)) {
-      isValid = false;
-      newErrors.kepala = "kepala Puskesmas tidak valid.";
     } else {
       newErrors.kepala = "";
     }
@@ -259,10 +275,29 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           apiAuth
         )
         .then((response) => {
-          navigate(`/kelurahan/detail-posyandu/${idPuskesmas}`);
+          // showSuccessPostToast(idPuskesmas)
         })
         .catch((error) => {
+          showFailedPostToast()
           errorHandling(error);
+        });
+
+      axios
+        .put(
+          `${BASE_URL}/koordinat/${formData.koordinat_id}`,
+          {
+            longitut: koordinat.longitut,
+            latitude: koordinat.latitude,
+          },
+          apiAuth
+        )
+        .then((response) => {
+          showSuccessPostToast(idPuskesmas);
+        })
+        .catch((error) => {
+          showFailedPostToast()
+          errorHandling(error);
+          setLoading(false);
         });
     }
   };
@@ -270,7 +305,36 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setKoordinat({ ...koordinat, [name]: value });
   };
+
+  const showSuccessPostToast = async (idPuskesmas) => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil diubah", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate(`/kelurahan/detail-puskesmas/${idPuskesmas}`);
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -391,15 +455,15 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
               />
             </label>
 
-            <label htmlFor="longitude">
+            <label htmlFor="longitut">
               <span>Longitude*</span>
               <input
                 type="text"
-                id="longitude"
-                name="longitude"
-              // required
-              // value={posyanduData.longitude}
-              // onChange={handleInputChange}
+                id="longitut"
+                name="longitut"
+                required
+                value={koordinat.longitut}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.longitude}</div>
             </label>
@@ -410,9 +474,9 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
                 type="text"
                 id="latitude"
                 name="latitude"
-              // required
-              // value={posyanduData.latitude}
-              // onChange={handleInputChange}
+                required
+                value={koordinat.latitude}
+                onChange={handleChange}
               />
               <div className={`error`}>{errors.latitude}</div>
             </label>
@@ -473,6 +537,7 @@ function EditAkunPuskesmas({ idKelurahan, apiAuth, idPuskesmas }) {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }

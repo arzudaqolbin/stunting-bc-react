@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { Line } from 'react-chartjs-2';
-import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip } from 'recharts';
+import { CartesianGrid, LineChart, XAxis, YAxis, Line, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import BASE_URL from '../../base/apiConfig';
 
@@ -122,7 +122,8 @@ const LineChart_Umur_0_24 = ({apiAuth, idBalita}) => {
     //   };
 
     return(
-        <>
+      <ResponsiveContainer width="100%" height={500}>
+        <h3 className='text-center m-3'>Pengukuran PBU Umur 0-24 bulan</h3>
         <LineChart ref={chartRef} width={1000} height={500} data={dataCombine}>
             <Line type="monotone" dataKey="PB" stroke="blue" strokeWidth={2} dot={true} fill='blue' />
             <Line type="monotone" dataKey="sd_3" stroke="black" strokeWidth={1} dot={false} />
@@ -136,8 +137,7 @@ const LineChart_Umur_0_24 = ({apiAuth, idBalita}) => {
 
             <Tooltip />
         </LineChart>
-        {/* <button onClick={handleDownload}>Download Chart</button> */}
-        </>
+      </ResponsiveContainer>
     )
 }
 

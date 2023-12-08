@@ -5,6 +5,7 @@ import "../css/form-kelurahan.css";
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from "react-spinners";
+import { toast, ToastContainer } from "react-toastify";
 // import BASE_URL from '../../base/apiConfig';
 
 function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
@@ -202,13 +203,42 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
     axios
       .post(`${BASE_URL}/puskesmas`, puskesmasData, apiAuth)
       .then((response) => {
-        navigate('/kelurahan/daftar-puskesmas');
+        showSuccessPostToast()
       })
       .catch((error) => {
+        showFailedPostToast()
         setLoading(false);
         errorHandling(error);
       });
   };
+
+  const showSuccessPostToast = async () => {
+    return new Promise((resolve) => {
+      toast.success("Data berhasil disimpan", {
+        data: {
+          title: "Success",
+          text: "Data berhasil disimpan",
+        },
+        onClose: async () => {
+          // Menunggu 3 detik sebelum melakukan navigasi
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // Mengakhiri janji saat Toast ditutup
+          navigate('/kelurahan/daftar-puskesmas');
+          resolve();
+        },
+      });
+    });
+  };
+
+  const showFailedPostToast = () => {
+    toast.error("Gagal Menyimpan Data", {
+      data: {
+        title: "Error toast",
+        text: "This is an error message",
+      },
+    });
+  }
 
   return (
     <main className="container">
@@ -418,6 +448,7 @@ function TambahAkunPuskesmas({ idKelurahan, apiAuth }) {
             </button>)}
         </form>
       </div>
+      <ToastContainer />
     </main>
   );
 }

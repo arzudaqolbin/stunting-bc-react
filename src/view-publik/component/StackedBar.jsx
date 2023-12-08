@@ -209,7 +209,7 @@ const StackedBarGender = () => {
 
     const downloadChart = useCallback(() => {
         const link = document.createElement("a");
-        link.download = "doughnut_status_tb_u.png";
+        link.download = "stunting_per_umur.png";
         link.href = reff.current.toBase64Image();
         link.click();
       }, []);
@@ -228,6 +228,7 @@ const StackedBarGender = () => {
                 </div>
             ) : (
                 <>
+                <h4>Stunting berdasarkan Kelompok Umur dan Jenis Kelamin</h4>
                 <button className="float-right" type="button" onClick={downloadChart}>
                 <i class="fa-solid fa-download"></i>
                 </button>

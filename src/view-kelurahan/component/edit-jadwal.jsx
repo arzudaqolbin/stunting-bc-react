@@ -86,7 +86,7 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
     if (validateForm()) {
       Swal.fire({
         title: "Apakah Anda yakin?",
-        text: "Menambahkan akun posyandu",
+        text: "Mengedit jadwal kegiatan",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -118,8 +118,6 @@ function EditJadwal({ idKelurahan, apiAuth, idJadwal }) {
 
   return (
     <main className="container">
-      {/* <a href=""><img src="back.png" alt="Back" className="logo-back" /> */}
-      <i class="fa-solid fa-arrow-left"></i>
       <h2 className="text-center p-4">FORM EDIT JADWAL KEGIATAN</h2>
       <h3 className="requirement">*Menunjukkan pertanyaan yang wajib diisi</h3>
 

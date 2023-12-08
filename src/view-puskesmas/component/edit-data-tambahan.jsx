@@ -98,13 +98,13 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
     let isValid = true;
     const newErrors = { ...errors };
 
-    // Validasi riwayat penyakit
-    if (!/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
-      isValid = false;
-      newErrors.riwayat_sakit = "Riwayat penyakit tidak valid.";
-    } else {
-      newErrors.riwayat_sakit = "";
-    }
+  // Validasi riwayat penyakit
+  if (dataTambahan.riwayat_sakit && !/^[a-zA-Z.,'`-\s]+$/.test(dataTambahan.riwayat_sakit)) {
+    isValid = false;
+    newErrors.riwayat_sakit = "Riwayat penyakit tidak valid.";
+  } else {
+    newErrors.riwayat_sakit = "";
+  }
 
     // Set ulang state errors
     setErrors(newErrors);
@@ -122,12 +122,14 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
           dataTambahan,
           apiAuth
         );
+      } else {
+        await axios.post(`${BASE_URL}/dataTambahanBalitas`, dataTambahan, apiAuth);
       }
       showSuccessPostToast(idBalita);
-      setLoading2(false);
+      // setLoading2(false);
     } catch (error) {
-      showFailedPostToast()
       setLoading2(false);
+      showFailedPostToast()
       // if (error.response) {
       //   console.error(
       //     "Kesalahan dalam permintaan ke server:",
@@ -155,6 +157,7 @@ function EditDataTambahan({ idPuskesmas, apiAuth, idBalita }) {
 
           // Mengakhiri janji saat Toast ditutup
           navigate(`/puskesmas/detail-balita/${idBalita}`);
+          setLoading2(false);
           resolve();
         },
       });

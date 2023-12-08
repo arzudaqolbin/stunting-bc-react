@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import "../css/detail-balita.css";
 
 const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
+
   // nunggu setting router link
   const [biodata, setBiodata] = useState([]);
   const [riwayat, setRiwayat] = useState([]);
@@ -55,11 +56,16 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
   useEffect(() => {
     const fetchData = async () => {
       await getDataBalita();
-      if (biodata.length != 0) {
-        await getNamaPosyandu();
-      }
       await getDataTambahan();
       setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getNamaPosyandu();
     };
 
     fetchData();
@@ -67,7 +73,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
-    return value === 1 ? "Ya" : "Tidak";
+    return value === 1 ? 'Ya' : 'Tidak';
   };
 
   // console.log(riwayat);
@@ -225,9 +231,24 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                     Riwayat Balita {biodata.status_tbu === "Pendek" || biodata.status_tbu === "Sangat Pendek" ? "(sebaiknya dilengkapi)" : ""}
                   </button>
                 </h2>
+                <div className="accordion mb-3" id="accordionExample">
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button
+                      className="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                      style={{ fontWeight: "bold", fontSize: "20px" }}
+                    >
+                      Biodata Balita
+                    </button>
+                  </h2>
                 <div
-                  id="collapseTwo"
-                  className="accordion-collapse collapse"
+                  id="collapseOne"
+                  className="accordion-collapse collapse show"
                   data-bs-parent="#accordionExample"
                 >
                   <div className="accordion-body">
@@ -253,7 +274,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.imd}
+                              : &nbsp;{convertStr(riwayat.imd)}
                             </td>
                           </tr>
                           <tr>
@@ -262,7 +283,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.penyakit_penyerta}
+                              : &nbsp;{convertStr(riwayat.penyakit_penyerta)}
                             </td>
                           </tr>
                           <tr>
@@ -280,7 +301,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.riwayat_imunisasi}
+                              : &nbsp;{convertStr(riwayat.riwayat_imunisasi)}
                             </td>
                           </tr>
                           <tr>
@@ -289,10 +310,10 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.riwayat_ibu_hamil_kek}
+                              : &nbsp;{convertStr(riwayat.riwayat_ibu_hamil_kek)}
                             </td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Riwayat Ibu Anemia
                             </th>
@@ -300,17 +321,17 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                               {" "}
                               : &nbsp;Tidak
                             </td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Kepemilikan Jamban Sehat
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.kepemilikan_jamban_sehat}
+                              : &nbsp;{convertStr(riwayat.kepemilikan_jamban_sehat)}
                             </td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               Akses Air Minum
                             </th>
@@ -318,7 +339,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                               {" "}
                               : &nbsp;Air isi ulang
                             </td>
-                          </tr>
+                          </tr> */}
                           <tr>
                             <th scope="row" style={{ textAlign: "left" }}>
                               KTP
@@ -343,7 +364,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.akses_makanan_sehat}
+                              : &nbsp;{convertStr(riwayat.akses_makanan_sehat)}
                             </td>
                           </tr>
                           <tr>
@@ -352,7 +373,7 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                             </th>
                             <td style={{ textAlign: "left" }}>
                               {" "}
-                              : &nbsp;{riwayat.konfirmasi_dsa}
+                              : &nbsp;{convertStr(riwayat.konfirmasi_dsa)}
                             </td>
                           </tr>
                         </tbody>
@@ -360,73 +381,131 @@ const DetailBalitaKelurahan = ({ idKelurahan, apiAuth, idBalita }) => {
                     )}
                   </div>
                 </div>
-              </div>
-              <div className="accordion-item">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseThree"
-                    aria-expanded="false"
-                    aria-controls="collapseThree"
-                    style={{ fontWeight: "bold", fontSize: "20px" }}
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button
+                      className="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                      style={{ fontWeight: "bold", fontSize: "20px" }}
+                    >
+                      Riwayat Balita
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseTwo"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample"
                   >
-                    Data Pengukuran
-                  </button>
-                </h2>
-                <div
-                  id="collapseThree"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div className="accordion-body">
-                    {/* Isi komponen accordion disini */}
-                    <TabelPengukuranBalitaStunting
-                      idBalita={idBalita}
-                      apiAuth={apiAuth}
-                    />
+                    <div className="accordion-body">
+                      <table className="table table-hover custom-table" >
+                        <tbody>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Asi Eksklusif</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{convertStr(riwayat.asi_eksklusif)}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>IMD</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.imd}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Penyakit Penyerta</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.penyakit_penyerta}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Sakit</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_sakit}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Imunisasi</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_imunisasi}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Ibu Hamil KEK</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.riwayat_ibu_hamil_kek}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Riwayat Ibu Anemia</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;Tidak</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Kepemilikan Jamban Sehat</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.kepemilikan_jamban_sehat}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Akses Air Minum</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;Air isi ulang</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>KTP</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.ktp}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Kepemilikan BPJS/KIS/JKN/KAJ</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.jaminan_kesehatan}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Akses Terhadap Makanan Sehat</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.akses_makanan_sehat}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row" style={{ textAlign: "left" }}>Sudah Konfirmasi ke DSA</th>
+                            <td style={{ textAlign: "left" }}> : &nbsp;{riwayat.konfirmasi_dsa}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="accordion-item">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseFour"
-                    aria-expanded="false"
-                    aria-controls="collapseFour"
-                    style={{ fontWeight: "bold", fontSize: "20px" }}
-                  >
-                    Grafik Stunting
-                  </button>
-                </h2>
-                <div
-                  id="collapseFour"
-                  className="accordion-collapse collapse"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div className="accordion-body">
-                    {/* Isi komponen accordion disini */}
-                    <LineChart_Umur_0_24
-                      idBalita={idBalita}
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      Data Pengukuran
+                    </button>
+                  </h2>
+                  <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div className="accordion-body" style={{ padding: '10px' }}>
+                      {/* Isi komponen accordion disini */}
+                      <TabelPengukuranBalitaStunting 
+                        apiAuth={apiAuth} idBalita={idBalita}
+                      />
+                      
+                    </div>
+                  </div>
+                </div>
+                <div className="accordion-item">
+                  <h2 className="accordion-header">
+                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style={{ fontWeight: 'bold', fontSize: '20px' }}>
+                      Grafik Stunting
+                    </button>
+                  </h2>
+                  <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div className="accordion-body">
+                      {/* Isi komponen accordion disini */}
+                      <LineChart_Umur_0_24 
                       apiAuth={apiAuth}
-                    />
-                    <LineChart_Umur_24_60
                       idBalita={idBalita}
+                      />
+                      <LineChart_Umur_24_60 
                       apiAuth={apiAuth}
-                    />
+                      idBalita={idBalita}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            </div>
           </div>
-        </main>
-      )}
+       </div>
+      </main>
+        )
+      }
     </>
   );
-};
+}
 
 export default DetailBalitaKelurahan;

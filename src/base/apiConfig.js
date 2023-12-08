@@ -3,8 +3,9 @@ import { decodeToken } from "react-jwt";
 import Swal from "sweetalert2";
 import { ClipLoader } from "react-spinners";
 
-const BASE_URL = 'https://stuntingbc.kencang.id/api'; // Ganti dengan base URL Anda
+// const BASE_URL = 'https://api-stunting.up.railway.app/api'; // Ganti dengan base URL Anda
 // const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'https://stuntingbc.kencang.id/api';
 const token = localStorage.getItem("access_token")
 
 const apiAuth = () => {
@@ -38,22 +39,24 @@ const dataAuth = () => {
 };
 
 const errorHandling = (error) => {
-    let errorMessageString = "";
+    let errorMessageString = error;
+    // console.log(error);
     // console.log(error.response.data.message);
-    if (error.response.status === 422) {
-        const errorData = error.response.data.message;
-        const errorMessages = [];
-        for (const key in errorData) {
-            if (errorData.hasOwnProperty(key)) {
-                errorMessages.push(`${key}: ${errorData[key]}`);
-            }
-        }
-        errorMessageString = errorMessages.join('\n');
-    } else {
-        errorMessageString = error.response.data.message;
-    }
+    // if (error.response.status === 422) {
+    //     const errorData = error.response.data.message;
+    //     const errorMessages = [];
+    //     for (const key in errorData) {
+    //         if (errorData.hasOwnProperty(key)) {
+    //             errorMessages.push(`${key}: ${errorData[key]}`);
+    //         }
+    //     }
+    //     errorMessageString = errorMessages.join('\n');
+    // } else {
+    //     errorMessageString = "error";
+    // }
     Swal.fire({
         title: "Terjadi kesalahan",
+        // text: error.response.data.message,
         text: errorMessageString,
         icon: "warning"
     })

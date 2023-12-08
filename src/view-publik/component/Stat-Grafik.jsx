@@ -5,7 +5,7 @@ import BayiStat from './bayi-stat';
 
 const StatGrafik = () => {
   return (
-    <div className="d-flex flex-wrap container align-items-center">
+    <div className="d-flex flex-wrap container align-items-stretch">
       {/* Stat gizi BB/U */}
       <div className='col-lg-4 md-6 sm-12'>
       <DoughnutChart />

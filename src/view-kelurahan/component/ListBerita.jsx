@@ -63,7 +63,7 @@ const ListBerita = ({ apiAuth }) => {
   const confirmAlert = (id) => {
     Swal.fire({
       title: "Apakah Anda yakin?",
-      text: "Menambahkan akun posyandu",
+      text: "Menghapus berita",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -92,28 +92,15 @@ const ListBerita = ({ apiAuth }) => {
     : 
     (
     <div className="container">
-      <div className="row mt-5 mb-5">
-        <div className="col-md-6 offset-md-2">
-          <form className="d-flex" style={{ width: "750px" }} role="search">
-            <div className="input-group">
-              <div
-                className="align-self-center"
-                style={{ marginRight: "10px" }}
-              >
-                Berita yang dicari :
-              </div>
-              <input
-                className="form-control"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                aria-describedby="search-label"
-              />
-            </div>
-          </form>
-        </div>
-      </div>
-      <div className="text-end mb-5">
+      <h2 className="text-center mt-5 mb-5">
+          List Berita Kelurahan Bidara Cina
+        </h2>
+        {/* <Link to="/kelurahan/tambah-jadwal">
+          <div className="text-end mb-3">
+            <button className="btn btn-primary">Tambah Kegiatan</button>
+          </div>
+        </Link> */}
+      <div className="text-end m-5 mr-10">
         <Link to={`/kelurahan/tambah-berita/`} className="btn btn-primary">
           Tambah Berita
         </Link>
@@ -121,7 +108,7 @@ const ListBerita = ({ apiAuth }) => {
       <div className="row mt-3">
         {daftarBerita.map((berita, index) => (
           <div key={index} className="col-md-4 mb-5">
-            <div className="card" style={{ width: "300px", height: "300px" }}>
+            <div className="card" style={{ width: "300px", height: "300px", marginLeft: "40px" }}>
               <img
                 src={gambar[berita.id]}
                 className="card-img-top cover-image"

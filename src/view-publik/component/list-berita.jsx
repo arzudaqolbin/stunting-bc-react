@@ -72,8 +72,8 @@ const ListBerita = () => {
       </div> */}
       <div className="row mt-3">
         {daftarBerita.map((berita, index) => (
-          <div key={index} className="col-md-4 mb-5">
-            <div className="card" style={{ width: "300px", height: "300px" }}>
+          <div key={index} className="col-md-4 mt-5 mb-5">
+            <div className="card" style={{ width: "300px", height: "300px", marginLeft:"40px" }}>
               <img
                 src={gambar[berita.id]} // Ganti dengan sumber gambar dari data berita
                 className="card-img-top cover-image"
