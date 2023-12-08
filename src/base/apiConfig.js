@@ -62,9 +62,28 @@ const errorHandling = (error) => {
     })
 }
 
-
+const loginHandling = (error) => {
+    let errorMessageString;
+    if (error.response.status === 422) {
+        const errorData = error.response.data.message;
+        const errorMessages = [];
+        for (const key in errorData) {
+            if (errorData.hasOwnProperty(key)) {
+                errorMessages.push(`${key}: ${errorData[key]}`);
+            }
+        }
+        errorMessageString = errorMessages.join('\n');
+    } else {
+        errorMessageString = "Pastikan Username dan Password Benar!";
+    }
+    Swal.fire({
+        title: "Terjadi kesalahan",
+        text: errorMessageString,
+        icon: "warning"
+    })
+}
 
 
 export default BASE_URL;
 
-export { apiAuth, dataAuth, token, errorHandling }
+export { apiAuth, dataAuth, token, errorHandling, loginHandling }
