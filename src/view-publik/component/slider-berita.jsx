@@ -96,7 +96,7 @@ const SliderBerita = () => {
                     <div className="card-body">
                       <h5 className="card-title">{item.judul}</h5>
                       <p className="card-text">{item.deskripsi}</p>
-                      <a href="#" className="btn btn-primary">
+                      <a href={`/berita/${item.id}`} className="btn btn-primary">
                         Baca berita
                       </a>
                     </div>
@@ -131,7 +131,7 @@ const SliderBerita = () => {
           <span className="visually-hidden">Next</span>
         </div>
         <div style={{ textAlign: "right", marginTop: "20px" }}>
-          <a className="text-berita" style={{ textDecoration: "none" }}>
+          <a className="text-berita" style={{ textDecoration: "none" }} href="/berita">
             Berita Selengkapnya&gt;&gt;
             <br />
             <br />

@@ -105,7 +105,7 @@ function TabelDaftarPosyanduKelurahan({ idKelurahan, apiAuth }) {
         }
       });
     }
-  }, [posyanduList]);
+  }, []);
 
   //   // Panggil API untuk mendapatkan daftar puskesmas
   //   axios
