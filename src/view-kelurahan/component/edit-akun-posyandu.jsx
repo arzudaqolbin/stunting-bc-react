@@ -189,9 +189,9 @@ function EditAkunPosyandu({ idKelurahan, apiAuth, idPosyandu }) {
     // Validasi Nama Orang Tua
     if (!formData.kepala) {
       isValid = false;
-      newErrors.kepala = "Nama orang tua tidak boleh kosong";
+      newErrors.kepala = "Nama kepala tidak boleh kosong";
     } else if (!/^[a-zA-Z\s`.'-]+$/.test(formData.kepala)) {
-      newErrors.kepala = "Nama orang tua tidak valid";
+      newErrors.kepala = "Nama kepala tidak valid";
       isValid = false;
     } else {
       newErrors.kepala = "";

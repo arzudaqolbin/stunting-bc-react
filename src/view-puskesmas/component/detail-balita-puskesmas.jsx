@@ -73,7 +73,7 @@ const DetailBalitaPuskesmas = ({ idPuskesmas, apiAuth, idBalita }) => {
     };
 
     fetchData();
-  }, [biodata]);
+  }, []);
 
   // Convert Int to Ya Tidak
   const convertStr = (value) => {
