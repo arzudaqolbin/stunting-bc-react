@@ -5,7 +5,7 @@ import { decodeToken } from "react-jwt";
 
 import logoDki from "../../aset/logo-dki.png";
 import logoJaktim from "../../aset/logo-jaktim.png";
-import BASE_URL, { errorHandling } from "../../base/apiConfig";
+import BASE_URL, { loginHandling } from "../../base/apiConfig";
 import { ClipLoader } from "react-spinners";
 import Swal from "sweetalert2";
 
@@ -45,21 +45,8 @@ const Login = () => {
       }
       navigate(redirectUrl);
     } catch (error) {
-      errorHandling(error);
+      loginHandling(error);
       setLoading(false);
-      // if (error.response) {
-      //   // console.log(error.response.data);
-      //   Swal.fire({
-      //     title: "Terjadi kesalahan",
-      //     text: error.response.data.error,
-      //     icon: "warning"
-      //   })
-      //   return Promise.resolve();
-      // } else if (error.request) {
-      //   // console.error("Tidak ada respon dari server:", error.request);
-      // } else {
-      //   // console.error("Terjadi kesalahan:", error.message);
-      // }
     }
   };
 
