@@ -115,7 +115,11 @@ const ListBerita = ({ apiAuth }) => {
                 alt=""
               />
               <div className="card-body">
-                <h5 className="card-title">{berita.judul}</h5>
+                <h5 className="card-title" style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                  }}>{berita.judul}</h5>
                 <p
                   className="card-text"
                   style={{

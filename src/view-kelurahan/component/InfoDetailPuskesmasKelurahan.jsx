@@ -87,7 +87,7 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
 
               <div style={{ textAlign: 'right' }}>
                 <Link to={`/kelurahan/edit-puskesmas/${puskesmas.id}`}>
-                  <button className="btn">Edit Data</button>
+                  <button className="btn btn-primary">Edit Data</button>
                 </Link>
               </div>
 
@@ -141,11 +141,11 @@ function InfoDetailPuskesmasKelurahan({ idKelurahan, apiAuth, idPuskesmas }) {
                   </tbody>
                 </table>
               </div >
+              <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
+                <Link to={`/kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn btn-primary">+ Tambah Posyandu</Link>
+              </div>
             </div >
 
-            <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-              <Link to={`/kelurahan/tambah-posyandu/${idPuskesmas}`} className="btn">+ Tambah Posyandu</Link>
-            </div>
           </main >)
       }
     </>

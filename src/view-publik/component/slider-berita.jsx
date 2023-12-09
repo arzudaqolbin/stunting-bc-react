@@ -94,8 +94,16 @@ const SliderBerita = () => {
                       style={{ height: "60%", width: "100%" }}
                     />
                     <div className="card-body">
-                      <h5 className="card-title">{item.judul}</h5>
-                      <p className="card-text">{item.deskripsi}</p>
+                      <h5 className="card-title" style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}>{item.judul}</h5>
+                      <p className="card-text" style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                      }}>{item.deskripsi}</p>
                       <a href={`/berita/${item.id}`} className="btn btn-primary">
                         Baca berita
                       </a>

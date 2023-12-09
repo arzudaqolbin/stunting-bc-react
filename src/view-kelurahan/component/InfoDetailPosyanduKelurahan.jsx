@@ -187,7 +187,7 @@ function InfoDetailPosyanduKelurahan({ apiAuth, idPosyandu }) {
 
               <div style={{ textAlign: "right" }}>
                 <Link to={`/kelurahan/edit-posyandu/${idPosyandu}`}>
-                  <button className="btn">Edit Data</button>
+                  <button className="btn btn-primary">Edit Data</button>
                 </Link>
               </div>
 
